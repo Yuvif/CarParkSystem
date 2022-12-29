@@ -17,7 +17,7 @@
         <Label layoutX="319.0" layoutY="90.0" />
       <ImageView fx:id="Parking" accessibleRole="BUTTON" fitHeight="100.0" fitWidth="100.0" layoutX="219.0" layoutY="260.0" onMouseClicked="#Parking" translateX="-50.0">
          <image>
-            <Image url="@../../../../assets/Parking%20list.png" />
+            <Image url="@../../../../assets/Parking list.png" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
