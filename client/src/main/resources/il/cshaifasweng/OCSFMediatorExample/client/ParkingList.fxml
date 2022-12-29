@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="519.0" prefWidth="700.0" style="-fx-background-image: url(https://www.plasmacomp.com/wp-content/uploads/2016/06/Smart-Parking-Solution-1.jpg);" translateX="3.0" translateY="1.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.ParkingListController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="519.0" prefWidth="700.0" style="-fx-background-image: url(/assets/ParkingListBackground.jpg);" translateX="3.0" translateY="1.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.ParkingListController">
     <children>
         <Label alignment="CENTER" blendMode="COLOR_DODGE" cacheHint="SPEED" contentDisplay="CENTER" depthTest="ENABLE" graphicTextGap="0.0" layoutX="14.0" layoutY="14.0" prefHeight="54.0" prefWidth="244.0" style="-fx-background-color: black;" text="Parking List" textAlignment="CENTER" textFill="WHITE">
             <font>
