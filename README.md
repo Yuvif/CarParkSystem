@@ -1,2 +1,2 @@
-# TEAM 4 projec
+# TEAM 4 project
 Best team ever **XD** **XP**
