@@ -51,13 +51,13 @@ public class SimpleServer extends AbstractServer {
 		switch (((LinkedList<Object>) msg).get(0).toString()) {
 //			case "add client":
 //				SubscribedClient connection = new SubscribedClient(client);
-////				SubscribersList.add(connection);
-////				break;
-//			//send parking table for new client
-//////			case "get parking list":
-//////				try {
-//////					if (p_l.isEmpty()) {//Case of first parking table request, we create new instances
-//////						query = "SELECT * FROM parkinglots";
+//				SubscribersList.add(connection);
+//				break;
+			//send parking table for new client
+////			case "get parking list":
+////				try {
+////					if (p_l.isEmpty()) {//Case of first parking table request, we create new instances
+////						query = "SELECT * FROM parkinglots";
 ////						preparedStatement = con.prepareStatement(query);
 ////						rs = preparedStatement.executeQuery();
 ////						//Create new instance of every parking lot
@@ -109,45 +109,20 @@ public class SimpleServer extends AbstractServer {
 //			}
 			case "#COMPLAINT" -> addComplaint((LinkedList<Object>) msg);
 			case "#PULL_COMPLAINTS" -> pullOpenComplaints(client);
-			case "#PULL_PARKINGLOTS" -> pullParkingLots(client);
-			case "#PULLPARKINGLOTS" -> pullParkingLotsReal(((LinkedList<Object>) msg), client);
-			case "#CHECKINGIN" -> addCheckIn((LinkedList<Object>) msg);
 		}
 	}
-	private static void pullParkingLotsReal(List<Object> msg, ConnectionToClient client) throws IOException {
-		List<Parkinglot> parkinglots = SimpleChatServer.getAllParkingLots();
-		List<Object> msgToClient = new LinkedList<Object>();
-		msgToClient.add("#PULLPARKINGLOTS");
-		msgToClient.add(parkinglots);
-		client.sendToClient(msgToClient);
-	}
+
+
+
 	private void addComplaint(LinkedList<Object> msg) {
 		addNewInstance((Complaint) msg.get(1));
 	}
-	private void addCheckIn(LinkedList<Object> msg)  throws IOException {
-		CheckedIn checkin = (CheckedIn) msg.get(1);
-		ParkingSlot slot = checkin.getParkingSlot();
-		ParkingSlot m = (ParkingSlot) SimpleChatServer.session.get(ParkingSlot.class,slot.getId());
-		m.setSpotStatus(ParkingSlot.Status.USED);
-		m.setCheckedIn(checkin);
-		addNewInstance((CheckedIn) msg.get(1));
-
-	}
-
 
 	private void pullOpenComplaints(ConnectionToClient client) throws IOException {
 		List<Complaint> complaints = SimpleChatServer.getAllOpenComplaints();
 		List<Object> msg = new LinkedList<>();
 		msg.add("#PULL_COMPLAINTS");
 		msg.add(complaints);
-		client.sendToClient(msg);
-	}
-
-	private void pullParkingLots(ConnectionToClient client) throws IOException {
-		List<Parkinglot> parkinglots = SimpleChatServer.getAllParkingLots();
-		List<Object> msg = new LinkedList<>();
-		msg.add("#PULL_PARKINGLOTS");
-		msg.add(parkinglots);
 		client.sendToClient(msg);
 	}
 }
