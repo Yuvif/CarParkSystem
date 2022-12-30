@@ -51,13 +51,13 @@ public class SimpleServer extends AbstractServer {
 		switch (((LinkedList<Object>) msg).get(0).toString()) {
 //			case "add client":
 //				SubscribedClient connection = new SubscribedClient(client);
-//				SubscribersList.add(connection);
-//				break;
-			//send parking table for new client
-////			case "get parking list":
-////				try {
-////					if (p_l.isEmpty()) {//Case of first parking table request, we create new instances
-////						query = "SELECT * FROM parkinglots";
+////				SubscribersList.add(connection);
+////				break;
+//			//send parking table for new client
+//////			case "get parking list":
+//////				try {
+//////					if (p_l.isEmpty()) {//Case of first parking table request, we create new instances
+//////						query = "SELECT * FROM parkinglots";
 ////						preparedStatement = con.prepareStatement(query);
 ////						rs = preparedStatement.executeQuery();
 ////						//Create new instance of every parking lot
