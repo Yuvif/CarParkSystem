@@ -22,7 +22,7 @@ import org.greenrobot.eventbus.Subscribe;
 public class SimpleChatClient extends Application {
 
     private static Scene scene;
-    private SimpleClient client;
+    public static SimpleClient client;
     private int msgId;
 
     @Override
@@ -32,7 +32,7 @@ public class SimpleChatClient extends Application {
     	client.openConnection();
         Message message = new Message(msgId++,"add client");
         SimpleClient.getClient().sendToServer(message);
-        scene = new Scene(loadFXML("MainScreen"), 640, 480);
+        scene = new Scene(loadFXML("ComplaintHandlerTable"), 640, 480);
         stage.setScene(scene);
         stage.show();
     }
