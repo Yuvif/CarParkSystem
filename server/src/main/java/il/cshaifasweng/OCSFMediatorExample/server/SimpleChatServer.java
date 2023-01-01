@@ -1,6 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Complaint;
+import il.cshaifasweng.OCSFMediatorExample.entities.Parkinglot;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -31,6 +32,7 @@ public class SimpleChatServer
         // Add ALL of your entities here. You can also try adding a whole package.
 
         configuration.addAnnotatedClass(Complaint.class);
+        configuration.addAnnotatedClass(Parkinglot.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();        //pull session factory config from hibernate properties
         return configuration.buildSessionFactory(serviceRegistry);
@@ -50,35 +52,61 @@ public class SimpleChatServer
         return new LinkedList<>(complaints);
     }
 
-//    private static void generateEntities() throws Exception {       //generates all entities
-//        List<Complaint> complaints = new LinkedList<Complaint>();
-//        Complaint complaint = new Complaint(new Date(), "test");
-//
-//        complaints.add(complaint);
-//    }
+    static List<Parkinglot> getAllParkingLots() throws IOException {
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Parkinglot> customerQuery = builder.createQuery(Parkinglot.class);
+        customerQuery.from(Parkinglot.class);
+        List<Parkinglot> parkinglots = session.createQuery(customerQuery).getResultList();
+        return new LinkedList<>(parkinglots);
+    }
+    private static void generateEntities() throws Exception {       //generates all entities
+        //--------------------Parking Lots-----------------------------------------------------
+        List<Parkinglot> parkinglots = new LinkedList<Parkinglot>();
+        parkinglots = generateParkinglots();
 
-//    public static void main( String[] args ) throws IOException
-//    {
-//        server = new SimpleServer(3000);
-//        System.out.println("server is listening");
-//        server.listen();
-//    }
+//        //--------------------Complaints-----------------------------------------------------
+//        List<Complaint> complaints = new LinkedList<Complaint>();
+////        complaints = generateComplaints();
+
+    }
+    private static List<Parkinglot> generateParkinglots() throws Exception {       //generates new Parkinglots
+        List<Parkinglot> parkinglots = new LinkedList<Parkinglot>();
+        String[] plNames = new String[]{"CPS Haifa", "CPS Tel-Aviv", "CPS Be'er Sheva", "CPS Rehovot", "CPS Jerusalem", "CPS Eilat"};
+        int[] plParksPerRow = new int[]{5,4,6,8,5,6};
+        int[] totalParkingSpots = new int[]{45,36,54,72,45,54};
+        for (int i = 0; i < plNames.length; i++) {
+            Parkinglot parkinglot = new Parkinglot(plNames[i], plParksPerRow[i], totalParkingSpots[i]);
+            parkinglots.add(parkinglot);
+            session.save(parkinglot);   //saves and flushes to database
+            session.flush();
+        }
+
+//        private static List<Complaint> generateComplaints() throws Exception {       //generates new Parkinglots
+//            List<Complaint> complaints = new LinkedList<Complaint>();
+//            Date[]
+//            String[] plNames = new String[]{"CPS Haifa", "CPS Tel-Aviv", "CPS Be'er Sheva", "CPS Rehovot", "CPS Jerusalem", "CPS Eilat"};
+//            int[] plParksPerRow = new int[]{5,4,6,8,5,6};
+//            int[] totalParkingSpots = new int[]{45,36,54,72,45,54};
+//            for (int i = 0; i < plNames.length; i++) {
+//                Parkinglot parkinglot = new Parkinglot(plNames[i], plParksPerRow[i], totalParkingSpots[i]);
+//                parkinglots.add(parkinglot);
+//                session.save(parkinglot);   //saves and flushes to database
+//                session.flush();
+//            }
+
+
+        return parkinglots;
+    }
     public static void main(String[] args) throws IOException {
         try {
 
             SessionFactory sessionFactory = getSessionFactory();        //calls and creates session factory
             session = sessionFactory.openSession(); //opens session
             session.beginTransaction();       //transaction for generation
-//            generateEntities();             //generate
+            generateEntities();             //generate
 //            //generateStores();
 //             TEMP**********************************************************
-            Complaint a = new Complaint(new Date(), "Ad Matay");
-            Complaint b = new Complaint(new Date(), "blabla");
-            Complaint c = new Complaint(new Date(), "Kama od");
-            session.save(a);
-            session.save(b);
-            session.save(c);
-            session.flush();
+
             session.getTransaction().commit(); // Save everything.
 
 //            ScheduleMailing.main(null);
