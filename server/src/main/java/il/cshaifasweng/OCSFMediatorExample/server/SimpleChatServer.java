@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-
+//logic infront of the db
 public class SimpleChatServer
 {
     public static Session session;// encapsulation make public function so this can be private
@@ -43,6 +43,7 @@ public class SimpleChatServer
      * @return all opened complaints in the database.
      * @throws IOException
      */
+    //query:
     static List<Complaint> getAllOpenComplaints() throws IOException {
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Complaint> customerQuery = builder.createQuery(Complaint.class);
@@ -59,8 +60,16 @@ public class SimpleChatServer
         parkinglots = generateParkinglots();
 
 //        //--------------------Complaints-----------------------------------------------------
-//        List<Complaint> complaints = new LinkedList<Complaint>();
-////        complaints = generateComplaints();
+=======
+
+    static List<Parkinglot> getAllParkingLots() throws IOException {
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Parkinglot> customerQuery = builder.createQuery(Parkinglot.class);
+        customerQuery.from(Parkinglot.class);
+        List<Parkinglot> parkinglots = session.createQuery(customerQuery).getResultList();
+        return new LinkedList<>(parkinglots);
+}
+
 
     }
     private static List<Parkinglot> generateParkinglots() throws Exception {       //generates new Parkinglots
