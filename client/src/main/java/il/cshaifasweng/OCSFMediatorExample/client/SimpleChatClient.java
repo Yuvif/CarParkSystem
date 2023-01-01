@@ -32,7 +32,7 @@ public class SimpleChatClient extends Application {
     	client.openConnection();
         Message message = new Message(msgId++,"add client");
         SimpleClient.getClient().sendToServer(message);
-        scene = new Scene(loadFXML("ComplaintHandlerTable"), 640, 480);
+        scene = new Scene(loadFXML("CreateOrder"), 640, 480);
         stage.setScene(scene);
         stage.show();
     }

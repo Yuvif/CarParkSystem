@@ -5,11 +5,11 @@ import java.sql.SQLException;
 import java.io.Serializable;
 
 public class DbConnect implements Serializable{
-    private static String HOST = "127.0.0.1";
+    private static String HOST = "localhost";
     private static int PORT = 3306;
-    private static String DB_NAME = "Team4";
+    private static String DB_NAME = "first_db";
     private static String USERNAME = "root";
-    private static String PASSWORD = "dangla1604";
+    private static String PASSWORD = "semester";
     private static Connection connection;
 
     public static Connection getConnect()
