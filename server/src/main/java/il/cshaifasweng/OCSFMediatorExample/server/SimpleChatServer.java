@@ -52,13 +52,7 @@ public class SimpleChatServer
         return new LinkedList<>(complaints);
     }
 
-    static List<Parkinglot> getAllParkingLots() throws IOException {
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Parkinglot> customerQuery = builder.createQuery(Parkinglot.class);
-        customerQuery.from(Parkinglot.class);
-        List<Parkinglot> parkinglots = session.createQuery(customerQuery).getResultList();
-        return new LinkedList<>(parkinglots);
-    }
+
     private static void generateEntities() throws Exception {       //generates all entities
         //--------------------Parking Lots-----------------------------------------------------
         List<Parkinglot> parkinglots = new LinkedList<Parkinglot>();
