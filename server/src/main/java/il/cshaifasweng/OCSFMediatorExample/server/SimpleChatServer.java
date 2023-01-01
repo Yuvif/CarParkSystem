@@ -102,7 +102,7 @@ public class SimpleChatServer
 
 //            ScheduleMailing.main(null);
 
-            server = new SimpleServer(3000);      //builds server
+            server = new SimpleServer(3002);      //builds server
             server.listen();                    //listens to client
         } catch (Exception e) {
             if (session != null) {
