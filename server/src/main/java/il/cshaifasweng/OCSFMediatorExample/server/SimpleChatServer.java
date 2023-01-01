@@ -1,6 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Complaint;
+import il.cshaifasweng.OCSFMediatorExample.entities.Order;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -48,6 +49,24 @@ public class SimpleChatServer
         List<Complaint> complaints = session.createQuery(customerQuery).getResultList();
         complaints.removeIf(complaint -> !complaint.getStatus());
         return new LinkedList<>(complaints);
+    }
+//    A function that pulls from the db all orders that belong to a client
+    static List<Order> getAllOrdersOfCustomer(int clientId) throws IOException {
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Order> customerQuery = builder.createQuery(Order.class);
+        customerQuery.from(Order.class);
+        List<Order> orders = session.createQuery(customerQuery).getResultList();
+        orders.removeIf(order -> order.getCustomerId() != clientId);
+        return new LinkedList<>(orders);
+    }
+//    A function that returns all orders in a specific parking lot
+    static List<Order> getAllOrdersOfParkingLot(int parkingLotId) throws IOException {
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Order> customerQuery = builder.createQuery(Order.class);
+        customerQuery.from(Order.class);
+        List<Order> orders = session.createQuery(customerQuery).getResultList();
+        orders.removeIf(order -> order.getParkingLotId() != parkingLotId);
+        return new LinkedList<>(orders);
     }
 
 //    private static void generateEntities() throws Exception {       //generates all entities

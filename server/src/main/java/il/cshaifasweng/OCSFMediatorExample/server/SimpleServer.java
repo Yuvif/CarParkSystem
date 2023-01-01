@@ -109,6 +109,9 @@ public class SimpleServer extends AbstractServer {
 //			}
 			case "#COMPLAINT" -> addComplaint((LinkedList<Object>) msg);
 			case "#PULL_COMPLAINTS" -> pullOpenComplaints(client);
+			case "#MAKE_ORDER" -> addOrder((LinkedList<Object>) msg);
+			case "#PULL_ORDERS_OF_CLIENT" -> pullOrdersOfCustomer(client, (LinkedList<Object>) msg);
+			case "#PULL_ORDERS_OF_PARKINGLOT" -> pullOrdersOfParkingLot(client, (LinkedList<Object>) msg);
 		}
 	}
 
@@ -118,11 +121,35 @@ public class SimpleServer extends AbstractServer {
 		addNewInstance((Complaint) msg.get(1));
 	}
 
+//	A function to add an order.
+//	----- WE STILL NEED TO DECIDE HOW TO MANAGE ORDERS -----
+//	AT THIS POINT ANY ORDER IS ADDED TO THE DATABASE
+	private void addOrder(LinkedList<Object> msg) {
+		addNewInstance((Order) msg.get(1));
+	}
 	private void pullOpenComplaints(ConnectionToClient client) throws IOException {
 		List<Complaint> complaints = SimpleChatServer.getAllOpenComplaints();
 		List<Object> msg = new LinkedList<>();
 		msg.add("#PULL_COMPLAINTS");
 		msg.add(complaints);
 		client.sendToClient(msg);
+	}
+
+	private void pullOrdersOfCustomer(ConnectionToClient client, LinkedList<Object> msg) throws IOException {
+		int customerId = (int) msg.get(1);
+		List<Order> orders = SimpleChatServer.getAllOrdersOfCustomer(customerId);
+		List<Object> msgToClient = new LinkedList<>();
+		msgToClient.add("#PULL_ORDERS_OF_CUSTOMER");
+		msgToClient.add(orders);
+		client.sendToClient(msgToClient);
+	}
+
+	private void pullOrdersOfParkingLot(ConnectionToClient client, LinkedList<Object> msg) throws IOException {
+		int parkingLotId = (int) msg.get(1);
+		List<Order> orders = SimpleChatServer.getAllOrdersOfParkingLot(parkingLotId);
+		List<Object> msgToClient = new LinkedList<>();
+		msgToClient.add("#PULL_ORDERS_OF_PARKING_LOT");
+		msgToClient.add(orders);
+		client.sendToClient(msgToClient);
 	}
 }
