@@ -53,18 +53,15 @@ public class SimpleChatServer
         return new LinkedList<>(complaints);
     }
 
-//    static List<Parkinglot> getAllParkingLots() throws IOException {
-////
-////        CriteriaBuilder builder = session.getCriteriaBuilder();
-////        CriteriaQuery<Parkinglot> query = builder.createQuery(Parkinglot.class);
-////        query.from(Parkinglot.class);
-////        List<Parkinglot> data = session.createQuery(query).getResultList();
-////        LinkedList<Parkinglot> list = new LinkedList<Parkinglot>();
-////        for (Parkinglot parkinglot : data) {     //converts arraylist to linkedlist
-////            list.add(parkinglot);
-////        }
-////        return list;
-////    }
+
+    private static void generateEntities() throws Exception {       //generates all entities
+        //--------------------Parking Lots-----------------------------------------------------
+        List<Parkinglot> parkinglots = new LinkedList<Parkinglot>();
+        parkinglots = generateParkinglots();
+
+//        //--------------------Complaints-----------------------------------------------------
+=======
+
     static List<Parkinglot> getAllParkingLots() throws IOException {
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Parkinglot> customerQuery = builder.createQuery(Parkinglot.class);
@@ -73,43 +70,46 @@ public class SimpleChatServer
         return new LinkedList<>(parkinglots);
 }
 
-//    private static void generateEntities() throws Exception {       //generates all entities
-//        List<Complaint> complaints = new LinkedList<Complaint>();
-//        Complaint complaint = new Complaint(new Date(), "test");
-//
-//        complaints.add(complaint);
-//    }
 
-//    public static void main( String[] args ) throws IOException
-//    {
-//        server = new SimpleServer(3000);
-//        System.out.println("server is listening");
-//        server.listen();
-//    }
+    }
+    private static List<Parkinglot> generateParkinglots() throws Exception {       //generates new Parkinglots
+        List<Parkinglot> parkinglots = new LinkedList<Parkinglot>();
+        String[] plNames = new String[]{"CPS Haifa", "CPS Tel-Aviv", "CPS Be'er Sheva", "CPS Rehovot", "CPS Jerusalem", "CPS Eilat"};
+        int[] plParksPerRow = new int[]{5,4,6,8,5,6};
+        int[] totalParkingSpots = new int[]{45,36,54,72,45,54};
+        for (int i = 0; i < plNames.length; i++) {
+            Parkinglot parkinglot = new Parkinglot(plNames[i], plParksPerRow[i], totalParkingSpots[i]);
+            parkinglots.add(parkinglot);
+            session.save(parkinglot);   //saves and flushes to database
+            session.flush();
+        }
+
+//        private static List<Complaint> generateComplaints() throws Exception {       //generates new Parkinglots
+//            List<Complaint> complaints = new LinkedList<Complaint>();
+//            Date[]
+//            String[] plNames = new String[]{"CPS Haifa", "CPS Tel-Aviv", "CPS Be'er Sheva", "CPS Rehovot", "CPS Jerusalem", "CPS Eilat"};
+//            int[] plParksPerRow = new int[]{5,4,6,8,5,6};
+//            int[] totalParkingSpots = new int[]{45,36,54,72,45,54};
+//            for (int i = 0; i < plNames.length; i++) {
+//                Parkinglot parkinglot = new Parkinglot(plNames[i], plParksPerRow[i], totalParkingSpots[i]);
+//                parkinglots.add(parkinglot);
+//                session.save(parkinglot);   //saves and flushes to database
+//                session.flush();
+//            }
+
+
+        return parkinglots;
+    }
     public static void main(String[] args) throws IOException {
         try {
 
             SessionFactory sessionFactory = getSessionFactory();        //calls and creates session factory
             session = sessionFactory.openSession(); //opens session
             session.beginTransaction();       //transaction for generation
-//            generateEntities();             //generate
+            generateEntities();             //generate
 //            //generateStores();
 //             TEMP**********************************************************
-//            Complaint a = new Complaint(new Date(), "Ad Matay");
-//            Complaint b = new Complaint(new Date(), "blabla");
-//            Complaint c = new Complaint(new Date(), "Kama od");
 
-            Parkinglot parkinglot1 = new Parkinglot("Eilat", 5,10);
-            Parkinglot parkinglot2 = new Parkinglot("Haifa", 5,10);
-            Parkinglot parkinglot3 = new Parkinglot("Binyamina", 5,10);
-
-//            session.save(a);
-//            session.save(b);
-//            session.save(c);
-            session.save(parkinglot1);
-            session.save(parkinglot2);
-            session.save(parkinglot3);
-            session.flush();
             session.getTransaction().commit(); // Save everything.
 
 //            ScheduleMailing.main(null);
