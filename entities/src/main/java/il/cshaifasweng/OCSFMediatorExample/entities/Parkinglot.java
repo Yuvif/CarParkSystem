@@ -13,12 +13,12 @@ public class Parkinglot implements Serializable {
     @Column(name = "name", nullable = false, length = 46)
     private String id;
 
-    @Column(name = "rows")
-    private Integer rows;
+//    @Column(name = "rows")
+//    private Integer rows;
 
-    @Column(name = "floors")
-    private Integer floors;
-
+//    @Column(name = "floors")
+//    private Integer floors;
+//
     @Column(name = "parks_per_row")
     private Integer parksPerRow;
 
@@ -51,21 +51,21 @@ public class Parkinglot implements Serializable {
         this.parksPerRow = parksPerRow;
     }
 
-    public Integer getFloors() {
-        return floors;
-    }
-
-    public void setFloors(Integer floors) {
-        this.floors = floors;
-    }
-
-    public Integer getRows() {
-        return rows;
-    }
-
-    public void setRows(Integer rows) {
-        this.rows = rows;
-    }
+//    public Integer getFloors() {
+//        return floors;
+//    }
+//
+//    public void setFloors(Integer floors) {
+//        this.floors = floors;
+//    }
+//
+//    public Integer getRows() {
+//        return rows;
+//    }
+//
+//    public void setRows(Integer rows) {
+//        this.rows = rows;
+//    }
 
     public String getId() {
         return id;
