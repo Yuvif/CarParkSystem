@@ -22,10 +22,10 @@ import static il.cshaifasweng.OCSFMediatorExample.client.Controller.sendAlert;
 public class CreateOrderController {
 
     @FXML
-    private MenuButton arrivalHour;
+    private ComboBox arrivalHour;
 
     @FXML
-    private MenuButton arrivalMin;
+    private ComboBox arrivalMin;
 
     @FXML
     private DatePicker arrivalDate;
@@ -40,10 +40,10 @@ public class CreateOrderController {
     private DatePicker estLeavingDate;
 
     @FXML
-    private MenuButton estLeavingHour;
+    private ComboBox estLeavingHour;
 
     @FXML
-    private MenuButton estLeavingMin;
+    private ComboBox estLeavingMin;
 
     @FXML
     private TextField idTextBox;
@@ -84,23 +84,21 @@ public class CreateOrderController {
     @FXML
     void chooseEstLeavingHour(ActionEvent event)
     {
-        MenuItem[] hours = new MenuItem[24];
         for(int i = 0; i < 24; i++)
         {
-            hours[i] = new MenuItem(Integer.toString(i));
-            arrivalHour.getItems().add(hours[i]);
+            arrivalHour.getItems().add(i);
         }
     }
 
     @FXML
     void chooseEstLeavingMin(ActionEvent event)
     {
-        MenuItem[] menuItems = new MenuItem[60];
-        for(int i = 0; i < 60; i++)
-        {
-            menuItems[i] = new MenuItem(Integer.toString(i));
-            arrivalMin.getItems().add(menuItems[i]);
-        }
+//        MenuItem[] menuItems = new MenuItem[60];
+//        for(int i = 0; i < 60; i++)
+//        {
+//            menuItems[i] = new MenuItem(Integer.toString(i));
+//            arrivalMin.getItems().add(menuItems[i]);
+//        }
     }
 
     @FXML
