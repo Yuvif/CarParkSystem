@@ -41,10 +41,12 @@ public class SimpleClient extends AbstractClient {
 			e.getStackTrace();
 		}
 	}
+
 	private void pushComplaints(LinkedList<Object> msg) {
 		ComplaintHandlerTableController tableController = (ComplaintHandlerTableController) controller;
 		tableController.pullComplaints(FXCollections.observableArrayList(((List<Complaint>) msg.get(1))));
 	}
+
 	public static SimpleClient getClient() {
 		if (client == null) {
 			client = new SimpleClient("localhost", 3002);

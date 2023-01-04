@@ -109,7 +109,7 @@ public class SimpleServer extends AbstractServer {
 //			}
 			case "#COMPLAINT" -> addComplaint((LinkedList<Object>) msg);
 			case "#PULL_COMPLAINTS" -> pullOpenComplaints(client);
-			case "#MAKE_ORDER" -> addOrder((LinkedList<Object>) msg);
+			case "#CREATE_ORDER" -> addOrder((LinkedList<Object>) msg);
 			case "#PULL_ORDERS_OF_CLIENT" -> pullOrdersOfCustomer(client, (LinkedList<Object>) msg);
 			case "#PULL_ORDERS_OF_PARKINGLOT" -> pullOrdersOfParkingLot(client, (LinkedList<Object>) msg);
 		}

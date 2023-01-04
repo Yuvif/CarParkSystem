@@ -4,8 +4,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
@@ -29,12 +27,6 @@
             <Font size="22.0" />
          </font>
       </Label>
-      <MenuButton fx:id="parkingLotsOpt" layoutX="269.0" layoutY="226.0" mnemonicParsing="false" onAction="#chooseParkingLot" text="MenuButton">
-        <items>
-          <MenuItem mnemonicParsing="false" text="Action 1" />
-          <MenuItem mnemonicParsing="false" text="Action 2" />
-        </items>
-      </MenuButton>
       <Label layoutX="73.0" layoutY="225.0" text="Desired Parking Lot:">
          <font>
             <Font size="22.0" />
@@ -73,19 +65,20 @@
             <Font size="22.0" />
          </font>
       </Button>
-      <Label layoutX="327.0" layoutY="298.0" prefHeight="17.0" prefWidth="8.0" text=":">
+      <Label layoutX="338.0" layoutY="298.0" prefHeight="17.0" prefWidth="8.0" text=":">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <ComboBox fx:id="arrivalHour" layoutX="269.0" layoutY="298.0" onAction="#chooseArrivalHour" prefHeight="26.0" prefWidth="36.0" />
-      <ComboBox fx:id="arrivalMin" layoutX="339.0" layoutY="298.0" onAction="#chooseArrivalMin" prefHeight="26.0" prefWidth="36.0" />
-      <Label layoutX="329.0" layoutY="366.0" prefHeight="17.0" prefWidth="8.0" text=":">
+      <ComboBox fx:id="arrivalHour" layoutX="271.0" layoutY="298.0" onAction="#chooseArrivalHour" prefHeight="26.0" prefWidth="63.0" AnchorPane.topAnchor="298.0" />
+      <ComboBox fx:id="arrivalMin" layoutX="347.0" layoutY="298.0" onAction="#chooseArrivalMin" prefHeight="26.0" prefWidth="63.0" />
+      <Label layoutX="338.0" layoutY="366.0" prefHeight="17.0" prefWidth="8.0" text=":">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <ComboBox fx:id="estLeavingHour" layoutX="271.0" layoutY="366.0" onAction="#chooseEstLeavingHour" prefHeight="26.0" prefWidth="36.0" />
-      <ComboBox fx:id="estLeavingMin" layoutX="341.0" layoutY="366.0" onAction="#chooseEstLeavingMin" prefHeight="26.0" prefWidth="36.0" />
+      <ComboBox fx:id="estLeavingHour" layoutX="271.0" layoutY="366.0" onAction="#chooseEstLeavingHour" prefHeight="26.0" prefWidth="63.0" />
+      <ComboBox fx:id="estLeavingMin" layoutX="347.0" layoutY="366.0" onAction="#chooseEstLeavingMin" prefHeight="26.0" prefWidth="63.0" />
+      <ComboBox fx:id="parkingLotsOpt" layoutX="267.0" layoutY="227.0" onAction="#chooseParkingLot" prefHeight="26.0" prefWidth="136.0" />
    </children>
 </AnchorPane>
