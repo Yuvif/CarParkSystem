@@ -32,9 +32,10 @@ public class SimpleChatClient extends Application {
     	client.openConnection();
         Message message = new Message(msgId++,"add client");
         SimpleClient.getClient().sendToServer(message);
-        scene = new Scene(loadFXML("ParkingList"), 640, 480);
+        scene = new Scene(loadFXML("MainScreenTest"), 640, 480);
         stage.setScene(scene);
         stage.show();
+
     }
 
     static void setRoot(String fxml) throws IOException {

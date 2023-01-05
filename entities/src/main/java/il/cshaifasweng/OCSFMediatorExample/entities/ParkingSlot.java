@@ -1,13 +1,14 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
 
 @Entity
 @Table(name = "parkingslots")
-public class ParkingSlot {
+public class ParkingSlot implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -23,10 +24,7 @@ public class ParkingSlot {
     }
 
     public ParkingSlot(Parkinglot parkinglot) {
-
         setParkinglot(parkinglot);
-
-
     }
 
     public int getId() {
@@ -43,7 +41,6 @@ public class ParkingSlot {
 
     public void setParkinglot(Parkinglot parkinglot) {
         this.parkinglot = parkinglot;
-
         parkinglot.getParkingSlots().add(this);
     }
     public enum Status {EMPTY, USED, RESTRICTED}

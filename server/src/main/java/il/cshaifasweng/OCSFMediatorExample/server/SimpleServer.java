@@ -110,9 +110,15 @@ public class SimpleServer extends AbstractServer {
 			case "#COMPLAINT" -> addComplaint((LinkedList<Object>) msg);
 			case "#PULL_COMPLAINTS" -> pullOpenComplaints(client);
 			case "#PULL_PARKINGLOTS" -> pullParkingLots(client);
-		}
+			case "#PULLPARKINGLOTS" -> pullParkingLotsReal(((LinkedList<Object>) msg), client); 		}
 	}
-
+	private static void pullParkingLotsReal(List<Object> msg, ConnectionToClient client) throws IOException {
+		List<Parkinglot> parkinglots = SimpleChatServer.getAllParkingLots();
+		List<Object> msgToClient = new LinkedList<Object>();
+		msgToClient.add("#PULLPARKINGLOTS");
+		msgToClient.add(parkinglots);
+		client.sendToClient(msgToClient);
+	}
 	private void addComplaint(LinkedList<Object> msg) {
 		addNewInstance((Complaint) msg.get(1));
 	}

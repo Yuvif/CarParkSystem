@@ -68,11 +68,18 @@ public class SimpleChatServer
 
     static List<Parkinglot> getAllParkingLots() throws IOException {
         CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Parkinglot> customerQuery = builder.createQuery(Parkinglot.class);
-        customerQuery.from(Parkinglot.class);
-        List<Parkinglot> parkinglots = session.createQuery(customerQuery).getResultList();
-        return new LinkedList<>(parkinglots);
-}
+        CriteriaQuery<Parkinglot> query = builder.createQuery(Parkinglot.class);
+        query.from(Parkinglot.class);
+        List<Parkinglot> data = session.createQuery(query).getResultList();
+        LinkedList<Parkinglot> list = new LinkedList<Parkinglot>();
+        for (Parkinglot parkinglot : data) {     //converts arraylist to linkedlist
+            list.add(parkinglot);
+        }
+        return list;
+
+
+    }
+
 
 
 

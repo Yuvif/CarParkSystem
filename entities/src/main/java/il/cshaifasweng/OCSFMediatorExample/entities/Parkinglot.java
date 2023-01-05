@@ -44,7 +44,12 @@ public class Parkinglot implements Serializable {
         this.parkingSlots = new ArrayList<ParkingSlot>();
 
     }
-
+    public Parkinglot(Parkinglot parkinglot) {
+        this.id = parkinglot.id;
+        this.parksPerRow = parkinglot.parksPerRow;
+        this.totalParkingLots = parkinglot.totalParkingLots;
+        this.parkingSlots = parkinglot.parkingSlots;
+    }
 
     public List<ParkingSlot> getParkingSlots() {
         return parkingSlots;
