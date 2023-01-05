@@ -1,10 +1,14 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.sun.org.apache.xalan.internal.xsltc.util.IntegerArray;
+
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
+
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "parkinglots")
 @Entity
@@ -13,28 +17,47 @@ public class Parkinglot implements Serializable {
     @Column(name = "name", nullable = false, length = 46)
     private String id;
 
-//    @Column(name = "rows")
-//    private Integer rows;
-
-//    @Column(name = "floors")
-//    private Integer floors;
-//
     @Column(name = "parks_per_row")
     private Integer parksPerRow;
 
     @Column(name = "total_parking_lots")
     private Integer totalParkingLots;
 
+    @OneToMany(mappedBy = "parkinglot" )
+    private List<ParkingSlot> parkingSlots;
+//    @Column(name = "rows")
+//    private Integer rows = 3;
+//
+//    @Column(name = "floors")
+//    private Integer floors = 3;
+
+
+
     public Parkinglot() {
 
     }
-    public Parkinglot(String name, int parksPerRow, int total_parking_lots) {
+
+    public Parkinglot(String name, int parksPerRow, int totalParkingLots) {
         this.id = name;
         this.parksPerRow = parksPerRow;
-        this.totalParkingLots = total_parking_lots;
+        this.totalParkingLots = totalParkingLots;
+        this.parkingSlots = new ArrayList<ParkingSlot>();
+
     }
 
 
+    public List<ParkingSlot> getParkingSlots() {
+        return parkingSlots;
+    }
+
+    public void setParkingSlots(List<ParkingSlot> ParkedIns) {
+        this.parkingSlots = ParkedIns;
+    }
+
+
+    public void addParkingSlots(ParkingSlot ParkedIn) {
+        parkingSlots.add(ParkedIn);
+    }
     public Integer getTotalParkingLots() {
         return totalParkingLots;
     }
@@ -72,6 +95,7 @@ public class Parkinglot implements Serializable {
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.id=id;
     }
+
 }

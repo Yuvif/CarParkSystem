@@ -1,6 +1,8 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Complaint;
+import il.cshaifasweng.OCSFMediatorExample.entities.Customer;
+import il.cshaifasweng.OCSFMediatorExample.entities.ParkingSlot;
 import il.cshaifasweng.OCSFMediatorExample.entities.Parkinglot;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -12,7 +14,8 @@ import org.hibernate.service.ServiceRegistry;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import java.io.IOException;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,6 +36,7 @@ public class SimpleChatServer
 
         configuration.addAnnotatedClass(Complaint.class);
         configuration.addAnnotatedClass(Parkinglot.class);
+        configuration.addAnnotatedClass(ParkingSlot.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();        //pull session factory config from hibernate properties
         return configuration.buildSessionFactory(serviceRegistry);
@@ -60,7 +64,7 @@ public class SimpleChatServer
         parkinglots = generateParkinglots();
 
 //        //--------------------Complaints-----------------------------------------------------
-=======
+    }
 
     static List<Parkinglot> getAllParkingLots() throws IOException {
         CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -71,35 +75,34 @@ public class SimpleChatServer
 }
 
 
-    }
+
     private static List<Parkinglot> generateParkinglots() throws Exception {       //generates new Parkinglots
         List<Parkinglot> parkinglots = new LinkedList<Parkinglot>();
         String[] plNames = new String[]{"CPS Haifa", "CPS Tel-Aviv", "CPS Be'er Sheva", "CPS Rehovot", "CPS Jerusalem", "CPS Eilat"};
         int[] plParksPerRow = new int[]{5,4,6,8,5,6};
         int[] totalParkingSpots = new int[]{45,36,54,72,45,54};
+        ParkingSlot[] parkingSlots = new ParkingSlot[6];
+
         for (int i = 0; i < plNames.length; i++) {
-            Parkinglot parkinglot = new Parkinglot(plNames[i], plParksPerRow[i], totalParkingSpots[i]);
+
+            Parkinglot parkinglot = new Parkinglot(plNames[i], plParksPerRow[i],totalParkingSpots[i]);
+
+            for(int j = 0 ; j<6 ; j++)
+            {
+                parkingSlots[j] = new ParkingSlot(parkinglot);
+                parkinglot.addParkingSlots(parkingSlots[j]);
+                session.save(parkingSlots[j]);
+            }
+            parkinglot.setTotalParkingLots(3*3*parkinglot.getParksPerRow());
             parkinglots.add(parkinglot);
             session.save(parkinglot);   //saves and flushes to database
             session.flush();
         }
 
-//        private static List<Complaint> generateComplaints() throws Exception {       //generates new Parkinglots
-//            List<Complaint> complaints = new LinkedList<Complaint>();
-//            Date[]
-//            String[] plNames = new String[]{"CPS Haifa", "CPS Tel-Aviv", "CPS Be'er Sheva", "CPS Rehovot", "CPS Jerusalem", "CPS Eilat"};
-//            int[] plParksPerRow = new int[]{5,4,6,8,5,6};
-//            int[] totalParkingSpots = new int[]{45,36,54,72,45,54};
-//            for (int i = 0; i < plNames.length; i++) {
-//                Parkinglot parkinglot = new Parkinglot(plNames[i], plParksPerRow[i], totalParkingSpots[i]);
-//                parkinglots.add(parkinglot);
-//                session.save(parkinglot);   //saves and flushes to database
-//                session.flush();
-//            }
-
-
         return parkinglots;
     }
+
+
     public static void main(String[] args) throws IOException {
         try {
 
@@ -107,8 +110,25 @@ public class SimpleChatServer
             session = sessionFactory.openSession(); //opens session
             session.beginTransaction();       //transaction for generation
             generateEntities();             //generate
-//            //generateStores();
-//             TEMP**********************************************************
+
+
+//            LocalDateTime[] entryTime = new LocalDateTime[6];
+//            entryTime[0] = LocalDateTime.of(2019, Month.MARCH, 28, 14, 33);
+//            entryTime[1] = LocalDateTime.of(2019, Month.MARCH, 28, 14, 37);
+//            entryTime[2] = LocalDateTime.of(2019, Month.MARCH, 28, 14, 39);
+//            entryTime[3] = LocalDateTime.of(2019, Month.MARCH, 28, 14, 42);
+//            entryTime[4] = LocalDateTime.of(2019, Month.MARCH, 28, 14, 45);
+//            entryTime[5] = LocalDateTime.of(2019, Month.MARCH, 28, 15, 55);
+//
+//
+//            LocalDateTime[] exitTime = new LocalDateTime[6];
+//            exitTime[0] = LocalDateTime.of(2019, Month.MARCH, 28, 18, 33);
+//            exitTime[1] = LocalDateTime.of(2019, Month.MARCH, 28, 16, 37);
+//            exitTime[2] = LocalDateTime.of(2019, Month.MARCH, 28, 19, 39);
+//            exitTime[3] = LocalDateTime.of(2019, Month.MARCH, 29, 14, 42);
+//            exitTime[4] = LocalDateTime.of(2019, Month.MARCH, 28, 22, 45);
+//            exitTime[5] = LocalDateTime.of(2019, Month.MARCH, 28, 16, 35);
+
 
             session.getTransaction().commit(); // Save everything.
 
