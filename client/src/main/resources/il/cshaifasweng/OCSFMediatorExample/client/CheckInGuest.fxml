@@ -8,13 +8,13 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.CheckInGuestController">
     <children>
-        <TextField fx:id="hourTf" layoutX="226.0" layoutY="212.0" />
-        <TextField fx:id="car_nTf" layoutX="226.0" layoutY="175.0" />
         <TextField fx:id="idTf" layoutX="226.0" layoutY="138.0" />
+        <TextField fx:id="car_nTf" layoutX="226.0" layoutY="175.0" />
+        <TextField fx:id="hourTf" layoutX="226.0" layoutY="212.0" />
         <TextField fx:id="mailTf" layoutX="226.0" layoutY="252.0" />
         <Label layoutX="143.0" layoutY="142.0" text="id" />
         <Label layoutX="145.0" layoutY="179.0" text="car number" />
-        <Label layoutX="142.0" layoutY="216.0" text="leaving hour" />
+        <Label layoutX="88.0" layoutY="216.0" prefHeight="17.0" prefWidth="174.0" text="Estimated leaving time" />
         <Label layoutX="148.0" layoutY="256.0" text="email" />
         <Button fx:id="checkInB" layoutX="323.0" layoutY="296.0" mnemonicParsing="false" onAction="#checkIn" text="check in" />
         <Label layoutX="245.0" layoutY="23.0" prefHeight="41.0" prefWidth="80.0" text="Guest Check In" />

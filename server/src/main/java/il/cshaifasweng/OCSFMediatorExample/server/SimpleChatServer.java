@@ -1,9 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.Complaint;
-import il.cshaifasweng.OCSFMediatorExample.entities.Customer;
-import il.cshaifasweng.OCSFMediatorExample.entities.ParkingSlot;
-import il.cshaifasweng.OCSFMediatorExample.entities.Parkinglot;
+import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -16,6 +13,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,6 +35,7 @@ public class SimpleChatServer
         configuration.addAnnotatedClass(Complaint.class);
         configuration.addAnnotatedClass(Parkinglot.class);
         configuration.addAnnotatedClass(ParkingSlot.class);
+        configuration.addAnnotatedClass(CheckedIn.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();        //pull session factory config from hibernate properties
         return configuration.buildSessionFactory(serviceRegistry);
@@ -102,10 +101,13 @@ public class SimpleChatServer
             }
             parkinglot.setTotalParkingLots(3*3*parkinglot.getParksPerRow());
             parkinglots.add(parkinglot);
+
             session.save(parkinglot);   //saves and flushes to database
             session.flush();
         }
-
+        CheckedIn checkedIn = new CheckedIn(new Date(), 1234,1234,"test",new Date(),parkingSlots[2]);
+        session.save(checkedIn);
+        session.flush();
         return parkinglots;
     }
 

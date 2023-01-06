@@ -15,10 +15,22 @@ public class ParkingSlot implements Serializable {
 
     private Status SpotStatus = Status.EMPTY;
 
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parkinglot_id")
     private Parkinglot parkinglot;
 
+    @OneToOne
+    private CheckedIn checkedIn;
+
+    public CheckedIn getCheckedIn() {
+        return checkedIn;
+    }
+
+    public void setCheckedIn(CheckedIn checkedIn) {
+        this.checkedIn = checkedIn;
+    }
 
     public ParkingSlot() {
     }
@@ -29,6 +41,14 @@ public class ParkingSlot implements Serializable {
 
     public int getId() {
         return id;
+    }
+
+    public Status getSpotStatus() {
+        return SpotStatus;
+    }
+
+    public void setSpotStatus(Status spotStatus) {
+        SpotStatus = spotStatus;
     }
 
     public void setId(int id) {
