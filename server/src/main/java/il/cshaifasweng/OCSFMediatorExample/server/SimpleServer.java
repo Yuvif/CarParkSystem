@@ -125,7 +125,13 @@ public class SimpleServer extends AbstractServer {
 		addNewInstance((Complaint) msg.get(1));
 	}
 	private void addCheckIn(LinkedList<Object> msg)  throws IOException {
+		CheckedIn checkin = (CheckedIn) msg.get(1);
+		ParkingSlot slot = checkin.getParkingSlot();
+		ParkingSlot m = (ParkingSlot) SimpleChatServer.session.get(ParkingSlot.class,slot.getId());
+		m.setSpotStatus(ParkingSlot.Status.USED);
+		m.setCheckedIn(checkin);
 		addNewInstance((CheckedIn) msg.get(1));
+
 	}
 
 
