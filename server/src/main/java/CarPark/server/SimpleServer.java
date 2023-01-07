@@ -14,7 +14,6 @@ import CarPark.server.ocsf.ConnectionToClient;
 import CarPark.server.ocsf.SubscribedClient;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
-
 import org.hibernate.Session;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -23,6 +22,7 @@ import org.hibernate.service.ServiceRegistry;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 
 public class SimpleServer extends AbstractServer {
@@ -34,65 +34,51 @@ public class SimpleServer extends AbstractServer {
     }
 
 
-//	private static <T> void addNewInstance(T obj) {
-//
-//		SimpleChatServer.session.beginTransaction();
-//		SimpleChatServer.session.save(obj);
-//		SimpleChatServer.session.flush();
-//		SimpleChatServer.session.getTransaction().commit();
-//	}
 
     private static SessionFactory getSessionFactory() throws HibernateException {
+        java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
         Configuration configuration = new Configuration();
         // Add ALL of your entities here. You can also try adding a whole package.
-
-        configuration.addAnnotatedClass(Complaint.class);
         configuration.addAnnotatedClass(Parkinglot.class);
-
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();        //pull session factory config from hibernate properties
         return configuration.buildSessionFactory(serviceRegistry);
     }
 
-//
-//	ArrayList<Parkinglot> p_l = new ArrayList<>();
-//	ArrayList<Price> p_t = new ArrayList<>();
-//	private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
-
-    public static void main(String[] args) throws IOException {
-
-
-        if (args.length != 1) {
-            System.out.println("Required argument: <port>");
-        } else {
-            SimpleServer server = new SimpleServer(Integer.parseInt(args[0]));
-            server.listen();
-        }
-    }
 
     @Override
     protected void handleMessageFromClient(Object msg, ConnectionToClient client) throws IOException, SQLException {
-        session = getSessionFactory().openSession();
-        session.beginTransaction();
-        MessageHandler handler = null;
-        Class<?> msgClass = msg.getClass();
-        if (ConnectionMessage.class.equals(msgClass))
-        {
-            SubscribedClient connection = new SubscribedClient(client);
-            SubscribersList.add(connection);
-            Message message = new Message("client added successfully");
-            client.sendToClient(message);
-        }
-        if (LoginMessage.class.equals(msgClass)) {
-            handler = new LoginHandler((LoginMessage) msg, session, client);
-        }
-        if (ParkingListMessage.class.equals(msgClass))
-        {
-            handler = new ParkingListHandler((ParkingListMessage) msg, session, client);
-        }
-        if(handler!=null) {
-            handler.handleMessage();
-            handler.message.message_type = Message.MessageType.RESPONSE;
-            client.sendToClient(handler.message);
+        try {
+
+            MessageHandler handler = null;
+            Class<?> msgClass = msg.getClass();
+            if (ConnectionMessage.class.equals(msgClass)) {
+                SubscribedClient connection = new SubscribedClient(client);
+                SubscribersList.add(connection);
+            }
+            else
+            {
+                session = getSessionFactory().openSession();
+                session.beginTransaction();
+            }
+
+            if (LoginMessage.class.equals(msgClass)) {
+                handler = new LoginHandler((LoginMessage) msg, session, client);
+            }
+            if (ParkingListMessage.class.equals(msgClass)) {
+                handler = new ParkingListHandler((ParkingListMessage) msg, session, client);
+            }
+            if (handler != null) {
+                handler.handleMessage();
+                session.getTransaction().commit();
+                handler.message.message_type = Message.MessageType.RESPONSE;
+                client.sendToClient(handler.message);
+            }
+        } catch (Exception exception) {
+            if(session!=null)
+                session.getTransaction().rollback();
+            exception.printStackTrace();
+        } finally {
+            session.close();
         }
     }
 /*

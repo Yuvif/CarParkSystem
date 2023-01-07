@@ -6,7 +6,6 @@ package CarPark.client.controllers;
 
 import CarPark.client.SimpleChatClient;
 import CarPark.entities.Complaint;
-import CarPark.entities.messages.Message;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.ObservableList;
@@ -54,10 +53,6 @@ public class ComplaintHandlerTableController extends Controller {
     @FXML
     private TableColumn<Complaint, Void> btnCol;
 
-//    public ComplaintHandlerTableController(Message msg) {
-//        super(msg);
-//    }
-
     @FXML
         // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
@@ -81,7 +76,7 @@ public class ComplaintHandlerTableController extends Controller {
 
         addButtonToTable();
 
-//        SimpleChatClient.client.setController(this);
+       // SimpleChatClient.client.setController(this);
         List<Object> msg = new LinkedList<>();
         msg.add("#PULL_COMPLAINTS");
 

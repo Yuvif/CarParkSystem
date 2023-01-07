@@ -25,7 +25,7 @@ public abstract class MessageHandler {
         }
     }
 
-    public abstract void handleMessage();
+    public abstract void handleMessage() throws Exception;
 
     protected void logInfo(String msg) {
         LOGGER.info(

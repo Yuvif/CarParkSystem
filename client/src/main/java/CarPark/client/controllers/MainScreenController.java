@@ -13,14 +13,12 @@ import org.greenrobot.eventbus.Subscribe;
 
 
 public class MainScreenController {
-    private int msgId;
 
     @FXML
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
     }
-
-   @Subscribe
+    @Subscribe
     public void getStarterData(NewSubscriberEvent event) {
     }
 

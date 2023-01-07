@@ -4,6 +4,8 @@
 
 package CarPark.client.ocsf;
 
+import CarPark.client.controllers.ComplaintHandlerTableController;
+
 import java.io.*;
 import java.net.*;
 
@@ -367,5 +369,6 @@ public abstract class AbstractClient implements Runnable {
             clientSocket = null;
         }
     }
+
 }
 // end of AbstractClient class

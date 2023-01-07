@@ -7,6 +7,7 @@ import javafx.scene.control.Alert;
 public abstract class Controller {
     private Message class_message;
 
+
     public static void sendAlert(String error, String title, Alert.AlertType type) {
         Platform.runLater(() -> {
             try {
