@@ -1,6 +1,7 @@
 package CarPark.client;
 
 import CarPark.client.events.MessageEvent;
+import CarPark.client.events.NewSubscriberEvent;
 import CarPark.entities.messages.ConnectionMessage;
 import CarPark.entities.messages.Message;
 import javafx.application.Application;
@@ -18,7 +19,6 @@ import org.greenrobot.eventbus.Subscribe;
  * JavaFX App
  */
 public class SimpleChatClient extends Application {
-
     public static SimpleClient client;
     private static Scene scene;
 

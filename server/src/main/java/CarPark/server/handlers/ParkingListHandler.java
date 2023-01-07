@@ -21,7 +21,7 @@ public class ParkingListHandler extends MessageHandler {
     }
 
     @Override
-    public void handleMessage() {
+    public void handleMessage() throws Exception {
         switch (class_message.request_type) {
             case GET_ALL_PARKING_LOTS:
                 class_message.parkingList = getParkingLots();
@@ -29,12 +29,21 @@ public class ParkingListHandler extends MessageHandler {
         }
     }
 
-    private List<Parkinglot> getParkingLots() {
-       CriteriaQuery<Parkinglot> query = cb.createQuery(Parkinglot.class);
-       query.from(Parkinglot.class);
-       List<Parkinglot> data = session.createQuery(query).getResultList();
-       return data;
+    private List<Parkinglot> getParkingLots() throws Exception {
+        generateParkingLots();
+        CriteriaQuery<Parkinglot> query = cb.createQuery(Parkinglot.class);
+        query.from(Parkinglot.class);
+        List<Parkinglot> data = session.createQuery(query).getResultList();
+        return data;
     }
 
+    private void generateParkingLots() throws Exception {
 
+        Parkinglot p_l1 = new Parkinglot("Haifa", 4, 36);
+        session.save(p_l1);
+        session.flush();
+        Parkinglot p_l2 = new Parkinglot("Tel Aviv", 7, 63);
+        session.save(p_l2);
+        session.flush();
+    }
 }

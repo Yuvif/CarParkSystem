@@ -9,4 +9,8 @@ public class MessageEvent {
         this.message = message;
     }
 
+    public Message getMessage() {
+        return message;
+    }
+
 }

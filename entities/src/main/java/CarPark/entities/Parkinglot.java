@@ -1,17 +1,18 @@
 package CarPark.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.sun.xml.bind.v2.model.core.ID;
+
+import javax.persistence.*;
 import java.io.Serializable;
 
-@Table(name = "parkinglots")
 @Entity
+@Table(name = "parkinglots")
 public class Parkinglot implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @Column(name = "name", nullable = false, length = 46)
-    private String id;
+    private String name;
 
 //    @Column(name = "rows")
 //    private Integer rows;
@@ -30,7 +31,7 @@ public class Parkinglot implements Serializable {
     }
 
     public Parkinglot(String name, int parksPerRow, int total_parking_lots) {
-        this.id = name;
+        this.name = name;
         this.parksPerRow = parksPerRow;
         this.totalParkingLots = total_parking_lots;
     }
@@ -68,11 +69,13 @@ public class Parkinglot implements Serializable {
 //        this.rows = rows;
 //    }
 
-    public String getId() {
-        return id;
+    public int getId(){return id; }
+
+    public String getName() {
+        return name;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setName(String name) {
+        this.name = name;
     }
 }
