@@ -2,13 +2,11 @@ package CarPark.server;
 
 
 import CarPark.entities.*;
-import CarPark.entities.messages.ConnectionMessage;
-import CarPark.entities.messages.LoginMessage;
-import CarPark.entities.messages.Message;
-import CarPark.entities.messages.ParkingListMessage;
+import CarPark.entities.messages.*;
 import CarPark.server.handlers.LoginHandler;
 import CarPark.server.handlers.MessageHandler;
 import CarPark.server.handlers.ParkingListHandler;
+import CarPark.server.handlers.PricesTableHandler;
 import CarPark.server.ocsf.AbstractServer;
 import CarPark.server.ocsf.ConnectionToClient;
 import CarPark.server.ocsf.SubscribedClient;
@@ -40,6 +38,7 @@ public class SimpleServer extends AbstractServer {
         Configuration configuration = new Configuration();
         // Add ALL of your entities here. You can also try adding a whole package.
         configuration.addAnnotatedClass(Parkinglot.class);
+        configuration.addAnnotatedClass(Price.class);
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();        //pull session factory config from hibernate properties
         return configuration.buildSessionFactory(serviceRegistry);
     }
@@ -64,8 +63,11 @@ public class SimpleServer extends AbstractServer {
             if (LoginMessage.class.equals(msgClass)) {
                 handler = new LoginHandler((LoginMessage) msg, session, client);
             }
-            if (ParkingListMessage.class.equals(msgClass)) {
+            else if (ParkingListMessage.class.equals(msgClass)) {
                 handler = new ParkingListHandler((ParkingListMessage) msg, session, client);
+            }
+            else if (PricesMessage.class.equals(msgClass)) {
+                handler = new PricesTableHandler((PricesMessage) msg, session, client);
             }
             if (handler != null) {
                 handler.handleMessage();

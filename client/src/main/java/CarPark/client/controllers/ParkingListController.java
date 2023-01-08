@@ -46,9 +46,9 @@ public class ParkingListController{
     void initialize()
     {
         EventBus.getDefault().register(this);
-        nameCol.setCellValueFactory(new PropertyValueFactory<Parkinglot, String>("name"));
-        parksPerRowCol.setCellValueFactory(new PropertyValueFactory<Parkinglot, Integer>("parksPerRow"));
-        totalCol.setCellValueFactory(new PropertyValueFactory<Parkinglot, Integer>("totalParkingLots"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        parksPerRowCol.setCellValueFactory(new PropertyValueFactory<>("parksPerRow"));
+        totalCol.setCellValueFactory(new PropertyValueFactory<>("totalParkingLots"));
         ParkingListMessage msg = new ParkingListMessage(Message.MessageType.REQUEST, ParkingListMessage.RequestType.GET_ALL_PARKING_LOTS);
         try {
             SimpleClient.getClient().sendToServer(msg);
@@ -58,9 +58,9 @@ public class ParkingListController{
     }
 
     @Subscribe
-    public void setParkingTable(ParkingListEvent event)
+    public void setParkingTable(ParkingListMessage new_message)
     {
-        parkingTable.setItems(FXCollections.observableArrayList(event.table));
+        parkingTable.setItems(FXCollections.observableArrayList(new_message.parkingList));
     }
 
 
