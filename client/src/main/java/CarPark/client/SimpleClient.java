@@ -5,6 +5,7 @@ import CarPark.client.events.MessageEvent;
 import CarPark.client.events.ParkingListEvent;
 import CarPark.client.ocsf.AbstractClient;
 import CarPark.entities.messages.ParkingListMessage;
+import CarPark.entities.messages.PricesMessage;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -34,7 +35,12 @@ public class SimpleClient extends AbstractClient {
         if(ParkingListMessage.class.equals(msgClass))
         {
             ParkingListMessage message = (ParkingListMessage) msg;
-            EventBus.getDefault().post(new ParkingListEvent(message.parkingList));
+            EventBus.getDefault().post(message);
+        }
+        if(PricesMessage.class.equals(msgClass))
+        {
+            PricesMessage message = (PricesMessage) msg;
+            EventBus.getDefault().post(message);
         }
     }
 

@@ -1,9 +1,6 @@
 package CarPark.client.events;
-
-import CarPark.entities.ParkingLotWorker;
 import CarPark.entities.Parkinglot;
-import javafx.event.Event;
-import javafx.event.EventType;
+
 
 import java.util.List;
 

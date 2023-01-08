@@ -1,17 +1,16 @@
 package CarPark.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
-@Table(name = "prices")
 @Entity
+@Table(name = "prices")
 public class Price implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @Column(name = "parking_type", nullable = false, length = 46)
-    private String id;
+    private String parkingType;
 
     @Column(name = "payment_method", length = 45)
     private String paymentMethod;
@@ -27,7 +26,7 @@ public class Price implements Serializable {
 
 
     public Price(String parking_type, String payment_method, int price, int number_of_cars, int hours_of_parking) {
-        this.id = parking_type;
+        this.parkingType= parking_type;
         this.paymentMethod = payment_method;
         this.price = price;
         this.numberOfCars = number_of_cars;
@@ -71,11 +70,15 @@ public class Price implements Serializable {
         this.paymentMethod = paymentMethod;
     }
 
-    public String getId() {
-        return id;
+    public String getParkingType() {
+        return parkingType;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setParking_type(String parking_type) {
+        this.parkingType = parking_type;
+    }
+
+    public int getId() {
+        return id;
     }
 }

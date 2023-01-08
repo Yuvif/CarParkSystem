@@ -13,6 +13,7 @@ import java.util.Locale;
 
 public class ParkingListHandler extends MessageHandler {
 
+
     private final ParkingListMessage class_message;
 
     public ParkingListHandler(Message msg, Session session, ConnectionToClient client) {

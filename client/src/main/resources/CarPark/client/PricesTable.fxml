@@ -12,7 +12,7 @@
 <Pane xmlns:fx="http://javafx.com/fxml/1" maxHeight="Infinity" maxWidth="Infinity" prefHeight="600.0"
       prefWidth="639.0" style="-fx-background-image: url(/assets/PricesTableGui.jpg);" translateX="3.0"
       translateY="1.0" xmlns="http://javafx.com/javafx/17"
-      fx:controller="CarPark.client.PricesTableController">
+      fx:controller="CarPark.client.controllers.PricesTableController">
     <children>
         <Label alignment="CENTER" cacheHint="SPEED" contentDisplay="CENTER" depthTest="ENABLE" graphicTextGap="0.0"
                layoutX="7.0" layoutY="14.0" prefHeight="54.0" prefWidth="255.0" text="Prices table"
