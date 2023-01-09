@@ -42,14 +42,16 @@ public class PricesTableHandler extends MessageHandler{
     }
 
     private void editPrice() throws Exception {
-        Query query = session.createSQLQuery("UPDATE prices" + " SET price = ?" + " WHERE parking_type = ?");
-        query.setParameter(1, class_message.new_price.getPrice().toString());
-        query.setParameter(2, class_message.new_price.getParkingType());
-        query.executeUpdate();
+//        Query query = session.createSQLQuery("UPDATE prices" + " SET price = ?" + " WHERE parking_type = ?");
+//        query.setParameter(1, class_message.new_price.getPrice().toString());
+//        query.setParameter(2, class_message.new_price.getParkingType());
+//        query.executeUpdate();
+        session.update(class_message.new_price);
+        session.flush();
     }
 
     private List<Price> getPriceList() throws Exception {
-        generatePricesTable();
+        //generatePricesTable();
         CriteriaQuery<Price> query = cb.createQuery(Price.class);
         query.from(Price.class);
         List<Price> data = session.createQuery(query).getResultList();
