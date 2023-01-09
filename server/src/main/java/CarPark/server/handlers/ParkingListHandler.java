@@ -31,7 +31,7 @@ public class ParkingListHandler extends MessageHandler {
     }
 
     private List<Parkinglot> getParkingLots() throws Exception {
-        generateParkingLots();
+        //generateParkingLots();
         CriteriaQuery<Parkinglot> query = cb.createQuery(Parkinglot.class);
         query.from(Parkinglot.class);
         List<Parkinglot> data = session.createQuery(query).getResultList();
@@ -39,7 +39,6 @@ public class ParkingListHandler extends MessageHandler {
     }
 
     private void generateParkingLots() throws Exception {
-
         Parkinglot p_l1 = new Parkinglot("Haifa", 4, 36);
         session.save(p_l1);
         session.flush();
