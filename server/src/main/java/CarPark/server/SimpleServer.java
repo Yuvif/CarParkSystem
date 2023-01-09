@@ -26,7 +26,6 @@ import java.util.logging.Level;
 public class SimpleServer extends AbstractServer {
     private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
     public static Session session;// encapsulation make public function so this can be private
-
     public SimpleServer(int port) {
         super(port);
     }
@@ -47,40 +46,34 @@ public class SimpleServer extends AbstractServer {
     @Override
     protected void handleMessageFromClient(Object msg, ConnectionToClient client) throws IOException, SQLException {
         try {
-
             MessageHandler handler = null;
             Class<?> msgClass = msg.getClass();
-            if (ConnectionMessage.class.equals(msgClass)) {
+            if (ConnectionMessage.class.equals(msgClass)) { //New client connection
                 SubscribedClient connection = new SubscribedClient(client);
                 SubscribersList.add(connection);
+                session = getSessionFactory().openSession();// Create new session for connection
             }
-            else
-            {
-                session = getSessionFactory().openSession();
+            else { //Get client requests
                 session.beginTransaction();
-            }
-
-            if (LoginMessage.class.equals(msgClass)) {
-                handler = new LoginHandler((LoginMessage) msg, session, client);
-            }
-            else if (ParkingListMessage.class.equals(msgClass)) {
-                handler = new ParkingListHandler((ParkingListMessage) msg, session, client);
-            }
-            else if (PricesMessage.class.equals(msgClass)) {
-                handler = new PricesTableHandler((PricesMessage) msg, session, client);
-            }
-            if (handler != null) {
-                handler.handleMessage();
-                session.getTransaction().commit();
-                handler.message.message_type = Message.MessageType.RESPONSE;
-                client.sendToClient(handler.message);
+                if (LoginMessage.class.equals(msgClass)) {
+                    handler = new LoginHandler((LoginMessage) msg, session, client);
+                } else if (ParkingListMessage.class.equals(msgClass)) {
+                    handler = new ParkingListHandler((ParkingListMessage) msg, session, client);
+                } else if (PricesMessage.class.equals(msgClass)) {
+                    System.out.println(session.isOpen());
+                    handler = new PricesTableHandler((PricesMessage) msg, session, client);
+                }
+                if (handler != null) {
+                    handler.handleMessage();
+                    session.getTransaction().commit();
+                    handler.message.message_type = Message.MessageType.RESPONSE;
+                    client.sendToClient(handler.message);
+                }
             }
         } catch (Exception exception) {
-            if(session!=null)
+           if (session != null)
                 session.getTransaction().rollback();
             exception.printStackTrace();
-        } finally {
-            session.close();
         }
     }
 /*

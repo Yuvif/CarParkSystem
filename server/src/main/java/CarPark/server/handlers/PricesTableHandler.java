@@ -15,11 +15,16 @@ import java.util.List;
 
 public class PricesTableHandler extends MessageHandler{
 
-    private final PricesMessage class_message;
+    private PricesMessage class_message;
 
     public PricesTableHandler(Message msg, Session session, ConnectionToClient client) {
         super(msg, session, client);
         this.class_message = (PricesMessage) this.message;
+    }
+
+    public void setClass_message(Message msg)
+    {
+        this.class_message = (PricesMessage) msg;
     }
 
     @Override
@@ -36,8 +41,7 @@ public class PricesTableHandler extends MessageHandler{
         }
     }
 
-    private void editPrice()
-    {
+    private void editPrice() throws Exception {
         Query query = session.createSQLQuery("UPDATE prices" + " SET price = ?" + " WHERE parking_type = ?");
         query.setParameter(1, class_message.new_price.getPrice().toString());
         query.setParameter(2, class_message.new_price.getParkingType());
