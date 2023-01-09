@@ -33,7 +33,6 @@ public class SimpleServer extends AbstractServer {
 
 
     private static SessionFactory getSessionFactory() throws HibernateException {
-        java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
         Configuration configuration = new Configuration();
         // Add ALL of your entities here. You can also try adding a whole package.
         configuration.addAnnotatedClass(Parkinglot.class);
@@ -60,7 +59,6 @@ public class SimpleServer extends AbstractServer {
                 } else if (ParkingListMessage.class.equals(msgClass)) {
                     handler = new ParkingListHandler((ParkingListMessage) msg, session, client);
                 } else if (PricesMessage.class.equals(msgClass)) {
-                    System.out.println(session.isOpen());
                     handler = new PricesTableHandler((PricesMessage) msg, session, client);
                 }
                 if (handler != null) {
