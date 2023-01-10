@@ -17,23 +17,23 @@ public class Order implements Serializable {
     private int customerId;
     private int carId;
     private int ParkingLotId;
+    private String email;
     private LocalDateTime arrivalTime;
     private LocalDateTime estimatedLeavingTime;
 
-    public Order(int customerId, int carId, int parkingLotId, LocalDateTime arrivalTime, LocalDateTime estimatedLeavingTime) {
+    public Order(int customerId, int carId, int parkingLotId, String email, LocalDateTime arrivalTime, LocalDateTime estimatedLeavingTime) {
         super();
         this.customerId = customerId;
         this.carId = carId;
-        ParkingLotId = parkingLotId;
+        this.ParkingLotId = parkingLotId;
+        this.email = email;
         this.arrivalTime = arrivalTime;
         this.estimatedLeavingTime = estimatedLeavingTime;
     }
 
     public Order() { }
 
-    public int getCustomerId() {
-        return customerId;
-    }
+    public int getCustomerId() { return customerId; }
 
     public void setCustomerId(int customerId) { this.customerId = customerId; }
 
@@ -44,6 +44,10 @@ public class Order implements Serializable {
     public int getParkingLotId() { return ParkingLotId; }
 
     public void setParkingLotId(int parkingLotId) { ParkingLotId = parkingLotId; }
+
+    public String getEmail() { return email; }
+
+    public void setEmail(String email) { this.email = email; }
 
     public LocalDateTime getArrivalTime() { return arrivalTime; }
 
