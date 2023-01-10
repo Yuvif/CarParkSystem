@@ -16,7 +16,7 @@ public class DbConnect implements Serializable {
     public static Connection getConnect() {
         try {
             connection = DriverManager.getConnection(String.format(
-                    "jdbc:mysql://%s:%d/%s", HOST, PORT, DB_NAME),
+                            "jdbc:mysql://%s:%d/%s", HOST, PORT, DB_NAME),
                     USERNAME, PASSWORD);
         } catch (SQLException throwables) {
             throwables.printStackTrace();

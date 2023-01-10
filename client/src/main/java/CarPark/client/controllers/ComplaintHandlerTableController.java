@@ -76,7 +76,7 @@ public class ComplaintHandlerTableController extends Controller {
 
         addButtonToTable();
 
-       // SimpleChatClient.client.setController(this);
+        // SimpleChatClient.client.setController(this);
         List<Object> msg = new LinkedList<>();
         msg.add("#PULL_COMPLAINTS");
 

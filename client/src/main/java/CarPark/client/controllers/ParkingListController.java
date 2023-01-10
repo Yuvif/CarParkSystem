@@ -23,7 +23,7 @@ import java.util.List;
 
 import static javafx.collections.FXCollections.observableArrayList;
 
-public class ParkingListController{
+public class ParkingListController {
 
 
     @FXML
@@ -37,14 +37,12 @@ public class ParkingListController{
 
 
     @FXML
-    private void GoBack() throws IOException
-    {
+    private void GoBack() throws IOException {
         SimpleChatClient.setRoot("MainScreen");
     }
 
     @FXML
-    void initialize()
-    {
+    void initialize() {
         EventBus.getDefault().register(this);
         nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         parksPerRowCol.setCellValueFactory(new PropertyValueFactory<>("parksPerRow"));
@@ -58,11 +56,9 @@ public class ParkingListController{
     }
 
     @Subscribe
-    public void setParkingTable(ParkingListMessage new_message)
-    {
+    public void setParkingTable(ParkingListMessage new_message) {
         parkingTable.setItems(FXCollections.observableArrayList(new_message.parkingList));
     }
-
 
 
 //    @Subscribe
