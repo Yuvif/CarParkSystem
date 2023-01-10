@@ -3,10 +3,7 @@ package CarPark.server;
 
 import CarPark.entities.*;
 import CarPark.entities.messages.*;
-import CarPark.server.handlers.LoginHandler;
-import CarPark.server.handlers.MessageHandler;
-import CarPark.server.handlers.ParkingListHandler;
-import CarPark.server.handlers.PricesTableHandler;
+import CarPark.server.handlers.*;
 import CarPark.server.ocsf.AbstractServer;
 import CarPark.server.ocsf.ConnectionToClient;
 import CarPark.server.ocsf.SubscribedClient;
@@ -26,21 +23,23 @@ import java.util.logging.Level;
 public class SimpleServer extends AbstractServer {
     private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
     public static Session session;// encapsulation make public function so this can be private
+
     public SimpleServer(int port) {
         super(port);
     }
 
 
-
     private static SessionFactory getSessionFactory() throws HibernateException {
         Configuration configuration = new Configuration();
+
         // Add ALL of your entities here. You can also try adding a whole package.
         configuration.addAnnotatedClass(Parkinglot.class);
         configuration.addAnnotatedClass(Price.class);
+        configuration.addAnnotatedClass(Order.class);
+
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();        //pull session factory config from hibernate properties
         return configuration.buildSessionFactory(serviceRegistry);
     }
-
 
     @Override
     protected void handleMessageFromClient(Object msg, ConnectionToClient client) throws IOException, SQLException {
@@ -51,8 +50,7 @@ public class SimpleServer extends AbstractServer {
                 SubscribedClient connection = new SubscribedClient(client);
                 SubscribersList.add(connection);
                 session = getSessionFactory().openSession();// Create new session for connection
-            }
-            else { //Get client requests
+            } else { //Get client requests
                 session.beginTransaction();
                 if (LoginMessage.class.equals(msgClass)) {
                     handler = new LoginHandler((LoginMessage) msg, session, client);
@@ -60,6 +58,9 @@ public class SimpleServer extends AbstractServer {
                     handler = new ParkingListHandler((ParkingListMessage) msg, session, client);
                 } else if (PricesMessage.class.equals(msgClass)) {
                     handler = new PricesTableHandler((PricesMessage) msg, session, client);
+                }else if (OrderMessage.class.equals(msgClass)) {
+                    handler = new OrderHandler((OrderMessage) msg, session, client);
+                    System.out.println("we got here");
                 }
                 if (handler != null) {
                     handler.handleMessage();
@@ -69,7 +70,7 @@ public class SimpleServer extends AbstractServer {
                 }
             }
         } catch (Exception exception) {
-           if (session != null)
+            if (session != null)
                 session.getTransaction().rollback();
             exception.printStackTrace();
         }

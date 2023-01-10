@@ -4,7 +4,7 @@ public class LoginMessage extends Message {
     private String user_name;
     private String password;
 
-    public LoginMessage(String user_name, String pass,MessageType message_type) {
+    public LoginMessage(String user_name, String pass, MessageType message_type) {
         super(message_type);
         this.user_name = user_name;
         this.password = pass;

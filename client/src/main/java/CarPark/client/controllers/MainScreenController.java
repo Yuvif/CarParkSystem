@@ -18,6 +18,7 @@ public class MainScreenController {
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
     }
+
     @Subscribe
     public void getStarterData(NewSubscriberEvent event) {
     }

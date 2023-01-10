@@ -35,7 +35,6 @@ public class PricesTableController {
     private TableColumn<Price, Integer> hopCol;
 
 
-
     @FXML
     private void GoBack() throws IOException {
         SimpleChatClient.setRoot("MainScreen");
@@ -46,13 +45,13 @@ public class PricesTableController {
         //case editing price
         pricesTable.setEditable(true);
         pricesCol.setCellFactory(TextFieldTableCell.<Price, Integer>forTableColumn(new IntegerStringConverter()));
-        pricesCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Price, Integer>>(){
+        pricesCol.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Price, Integer>>() {
             @Override
             public void handle(TableColumn.CellEditEvent<Price, Integer> priceIntegerCellEditEvent) {//send request to server to set new price on DB
                 Price new_price = priceIntegerCellEditEvent.getRowValue();
                 new_price.setPrice(priceIntegerCellEditEvent.getNewValue());
                 PricesMessage message = new
-                        PricesMessage(Message.MessageType.REQUEST,PricesMessage.RequestType.EDIT_PRICE,new_price);
+                        PricesMessage(Message.MessageType.REQUEST, PricesMessage.RequestType.EDIT_PRICE, new_price);
                 try {
                     SimpleClient.getClient().sendToServer(message);
                 } catch (IOException e) {
@@ -71,17 +70,15 @@ public class PricesTableController {
         pricesCol.setCellValueFactory(new PropertyValueFactory<>("price"));
         noCol.setCellValueFactory(new PropertyValueFactory<>("numberOfCars"));
         hopCol.setCellValueFactory(new PropertyValueFactory<>("hoursOfParking"));
-        PricesMessage msg = new
-                PricesMessage(Message.MessageType.REQUEST, PricesMessage.RequestType.GET_PRICES_TABLE);
+        PricesMessage msg = new PricesMessage(Message.MessageType.REQUEST, PricesMessage.RequestType.GET_PRICES_TABLE);
         SimpleClient.getClient().sendToServer(msg);
     }
-
 
 
     //initialize prices table from server
     @Subscribe
     public void newResponse(PricesMessage new_message) {
-        switch (new_message.response_type){
+        switch (new_message.response_type) {
             case SET_PRICES_TABLE:
                 pricesTable.setItems(FXCollections.observableArrayList(new_message.priceList));
                 break;

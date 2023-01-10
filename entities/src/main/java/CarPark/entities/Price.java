@@ -26,7 +26,7 @@ public class Price implements Serializable {
 
 
     public Price(String parking_type, String payment_method, int price, int number_of_cars, int hours_of_parking) {
-        this.parkingType= parking_type;
+        this.parkingType = parking_type;
         this.paymentMethod = payment_method;
         this.price = price;
         this.numberOfCars = number_of_cars;
