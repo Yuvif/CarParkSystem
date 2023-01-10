@@ -12,11 +12,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="CarPark" target="17" />
-      <module name="client" target="17" />
-      <module name="entities" target="8" />
       <module name="OCSFMediatorExample (1)" target="15" />
-      <module name="server" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

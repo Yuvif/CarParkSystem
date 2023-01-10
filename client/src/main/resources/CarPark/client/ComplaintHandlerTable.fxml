@@ -9,7 +9,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+            prefHeight="700.0"
             prefWidth="855.0" style="-fx-background-color: #FFFFFF;"
             xmlns="http://javafx.com/javafx/19"
             fx:controller="CarPark.client.controllers.ComplaintHandlerTableController">
