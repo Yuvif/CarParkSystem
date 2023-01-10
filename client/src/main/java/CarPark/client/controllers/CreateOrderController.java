@@ -59,12 +59,9 @@ public class CreateOrderController {
     private Button submitBtn;
 
     @FXML
-    void submitDetails(ActionEvent event) throws IOException {
-        if(!checkValidity())
-        {
-            sendAlert("Some fields have not been filled", " Empty or Missing Fields", Alert.AlertType.WARNING);
-        }
-        else // create an entity Order and send it to the server
+    void submitDetails(ActionEvent event) throws IOException
+    {
+        if(checkValidity()) // create an entity Order and send it to the server
         {
             Order order = createOrder();
             OrderMessage msg = new OrderMessage(Message.MessageType.REQUEST, OrderMessage.RequestType.CREATE_NEW_ORDER, order);
@@ -92,36 +89,39 @@ public class CreateOrderController {
 
     private boolean checkValidity()
     {
+
         if(idTextBox.getText().isEmpty() || carIdTextBox.getText().isEmpty() || emailAddress.getText().isEmpty() || arrivalDate.getValue() == null || estLeavingDate.getValue() == null
                 || arrivalHour.getItems().isEmpty() || arrivalMin.getItems().isEmpty() || estLeavingHour.getItems().isEmpty() || estLeavingMin.getItems().isEmpty() || parkingLotsOpt.getItems().isEmpty())
         {
             sendAlert("Some fields have not been filled", " Empty or Missing Fields", Alert.AlertType.WARNING);
             return false;
         }
-        else if(!checkEmailValidity())
+
+        if(!checkEmailValidity())
         {
             sendAlert("Email is not valid", " Invalid Email", Alert.AlertType.WARNING);
             return false;
         }
-        else if(!checkIdValidity())
+
+        if(!checkIdValidity())
         {
             sendAlert("ID is not valid", " Invalid ID", Alert.AlertType.WARNING);
             return false;
         }
-        else if(!checkCarIdValidity())
+
+        if(!checkCarIdValidity())
         {
             sendAlert("Car ID is not valid", " Invalid Car ID", Alert.AlertType.WARNING);
             return false;
         }
-        else if(!checkDateValidity())
+
+        if(!checkDateValidity())
         {
             sendAlert("Date is not valid", " Invalid Date", Alert.AlertType.WARNING);
             return false;
         }
-        else
-        {
-            return true;
-        }
+
+        return true;
     }
     private boolean checkEmailValidity()
     {
@@ -233,6 +233,7 @@ public class CreateOrderController {
         order.setCarId(Integer.parseInt(carIdTextBox.getText()));
         order.setCustomerId(Integer.parseInt(idTextBox.getText()));
         order.setParkingLotId(Integer.parseInt(parkingLotsOpt.getValue().toString()));
+        order.setEmail(emailAddress.getText());
 
         LocalDate arrival = arrivalDate.getValue();
         LocalTime arrivalTime = LocalTime.of(Integer.parseInt( arrivalHour.getValue().toString()), Integer.parseInt(arrivalMin.getValue().toString()));
