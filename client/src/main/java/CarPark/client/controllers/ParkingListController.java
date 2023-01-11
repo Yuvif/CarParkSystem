@@ -2,15 +2,10 @@ package CarPark.client.controllers;
 
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
-import CarPark.client.events.NewSubscriberEvent;
-import CarPark.client.events.ParkingListEvent;
 import CarPark.entities.Parkinglot;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.ParkingListMessage;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -19,9 +14,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
-import java.util.List;
-
-import static javafx.collections.FXCollections.observableArrayList;
 
 public class ParkingListController {
 

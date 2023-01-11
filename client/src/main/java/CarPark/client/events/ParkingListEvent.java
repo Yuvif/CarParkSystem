@@ -2,7 +2,6 @@ package CarPark.client.events;
 
 import CarPark.entities.Parkinglot;
 
-
 import java.util.List;
 
 public class ParkingListEvent {

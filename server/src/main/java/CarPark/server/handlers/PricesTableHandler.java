@@ -1,15 +1,11 @@
 package CarPark.server.handlers;
 
-import CarPark.entities.Parkinglot;
 import CarPark.entities.Price;
 import CarPark.entities.messages.Message;
-import CarPark.entities.messages.ParkingListMessage;
 import CarPark.entities.messages.PricesMessage;
 import CarPark.server.ocsf.ConnectionToClient;
-import org.hibernate.QueryTimeoutException;
 import org.hibernate.Session;
 
-import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
 
@@ -40,8 +36,7 @@ public class PricesTableHandler extends MessageHandler {
         }
     }
 
-    private void editPrice() throws Exception
-    {
+    private void editPrice() throws Exception {
         Price old_price = session.get(Price.class, class_message.new_price.getId());
         old_price.setPrice(class_message.new_price.getPrice());
     }

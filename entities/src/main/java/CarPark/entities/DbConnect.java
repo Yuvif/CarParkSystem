@@ -1,9 +1,9 @@
 package CarPark.entities;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.io.Serializable;
 
 public class DbConnect implements Serializable {
     private static String HOST = "127.0.0.1";
@@ -16,7 +16,7 @@ public class DbConnect implements Serializable {
     public static Connection getConnect() {
         try {
             connection = DriverManager.getConnection(String.format(
-                            "jdbc:mysql://%s:%d/%s", HOST, PORT, DB_NAME),
+                    "jdbc:mysql://%s:%d/%s", HOST, PORT, DB_NAME),
                     USERNAME, PASSWORD);
         } catch (SQLException throwables) {
             throwables.printStackTrace();

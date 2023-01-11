@@ -1,7 +1,6 @@
 package CarPark.client.events;
 
 import CarPark.entities.Order;
-import CarPark.entities.Parkinglot;
 
 import java.util.List;
 
