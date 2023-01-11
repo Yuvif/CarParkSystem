@@ -4,35 +4,59 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="467.0" prefWidth="703.0" xmlns="http://javafx.com/javafx/19"
-            fx:controller="CarPark.client.controllers.LoginController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="519.0" prefWidth="700.0" style="-fx-background-image:url(/assets/background.png);" translateX="3.0" translateY="1.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.LoginController">
     <children>
-        <PasswordField fx:id="password" layoutX="285.0" layoutY="225.0" prefHeight="35.0" prefWidth="200.0"
-                       promptText="Password"/>
-        <TextField fx:id="username" layoutX="285.0" layoutY="158.0" prefHeight="35.0" prefWidth="200.0"
-                   promptText="Username"/>
-        <Label layoutX="162.0" layoutY="166.0" prefHeight="17.0" prefWidth="97.0" text="Username">
+        <PasswordField fx:id="password" layoutX="285.0" layoutY="225.0" prefHeight="35.0" prefWidth="200.0" promptText="Password" />
+        <TextField fx:id="userID" layoutX="285.0" layoutY="158.0" prefHeight="35.0" prefWidth="200.0" promptText="UserID" />
+        <Label layoutX="162.0" layoutY="166.0" prefHeight="17.0" prefWidth="97.0" text="User ID">
             <font>
-                <Font name="Bauhaus 93" size="18.0"/>
+                <Font name="Bauhaus 93" size="18.0" />
             </font>
         </Label>
         <Label layoutX="162.0" layoutY="233.0" prefHeight="17.0" prefWidth="97.0" text="Password">
             <font>
-                <Font name="Bauhaus 93" size="18.0"/>
+                <Font name="Bauhaus 93" size="18.0" />
             </font>
         </Label>
-        <Button fx:id="button" layoutX="352.0" layoutY="340.0" mnemonicParsing="false" onAction="#login" text="Login">
+        <Button fx:id="button" layoutX="352.0" layoutY="287.0" mnemonicParsing="false" onAction="#login" text="Login">
             <font>
-                <Font name="Bauhaus 93" size="18.0"/>
+                <Font name="Bauhaus 93" size="18.0" />
             </font>
         </Button>
-        <Label fx:id="wrongLogin" layoutX="337.0" layoutY="289.0" prefHeight="17.0" prefWidth="97.0">
+        <Label fx:id="wrongLogin" layoutX="317.0" layoutY="338.0" prefHeight="20.0" prefWidth="149.0" textFill="RED">
             <font>
-                <Font name="Bauhaus 93" size="18.0"/>
+                <Font name="Bauhaus 93" size="18.0" />
             </font>
         </Label>
+      <Label layoutX="143.0" layoutY="34.0" prefHeight="17.0" prefWidth="485.0" text="Welcom To Park Car System">
+         <font>
+            <Font name="Bauhaus 93" size="36.0" />
+         </font>
+      </Label>
+      <Pane layoutY="92.0" prefHeight="2.0" prefWidth="700.0" style="-fx-background-color: Grey;" />
+      <Pane layoutY="373.0" prefHeight="2.0" prefWidth="700.0" style="-fx-background-color: Grey;" />
+      <Button fx:id="register" layoutX="110.0" layoutY="425.0" mnemonicParsing="false" onAction="#register" text="Register">
+         <font>
+            <Font name="Bauhaus 93" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="check_in" layoutX="237.0" layoutY="425.0" mnemonicParsing="false" onAction="#checkIn" prefHeight="32.0" prefWidth="97.0" text="Check-in">
+         <font>
+            <Font name="Bauhaus 93" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="check_out" layoutX="381.0" layoutY="425.0" mnemonicParsing="false" onAction="#checkOut" text="Check-out">
+         <font>
+            <Font name="Bauhaus 93" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="order" layoutX="527.0" layoutY="425.0" mnemonicParsing="false" onAction="#makeOrder" text="Make order">
+         <font>
+            <Font name="Bauhaus 93" size="18.0" />
+         </font>
+      </Button>
     </children>
-</AnchorPane>
+</Pane>

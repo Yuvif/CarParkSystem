@@ -14,15 +14,17 @@ public class Employee {
     private String lastName;
     private String email;
     private String workersRole;
+    private String password;
 
 
-    public Employee(int employeeId, String firstName, String lastName, String email, String workersRole) {
+    public Employee(int employeeId, String firstName, String lastName, String email, String workersRole,String password) {
         super();
         this.employeeId = employeeId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.workersRole = workersRole;
+        this.password = password;
     }
 
     public Employee() {
@@ -70,5 +72,11 @@ public class Employee {
 
     public int getId() {
         return id;
+    }
+
+    public String getPassword(){return password;}
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

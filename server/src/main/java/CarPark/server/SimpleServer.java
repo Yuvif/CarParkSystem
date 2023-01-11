@@ -1,23 +1,24 @@
 package CarPark.server;
 
 
-import CarPark.entities.*;
+import CarPark.entities.Order;
+import CarPark.entities.Parkinglot;
+import CarPark.entities.Price;
 import CarPark.entities.messages.*;
 import CarPark.server.handlers.*;
 import CarPark.server.ocsf.AbstractServer;
 import CarPark.server.ocsf.ConnectionToClient;
 import CarPark.server.ocsf.SubscribedClient;
 import org.hibernate.HibernateException;
-import org.hibernate.SessionFactory;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
 import java.io.IOException;
-import java.sql.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
 
 
 public class SimpleServer extends AbstractServer {
@@ -58,7 +59,7 @@ public class SimpleServer extends AbstractServer {
                     handler = new ParkingListHandler((ParkingListMessage) msg, session, client);
                 } else if (PricesMessage.class.equals(msgClass)) {
                     handler = new PricesTableHandler((PricesMessage) msg, session, client);
-                }else if (OrderMessage.class.equals(msgClass)) {
+                } else if (OrderMessage.class.equals(msgClass)) {
                     handler = new OrderHandler((OrderMessage) msg, session, client);
                     System.out.println("we got here");
                 }

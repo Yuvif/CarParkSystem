@@ -2,9 +2,7 @@ package CarPark.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Entity
 @Table(name = "Orders")
@@ -31,31 +29,58 @@ public class Order implements Serializable {
         this.estimatedLeavingTime = estimatedLeavingTime;
     }
 
-    public Order() { }
+    public Order() {
+    }
 
-    public int getCustomerId() { return customerId; }
+    public int getCustomerId() {
+        return customerId;
+    }
 
-    public void setCustomerId(int customerId) { this.customerId = customerId; }
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
 
-    public int getCarId() { return carId; }
+    public int getCarId() {
+        return carId;
+    }
 
-    public void setCarId(int carId) { this.carId = carId; }
+    public void setCarId(int carId) {
+        this.carId = carId;
+    }
 
-    public int getParkingLotId() { return ParkingLotId; }
+    public int getParkingLotId() {
+        return ParkingLotId;
+    }
 
-    public void setParkingLotId(int parkingLotId) { ParkingLotId = parkingLotId; }
+    public void setParkingLotId(int parkingLotId) {
+        ParkingLotId = parkingLotId;
+    }
 
-    public String getEmail() { return email; }
+    public String getEmail() {
+        return email;
+    }
 
-    public void setEmail(String email) { this.email = email; }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-    public LocalDateTime getArrivalTime() { return arrivalTime; }
+    public LocalDateTime getArrivalTime() {
+        return arrivalTime;
+    }
 
-    public void setArrivalTime(LocalDateTime arrivalTime) { this.arrivalTime = arrivalTime; }
+    public void setArrivalTime(LocalDateTime arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
 
-    public LocalDateTime getEstimatedLeavingTime() { return estimatedLeavingTime; }
+    public LocalDateTime getEstimatedLeavingTime() {
+        return estimatedLeavingTime;
+    }
 
-    public void setEstimatedLeavingTime(LocalDateTime estimatedLeavingTime) { this.estimatedLeavingTime = estimatedLeavingTime; }
+    public void setEstimatedLeavingTime(LocalDateTime estimatedLeavingTime) {
+        this.estimatedLeavingTime = estimatedLeavingTime;
+    }
 
-    public int getId() { return id; }
+    public int getId() {
+        return id;
+    }
 }

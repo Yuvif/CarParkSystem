@@ -1,7 +1,6 @@
 package CarPark.client;
 
 import CarPark.client.events.MessageEvent;
-import CarPark.client.events.NewSubscriberEvent;
 import CarPark.entities.messages.ConnectionMessage;
 import CarPark.entities.messages.Message;
 import javafx.application.Application;
@@ -9,11 +8,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import java.io.IOException;
 
 /**
  * JavaFX App
