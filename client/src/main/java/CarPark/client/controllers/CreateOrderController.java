@@ -1,6 +1,7 @@
 package CarPark.client.controllers;
 
 import CarPark.client.SimpleClient;
+import CarPark.entities.Order;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.OrderMessage;
 import javafx.animation.PauseTransition;
@@ -9,16 +10,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Duration;
-import CarPark.entities.Order;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.time.LocalDate;
 
 import static CarPark.client.controllers.Controller.sendAlert;
 
@@ -59,9 +59,8 @@ public class CreateOrderController {
     private Button submitBtn;
 
     @FXML
-    void submitDetails(ActionEvent event) throws IOException
-    {
-        if(checkValidity()) // create an entity Order and send it to the server
+    void submitDetails(ActionEvent event) throws IOException {
+        if (checkValidity()) // create an entity Order and send it to the server
         {
             Order order = createOrder();
             OrderMessage msg = new OrderMessage(Message.MessageType.REQUEST, OrderMessage.RequestType.CREATE_NEW_ORDER, order);
@@ -87,44 +86,38 @@ public class CreateOrderController {
         }
     }
 
-    private boolean checkValidity()
-    {
+    private boolean checkValidity() {
 
-        if(idTextBox.getText().isEmpty() || carIdTextBox.getText().isEmpty() || emailAddress.getText().isEmpty() || arrivalDate.getValue() == null || estLeavingDate.getValue() == null
-                || arrivalHour.getItems().isEmpty() || arrivalMin.getItems().isEmpty() || estLeavingHour.getItems().isEmpty() || estLeavingMin.getItems().isEmpty() || parkingLotsOpt.getItems().isEmpty())
-        {
+        if (idTextBox.getText().isEmpty() || carIdTextBox.getText().isEmpty() || emailAddress.getText().isEmpty() || arrivalDate.getValue() == null || estLeavingDate.getValue() == null
+                || arrivalHour.getItems().isEmpty() || arrivalMin.getItems().isEmpty() || estLeavingHour.getItems().isEmpty() || estLeavingMin.getItems().isEmpty() || parkingLotsOpt.getItems().isEmpty()) {
             sendAlert("Some fields have not been filled", " Empty or Missing Fields", Alert.AlertType.WARNING);
             return false;
         }
 
-        if(!checkEmailValidity())
-        {
+        if (!checkEmailValidity()) {
             sendAlert("Email is not valid", " Invalid Email", Alert.AlertType.WARNING);
             return false;
         }
 
-        if(!checkIdValidity())
-        {
+        if (!checkIdValidity()) {
             sendAlert("ID is not valid", " Invalid ID", Alert.AlertType.WARNING);
             return false;
         }
 
-        if(!checkCarIdValidity())
-        {
+        if (!checkCarIdValidity()) {
             sendAlert("Car ID is not valid", " Invalid Car ID", Alert.AlertType.WARNING);
             return false;
         }
 
-        if(!checkDateValidity())
-        {
+        if (!checkDateValidity()) {
             sendAlert("Date is not valid", " Invalid Date", Alert.AlertType.WARNING);
             return false;
         }
 
         return true;
     }
-    private boolean checkEmailValidity()
-    {
+
+    private boolean checkEmailValidity() {
         String email = emailAddress.getText();
         String regex = "^(.+)@(.+)$";
         Pattern pattern = Pattern.compile(regex);
@@ -132,8 +125,7 @@ public class CreateOrderController {
         return matcher.matches();
     }
 
-    private boolean checkIdValidity()
-    {
+    private boolean checkIdValidity() {
         String id = idTextBox.getText();
         String regex = "^[0-9]{9}$";
         Pattern pattern = Pattern.compile(regex);
@@ -141,8 +133,7 @@ public class CreateOrderController {
         return matcher.matches();
     }
 
-    private boolean checkCarIdValidity()
-    {
+    private boolean checkCarIdValidity() {
         String carId = carIdTextBox.getText();
         String regex = "^[0-9]{7}$";
         Pattern pattern = Pattern.compile(regex);
@@ -150,16 +141,12 @@ public class CreateOrderController {
         return matcher.matches();
     }
 
-    private boolean checkDateValidity()
-    {
+    private boolean checkDateValidity() {
         LocalDate arrival = arrivalDate.getValue();
         LocalDate leaving = estLeavingDate.getValue();
-        if(arrival.isAfter(leaving))
-        {
+        if (arrival.isAfter(leaving)) {
             return false;
-        }
-        else
-        {
+        } else {
             return true;
         }
     }
@@ -168,36 +155,27 @@ public class CreateOrderController {
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
         //think of a way to get the parking lots from the server **********************
-        for(int i = 0; i < 3; i++)
-        {
+        for (int i = 0; i < 3; i++) {
             parkingLotsOpt.getItems().add(i);
         }
 
         // Initialize the ComboBox with the hours
-        for(int i = 0; i < 24; i++)
-        {
-            if(i < 10)
-            {
+        for (int i = 0; i < 24; i++) {
+            if (i < 10) {
                 arrivalHour.getItems().add("0" + i);
                 estLeavingHour.getItems().add("0" + i);
-            }
-            else
-            {
+            } else {
                 arrivalHour.getItems().add(i);
                 estLeavingHour.getItems().add(i);
             }
         }
 
         // Initialize the ComboBox with the minutes
-        for(int i = 0; i < 60; i++)
-        {
-            if(i < 10)
-            {
+        for (int i = 0; i < 60; i++) {
+            if (i < 10) {
                 arrivalMin.getItems().add("0" + i);
                 estLeavingMin.getItems().add("0" + i);
-            }
-            else
-            {
+            } else {
                 arrivalMin.getItems().add(i);
                 estLeavingMin.getItems().add(i);
             }
@@ -209,7 +187,7 @@ public class CreateOrderController {
                 LocalDate today = LocalDate.now();
 
                 // Disable all past dates
-                setDisable(empty || date.compareTo(today) < 0 );
+                setDisable(empty || date.compareTo(today) < 0);
             }
         });
 
@@ -219,7 +197,7 @@ public class CreateOrderController {
                 LocalDate arrivalDateValue = arrivalDate.getValue();
 
                 // Disable all past dates
-                setDisable(empty || date.compareTo(arrivalDateValue) < 0 );
+                setDisable(empty || date.compareTo(arrivalDateValue) < 0);
             }
         });
 
@@ -227,8 +205,7 @@ public class CreateOrderController {
     }
 
 
-    private Order createOrder()
-    {
+    private Order createOrder() {
         Order order = new Order();
         order.setCarId(Integer.parseInt(carIdTextBox.getText()));
         order.setCustomerId(Integer.parseInt(idTextBox.getText()));
@@ -236,7 +213,7 @@ public class CreateOrderController {
         order.setEmail(emailAddress.getText());
 
         LocalDate arrival = arrivalDate.getValue();
-        LocalTime arrivalTime = LocalTime.of(Integer.parseInt( arrivalHour.getValue().toString()), Integer.parseInt(arrivalMin.getValue().toString()));
+        LocalTime arrivalTime = LocalTime.of(Integer.parseInt(arrivalHour.getValue().toString()), Integer.parseInt(arrivalMin.getValue().toString()));
         LocalDateTime arrivalDateTime = LocalDateTime.of(arrival, arrivalTime);
         order.setArrivalTime(arrivalDateTime);
 

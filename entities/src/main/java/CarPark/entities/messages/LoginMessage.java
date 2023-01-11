@@ -1,21 +1,39 @@
 package CarPark.entities.messages;
 
-public class LoginMessage extends Message {
-    private String user_name;
-    private String password;
+import CarPark.entities.Customer;
+import CarPark.entities.Employee;
 
-    public LoginMessage(String user_name, String pass, MessageType message_type) {
+public class LoginMessage extends Message {
+    public RequestType request_type;
+    public ResponseType response_type;
+    private long user_id;
+    private String password;
+    public Employee employee;
+    public Customer customer;
+
+    public LoginMessage(MessageType message_type, RequestType request_type,long user_id, String pass) {
         super(message_type);
-        this.user_name = user_name;
+        this.request_type = request_type;
+        this.user_id = user_id;
         this.password = pass;
     }
 
-    public String getUserName() {
-        return user_name;
+    public enum RequestType {
+        LOGIN
     }
 
-    public void setUserName(String user_name) {
-        this.user_name = user_name;
+    public enum ResponseType {
+        LOGIN_SUCCEED_CUSTOMER,
+        LOGIN_SUCCEED_EMPLOYEE,
+        LOGIN_FAILED
+    }
+
+    public long getUserId() {
+        return user_id;
+    }
+
+    public void setUserId(long user_id) {
+        this.user_id = user_id;
     }
 
     public String getPassword() {
@@ -25,4 +43,5 @@ public class LoginMessage extends Message {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }

@@ -1,8 +1,6 @@
 package CarPark.entities.messages;
 
 import CarPark.entities.Parkinglot;
-import CarPark.entities.messages.Message;
-import org.hibernate.type.ObjectType;
 
 import java.util.List;
 

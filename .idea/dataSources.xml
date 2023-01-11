@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="server/Hibernate" uuid="fcf51a1b-a0f2-4dc7-b961-8646d1c84590">
+    <data-source source="LOCAL" name="server/Hibernate" uuid="4dbf040d-c773-4883-a7c2-5f4367c8c209">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <imported>true</imported>
       <remarks>Hibernate</remarks>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/team4</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost/parking_lot_chain</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

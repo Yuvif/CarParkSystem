@@ -4,8 +4,9 @@
 
 package CarPark.client.ocsf;
 
-import java.util.*;
-import java.io.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class acts as a subclass of <code>AbstractClient</code>

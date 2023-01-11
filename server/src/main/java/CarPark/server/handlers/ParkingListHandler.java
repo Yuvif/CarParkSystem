@@ -7,9 +7,7 @@ import CarPark.server.ocsf.ConnectionToClient;
 import org.hibernate.Session;
 
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.util.List;
-import java.util.Locale;
 
 public class ParkingListHandler extends MessageHandler {
 

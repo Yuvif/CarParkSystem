@@ -4,22 +4,9 @@
 
 package CarPark.client.controllers;
 
-import CarPark.client.SimpleChatClient;
-import CarPark.entities.Complaint;
-import javafx.animation.PauseTransition;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-
-import java.io.IOException;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-
-import javafx.util.Duration;
 
 public class ComplaintSubmissionController extends Controller {
 

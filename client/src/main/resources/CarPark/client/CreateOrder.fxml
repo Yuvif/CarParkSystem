@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
-
+<?import javafx.scene.text.*?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="541.0"
             prefWidth="616.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="CarPark.client.controllers.CreateOrderController">
@@ -17,8 +12,8 @@
                 <Font name="DIN Alternate Bold" size="30.0"/>
             </font>
         </Label>
-        <TextField fx:id="idTextBox" layoutX="258.0" layoutY="143.0" />
-        <TextField fx:id="carIdTextBox" layoutX="259.0" layoutY="184.0" />
+        <TextField fx:id="idTextBox" layoutX="258.0" layoutY="143.0"/>
+        <TextField fx:id="carIdTextBox" layoutX="259.0" layoutY="184.0"/>
         <Label layoutX="131.0" layoutY="142.0" text="Customer ID:">
             <font>
                 <Font size="22.0"/>
@@ -59,9 +54,9 @@
                 <Font size="22.0"/>
             </font>
         </Label>
-        <DatePicker fx:id="arrivalDate" layoutX="261.0" layoutY="263.0" />
-        <DatePicker fx:id="estLeavingDate" layoutX="261.0" layoutY="332.0" />
-        <TextField fx:id="emailAddress" layoutX="262.0" layoutY="404.0" />
+        <DatePicker fx:id="arrivalDate" layoutX="261.0" layoutY="263.0"/>
+        <DatePicker fx:id="estLeavingDate" layoutX="261.0" layoutY="332.0"/>
+        <TextField fx:id="emailAddress" layoutX="262.0" layoutY="404.0"/>
         <Button fx:id="submitBtn" layoutX="258.0" layoutY="467.0" mnemonicParsing="false" onAction="#submitDetails"
                 prefHeight="26.0" prefWidth="125.0" text="Submit">
             <font>
@@ -73,9 +68,9 @@
                 <Font size="20.0"/>
             </font>
         </Label>
-        <ComboBox fx:id="arrivalHour" layoutX="271.0" layoutY="298.0"  prefHeight="26.0"
+        <ComboBox fx:id="arrivalHour" layoutX="271.0" layoutY="298.0" prefHeight="26.0"
                   prefWidth="63.0" AnchorPane.topAnchor="298.0"/>
-        <ComboBox fx:id="arrivalMin" layoutX="347.0" layoutY="298.0"  prefHeight="26.0"
+        <ComboBox fx:id="arrivalMin" layoutX="347.0" layoutY="298.0" prefHeight="26.0"
                   prefWidth="63.0"/>
         <Label layoutX="338.0" layoutY="366.0" prefHeight="17.0" prefWidth="8.0" text=":">
             <font>
