@@ -15,8 +15,10 @@ public class Customer {
     private String email;
     private int balance;
     private String password;
+    private boolean isLogged = false;
 
-    public Customer(long customerId, String firstName, String lastName, String email, int balance,String password) {
+    public Customer(long customerId, String firstName, String lastName, String email, int balance,String password
+    ,boolean isLogged) {
         super();
         this.customerId = customerId;
         this.firstName = firstName;
@@ -24,6 +26,7 @@ public class Customer {
         this.email = email;
         this.balance = balance;
         this.password = password;
+        this.isLogged = isLogged;
     }
 
     public Customer() {

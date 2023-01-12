@@ -1,7 +1,10 @@
 package CarPark.server;
 
 
-import CarPark.entities.*;
+import CarPark.entities.Employee;
+import CarPark.entities.Order;
+import CarPark.entities.Parkinglot;
+import CarPark.entities.Price;
 import CarPark.entities.messages.*;
 import CarPark.server.handlers.*;
 import CarPark.server.ocsf.AbstractServer;
@@ -14,12 +17,9 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
 
 
 public class SimpleServer extends AbstractServer {
@@ -38,54 +38,10 @@ public class SimpleServer extends AbstractServer {
         configuration.addAnnotatedClass(Parkinglot.class);
         configuration.addAnnotatedClass(Price.class);
         configuration.addAnnotatedClass(Order.class);
-        configuration.addAnnotatedClass(ParkingSlot.class);
-        configuration.addAnnotatedClass(CheckedIn.class);
-        configuration.addAnnotatedClass(Complaint.class);
+        configuration.addAnnotatedClass(Employee.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();        //pull session factory config from hibernate properties
         return configuration.buildSessionFactory(serviceRegistry);
-    }
-        static List<Parkinglot> getAllParkingLots() throws IOException {
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Parkinglot> query = builder.createQuery(Parkinglot.class);
-        query.from(Parkinglot.class);
-        List<Parkinglot> data = session.createQuery(query).getResultList();
-        LinkedList<Parkinglot> list = new LinkedList<Parkinglot>();
-        for (Parkinglot parkinglot : data) {     //converts arraylist to linkedlist
-            list.add(parkinglot);
-        }
-        return list;
-    }
-
-
-    private static List<Complaint> generateComplaints(List<Parkinglot> p) throws Exception {       //generates new products
-        List<Complaint> complaints = new LinkedList<Complaint>();
-        int parkinglotN = 0;
-        String[] complaintsDiscription = new String[]{"Hello, a couple of days ago I went to your store in Haifa, and the receptionist Shlomit was being rude to me. \n Thanks.",
-                "Dear customer support, my order has arrived 2 hours later then what I asked for and ruined the surprise party.",
-                "Hello, I ordered 2 tulips but got only 1. I'd like to get refunded for that.",
-                "Dear Customer Support, I tried to buy with my visa and it didn't work, and then after multiple tries it charged me twice.",
-                "Hello there, I ordered from your chain, and didn't receive what I wanted.",
-                "Hello there, I ordered from your chain, and didn't receive what I desired."};
-        for (int i = 0; i < complaintsDiscription.length; i++) {
-            if (i < p.size())
-                parkinglotN = i % p.size();
-            if (i < complaintsDiscription.length) {
-                int rand = new Random().nextInt(30) + 1;
-                Date d = new Date();
-                Date date = new Date(d.getTime() - Duration.ofDays(i % rand).toMillis());
-                Complaint comp = new Complaint(date, complaintsDiscription[i], p.get(parkinglotN));
-                complaints.add(comp);
-                session.save(comp);
-                session.flush();
-            }/*else if(i== complaintsDiscription.length){
-                Complaint comp = new Complaint(c.get(i) ,new Date(),complaintsDiscription[complaintsDiscription.length-1], Complaint.Topic.OTHER, s.get(storeN));
-                complaints.add(comp);
-                session.save(comp);
-                session.flush();
-            }*/
-        }
-        return complaints;
     }
 
     @Override
@@ -105,19 +61,8 @@ public class SimpleServer extends AbstractServer {
                     handler = new ParkingListHandler((ParkingListMessage) msg, session, client);
                 } else if (PricesMessage.class.equals(msgClass)) {
                     handler = new PricesTableHandler((PricesMessage) msg, session, client);
-                } else if (CreateOrderMessage.class.equals(msgClass)) {
-                    handler = new OrderHandler((CreateOrderMessage) msg, session, client);
-                } else if (ParkingSlotsMessage.class.equals(msgClass)) {
-                    handler = new EditParkingSlotsHandler((ParkingSlotsMessage) msg, session, client);
-                }else if (PullParkingSlotsMessage.class.equals(msgClass)) {
-                    handler = new PullParkingSlotsHandler((PullParkingSlotsMessage) msg, session, client);
-                }else if (PullOrdersMessage.class.equals(msgClass)) {
-                    handler = new PullOrdersHandler((PullOrdersMessage) msg, session, client);
-                }else if (ComplaintMessage.class.equals(msgClass)) {
-//-------------
-                    generateComplaints(getAllParkingLots());
-
-                    handler = new ComplaintHandler((ComplaintMessage) msg, session, client);
+                } else if (OrderMessage.class.equals(msgClass)) {
+                    handler = new OrderHandler((OrderMessage) msg, session, client);
                     System.out.println("we got here");
                 }
                 if (handler != null) {
