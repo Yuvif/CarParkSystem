@@ -1,9 +1,7 @@
 package CarPark.server;
 
 
-import CarPark.entities.Order;
-import CarPark.entities.Parkinglot;
-import CarPark.entities.Price;
+import CarPark.entities.*;
 import CarPark.entities.messages.*;
 import CarPark.server.handlers.*;
 import CarPark.server.ocsf.AbstractServer;
@@ -37,6 +35,9 @@ public class SimpleServer extends AbstractServer {
         configuration.addAnnotatedClass(Parkinglot.class);
         configuration.addAnnotatedClass(Price.class);
         configuration.addAnnotatedClass(Order.class);
+        configuration.addAnnotatedClass(ParkingSlot.class);
+        configuration.addAnnotatedClass(CheckedIn.class);
+        configuration.addAnnotatedClass(Complaint.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();        //pull session factory config from hibernate properties
         return configuration.buildSessionFactory(serviceRegistry);
@@ -61,6 +62,8 @@ public class SimpleServer extends AbstractServer {
                     handler = new PricesTableHandler((PricesMessage) msg, session, client);
                 } else if (OrderMessage.class.equals(msgClass)) {
                     handler = new OrderHandler((OrderMessage) msg, session, client);
+                } else if (ParkingSlotsMessage.class.equals(msgClass)) {
+                    handler = new EditParkingSlotsHandler((ParkingSlotsMessage) msg, session, client);
                     System.out.println("we got here");
                 }
                 if (handler != null) {

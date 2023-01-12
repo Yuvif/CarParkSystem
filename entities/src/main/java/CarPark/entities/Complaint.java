@@ -1,6 +1,5 @@
 package CarPark.entities;
 
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -19,15 +18,26 @@ public class Complaint implements Serializable {    //only for customers
     private String compText;
     private Boolean appStatus = true;        // true= complaint filed successfully- yet to be inspected, false = complaint fulfilled
     private Boolean completedOnTime = false;
-    ;
 
-    public Complaint(Date date, String compText) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parkinglot_id")
+    private Parkinglot parkinglot;
+
+    public Complaint(Date date, String compText,Parkinglot parkinglot) {
         this.date = date;
         this.compText = compText;
+        setParkinglot(parkinglot);
     }
 
     public Complaint() {
 
+    }
+    public Parkinglot getParkinglot()
+    {
+        return parkinglot;
+    }
+    public  void setParkingLotId(Parkinglot parkinglot){
+        this.parkinglot = parkinglot;
     }
 
     public String getCompText() {
@@ -62,5 +72,8 @@ public class Complaint implements Serializable {    //only for customers
         this.completedOnTime = completedOnTime;
     }
 
-
+    public void setParkinglot(Parkinglot parkinglot) {
+        this.parkinglot = parkinglot;
+        parkinglot.getComplaints().add(this);
+    }
 }
