@@ -11,7 +11,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.EditParkingSlotsController">
     <children>
-        <TableView fx:id="plTable" accessibleRole="COMBO_BOX" layoutX="40.0" layoutY="153.0" prefHeight="216.0" prefWidth="510.0">
+        <TableView fx:id="plTable" layoutX="40.0" layoutY="153.0" prefHeight="216.0" prefWidth="510.0">
             <columns>
                 <TableColumn fx:id="idCol" prefWidth="163.0" text="parkingSlot id" />
                 <TableColumn fx:id="currStaCol" minWidth="8.0" prefWidth="199.0" text="current status" />
