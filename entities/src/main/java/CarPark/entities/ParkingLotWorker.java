@@ -12,8 +12,8 @@ public class ParkingLotWorker extends Employee {
     private int parkingLotNumber;
 
 
-    public ParkingLotWorker(int employeeId, String firstName, String lastName, String email, String workersRole, int parkingLotNumber) {
-        super(employeeId, firstName, lastName, email, workersRole);
+    public ParkingLotWorker(int employeeId, String firstName, String lastName, String email, String workersRole, int parkingLotNumber,String pass) {
+        super(employeeId, firstName, lastName, email, workersRole, pass);
         this.parkingLotNumber = parkingLotNumber;
     }
 
