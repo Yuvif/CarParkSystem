@@ -9,6 +9,7 @@ import CarPark.entities.messages.Message;
 import CarPark.entities.messages.ParkingListMessage;
 import CarPark.entities.messages.ParkingSlotsMessage;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -37,9 +38,11 @@ public class EditParkingSlotsController {
     @FXML // fx:id="plPick"
     private ComboBox<String> plPick; // Value injected by FXMLLoader
 
-    @FXML // fx:id="plTable"
-    private static TableView<ParkingSlot> plTable; // Value injected by FXMLLoader
+//    @FXML // fx:id="plTable"
+//    private static TableView<ParkingSlot> plTable; // Value injected by FXMLLoader
 
+    @FXML
+    private TableView<ParkingSlot> plTable;
 
     @FXML
     void initialize() throws IOException {
@@ -52,17 +55,16 @@ public class EditParkingSlotsController {
         ParkingSlotsMessage msg = new ParkingSlotsMessage(Message.MessageType.REQUEST, ParkingSlotsMessage.RequestType.GET_ALL_PARKING_LOTS);
         SimpleClient.getClient().sendToServer(msg);
     }
-    @FXML
-    void displayParkingLot(MouseEvent event) throws IOException {
 
-    }
-    public void onActionEvent(MouseEvent event) throws IOException {
+    @FXML
+    void displayParkingLot(ActionEvent event) throws IOException {
         if (checkEmpty())
         {
             ParkingSlotsMessage msg2 = new ParkingSlotsMessage(Message.MessageType.REQUEST, ParkingSlotsMessage.RequestType.GET_SELECTED_PARKING_SLOTS, plPick.getValue());
             SimpleClient.getClient().sendToServer(msg2);
         }
     }
+
     //update table from server
 //    @Subscribe
 //    public void newResponse(ParkingListMessage new_message) {
@@ -74,7 +76,6 @@ public class EditParkingSlotsController {
 //                break;
 //        }
 //    }
-
     @Subscribe
     public void newResponse(ParkingSlotsMessage new_message) {
         System.out.println("we got controller back from p-slot message");
@@ -85,6 +86,8 @@ public class EditParkingSlotsController {
                 break;
             case SET_PARKING_SLOTS:
                 System.out.println("we got change table");
+                System.out.println(new_message.parkingSlots.get(0).getParkinglot().getId());
+                //plTable.setItems((ObservableList<ParkingSlot>) new_message.parkingSlots);
                 plTable.setItems(FXCollections.observableArrayList(new_message.parkingSlots));
                 break;
             case PARKING_SLOT_EDITED:
