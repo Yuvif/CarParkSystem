@@ -1,6 +1,7 @@
 package CarPark.server;
 
 
+import CarPark.entities.Employee;
 import CarPark.entities.Order;
 import CarPark.entities.Parkinglot;
 import CarPark.entities.Price;
@@ -37,6 +38,7 @@ public class SimpleServer extends AbstractServer {
         configuration.addAnnotatedClass(Parkinglot.class);
         configuration.addAnnotatedClass(Price.class);
         configuration.addAnnotatedClass(Order.class);
+        configuration.addAnnotatedClass(Employee.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();        //pull session factory config from hibernate properties
         return configuration.buildSessionFactory(serviceRegistry);

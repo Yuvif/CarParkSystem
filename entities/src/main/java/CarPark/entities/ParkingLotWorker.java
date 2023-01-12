@@ -1,6 +1,7 @@
 package CarPark.entities;
 
 import javax.persistence.*;
+import java.security.NoSuchAlgorithmException;
 
 @Entity
 @Table(name = "Parking Lot Workers")
@@ -12,8 +13,9 @@ public class ParkingLotWorker extends Employee {
     private int parkingLotNumber;
 
 
-    public ParkingLotWorker(int employeeId, String firstName, String lastName, String email, String workersRole, int parkingLotNumber) {
-        super(employeeId, firstName, lastName, email, workersRole);
+    public ParkingLotWorker(int employeeId, String firstName, String lastName, String email, String workersRole, int parkingLotNumber,
+                            String pass, boolean isLogged) throws NoSuchAlgorithmException {
+        super(employeeId, firstName, lastName, email, workersRole,pass,isLogged);
         this.parkingLotNumber = parkingLotNumber;
     }
 

@@ -1,14 +1,14 @@
 package CarPark.client.controllers;
-
+import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.entities.messages.LoginMessage;
 import CarPark.entities.messages.Message;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import org.greenrobot.eventbus.EventBus;
-
-import java.awt.*;
-import java.awt.event.ActionEvent;
+import org.greenrobot.eventbus.Subscribe;
+import javafx.scene.control.Button;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -16,11 +16,18 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.scene.control.TextField;
+import javafx.event.ActionEvent;
 
 public class LoginController {
 
+    public Button register;
+    public Button check_in;
+    public Button check_out;
+    public Button order;
+
     @FXML
-    private Button button;
+    private Button loginButton;
     @FXML
     private TextField userID;
     @FXML
@@ -35,21 +42,26 @@ public class LoginController {
 
 
     public void login(ActionEvent event) throws IOException, NoSuchAlgorithmException {
-        if (checkIdValidity(userID.getText()) && checkIdValidity(password.getText())) //check if password and username are valid
+        if (checkIdValidity(userID.getText()) && checkPassValidity(password.getText())) //check if password and username are valid
         {
             //if valid send request to login with secured password
             long userId = Long.parseLong(userID.getText());
-            String userPass = SecurePassword(password.getText(), getSalt());
+            String userPass = securePassword(password.getText(), getSalt());
             LoginMessage msg =
                     new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGIN,userId,userPass);
             SimpleClient.getClient().sendToServer(msg);
         }
         else
-            wrongLogin.setText("Invalid Username Or Password!");
+            loginFailed();
+    }
+
+    public void loginFailed()
+    {
+        wrongLogin.setText("Invalid Username Or Password!");
     }
 
 
-    public static String SecurePassword(String password, byte[] salt)
+    public static String securePassword(String password, byte[] salt)
     {
         String generatedPassword = null;
         try {
@@ -82,7 +94,7 @@ public class LoginController {
         return matcher.matches();
     }
 
-    private boolean CheckPassValidity(String pass)
+    private boolean checkPassValidity(String pass)
     {
         String regex = ".{7,}$";    //password needs to be at least 7 chars
         Pattern pattern = Pattern.compile(regex);
@@ -90,7 +102,37 @@ public class LoginController {
         return matcher.matches();
     }
 
+    @Subscribe
+    public void newResponse(LoginMessage new_message) throws IOException {
+        switch (new_message.response_type) {
+            case LOGIN_FAILED:
+                loginFailed();
+            case LOGIN_SUCCEED_CUSTOMER:
+                SimpleChatClient.customer = new_message.customer;
+                SimpleChatClient.setRoot("Customer");
+            case LOGIN_SUCCEED_EMPLOYEE:
+                SimpleChatClient.employee = new_message.employee;
+                SimpleChatClient.setRoot("Employee");
+        }
+    }
 
+    public void alreadyLogIn()
+    {
+        wrongLogin.setText("This user is already logged in to system");
+    }
+
+
+    public void register(ActionEvent event) {
+    }
+
+    public void checkIn(ActionEvent event) {
+    }
+
+    public void checkOut(ActionEvent event) {
+    }
+
+    public void makeOrder(ActionEvent event) {
+    }
 }
 
 
