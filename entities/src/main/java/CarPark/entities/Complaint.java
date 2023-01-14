@@ -1,5 +1,8 @@
 package CarPark.entities;
 
+
+import CarPark.entities.Parkinglot;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -11,7 +14,6 @@ public class Complaint implements Serializable {    //only for customers
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private long customerId;
     @Column(name = "dateOfSubmit")
     private Date date;
 
@@ -20,48 +22,32 @@ public class Complaint implements Serializable {    //only for customers
     private Boolean appStatus = true;        // true= complaint filed successfully- yet to be inspected, false = complaint fulfilled
     private Boolean completedOnTime = false;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parkinglot_id")
+    @ManyToOne
+    @JoinColumn(name = "parkinglot_name")
     private Parkinglot parkinglot;
 
-    public Complaint(Date date, String compText, Parkinglot parkinglot, long customerId) {
-        this.date = date;
-        this.compText = compText;
-        this.customerId = customerId;
-        setParkinglot(parkinglot);
+    public Parkinglot getParkinglot() {
+        return parkinglot;
     }
-    public Complaint(Date date, String compText, Parkinglot parkinglot) {
+
+    public void setParkinglot(Parkinglot parkinglot) {
+        this.parkinglot = parkinglot;
+    }
+
+    ;
+
+    public Complaint(Date date, String compText) {
         this.date = date;
         this.compText = compText;
-        this.customerId = customerId;
     }
 
     public Complaint() {
+
     }
 
-    public Complaint(Date date, String text) {
-    }
-
-    public Complaint(Date date, String text, long customerIdT) {
-        date = date;
-        this.compText = text;
-        this.customerId = customerIdT;
-    }
-
-    public Parkinglot getParkinglot()
-    {
-        return parkinglot;
-    }
-    public  void setParkingLotId(Parkinglot parkinglot){
-        this.parkinglot = parkinglot;
-    }
     public String getCompText() {
         return compText;
     }
-    public long getCustomerId() {
-        return customerId;
-    }
-
 
     public void setCompText(String compText) {
         compText = compText;
@@ -91,8 +77,5 @@ public class Complaint implements Serializable {    //only for customers
         this.completedOnTime = completedOnTime;
     }
 
-    public void setParkinglot(Parkinglot parkinglot) {
-        this.parkinglot = parkinglot;
-        parkinglot.getComplaints().add(this);
-    }
+
 }

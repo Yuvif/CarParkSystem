@@ -3,7 +3,7 @@ package CarPark.client.controllers;
 import CarPark.client.SimpleClient;
 import CarPark.entities.Order;
 import CarPark.entities.messages.Message;
-import CarPark.entities.messages.CreateOrderMessage;
+import CarPark.entities.messages.OrderMessage;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -60,16 +60,20 @@ public class CreateOrderController {
 
     @FXML
     void submitDetails(ActionEvent event) throws IOException {
-        if (checkValidity()) // create an entity Order and send it to the server
+        if (checkValidity()) // create an order entity and send it to the server
         {
             Order order = createOrder();
-            CreateOrderMessage msg = new CreateOrderMessage(Message.MessageType.REQUEST, CreateOrderMessage.RequestType.CREATE_NEW_ORDER, order);
-            SimpleClient.getClient().sendToServer(msg);
+            OrderMessage msg = new OrderMessage(Message.MessageType.REQUEST, OrderMessage.RequestType.CREATE_NEW_ORDER, order);
+            try {
+                SimpleClient.getClient().sendToServer(msg);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Subscribe
-    public void newResponse(CreateOrderMessage new_message) {
+    public void newResponse(OrderMessage new_message) {
         switch (new_message.response_type) {
             case ORDER_SUBMITTED:
                 Platform.runLater(() -> {
@@ -90,7 +94,7 @@ public class CreateOrderController {
 
         if (idTextBox.getText().isEmpty() || carIdTextBox.getText().isEmpty() || emailAddress.getText().isEmpty() || arrivalDate.getValue() == null || estLeavingDate.getValue() == null
                 || arrivalHour.getItems().isEmpty() || arrivalMin.getItems().isEmpty() || estLeavingHour.getItems().isEmpty() || estLeavingMin.getItems().isEmpty() || parkingLotsOpt.getItems().isEmpty()) {
-            sendAlert("Some fields have not been filled", " Empty or Missing Fields", Alert.AlertType.WARNING);
+            sendAlert("Some fields have not been filled", "Empty or Missing Fields", Alert.AlertType.WARNING);
             return false;
         }
 
@@ -109,10 +113,6 @@ public class CreateOrderController {
             return false;
         }
 
-        if (!checkDateValidity()) {
-            sendAlert("Date is not valid", " Invalid Date", Alert.AlertType.WARNING);
-            return false;
-        }
 
         return true;
     }
@@ -141,15 +141,6 @@ public class CreateOrderController {
         return matcher.matches();
     }
 
-    private boolean checkDateValidity() {
-        LocalDate arrival = arrivalDate.getValue();
-        LocalDate leaving = estLeavingDate.getValue();
-        if (arrival.isAfter(leaving)) {
-            return false;
-        } else {
-            return true;
-        }
-    }
 
     @FXML
     void initialize() throws IOException {
@@ -209,7 +200,7 @@ public class CreateOrderController {
         Order order = new Order();
         order.setCarId(Integer.parseInt(carIdTextBox.getText()));
         order.setCustomerId(Integer.parseInt(idTextBox.getText()));
-        order.setParkingLotId(String.valueOf(Integer.parseInt(parkingLotsOpt.getValue().toString())));
+        order.setParkingLotId(Integer.parseInt(parkingLotsOpt.getValue().toString()));
         order.setEmail(emailAddress.getText());
 
         LocalDate arrival = arrivalDate.getValue();
@@ -224,4 +215,6 @@ public class CreateOrderController {
 
         return order;
     }
+
+
 }

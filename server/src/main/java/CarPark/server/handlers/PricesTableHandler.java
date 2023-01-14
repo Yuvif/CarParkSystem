@@ -36,7 +36,8 @@ public class PricesTableHandler extends MessageHandler {
         }
     }
 
-    private void editPrice() throws Exception {
+    private void editPrice() throws Exception
+    {
         Price old_price = session.get(Price.class, class_message.new_price.getId());
         old_price.setPrice(class_message.new_price.getPrice());
     }
