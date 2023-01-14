@@ -76,9 +76,7 @@ public class Order implements Serializable {
         return estimatedLeavingTime;
     }
 
-    public void setEstimatedLeavingTime(LocalDateTime estimatedLeavingTime) {
-        this.estimatedLeavingTime = estimatedLeavingTime;
-    }
+    public void setEstimatedLeavingTime(LocalDateTime estimatedLeavingTime) { this.estimatedLeavingTime = estimatedLeavingTime; }
 
     public int getId() {
         return id;

@@ -15,9 +15,11 @@ public class Employee {
     private String email;
     private String workersRole;
     private String password;
+    private boolean isLogged;
 
 
-    public Employee(int employeeId, String firstName, String lastName, String email, String workersRole,String password) {
+    public Employee(long employeeId, String firstName, String lastName, String email, String workersRole, String password, boolean isLogged)
+    {
         super();
         this.employeeId = employeeId;
         this.firstName = firstName;
@@ -25,6 +27,7 @@ public class Employee {
         this.email = email;
         this.workersRole = workersRole;
         this.password = password;
+        this.isLogged =  isLogged;
     }
 
     public Employee() {
@@ -34,7 +37,7 @@ public class Employee {
         return employeeId;
     }
 
-    public void setEmployeeId(int employeeId) {
+    public void setEmployeeId(long employeeId) {
         this.employeeId = employeeId;
     }
 

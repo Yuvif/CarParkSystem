@@ -14,16 +14,15 @@ public class Customer {
     private String lastName;
     private String email;
     private int balance;
-    private String password;
 
-    public Customer(long customerId, String firstName, String lastName, String email, int balance,String password) {
+
+    public Customer(int customerId, String firstName, String lastName, String email, int balance) {
         super();
         this.customerId = customerId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.balance = balance;
-        this.password = password;
     }
 
     public Customer() {
@@ -72,12 +71,4 @@ public class Customer {
     public int getId() {
         return id;
     }
-
-    public String getPassword(){return password;}
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-
 }

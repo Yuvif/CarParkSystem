@@ -1,6 +1,7 @@
 package CarPark.server;
 
 
+import CarPark.entities.Membership;
 import CarPark.entities.Order;
 import CarPark.entities.Parkinglot;
 import CarPark.entities.Price;
@@ -37,6 +38,7 @@ public class SimpleServer extends AbstractServer {
         configuration.addAnnotatedClass(Parkinglot.class);
         configuration.addAnnotatedClass(Price.class);
         configuration.addAnnotatedClass(Order.class);
+        configuration.addAnnotatedClass(Membership.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();        //pull session factory config from hibernate properties
         return configuration.buildSessionFactory(serviceRegistry);
@@ -61,7 +63,8 @@ public class SimpleServer extends AbstractServer {
                     handler = new PricesTableHandler((PricesMessage) msg, session, client);
                 } else if (OrderMessage.class.equals(msgClass)) {
                     handler = new OrderHandler((OrderMessage) msg, session, client);
-                    System.out.println("we got here");
+                } else if (RegisterMessage.class.equals(msgClass)) {
+                    handler = new RegisterHandler((RegisterMessage) msg, session, client);
                 }
                 if (handler != null) {
                     handler.handleMessage();
