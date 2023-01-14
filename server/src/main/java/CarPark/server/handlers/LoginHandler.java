@@ -20,7 +20,7 @@ public class LoginHandler extends MessageHandler {
     public void handleMessage() {
         Employee employee = null;
         Customer customer = null;
-        String hql = "SELECT * FROM Employees WHERE password = :pass AND employeeId = :user_id";
+        String hql = "FROM User WHERE userId = :user_id";
         Query query = session.createQuery(hql);
         query.setParameter("pass",class_message.getPassword());
         query.setParameter("user_id",class_message.getUserId());
@@ -30,7 +30,7 @@ public class LoginHandler extends MessageHandler {
             class_message.response_type = LoginMessage.ResponseType.LOGIN_SUCCEED_EMPLOYEE;
         }
         else {
-            hql = "SELECT * FROM Customers WHERE password = :pass AND customerId = :user_id";
+            hql = "SELECT * FROM Customer WHERE password = :pass AND customerId = :user_id";
             query = session.createQuery(hql);
             query.setParameter("pass",class_message.getPassword());
             query.setParameter("user_id",class_message.getUserId());
