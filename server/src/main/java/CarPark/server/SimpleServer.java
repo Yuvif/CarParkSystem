@@ -1,10 +1,8 @@
 package CarPark.server;
 
 
-import CarPark.entities.Employee;
-import CarPark.entities.Order;
-import CarPark.entities.Parkinglot;
-import CarPark.entities.Price;
+import CarPark.entities.*;
+import CarPark.server.password.CipherKey;
 import CarPark.entities.messages.*;
 import CarPark.server.handlers.*;
 import CarPark.server.ocsf.AbstractServer;
@@ -25,9 +23,12 @@ import java.util.ArrayList;
 public class SimpleServer extends AbstractServer {
     private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
     public static Session session;// encapsulation make public function so this can be private
+    public CipherKey key;
 
-    public SimpleServer(int port) {
+    public SimpleServer(int port,CipherKey key) throws Exception {
         super(port);
+        this.key = key;
+        this.key.init();
     }
 
 
@@ -38,8 +39,8 @@ public class SimpleServer extends AbstractServer {
         configuration.addAnnotatedClass(Parkinglot.class);
         configuration.addAnnotatedClass(Price.class);
         configuration.addAnnotatedClass(Order.class);
+        configuration.addAnnotatedClass(User.class);
         configuration.addAnnotatedClass(Employee.class);
-
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();        //pull session factory config from hibernate properties
         return configuration.buildSessionFactory(serviceRegistry);
     }
@@ -56,14 +57,13 @@ public class SimpleServer extends AbstractServer {
             } else { //Get client requests
                 session.beginTransaction();
                 if (LoginMessage.class.equals(msgClass)) {
-                    handler = new LoginHandler((LoginMessage) msg, session, client);
+                    handler = new LoginHandler((LoginMessage) msg, session, client,key);
                 } else if (ParkingListMessage.class.equals(msgClass)) {
                     handler = new ParkingListHandler((ParkingListMessage) msg, session, client);
                 } else if (PricesMessage.class.equals(msgClass)) {
                     handler = new PricesTableHandler((PricesMessage) msg, session, client);
                 } else if (OrderMessage.class.equals(msgClass)) {
                     handler = new OrderHandler((OrderMessage) msg, session, client);
-                    System.out.println("we got here");
                 }
                 if (handler != null) {
                     handler.handleMessage();

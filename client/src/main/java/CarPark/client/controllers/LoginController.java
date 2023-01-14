@@ -3,21 +3,18 @@ import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.entities.messages.LoginMessage;
 import CarPark.entities.messages.Message;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import javafx.scene.control.Button;
+
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javafx.scene.control.TextField;
-import javafx.event.ActionEvent;
 
 public class LoginController {
 
@@ -41,12 +38,12 @@ public class LoginController {
     }
 
 
-    public void login(ActionEvent event) throws IOException, NoSuchAlgorithmException {
+    public void login(ActionEvent event) throws Exception {
         if (checkIdValidity(userID.getText()) && checkPassValidity(password.getText())) //check if password and username are valid
         {
             //if valid send request to login with secured password
             long userId = Long.parseLong(userID.getText());
-            String userPass = securePassword(password.getText(), getSalt());
+            String userPass = password.getText();
             LoginMessage msg =
                     new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGIN,userId,userPass);
             SimpleClient.getClient().sendToServer(msg);
@@ -60,32 +57,6 @@ public class LoginController {
         wrongLogin.setText("Invalid Username Or Password!");
     }
 
-
-    public static String securePassword(String password, byte[] salt)
-    {
-        String generatedPassword = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-512");
-            md.update(salt);
-            byte[] bytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < bytes.length; i++) {
-                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-            }
-            generatedPassword = sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return generatedPassword;
-    }
-
-    static byte[] getSalt() throws NoSuchAlgorithmException
-    {
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-        return salt;
-    }
 
     private boolean checkIdValidity(String id) {
         String regex = "^[0-9]{9}$";
@@ -105,14 +76,11 @@ public class LoginController {
     @Subscribe
     public void newResponse(LoginMessage new_message) throws IOException {
         switch (new_message.response_type) {
-            case LOGIN_FAILED:
-                loginFailed();
-            case LOGIN_SUCCEED_CUSTOMER:
-                SimpleChatClient.customer = new_message.customer;
-                SimpleChatClient.setRoot("Customer");
-            case LOGIN_SUCCEED_EMPLOYEE:
-                SimpleChatClient.employee = new_message.employee;
-                SimpleChatClient.setRoot("Employee");
+            case LOGIN_FAILED -> loginFailed();
+            case LOGIN_SUCCEED -> {
+                SimpleChatClient.user = new_message.getUser();
+                SimpleChatClient.setRoot("EmployeePage");
+            }
         }
     }
 
