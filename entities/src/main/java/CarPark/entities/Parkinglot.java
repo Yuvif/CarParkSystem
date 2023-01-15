@@ -1,5 +1,7 @@
 package CarPark.entities;
 
+import com.sun.xml.bind.v2.model.core.ID;
+
 import javax.persistence.*;
 import java.io.Serializable;
 

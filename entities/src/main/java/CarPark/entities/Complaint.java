@@ -1,6 +1,8 @@
 package CarPark.entities;
 
 
+import CarPark.entities.Parkinglot;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -19,6 +21,19 @@ public class Complaint implements Serializable {    //only for customers
     private String compText;
     private Boolean appStatus = true;        // true= complaint filed successfully- yet to be inspected, false = complaint fulfilled
     private Boolean completedOnTime = false;
+
+    @ManyToOne
+    @JoinColumn(name = "parkinglot_name")
+    private Parkinglot parkinglot;
+
+    public Parkinglot getParkinglot() {
+        return parkinglot;
+    }
+
+    public void setParkinglot(Parkinglot parkinglot) {
+        this.parkinglot = parkinglot;
+    }
+
     ;
 
     public Complaint(Date date, String compText) {

@@ -4,6 +4,8 @@ import CarPark.entities.User;
 
 import javax.persistence.ManyToOne;
 
+import java.awt.*;
+
 public class LoginMessage extends Message {
     public RequestType request_type;
     public ResponseType response_type;
@@ -16,7 +18,7 @@ public class LoginMessage extends Message {
         return user;
     }
 
-    public LoginMessage(MessageType message_type, RequestType request_type,long user_id, String pass) {
+    public LoginMessage(MessageType message_type, RequestType request_type, long user_id, String pass) {
         super(message_type);
         this.request_type = request_type;
         this.user_id = user_id;
