@@ -3,6 +3,7 @@ import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.entities.messages.LoginMessage;
 import CarPark.entities.messages.Message;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -49,11 +50,11 @@ public class LoginController {
             SimpleClient.getClient().sendToServer(msg);
         }
         else
-            loginFailed();
+            setWrongLogin();
     }
 
-    public void loginFailed()
-    {
+    @FXML
+    public void setWrongLogin() throws IOException {
         wrongLogin.setText("Invalid Username Or Password!");
     }
 
@@ -76,7 +77,13 @@ public class LoginController {
     @Subscribe
     public void newResponse(LoginMessage new_message) throws IOException {
         switch (new_message.response_type) {
-            case LOGIN_FAILED -> loginFailed();
+            case LOGIN_FAILED -> Platform.runLater(()-> {
+                try {
+                    setWrongLogin();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
             case LOGIN_SUCCEED -> {
                 SimpleChatClient.user = new_message.getUser();
                 SimpleChatClient.setRoot("EmployeePage");
