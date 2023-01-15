@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.MenuEmployeeController">
+    <children>
+        <Button fx:id="editParkingSlots" layoutX="242.0" layoutY="163.0" mnemonicParsing="false" onAction="#screenChangeChoosePL" text="Edit ParkingSlots" />
+        <Label layoutX="68.0" prefHeight="73.0" prefWidth="391.0" text="EMPLOYEE MENU" textFill="#25b1d9">
+            <font>
+                <Font size="27.0" />
+            </font>
+        </Label>
+    </children>
+</AnchorPane>
