@@ -3,9 +3,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "employees")
-@AttributeOverrides({
-        @AttributeOverride(name="userId", column=@Column(name="employeeId")
-        )})
+//@AttributeOverrides({
+//        @AttributeOverride(name="userId", column=@Column(name="employeeId")
+//        )})
 public class Employee extends User {
     private String workersRole;
 

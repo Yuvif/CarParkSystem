@@ -1,13 +1,14 @@
 package CarPark.server;
-
-
-import CarPark.entities.*;
-import CarPark.server.password.CipherKey;
+import CarPark.entities.Employee;
+import CarPark.entities.Order;
+import CarPark.entities.Parkinglot;
+import CarPark.entities.Price;
 import CarPark.entities.messages.*;
 import CarPark.server.handlers.*;
 import CarPark.server.ocsf.AbstractServer;
 import CarPark.server.ocsf.ConnectionToClient;
 import CarPark.server.ocsf.SubscribedClient;
+import com.textmagic.sdk.model.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -23,12 +24,9 @@ import java.util.ArrayList;
 public class SimpleServer extends AbstractServer {
     private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
     public static Session session;// encapsulation make public function so this can be private
-    public CipherKey key;
 
-    public SimpleServer(int port,CipherKey key) throws Exception {
+    public SimpleServer(int port) throws Exception {
         super(port);
-        this.key = key;
-        this.key.init();
     }
 
 
@@ -57,7 +55,7 @@ public class SimpleServer extends AbstractServer {
             } else { //Get client requests
                 session.beginTransaction();
                 if (LoginMessage.class.equals(msgClass)) {
-                    handler = new LoginHandler((LoginMessage) msg, session, client,key);
+                    handler = new LoginHandler((LoginMessage) msg, session, client);
                 } else if (ParkingListMessage.class.equals(msgClass)) {
                     handler = new ParkingListHandler((ParkingListMessage) msg, session, client);
                 } else if (PricesMessage.class.equals(msgClass)) {
