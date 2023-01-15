@@ -60,10 +60,14 @@ public class SimpleServer extends AbstractServer {
                     handler = new ParkingListHandler((ParkingListMessage) msg, session, client);
                 } else if (PricesMessage.class.equals(msgClass)) {
                     handler = new PricesTableHandler((PricesMessage) msg, session, client);
-                } else if (OrderMessage.class.equals(msgClass)) {
-                    handler = new OrderHandler((OrderMessage) msg, session, client);
+                } else if (CreateOrderMessage.class.equals(msgClass)) {
+                    handler = new OrderHandler((CreateOrderMessage) msg, session, client);
                 } else if (ParkingSlotsMessage.class.equals(msgClass)) {
                     handler = new EditParkingSlotsHandler((ParkingSlotsMessage) msg, session, client);
+                }else if (PullParkingSlotsMessage.class.equals(msgClass)) {
+                    handler = new PullParkingSlotsHandler((PullParkingSlotsMessage) msg, session, client);
+                }else if (PullOrdersMessage.class.equals(msgClass)) {
+                    handler = new PullOrdersHandler((PullOrdersMessage) msg, session, client);
                     System.out.println("we got here");
                 }
                 if (handler != null) {

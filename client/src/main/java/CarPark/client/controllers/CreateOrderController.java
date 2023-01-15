@@ -3,7 +3,7 @@ package CarPark.client.controllers;
 import CarPark.client.SimpleClient;
 import CarPark.entities.Order;
 import CarPark.entities.messages.Message;
-import CarPark.entities.messages.OrderMessage;
+import CarPark.entities.messages.CreateOrderMessage;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -63,13 +63,13 @@ public class CreateOrderController {
         if (checkValidity()) // create an entity Order and send it to the server
         {
             Order order = createOrder();
-            OrderMessage msg = new OrderMessage(Message.MessageType.REQUEST, OrderMessage.RequestType.CREATE_NEW_ORDER, order);
+            CreateOrderMessage msg = new CreateOrderMessage(Message.MessageType.REQUEST, CreateOrderMessage.RequestType.CREATE_NEW_ORDER, order);
             SimpleClient.getClient().sendToServer(msg);
         }
     }
 
     @Subscribe
-    public void newResponse(OrderMessage new_message) {
+    public void newResponse(CreateOrderMessage new_message) {
         switch (new_message.response_type) {
             case ORDER_SUBMITTED:
                 Platform.runLater(() -> {
@@ -209,7 +209,7 @@ public class CreateOrderController {
         Order order = new Order();
         order.setCarId(Integer.parseInt(carIdTextBox.getText()));
         order.setCustomerId(Integer.parseInt(idTextBox.getText()));
-        order.setParkingLotId(Integer.parseInt(parkingLotsOpt.getValue().toString()));
+        order.setParkingLotId(String.valueOf(Integer.parseInt(parkingLotsOpt.getValue().toString())));
         order.setEmail(emailAddress.getText());
 
         LocalDate arrival = arrivalDate.getValue();
