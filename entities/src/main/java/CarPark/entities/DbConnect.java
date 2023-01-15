@@ -8,9 +8,9 @@ import java.sql.SQLException;
 public class DbConnect implements Serializable {
     private static String HOST = "127.0.0.1";
     private static int PORT = 3306;
-    private static String DB_NAME = "parking_lot_chain";
+    private static String DB_NAME = "first_db";
     private static String USERNAME = "root";
-    private static String PASSWORD = "Team4";
+    private static String PASSWORD = "semester";
     private static Connection connection;
 
     public static Connection getConnect() {
