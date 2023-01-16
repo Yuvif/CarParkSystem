@@ -37,7 +37,7 @@ public class ComplaintSubmissionController extends Controller {
             Complaint complaint = new Complaint(new Date(), complaintDesc.getText());
 //            create a list with the complaint
 //            send the complaint to the server
-            ComplaintMessage complaintMessage = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.CREATE_NEW_COMPLAINT, (List<Complaint>) complaint);
+            ComplaintMessage complaintMessage = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.CREATE_NEW_COMPLAINT, complaint);
             try {
                 SimpleChatClient.client.sendToServer(complaintMessage);
 

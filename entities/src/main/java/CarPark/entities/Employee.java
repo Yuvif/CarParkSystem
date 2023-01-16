@@ -30,6 +30,9 @@ public class Employee {
     public Employee() {
     }
 
+    public Employee(int employeeId, String firstName, String lastName, String email, String workersRole) {
+    }
+
     public long getEmployeeId() {
         return employeeId;
     }

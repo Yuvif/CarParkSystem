@@ -75,7 +75,7 @@ public class ComplaintHandlerTableController extends Controller {
 
         addButtonToTable();
 
-        ComplaintMessage complaintMessage = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.GET_ALL_COMPLAINTS, null);
+        ComplaintMessage complaintMessage = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.GET_ALL_COMPLAINTS);
 
         try {
             SimpleChatClient.client.sendToServer(complaintMessage);

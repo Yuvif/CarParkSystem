@@ -30,8 +30,11 @@ public class Complaint implements Serializable {    //only for customers
     }
 
     public Complaint() {
-
     }
+
+    public Complaint(Date date, String text) {
+    }
+
     public Parkinglot getParkinglot()
     {
         return parkinglot;

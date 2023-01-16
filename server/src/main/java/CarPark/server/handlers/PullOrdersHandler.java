@@ -1,5 +1,6 @@
 package CarPark.server.handlers;
 
+import CarPark.entities.Complaint;
 import CarPark.entities.Order;
 import CarPark.entities.ParkingSlot;
 import CarPark.entities.messages.PullOrdersMessage;
@@ -40,8 +41,13 @@ public class PullOrdersHandler extends MessageHandler {
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Order> orderQuery = builder.createQuery(Order.class);
         orderQuery.from(Order.class);
-        List<Order> orders = session.createQuery(orderQuery).getResultList();
-        return new LinkedList<Order>(orders);
+        List<Order> data = session.createQuery(orderQuery).getResultList();
+        LinkedList<Order> res= new LinkedList<Order>();
+        for(Order c: data)
+        {
+            res.add(c);
+        }
+        return res;
     }
 
 }

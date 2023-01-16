@@ -15,7 +15,7 @@ public class PullOrdersMessage extends Message  {
     public Date from;
     public Date to;
     public LinkedList<Order> orders;
-//    public LinkedList<Complaint> complaints;
+
 
     public PullOrdersMessage(MessageType message_type, PullOrdersMessage.RequestType requestType) {
         super(message_type);
@@ -37,12 +37,10 @@ public class PullOrdersMessage extends Message  {
 
     public enum RequestType {
         GET_SELECTED_ORDERS
-//        GET_SELECTED_COMPLAINTS,
     }
 
     public enum ResponseType {
         SET_SELECTED_ORDERS
-//        SET_SELECTED_COMPLAINTS,
     }
 
 }
