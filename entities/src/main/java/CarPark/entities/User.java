@@ -25,13 +25,13 @@ public abstract class User implements Serializable {
         return userId;
     }
 
-    public User(long userId, String password, String email, String firstName, String lastName, boolean isLogged) {
+    public User(long userId, String password, String email, String firstName, String lastName) {
         this.userId = userId;
         this.password = password;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.isLogged = isLogged;
+        this.isLogged = false;
     }
 
     public String getPassword() {

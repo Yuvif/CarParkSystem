@@ -1,15 +1,11 @@
 package CarPark.server;
-
-
-import CarPark.entities.Membership;
-import CarPark.entities.Order;
-import CarPark.entities.Parkinglot;
-import CarPark.entities.Price;
+import CarPark.entities.*;
 import CarPark.entities.messages.*;
 import CarPark.server.handlers.*;
 import CarPark.server.ocsf.AbstractServer;
 import CarPark.server.ocsf.ConnectionToClient;
 import CarPark.server.ocsf.SubscribedClient;
+import com.textmagic.sdk.model.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -26,7 +22,7 @@ public class SimpleServer extends AbstractServer {
     private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
     public static Session session;// encapsulation make public function so this can be private
 
-    public SimpleServer(int port) {
+    public SimpleServer(int port) throws Exception {
         super(port);
     }
 
@@ -38,6 +34,9 @@ public class SimpleServer extends AbstractServer {
         configuration.addAnnotatedClass(Parkinglot.class);
         configuration.addAnnotatedClass(Price.class);
         configuration.addAnnotatedClass(Order.class);
+        configuration.addAnnotatedClass(User.class);
+        configuration.addAnnotatedClass(Employee.class);
+        configuration.addAnnotatedClass(Customer.class);
         configuration.addAnnotatedClass(Membership.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();        //pull session factory config from hibernate properties
@@ -63,9 +62,9 @@ public class SimpleServer extends AbstractServer {
                     handler = new PricesTableHandler((PricesMessage) msg, session, client);
                 } else if (OrderMessage.class.equals(msgClass)) {
                     handler = new OrderHandler((OrderMessage) msg, session, client);
-                } else if (RegisterMessage.class.equals(msgClass)) {
-                    handler = new RegisterHandler((RegisterMessage) msg, session, client);
                 }
+                else if (RegisterUserMessage.class.equals(msgClass))
+                    handler = new RegisterUserHandler((RegisterUserMessage)msg,session,client);
                 if (handler != null) {
                     handler.handleMessage();
                     session.getTransaction().commit();
