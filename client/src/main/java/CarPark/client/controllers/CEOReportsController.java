@@ -141,13 +141,11 @@ public class CEOReportsController extends AbstractReports {
             //--will be an auto choosing of the specific parkinglot of the P-l manager (after login):
             //String parkinglot = SimpleChatClient.client.getParkinglot().getName();
             //temporary - simply choose a random parkinglot:
-            //msg.add(((User) App.client.user).getStore());
             String parkinglot = "CPS Eilat";
             Date from = getPickedDate(fromDate);
             Date to = addDays(getPickedDate(toDate), 1);
-//            ParkingSlotsMessage pslotMsg = new ParkingSlotsMessage(Message.MessageType.REQUEST, ParkingSlotsMessage.RequestType.GET_SELECTED_PARKING_SLOTS, parkinglot,from, to );
-//            SimpleClient.getClient().sendToServer(pslotMsg);
-//            SimpleChatClient.client.setController(this);-------------------------------temporary fix;
+            ComplaintMessage comMsg = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.GET_ALL_COMPLAINTS, parkinglot );
+            SimpleClient.getClient().sendToServer(comMsg);
         }
     }
 
@@ -184,14 +182,11 @@ public class CEOReportsController extends AbstractReports {
             case SET_SELECTED_ORDERS -> Platform.runLater(() -> {
                 showOrders(new_message.orders);
             });
-//            case SET_SELECTED_COMPLAINTS:
-//                showComplaints(new_message.complaints);
-//                break;
         }
     }
     @Subscribe
     public void newResponse(PullParkingSlotsMessage new_message) {
-        System.out.println("we got controller back from reports message");
+        System.out.println("we got controller back from pslots message");
         switch (new_message.response_type) {
             case SET_PARKING_SLOTS_REP -> Platform.runLater(()-> {
                 showRestrictedPSlots(new_message.parkingSlots);
@@ -199,21 +194,16 @@ public class CEOReportsController extends AbstractReports {
             });
         }
     }
-//    /**
-//     * pullData function called after server sends the orders and complaints to make the report,
-//     * then it calls other functions to display each component of the report.
-//     * @param orders all the relevant orders from server
-//     * @param complaints all the relevant complaints from server
-//     */
-//    public void pullData(LinkedList<Order> orders, LinkedList<Complaint> complaints, LinkedList<ParkingSlot> restricPslots ) {
-//        Platform.runLater(() -> {
-//            int daysNum = numOfDays(getPickedDate(fromDate), getPickedDate(toDate));
-//            //showOrders(orders);
-//            showComplaints(complaints);
-//            showRestrictedPSlots(restricPslots);
-//        });
-//    }
-
+    @Subscribe
+    public void newResponse(ComplaintMessage new_message) {
+        System.out.println("we got controller back from complaints message");
+        switch (new_message.response_type) {
+            case ALL_COMPLAINTS -> Platform.runLater(()-> {
+                //case ALL_COMPLAINTS:
+                    showComplaints(new_message.complaints2Rep);
+            });
+        }
+    }
     /**
      * showOrders function gets all relevant orders, then it gets a map from getMap that maps from product name
      * to the amount the store sold, and from that data, displaying it with the PieChart.

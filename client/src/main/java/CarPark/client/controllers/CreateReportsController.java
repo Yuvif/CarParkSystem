@@ -5,10 +5,8 @@ import CarPark.entities.Complaint;
 import CarPark.entities.Order;
 import CarPark.entities.ParkingSlot;
 import CarPark.entities.Parkinglot;
-import CarPark.entities.messages.ParkingSlotsMessage;
-import CarPark.entities.messages.PullOrdersMessage;
-import CarPark.entities.messages.Message;
-import CarPark.entities.messages.PullParkingSlotsMessage;
+import CarPark.entities.messages.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
@@ -24,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 public class CreateReportsController extends AbstractReports {
 
@@ -31,15 +30,13 @@ public class CreateReportsController extends AbstractReports {
     private StackedBarChart<String, Number> complaintChart;
 
     @FXML
-    private StackedBarChart<String, Number> restrictedPslotsChart;
+    private StackedBarChart<String, Number> ordrsChart1;
 
     @FXML
-    private StackedBarChart<String, Number> ordersChart;
+    private StackedBarChart<String, Number> restrictedPSlotsChart;
+
     @FXML
     private CategoryAxis daysAxis3;
-
-    @FXML
-    private StackedBarChart<?, ?> ordrsChart1;
 
     @FXML
     private NumberAxis ordsAxis1;
@@ -99,9 +96,8 @@ public class CreateReportsController extends AbstractReports {
             SimpleClient.getClient().sendToServer(ordersMsg);
             PullParkingSlotsMessage pslotMsg = new PullParkingSlotsMessage(Message.MessageType.REQUEST, PullParkingSlotsMessage.RequestType.GET_PARKING_SLOTS_REP, parkinglot,from, to );
             SimpleClient.getClient().sendToServer(pslotMsg);
-//            ParkingSlotsMessage pslotMsg = new ParkingSlotsMessage(Message.MessageType.REQUEST, ParkingSlotsMessage.RequestType.GET_SELECTED_PARKING_SLOTS, parkinglot,from, to );
-//            SimpleClient.getClient().sendToServer(pslotMsg);
-//            SimpleChatClient.client.setController(this);-------------------------------temporary fix;
+            ComplaintMessage comMsg = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.GET_ALL_COMPLAINTS, parkinglot );
+            SimpleClient.getClient().sendToServer(comMsg);
         }
     }
 
@@ -126,23 +122,31 @@ public class CreateReportsController extends AbstractReports {
 
     @Subscribe
     public void newResponse(PullOrdersMessage new_message) {
-        System.out.println("we got controller back from reports message");
+        System.out.println("we got controller back from order reports message");
+
         switch (new_message.response_type) {
-            case SET_SELECTED_ORDERS:
+            case SET_SELECTED_ORDERS -> Platform.runLater(() -> {
                 showOrders(new_message.orders);
-                break;
-//            case SET_SELECTED_COMPLAINTS:
-//                showComplaints(new_message.complaints);
-//                break;
+            });
         }
     }
     @Subscribe
     public void newResponse(PullParkingSlotsMessage new_message) {
-        System.out.println("we got controller back from reports message");
+        System.out.println("we got controller back from pslots message");
         switch (new_message.response_type) {
-            case SET_PARKING_SLOTS_REP:
+            case SET_PARKING_SLOTS_REP -> Platform.runLater(()-> {
                 showRestrictedPSlots(new_message.parkingSlots);
-                break;
+
+            });
+        }
+    }
+    @Subscribe
+    public void newResponse(ComplaintMessage new_message) {
+        System.out.println("we got controller back from complaint message");
+        switch (new_message.response_type) {
+            case ALL_COMPLAINTS -> Platform.runLater(()-> {
+                showComplaints(new_message.complaints2Rep);
+            });
         }
     }
     /**
@@ -155,7 +159,7 @@ public class CreateReportsController extends AbstractReports {
     //need to sort the orders arrangement by customer type!!!!----------------------------------------------
     //need to add a date attribute to the order entity declaration!!!---------------------------------------
     private void showOrders(LinkedList<Order> orders) {
-        ordersChart.getData().clear();
+        ordrsChart1.getData().clear();
         LinkedList<XYChart.Series<String, Number>> seriesLinkedList = new LinkedList<XYChart.Series<String, Number>>();
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 
@@ -172,11 +176,11 @@ public class CreateReportsController extends AbstractReports {
 
             series.getData().add(new XYChart.Data<>(formatter.format(localDateToDate(date)), numOfOrd));
         }
-        complaintChart.getData().addAll(seriesLinkedList);
+        ordrsChart1.getData().addAll(seriesLinkedList);
     }
 
     private void showRestrictedPSlots(LinkedList<ParkingSlot> parkingSlots) {
-        restrictedPslotsChart.getData().clear();
+        restrictedPSlotsChart.getData().clear();
         LinkedList<XYChart.Series<String, Number>> seriesLinkedList = new LinkedList<XYChart.Series<String, Number>>();
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 
@@ -196,7 +200,7 @@ public class CreateReportsController extends AbstractReports {
             salesNum.setText(String.valueOf(numOfRestPSl));
         }
 
-        restrictedPslotsChart.getData().addAll(seriesLinkedList);
+        restrictedPSlotsChart.getData().addAll(seriesLinkedList);
     }
 
     private void showComplaints(LinkedList<Complaint> complaints) {

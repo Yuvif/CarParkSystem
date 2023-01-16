@@ -1,12 +1,15 @@
 package CarPark.server.handlers;
 
 import CarPark.entities.Complaint;
+import CarPark.entities.ParkingSlot;
 import CarPark.entities.messages.ComplaintMessage;
 import CarPark.entities.messages.Message;
 import CarPark.server.ocsf.ConnectionToClient;
 import org.hibernate.Session;
 
 import javax.persistence.criteria.CriteriaQuery;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ComplaintHandler extends MessageHandler {
@@ -25,19 +28,27 @@ public class ComplaintHandler extends MessageHandler {
                 createComplaint();
                 class_message.response_type = ComplaintMessage.ResponseType.COMPLAINT_SUBMITTED;
                 break;
+            case GET_ALL_COMPLAINTS:
+                class_message.complaints2Rep = getComplaintList();
+                class_message.response_type = ComplaintMessage.ResponseType.ALL_COMPLAINTS;
         }
     }
 
     private void createComplaint() {
-        Complaint newComplaint = class_message.complaints.get(0) ;
+        Complaint newComplaint = class_message.complaints2Rep.get(0) ;
         session.save(newComplaint);
         session.flush();
     }
 
-    private List<Complaint> getComplaintList() throws Exception {
+    private LinkedList<Complaint> getComplaintList() throws Exception {
         CriteriaQuery<Complaint> query = cb.createQuery(Complaint.class);
         query.from(Complaint.class);
         List<Complaint> data = session.createQuery(query).getResultList();
-        return data;
+        LinkedList<Complaint> res= new LinkedList<Complaint>();
+        for(Complaint c: data)
+        {
+            res.add(c);
+        }
+        return res;
     }
 }

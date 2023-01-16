@@ -1,5 +1,4 @@
 package CarPark.entities;
-
 import javax.persistence.*;
 
 @Entity
@@ -9,26 +8,25 @@ public class ParkingLotWorker extends Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private int parkingLotNumber;
+    @ManyToOne
+    private Parkinglot parkingLot;
 
-
-    public ParkingLotWorker(int employeeId, String firstName, String lastName, String email, String workersRole, int parkingLotNumber, String password) {
-        super(employeeId, firstName, lastName, email, workersRole, password);
-        this.parkingLotNumber = parkingLotNumber;
+    public ParkingLotWorker(int employeeId, String firstName, String lastName, String email, String workersRole, Parkinglot parkingLot) {
+        super(employeeId, firstName, lastName, email, workersRole);
+        this.parkingLot = parkingLot;
     }
 
-    public ParkingLotWorker() {
+    public ParkingLotWorker() {}
+
+    public Parkinglot getParkingLot() {
+        return parkingLot;
+    }
+    public void setParkingLot(Parkinglot parkingLot) {
+        this.parkingLot = parkingLot;
     }
 
-    public int getParkingLotNumber() {
-        return parkingLotNumber;
-    }
-
-    public void setParkingLotNumber(int parkingLotNumber) {
-        this.parkingLotNumber = parkingLotNumber;
-    }
-
-    public int getId() {
+    public int getId()
+    {
         return id;
     }
 }

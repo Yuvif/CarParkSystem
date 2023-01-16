@@ -4,7 +4,7 @@ import CarPark.entities.CheckedIn;
 import CarPark.entities.ParkingSlot;
 import CarPark.entities.Parkinglot;
 import CarPark.entities.messages.CheckInGuestMessage;
-import CarPark.entities.messages.OrderMessage;
+import CarPark.entities.messages.CreateOrderMessage;
 import CarPark.server.ocsf.ConnectionToClient;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -37,7 +37,7 @@ public class CheckInHandler extends MessageHandler {
         for (ParkingSlot parkingSlot : parkingSlots) {
 //        find a parkingslot in the chosen parkinglot which is also empty
             Parkinglot parkinglot = parkingSlot.getParkinglot();
-            if (parkinglot.getName().equals(parkingLot) && parkingSlot.getStatus().equals("EMPTY")) {
+            if (parkinglot.getId().equals(parkingLot) && parkingSlot.getStatus().equals("EMPTY")) {
                 class_message.checkedIn.setParkingSlot(parkingSlot);
                 break;
             }
