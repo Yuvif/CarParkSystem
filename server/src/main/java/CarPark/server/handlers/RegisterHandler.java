@@ -1,12 +1,10 @@
 package CarPark.server.handlers;
 
 import CarPark.entities.Membership;
-import CarPark.entities.Price;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.RegisterMessage;
 import CarPark.server.ocsf.ConnectionToClient;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.List;
@@ -58,12 +56,12 @@ public class RegisterHandler extends MessageHandler{
     @Override
     public void handleMessage() throws Exception
     {
-        switch (class_message.request_type) {  //check failure!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        switch (class_message.request_type) {
             case REGISTER:
                 createMembership();
-                //class_message.response_type = RegisterMessage.ResponseType.REGISTRATION_SUCCEEDED;
                 break;
-
         }
     }
+
+
 }
