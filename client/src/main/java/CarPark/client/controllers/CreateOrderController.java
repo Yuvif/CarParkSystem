@@ -26,10 +26,10 @@ import static CarPark.client.controllers.Controller.sendAlert;
 public class CreateOrderController {
 
     @FXML
-    private ComboBox arrivalHour;
+    private ComboBox<java.io.Serializable> arrivalHour;
 
     @FXML
-    private ComboBox arrivalMin;
+    private ComboBox<java.io.Serializable> arrivalMin;
 
     @FXML
     private DatePicker arrivalDate;
@@ -44,16 +44,16 @@ public class CreateOrderController {
     private DatePicker estLeavingDate;
 
     @FXML
-    private ComboBox estLeavingHour;
+    private ComboBox<java.io.Serializable> estLeavingHour;
 
     @FXML
-    private ComboBox estLeavingMin;
+    private ComboBox<java.io.Serializable> estLeavingMin;
 
     @FXML
     private TextField idTextBox;
 
     @FXML
-    private ComboBox parkingLotsOpt;
+    private ComboBox<String> parkingLotsOpt;
 
     @FXML
     private Button submitBtn;
@@ -85,6 +85,7 @@ public class CreateOrderController {
                         alert.close();
                     }));
                     pause.play();
+                    resetFields();
                 });
                 break;
         }
@@ -145,10 +146,11 @@ public class CreateOrderController {
     @FXML
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
-        //think of a way to get the parking lots from the server **********************
-        for (int i = 0; i < 3; i++) {
-            parkingLotsOpt.getItems().add(i);
-        }
+        parkingLotsOpt.getItems().add("Haifa");
+        parkingLotsOpt.getItems().add("Tel Aviv");
+        parkingLotsOpt.getItems().add("Jerusalem");
+        parkingLotsOpt.getItems().add("Be'er Sheva");
+        parkingLotsOpt.getItems().add("Eilat");
 
         // Initialize the ComboBox with the hours
         for (int i = 0; i < 24; i++) {
@@ -200,7 +202,7 @@ public class CreateOrderController {
         Order order = new Order();
         order.setCarId(Integer.parseInt(carIdTextBox.getText()));
         order.setCustomerId(Integer.parseInt(idTextBox.getText()));
-        order.setParkingLotId(Integer.parseInt(parkingLotsOpt.getValue().toString()));
+        order.setParkingLotId(parkingLotsOpt.getValue().toString());
         order.setEmail(emailAddress.getText());
 
         LocalDate arrival = arrivalDate.getValue();
@@ -214,6 +216,20 @@ public class CreateOrderController {
         order.setEstimatedLeavingTime(leavingDateTime);
 
         return order;
+    }
+
+    private void resetFields()
+    {
+        arrivalHour.valueProperty().set(null);
+        arrivalMin.valueProperty().set(null);
+        estLeavingDate.setValue(null);
+        arrivalDate.setValue(null);
+        carIdTextBox.setText("");
+        emailAddress.setText("");
+        estLeavingHour.valueProperty().set(null);
+        estLeavingMin.valueProperty().set(null);
+        idTextBox.setText("");
+        parkingLotsOpt.valueProperty().set(null);
     }
 
 
