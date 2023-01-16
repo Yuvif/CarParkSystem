@@ -1,11 +1,15 @@
 package CarPark.server;
-import CarPark.entities.*;
+
+
+import CarPark.entities.Membership;
+import CarPark.entities.Order;
+import CarPark.entities.Parkinglot;
+import CarPark.entities.Price;
 import CarPark.entities.messages.*;
 import CarPark.server.handlers.*;
 import CarPark.server.ocsf.AbstractServer;
 import CarPark.server.ocsf.ConnectionToClient;
 import CarPark.server.ocsf.SubscribedClient;
-import com.textmagic.sdk.model.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -22,7 +26,7 @@ public class SimpleServer extends AbstractServer {
     private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
     public static Session session;// encapsulation make public function so this can be private
 
-    public SimpleServer(int port) throws Exception {
+    public SimpleServer(int port) {
         super(port);
     }
 
@@ -62,6 +66,10 @@ public class SimpleServer extends AbstractServer {
                     handler = new PricesTableHandler((PricesMessage) msg, session, client);
                 } else if (OrderMessage.class.equals(msgClass)) {
                     handler = new OrderHandler((OrderMessage) msg, session, client);
+                } else if (RegisterMessage.class.equals(msgClass)) {
+                    handler = new RegisterHandler((RegisterMessage) msg, session, client);
+                } else if (OrdersTableMessage.class.equals(msgClass)) {
+                    handler = new OrdersTableHandler((OrdersTableMessage) msg, session, client);
                 }
                 else if (RegisterUserMessage.class.equals(msgClass))
                     handler = new RegisterUserHandler((RegisterUserMessage)msg,session,client);
