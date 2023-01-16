@@ -10,9 +10,8 @@ public class Employee extends User {
     private String workersRole;
 
 
-    public Employee(long employeeId, String firstName, String lastName, String email, String workersRole,String password
-    ,boolean isLogged) throws Exception {
-        super(employeeId,password,email,firstName,lastName,isLogged);
+    public Employee(long employeeId, String firstName, String lastName, String email, String workersRole,String password) throws Exception {
+        super(employeeId,password,email,firstName,lastName);
         this.workersRole = workersRole;
     }
 

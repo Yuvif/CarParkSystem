@@ -1,6 +1,8 @@
 package CarPark.client.controllers;
+
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
+import CarPark.entities.Customer;
 import CarPark.entities.messages.LoginMessage;
 import CarPark.entities.messages.Message;
 import javafx.application.Platform;
@@ -17,7 +19,7 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LoginController {
+public class LoginController{
 
     public Button register;
     public Button check_in;
@@ -32,6 +34,7 @@ public class LoginController {
     private PasswordField password;
     @FXML
     private Label wrongLogin;
+
 
     @FXML
     void initialize() throws IOException {
@@ -77,27 +80,36 @@ public class LoginController {
     @Subscribe
     public void newResponse(LoginMessage new_message) throws IOException {
         switch (new_message.response_type) {
-            case LOGIN_FAILED -> Platform.runLater(()-> {
+            case LOGIN_FAILED -> Platform.runLater(() -> {
                 try {
                     setWrongLogin();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             });
+            case ALREADY_LOGGED -> Platform.runLater(() -> {
+                alreadyLogIn();
+            });
             case LOGIN_SUCCEED -> {
-                SimpleChatClient.user = new_message.getUser();
-                SimpleChatClient.setRoot("EmployeePage");
+                SimpleClient.setUser(new_message.getUser());
+                if (new_message.getUser().getClass().equals(Customer.class))
+                    SimpleChatClient.setRoot("CustomerPage");
+                else
+                    SimpleChatClient.setRoot("EmployeePage");
             }
         }
     }
 
+    //Need to check if already registered to system!!
+    @FXML
     public void alreadyLogIn()
     {
         wrongLogin.setText("This user is already logged in to system");
     }
 
 
-    public void register(ActionEvent event) {
+    public void register(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("RegisterUser");
     }
 
     public void checkIn(ActionEvent event) {

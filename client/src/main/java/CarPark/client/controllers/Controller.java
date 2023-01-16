@@ -1,11 +1,11 @@
 package CarPark.client.controllers;
 
-import CarPark.entities.messages.Message;
+import CarPark.entities.User;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 
 public abstract class Controller {
-    private Message class_message;
+    public User user;
 
 
     public static void sendAlert(String error, String title, Alert.AlertType type) {

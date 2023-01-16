@@ -4,8 +4,6 @@ import CarPark.entities.User;
 
 import javax.persistence.ManyToOne;
 
-import java.awt.*;
-
 public class LoginMessage extends Message {
     public RequestType request_type;
     public ResponseType response_type;
@@ -35,7 +33,8 @@ public class LoginMessage extends Message {
 
     public enum ResponseType {
         LOGIN_SUCCEED,
-        LOGIN_FAILED
+        LOGIN_FAILED,
+        ALREADY_LOGGED;
     }
 
     public long getUserId() {

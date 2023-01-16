@@ -10,8 +10,8 @@ public class ParkingLotWorker extends Employee {
 
 
     public ParkingLotWorker(int employeeId, String password, String email, String firstName, String lastName, String workersRole, int parkingLotNumber,
-                            String pass, boolean isLogged) throws Exception {
-        super(employeeId,password,email,firstName, lastName, workersRole,isLogged);
+                            String pass) throws Exception {
+        super(employeeId,password,email,firstName, lastName, workersRole);
         this.parkingLotNumber = parkingLotNumber;
     }
 
