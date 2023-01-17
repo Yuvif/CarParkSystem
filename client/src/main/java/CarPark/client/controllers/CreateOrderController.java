@@ -78,9 +78,10 @@ public class CreateOrderController {
             case ORDER_SUBMITTED:
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setHeaderText("Order Submitted!");
+                    alert.setHeaderText("Order Submitted! \n " +
+                            "A charge of " + new_message.newOrder.getOrdersPrice() + "₪ was made");
                     alert.show();
-                    PauseTransition pause = new PauseTransition(Duration.seconds(2.5));
+                    PauseTransition pause = new PauseTransition(Duration.seconds(5));
                     pause.setOnFinished((e -> {
                         alert.close();
                     }));
@@ -194,15 +195,13 @@ public class CreateOrderController {
             }
         });
 
-
     }
-
 
     private Order createOrder() {
         Order order = new Order();
         order.setCarId(Integer.parseInt(carIdTextBox.getText()));
         order.setCustomerId(Integer.parseInt(idTextBox.getText()));
-        order.setParkingLotId(parkingLotsOpt.getValue().toString());
+        order.setParkingLotId(parkingLotsOpt.getValue());
         order.setEmail(emailAddress.getText());
 
         LocalDate arrival = arrivalDate.getValue();
@@ -231,6 +230,5 @@ public class CreateOrderController {
         idTextBox.setText("");
         parkingLotsOpt.valueProperty().set(null);
     }
-
 
 }

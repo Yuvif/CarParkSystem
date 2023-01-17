@@ -145,7 +145,6 @@ public class RegisterController {
         return matcher.matches();
     }
 
-
     private boolean checkValidity()
     {
         if (customerIdText.getText().isEmpty() || carIdNumber.getText().isEmpty() || startDateOfMembership.getValue() == null
@@ -175,7 +174,8 @@ public class RegisterController {
     {
         switch (new_message.response_type) {
             case REGISTRATION_SUCCEEDED:
-                sendAlert("Your Membership Number Is: " + new_message.newMembership.getMembershipId(),
+                sendAlert("Your Membership Number Is: \n" + new_message.newMembership.getMembershipId() +
+                                "\nA charge of " + new_message.newMembership.getMembershipsPrice() + "₪ was made",
                         "Membership Id Number", Alert.AlertType.INFORMATION);
                 break;
 
@@ -194,7 +194,7 @@ public class RegisterController {
         membership.setCustomerId(Long.parseLong(customerIdText.getText()));
         if(parkingLots.getValue() != null && arrivalHour.getValue() != null && arrivalMin.getValue() != null)
         {
-            membership.setRoutineParkingLot(parkingLots.getValue().toString());
+            membership.setRoutineParkingLot(parkingLots.getValue());
             arrivalTime = LocalTime.of(Integer.parseInt(arrivalHour.getValue().toString()), Integer.parseInt(arrivalMin.getValue().toString()));
             membership.setRoutineLeavingHour(arrivalTime);
         }

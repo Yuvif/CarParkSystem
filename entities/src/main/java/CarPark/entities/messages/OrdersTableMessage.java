@@ -11,7 +11,6 @@ public class OrdersTableMessage extends Message {
     public Order canceledOrder;
 
 
-
     public enum RequestType {
         GET_ORDERS_TABLE,
         CANCEL_ORDER
