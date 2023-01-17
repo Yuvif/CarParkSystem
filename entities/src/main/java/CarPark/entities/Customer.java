@@ -1,64 +1,29 @@
 package CarPark.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "Customers")
-
-public class Customer {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private long customerId;
-    private String firstName;
-    private String lastName;
-    private String email;
+@AttributeOverrides({
+        @AttributeOverride(name = "userId", column = @Column(name = "customerId"))
+})
+@Table(name = "customers")
+public class Customer extends User {
     private int balance;
-    private String password;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customerId", cascade = CascadeType.ALL)
+    List<Membership> memberships;
 
-    public Customer(long customerId, String firstName, String lastName, String email, int balance,String password) {
-        super();
-        this.customerId = customerId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
+    public Customer(long customerId, String firstName, String lastName, String email, int balance,String password) throws Exception {
+        super(customerId, password, email,firstName,lastName);
         this.balance = balance;
-        this.password = password;
+        memberships = null;
     }
 
     public Customer() {
     }
 
-    public long getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void addMemberShip(Membership membership){
+        memberships.add(membership);
     }
 
     public int getBalance() {
@@ -68,16 +33,5 @@ public class Customer {
     public void setBalance(int balance) {
         this.balance = balance;
     }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getPassword(){return password;}
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
 
 }

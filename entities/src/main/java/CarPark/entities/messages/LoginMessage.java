@@ -1,21 +1,30 @@
 package CarPark.entities.messages;
 
-import CarPark.entities.Customer;
-import CarPark.entities.Employee;
+import CarPark.entities.User;
+
+import javax.persistence.ManyToOne;
 
 public class LoginMessage extends Message {
     public RequestType request_type;
     public ResponseType response_type;
     private long user_id;
     private String password;
-    public Employee employee;
-    public Customer customer;
+    @ManyToOne
+    private User user;
 
-    public LoginMessage(MessageType message_type, RequestType request_type,long user_id, String pass) {
+    public User getUser() {
+        return user;
+    }
+
+    public LoginMessage(MessageType message_type, RequestType request_type, long user_id, String pass) {
         super(message_type);
         this.request_type = request_type;
         this.user_id = user_id;
         this.password = pass;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public enum RequestType {
@@ -23,9 +32,9 @@ public class LoginMessage extends Message {
     }
 
     public enum ResponseType {
-        LOGIN_SUCCEED_CUSTOMER,
-        LOGIN_SUCCEED_EMPLOYEE,
-        LOGIN_FAILED
+        LOGIN_SUCCEED,
+        LOGIN_FAILED,
+        ALREADY_LOGGED;
     }
 
     public long getUserId() {
@@ -43,5 +52,6 @@ public class LoginMessage extends Message {
     public void setPassword(String password) {
         this.password = password;
     }
+
 
 }
