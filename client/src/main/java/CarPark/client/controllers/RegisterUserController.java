@@ -1,5 +1,6 @@
 package CarPark.client.controllers;
 
+import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.entities.Customer;
 import CarPark.entities.messages.Message;
@@ -7,6 +8,7 @@ import CarPark.entities.messages.RegisterUserMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -23,22 +25,30 @@ public class RegisterUserController {
     @FXML
     private TextField password;
     @FXML
+    private TextField rePassword;
+    @FXML
     private TextField firstName;
     @FXML
     private TextField lastName;
     @FXML
     private TextField email;
+    @FXML
+    private Label wrongReg;
 
     @FXML
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
     }
 
+    @FXML
+    private void loginPage() throws IOException {
+        SimpleChatClient.setRoot("Login");
+    }
 
     @FXML
     void signUp(ActionEvent event) throws Exception
     {
-        if (checkValidity()) // create membership entity and send it to the server
+        if (checkValidity())
         {
             Customer new_customer = createCustomer();
             RegisterUserMessage msg = new RegisterUserMessage(Message.MessageType.REQUEST, RegisterUserMessage.RequestType.REGISTER, new_customer);
@@ -48,6 +58,7 @@ public class RegisterUserController {
                 e.printStackTrace();
             }
         }
+
     }
 
     private Customer createCustomer() throws Exception {
@@ -57,9 +68,13 @@ public class RegisterUserController {
     }
 
     private boolean checkValidity() {
-        if (checkIdValidity(userID.getText()) && checkPassValidity(password.getText()))
+        if (checkIdValidity(userID.getText()) &&
+                checkPassValidity(password.getText()) &&
+                checkIfPassMatched(password.getText(),rePassword.getText()))
             return true;
-        return false;
+        else
+            wrongReg.setText("Invalid Credentials");
+            return false;
     }
 
 
@@ -67,7 +82,9 @@ public class RegisterUserController {
         String regex = "^[0-9]{9}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(id);
-        return matcher.matches();
+        if (matcher.matches())
+            return true;
+        return false;
     }
 
     private boolean checkPassValidity(String pass)
@@ -75,8 +92,17 @@ public class RegisterUserController {
         String regex = ".{7,}$";    //password needs to be at least 7 chars
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(pass);
-        return matcher.matches();
+        if (matcher.matches())
+            return true;
+        return false;
     }
+
+        private boolean checkIfPassMatched(String pass1,String pass2)
+        {
+            if (pass1.equals(pass2))
+                return true;
+            return false;
+        }
 
     @Subscribe
     public void new_response(RegisterUserMessage new_message)
@@ -85,6 +111,8 @@ public class RegisterUserController {
             case REGISTRATION_SUCCEEDED:
                 sendAlert("Registration succeed, welcome:" + new_message.newCustomer.getFirstName(),
                         "New User", Alert.AlertType.INFORMATION);
+            case REGISTRATION_FAILED:
+                wrongReg.setText("User ID Or Email Already Taken");
         }
     }
 

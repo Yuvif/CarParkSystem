@@ -1,65 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.Button?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="519.0" prefWidth="700.0"
-      style="-fx-background-image:url(/assets/background.png);" translateX="3.0" translateY="1.0" xmlns="http://javafx.com/javafx/19"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.LoginController">
-    <children>
-        <PasswordField fx:id="password" layoutX="285.0" layoutY="225.0" prefHeight="35.0" prefWidth="200.0" promptText="Password" />
-        <TextField fx:id="userID" layoutX="285.0" layoutY="158.0" prefHeight="35.0" prefWidth="200.0" promptText="UserID" />
-        <Label layoutX="162.0" layoutY="166.0" prefHeight="17.0" prefWidth="97.0" text="User ID">
-            <font>
-                <Font name="Bauhaus 93" size="18.0" />
-            </font>
-        </Label>
-        <Label layoutX="162.0" layoutY="233.0" prefHeight="17.0" prefWidth="97.0" text="Password">
-            <font>
-                <Font name="Bauhaus 93" size="18.0" />
-            </font>
-        </Label>
-        <Button fx:id="loginBtn" layoutX="352.0" layoutY="287.0" mnemonicParsing="false" onAction="#login" text="Login">
-            <font>
-                <Font name="Bauhaus 93" size="18.0" />
-            </font>
-        </Button>
-        <Label fx:id="wrongLogin" layoutX="317.0" layoutY="338.0" prefHeight="20.0" prefWidth="149.0" textFill="RED">
-            <font>
-                <Font name="Bauhaus 93" size="18.0" />
-            </font>
-        </Label>
-      <Label layoutX="143.0" layoutY="34.0" prefHeight="17.0" prefWidth="485.0" text="Welcom To Park Car System">
-         <font>
-            <Font name="Bauhaus 93" size="36.0" />
-         </font>
-      </Label>
-      <Pane layoutY="92.0" prefHeight="2.0" prefWidth="700.0" style="-fx-background-color: Grey;" />
-      <Pane layoutY="373.0" prefHeight="2.0" prefWidth="700.0" style="-fx-background-color: Grey;" />
-      <Button fx:id="register" layoutX="110.0" layoutY="425.0" mnemonicParsing="false" onAction="#register" text="Register">
-         <font>
-            <Font name="Bauhaus 93" size="18.0" />
-         </font>
-      </Button>
-      <Button fx:id="check_in" layoutX="237.0" layoutY="425.0" mnemonicParsing="false" onAction="#checkIn" prefHeight="32.0" prefWidth="97.0" text="Check-in">
-         <font>
-            <Font name="Bauhaus 93" size="18.0" />
-         </font>
-      </Button>
-      <Button fx:id="check_out" layoutX="381.0" layoutY="425.0" mnemonicParsing="false" onAction="#checkOut" text="Check-out">
-         <font>
-            <Font name="Bauhaus 93" size="18.0" />
-         </font>
-      </Button>
-      <Button fx:id="order" layoutX="527.0" layoutY="425.0" mnemonicParsing="false" onAction="#makeOrder" text="Make order">
-         <font>
-            <Font name="Bauhaus 93" size="18.0" />
-         </font>
-      </Button>
-    </children>
-</Pane>
+<AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.LoginController">
+    <ImageView fitHeight="516.0" fitWidth="508.0" layoutX="509.0">
+        <image>
+            <Image url="@../../assets/background.png" />
+        </image>
+    </ImageView>
+    <Label layoutX="641.0" layoutY="276.0" prefHeight="42.0" prefWidth="268.0" text="CAR PARK SYSTEM" textFill="WHITE">
+        <font>
+            <Font name="SansSerif Bold" size="27.0" />
+        </font>
+        <effect>
+            <DropShadow />
+        </effect>
+    </Label>
+    <Label layoutX="726.0" layoutY="333.0" text="Makes Park Easy" textFill="WHITE">
+        <font>
+            <Font name="SansSerif Bold" size="12.0" />
+        </font>
+        <effect>
+            <DropShadow />
+        </effect>
+    </Label>
+   <AnchorPane blendMode="COLOR_BURN" layoutX="76.0" layoutY="103.0" prefHeight="263.0" prefWidth="363.0" style="-fx-background-color: #58d788; -fx-background-radius: 20;">
+      <children>
+         <ImageView fitHeight="42.0" fitWidth="40.0" layoutX="162.0" layoutY="30.0">
+            <image>
+               <Image url="@../../assets/padlock.png" />
+            </image>
+         </ImageView>
+         <ImageView fitHeight="82.0" fitWidth="90.0" layoutX="138.0" layoutY="181.0" onMouseClicked="#login" pickOnBounds="true">
+            <image>
+               <Image url="@../../assets/login.png" />
+            </image>
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
+         </ImageView>
+          <!--    <ImageView fitHeight="40.0" fitWidth="35.0" layoutX="110.0" layoutY="360.0" pickOnBounds="true" preserveRatio="true">-->
+          <!--        <image>-->
+          <!--            <Image url="@email.png" />-->
+          <!--        </image>-->
+          <!--    </ImageView>-->
+          <PasswordField fx:id="password" blendMode="COLOR_BURN" layoutX="33.0" layoutY="144.0" prefHeight="30.0" prefWidth="300.0" promptText="Password" style="-fx-border-width: 2; -fx-border-color: black; -fx-border-radius: 5;">
+              <font>
+                  <Font name="SansSerif Regular" size="14.0" />
+              </font>
+          </PasswordField>
+      
+                      <!-- User Inputs -->
+          <TextField fx:id="userID" blendMode="COLOR_BURN" layoutX="32.0" layoutY="95.0" prefHeight="30.0" prefWidth="300.0" promptText="User ID" style="-fx-border-width: 2; -fx-text-fill: black; -fx-border-color: black; -fx-border-radius: 5;">
+              <font>
+                  <Font name="SansSerif Regular" size="14.0" />
+              </font>
+          </TextField>
+      </children>
+   </AnchorPane>
+   <AnchorPane blendMode="COLOR_BURN" layoutX="76.0" layoutY="435.0" prefHeight="64.0" prefWidth="363.0" style="-fx-background-color: #58d788; -fx-background-radius: 30;">
+      <children>
+         <ImageView accessibleRole="BUTTON" fitHeight="50.0" fitWidth="50.0" layoutX="31.0" layoutY="4.0" onMouseClicked="#signUp" pickOnBounds="true">
+            <image>
+               <Image url="@../../assets/signup.png" />
+            </image>
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
+         </ImageView>
+         <Line endX="-100.0" endY="-60.0" layoutX="199.0" layoutY="60.0" startX="-100.0" startY="5.0" />
+         <Line endX="-100.0" endY="-60.0" layoutX="281.0" layoutY="60.0" startX="-100.0" startY="4.0" />
+         <Line endX="-100.0" endY="-60.0" layoutX="367.0" layoutY="60.0" startX="-100.0" startY="6.0" />
+      </children>
+   </AnchorPane>
+    <Label fx:id="wrongLogin" layoutX="130.0" layoutY="384.0" prefHeight="24.0" prefWidth="254.0" style="-fx-text-fill: #58d788;">
+        <font>
+            <Font name="SansSerif Regular" size="12.0" />
+        </font>
+   </Label>
+   <cursor>
+      <Cursor fx:constant="DEFAULT" />
+   </cursor>
+    <!-- The End of Signup form -->
+</AnchorPane>

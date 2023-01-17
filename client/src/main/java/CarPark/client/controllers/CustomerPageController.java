@@ -20,7 +20,7 @@ public class CustomerPageController{
 
     @FXML
     public void registerAsMember(ActionEvent event) throws IOException {
-        SimpleChatClient.setRoot("Login");
+        SimpleChatClient.setRoot("RegisterAsMember");
     }
 
     @FXML

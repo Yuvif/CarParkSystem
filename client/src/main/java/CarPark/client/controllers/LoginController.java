@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -26,8 +27,7 @@ public class LoginController{
     public Button check_out;
     public Button order;
 
-    @FXML
-    private Button loginButton;
+
     @FXML
     private TextField userID;
     @FXML
@@ -42,7 +42,7 @@ public class LoginController{
     }
 
 
-    public void login(ActionEvent event) throws Exception {
+    public void login() throws Exception {
         if (checkIdValidity(userID.getText()) && checkPassValidity(password.getText())) //check if password and username are valid
         {
             //if valid send request to login with secured password
@@ -91,7 +91,7 @@ public class LoginController{
                 alreadyLogIn();
             });
             case LOGIN_SUCCEED -> {
-                SimpleClient.setUser(new_message.getUser());
+                SimpleClient.setCurrent_user(new_message.getUser());
                 if (new_message.getUser().getClass().equals(Customer.class))
                     SimpleChatClient.setRoot("CustomerPage");
                 else
@@ -108,7 +108,7 @@ public class LoginController{
     }
 
 
-    public void register(ActionEvent event) throws IOException {
+    public void signUp(MouseEvent event) throws IOException {
         SimpleChatClient.setRoot("RegisterUser");
     }
 

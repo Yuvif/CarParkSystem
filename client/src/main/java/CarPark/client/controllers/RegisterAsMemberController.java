@@ -1,6 +1,7 @@
 package CarPark.client.controllers;
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
+import CarPark.entities.Customer;
 import CarPark.entities.Membership;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.RegisterMessage;
@@ -20,7 +21,7 @@ import java.util.regex.Pattern;
 
 import static CarPark.client.controllers.Controller.sendAlert;
 
-public class RegisterController {//Daniel need to change name to new member reg, also in server...
+public class RegisterAsMemberController {//Daniel need to change name to new member reg, also in server...
 
     @FXML
     private ComboBox<java.io.Serializable> arrivalHour;
@@ -51,7 +52,8 @@ public class RegisterController {//Daniel need to change name to new member reg,
         if (checkValidity()) // create membership entity and send it to the server
         {
             Membership membership = createMembership();
-            RegisterMessage msg = new RegisterMessage(Message.MessageType.REQUEST, RegisterMessage.RequestType.REGISTER, membership);
+            RegisterMessage msg = new RegisterMessage(Message.MessageType.REQUEST, RegisterMessage.RequestType.REGISTER, membership,
+                    (Customer)SimpleClient.getCurrent_user());
             try {
                 SimpleClient.getClient().sendToServer(msg);
             } catch (IOException e) {
@@ -86,6 +88,8 @@ public class RegisterController {//Daniel need to change name to new member reg,
         parkingLots.getItems().add("Jerusalem");
         parkingLots.getItems().add("Be'er Sheva");
         parkingLots.getItems().add("Eilat");
+        customerIdText.setText(SimpleClient.getCurrent_user().getId().toString());
+        customerIdText.setDisable(true);
 
         // Initialize the ComboBox with the hours
         for(int i = 0; i < 24; i++)
@@ -127,15 +131,6 @@ public class RegisterController {//Daniel need to change name to new member reg,
         membershipOpt.getItems().add("Routine Membership");
     }
 
-    private boolean checkIdValidity()
-    {
-        String id = customerIdText.getText();
-        String regex = "^[0-9]{9}$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(id);
-        return matcher.matches();
-    }
-
     private boolean checkCarIdValidity()
     {
         String carId = carIdNumber.getText();
@@ -147,16 +142,10 @@ public class RegisterController {//Daniel need to change name to new member reg,
 
     private boolean checkValidity()
     {
-        if (customerIdText.getText().isEmpty() || carIdNumber.getText().isEmpty() || startDateOfMembership.getValue() == null
+        if (carIdNumber.getText().isEmpty() || startDateOfMembership.getValue() == null
                 || arrivalHour.getItems().isEmpty() || arrivalMin.getItems().isEmpty() || parkingLots.getItems().isEmpty())
         {
             sendAlert("Some fields have not been filled", "Empty or Missing Fields", Alert.AlertType.WARNING);
-            return false;
-        }
-
-        if (!checkIdValidity())
-        {
-            sendAlert("ID is not valid", " Invalid ID", Alert.AlertType.WARNING);
             return false;
         }
 
