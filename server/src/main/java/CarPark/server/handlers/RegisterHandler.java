@@ -54,6 +54,7 @@ public class RegisterHandler extends MessageHandler{
             calculateMembershipsPrice();
             session.save(newMembership);
             session.flush();
+            class_message.current_customer.addMemberShip(newMembership);
         }
     }
 

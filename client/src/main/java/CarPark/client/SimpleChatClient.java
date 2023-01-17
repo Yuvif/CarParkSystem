@@ -20,7 +20,6 @@ public class SimpleChatClient extends Application {
     public static SimpleClient client;
     private static Scene scene;
 
-
     public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
@@ -41,9 +40,7 @@ public class SimpleChatClient extends Application {
         client.openConnection();
         ConnectionMessage message = new ConnectionMessage(Message.MessageType.REQUEST);
         SimpleClient.getClient().sendToServer(message);
-
-        scene = new Scene(loadFXML("Login"), 640, 520);
-
+        scene = new Scene(loadFXML("Login"));
         stage.setScene(scene);
         stage.show();
     }

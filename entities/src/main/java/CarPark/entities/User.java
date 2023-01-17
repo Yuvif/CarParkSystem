@@ -69,4 +69,5 @@ public abstract class User implements Serializable {
     public void setLogged(boolean logged) {
         isLogged = logged;
     }
+
 }
