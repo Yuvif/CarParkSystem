@@ -5,82 +5,123 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="1036.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.RegisterUserController">
-    <!-- The Beginning of Signup form -->
-    <Label layoutX="175.0" layoutY="46.0" prefHeight="36.0" prefWidth="130.0" style="-fx-text-fill: #A9A9A9;" text="Sign-Up">
-        <font>
-            <Font name="SansSerif Regular" size="30.0" />
-        </font>
-    </Label>
-
-    <!-- User Inputs -->
-    <TextField fx:id="userID" layoutX="90.0" layoutY="195.0" prefHeight="30.0" prefWidth="300.0" promptText="User ID" style="-fx-border-width: 2; -fx-border-color: #A9A9A9; -fx-border-radius: 5;">
-        <font>
-            <Font name="SansSerif Regular" size="14.0" />
-        </font>
-    </TextField>
-<!--    <ImageView fitHeight="40.0" fitWidth="35.0" layoutX="110.0" layoutY="320.0" pickOnBounds="true" preserveRatio="true">-->
-<!--        <image>-->
-<!--            <Image url="@users.png" />-->
-<!--        </image>-->
-<!--    </ImageView>-->
-    <TextField fx:id="email" layoutX="90.0" layoutY="243.0" prefHeight="30.0" prefWidth="300.0" promptText="Email" style="-fx-border-width: 2; -fx-border-color: #A9A9A9; -fx-border-radius: 5;">
-        <font>
-            <Font name="SansSerif Regular" size="14.0" />
-        </font>
-        <cursor>
-            <Cursor fx:constant="TEXT" />
-        </cursor>
-    </TextField>
-<!--    <ImageView fitHeight="40.0" fitWidth="35.0" layoutX="110.0" layoutY="360.0" pickOnBounds="true" preserveRatio="true">-->
-<!--        <image>-->
-<!--            <Image url="@email.png" />-->
-<!--        </image>-->
-<!--    </ImageView>-->
-    <PasswordField fx:id="password" layoutX="90.0" layoutY="291.0" prefHeight="30.0" prefWidth="300.0" promptText="Password" style="-fx-border-width: 2; -fx-border-color: #A9A9A9; -fx-border-radius: 5;">
-        <font>
-            <Font name="SansSerif Regular" size="14.0" />
-        </font>
-    </PasswordField>
-<!--    <ImageView fitHeight="40.0" fitWidth="35.0" layoutX="110.0" layoutY="400.0" pickOnBounds="true" preserveRatio="true">-->
-<!--        <image>-->
-<!--            <Image url="@lock.png" />-->
-<!--        </image>-->
-<!--    </ImageView>-->
-    <PasswordField fx:id="rePassword" layoutX="91.0" layoutY="340.0" prefHeight="30.0" prefWidth="300.0" promptText="Repeat Password" style="-fx-border-width: 2; -fx-border-color: #A9A9A9; -fx-border-radius: 5;">
-        <font>
-            <Font name="SansSerif Regular" size="14.0" />
-        </font>
-    </PasswordField>
-
-    <!-- Sign up button -->
-    <Button fx:id="signUpButton" layoutX="179.0" layoutY="401.0" mnemonicParsing="false" onAction="#signUp" prefHeight="33.0" prefWidth="123.0" style="-fx-background-color: #52d987; -fx-text-fill: white; -fx-border-radius: 5; -fx-border-width: 2; -fx-border-color: #109302;" text="Sign-Up">
-        <font>
-            <Font name="SansSerif Regular" size="15.0" />
-        </font>
-    </Button>
-   <ImageView fitHeight="516.0" fitWidth="476.0" layoutX="560.0">
+<AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.RegisterUserController">
+   <ImageView fitHeight="516.0" fitWidth="508.0" layoutX="509.0">
       <image>
          <Image url="@../../assets/background.png" />
       </image>
    </ImageView>
-   <TextField fx:id="firstName" layoutX="91.0" layoutY="100.0" prefHeight="30.0" prefWidth="300.0" promptText="First Name" style="-fx-border-width: 2; -fx-border-color: #A9A9A9; -fx-border-radius: 5;">
+   <Label layoutX="726.0" layoutY="333.0" text="Makes Park Easy" textFill="WHITE">
       <font>
-         <Font name="SansSerif Regular" size="14.0" />
+         <Font name="SansSerif Bold" size="12.0" />
       </font>
-   </TextField>
-   <TextField fx:id="lastName" layoutX="90.0" layoutY="148.0" prefHeight="30.0" prefWidth="300.0" promptText="Last Name" style="-fx-border-width: 2; -fx-border-color: #A9A9A9; -fx-border-radius: 5;">
+      <effect>
+         <DropShadow />
+      </effect>
+   </Label>
+   <Label layoutX="641.0" layoutY="276.0" prefHeight="42.0" prefWidth="268.0" text="CAR PARK SYSTEM" textFill="WHITE">
       <font>
-         <Font name="SansSerif Regular" size="14.0" />
+         <Font name="SansSerif Bold" size="27.0" />
       </font>
+      <effect>
+         <DropShadow />
+      </effect>
+   </Label>
+   <Pane blendMode="MULTIPLY" layoutX="92.0" layoutY="73.0" prefHeight="371.0" prefWidth="316.0" style="-fx-background-color: white; -fx-border-color: #58d788; -fx-border-radius: 20;">
       <cursor>
-         <Cursor fx:constant="TEXT" />
+         <Cursor fx:constant="DEFAULT" />
       </cursor>
-   </TextField>
+      <children>
+      <!--    <ImageView fitHeight="40.0" fitWidth="35.0" layoutX="110.0" layoutY="400.0" pickOnBounds="true" preserveRatio="true">-->
+      <!--        <image>-->
+      <!--            <Image url="@lock.png" />-->
+      <!--        </image>-->
+      <!--    </ImageView>-->
+          <PasswordField fx:id="rePassword" layoutX="8.0" layoutY="280.0" prefHeight="30.0" prefWidth="300.0" promptText="Repeat Password" style="-fx-border-width: 2; -fx-border-color: #A9A9A9; -fx-border-radius: 5;">
+              <font>
+                  <Font name="SansSerif Regular" size="14.0" />
+              </font>
+          </PasswordField>
+      
+          <!-- User Inputs -->
+          <TextField fx:id="userID" layoutX="8.0" layoutY="164.0" prefHeight="30.0" prefWidth="300.0" promptText="User ID" style="-fx-border-width: 2; -fx-border-color: #A9A9A9; -fx-border-radius: 5;">
+              <font>
+                  <Font name="SansSerif Regular" size="14.0" />
+              </font>
+          </TextField>
+         <TextField fx:id="lastName" layoutX="8.0" layoutY="123.0" prefHeight="30.0" prefWidth="300.0" promptText="Last Name" style="-fx-border-width: 2; -fx-border-color: #A9A9A9; -fx-border-radius: 5;">
+            <font>
+               <Font name="SansSerif Regular" size="14.0" />
+            </font>
+         </TextField>
+         <TextField fx:id="firstName" layoutX="8.0" layoutY="83.0" prefHeight="30.0" prefWidth="300.0" promptText="First Name" style="-fx-border-width: 2; -fx-border-color: #A9A9A9; -fx-border-radius: 5;">
+            <font>
+               <Font name="SansSerif Regular" size="14.0" />
+            </font>
+         </TextField>
+      <!--    <ImageView fitHeight="40.0" fitWidth="35.0" layoutX="110.0" layoutY="320.0" pickOnBounds="true" preserveRatio="true">-->
+      <!--        <image>-->
+      <!--            <Image url="@users.png" />-->
+      <!--        </image>-->
+      <!--    </ImageView>-->
+          <TextField fx:id="email" layoutX="8.0" layoutY="202.0" prefHeight="30.0" prefWidth="300.0" promptText="Email" style="-fx-border-width: 2; -fx-border-color: #A9A9A9; -fx-border-radius: 5;">
+              <font>
+                  <Font name="SansSerif Regular" size="14.0" />
+              </font>
+              <cursor>
+                  <Cursor fx:constant="TEXT" />
+              </cursor>
+          </TextField>
+      <!--    <ImageView fitHeight="40.0" fitWidth="35.0" layoutX="110.0" layoutY="360.0" pickOnBounds="true" preserveRatio="true">-->
+      <!--        <image>-->
+      <!--            <Image url="@email.png" />-->
+      <!--        </image>-->
+      <!--    </ImageView>-->
+          <PasswordField fx:id="password" layoutX="8.0" layoutY="241.0" prefHeight="30.0" prefWidth="300.0" promptText="Password" style="-fx-border-width: 2; -fx-border-color: #A9A9A9; -fx-border-radius: 5;">
+              <font>
+                  <Font name="SansSerif Regular" size="14.0" />
+              </font>
+          </PasswordField>
+         <Button layoutX="116.0" layoutY="327.0" mnemonicParsing="false" onAction="#signUp" prefHeight="30.0" prefWidth="84.0" style="-fx-background-color: #58d788; -fx-background-radius: 50;" text="Sign Up">
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
+         </Button>
+         <Label layoutX="102.0" layoutY="24.0" prefHeight="42.0" prefWidth="112.0" style="-fx-text-fill: #A9A9A9;" text="Sign-Up">
+            <font>
+               <Font name="SansSerif Regular" size="30.0" />
+            </font>
+         </Label>
+         <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="57.0" layoutY="28.0">
+            <image>
+               <Image url="@../../assets/add-user.png" />
+            </image>
+         </ImageView>
+      </children>
+   </Pane>
+   <Label fx:id="wrongReg" layoutX="105.0" layoutY="465.0" prefHeight="24.0" prefWidth="285.0" style="-fx-text-fill: #58d788;">
+      <font>
+         <Font name="SansSerif Regular" size="12.0" />
+      </font>
+   </Label>
+   <Pane layoutX="8.0" layoutY="11.0" prefHeight="57.0" prefWidth="62.0" style="-fx-border-color: #58d788; -fx-border-radius: 20;">
+      <children>
+         <ImageView accessibleRole="BUTTON" fitHeight="50.0" fitWidth="50.0" layoutX="6.0" layoutY="4.0" onMouseClicked="#loginPage" pickOnBounds="true">
+            <image>
+               <Image url="@../../assets/backToLogin.png" />
+            </image>
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
+         </ImageView>
+      </children>
+   </Pane>
     <!-- The End of Signup form -->
 </AnchorPane>

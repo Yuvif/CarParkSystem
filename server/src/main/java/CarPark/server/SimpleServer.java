@@ -1,10 +1,7 @@
 package CarPark.server;
 
 
-import CarPark.entities.Membership;
-import CarPark.entities.Order;
-import CarPark.entities.Parkinglot;
-import CarPark.entities.Price;
+import CarPark.entities.*;
 import CarPark.entities.messages.*;
 import CarPark.server.handlers.*;
 import CarPark.server.ocsf.AbstractServer;

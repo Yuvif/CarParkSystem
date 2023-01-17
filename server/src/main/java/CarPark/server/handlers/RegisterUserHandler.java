@@ -34,7 +34,7 @@ public class RegisterUserHandler extends MessageHandler {
 
             for (User user : users)
             {
-                if (user.getId().equals(new_customer.getId()) && user.getEmail() == new_customer.getEmail())
+                if (user.getId().equals(new_customer.getId()) || user.getEmail() == new_customer.getEmail())
                 {
                     class_message.response_type = RegisterUserMessage.ResponseType.REGISTRATION_FAILED;
                     break;

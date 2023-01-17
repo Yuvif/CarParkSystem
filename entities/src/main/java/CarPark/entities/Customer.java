@@ -4,10 +4,13 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@AttributeOverrides({
+        @AttributeOverride(name = "userId", column = @Column(name = "customerId"))
+})
 @Table(name = "customers")
 public class Customer extends User {
     private int balance;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customerId", cascade = CascadeType.ALL)
     List<Membership> memberships;
 
     public Customer(long customerId, String firstName, String lastName, String email, int balance,String password) throws Exception {
