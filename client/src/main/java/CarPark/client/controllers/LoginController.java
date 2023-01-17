@@ -1,26 +1,33 @@
 package CarPark.client.controllers;
 
+import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
+import CarPark.entities.Customer;
 import CarPark.entities.messages.LoginMessage;
 import CarPark.entities.messages.Message;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LoginController {
+public class LoginController{
+
+    public Button register;
+    public Button check_in;
+    public Button check_out;
+    public Button order;
 
     @FXML
-    private Button button;
+    private Button loginButton;
     @FXML
     private TextField userID;
     @FXML
@@ -28,52 +35,32 @@ public class LoginController {
     @FXML
     private Label wrongLogin;
 
+
     @FXML
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
     }
 
 
-    public void login(ActionEvent event) throws IOException, NoSuchAlgorithmException {
-        if (checkIdValidity(userID.getText()) && checkIdValidity(password.getText())) //check if password and username are valid
+    public void login(ActionEvent event) throws Exception {
+        if (checkIdValidity(userID.getText()) && checkPassValidity(password.getText())) //check if password and username are valid
         {
             //if valid send request to login with secured password
             long userId = Long.parseLong(userID.getText());
-            String userPass = SecurePassword(password.getText(), getSalt());
+            String userPass = password.getText();
             LoginMessage msg =
                     new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGIN,userId,userPass);
             SimpleClient.getClient().sendToServer(msg);
         }
         else
-            wrongLogin.setText("Invalid Username Or Password!");
+            setWrongLogin();
     }
 
-
-    public static String SecurePassword(String password, byte[] salt)
-    {
-        String generatedPassword = null;
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-512");
-            md.update(salt);
-            byte[] bytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < bytes.length; i++) {
-                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-            }
-            generatedPassword = sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return generatedPassword;
+    @FXML
+    public void setWrongLogin() throws IOException {
+        wrongLogin.setText("Invalid Username Or Password!");
     }
 
-    static byte[] getSalt() throws NoSuchAlgorithmException
-    {
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-        return salt;
-    }
 
     private boolean checkIdValidity(String id) {
         String regex = "^[0-9]{9}$";
@@ -82,7 +69,7 @@ public class LoginController {
         return matcher.matches();
     }
 
-    private boolean CheckPassValidity(String pass)
+    private boolean checkPassValidity(String pass)
     {
         String regex = ".{7,}$";    //password needs to be at least 7 chars
         Pattern pattern = Pattern.compile(regex);
@@ -90,7 +77,49 @@ public class LoginController {
         return matcher.matches();
     }
 
+    @Subscribe
+    public void newResponse(LoginMessage new_message) throws IOException {
+        switch (new_message.response_type) {
+            case LOGIN_FAILED -> Platform.runLater(() -> {
+                try {
+                    setWrongLogin();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            case ALREADY_LOGGED -> Platform.runLater(() -> {
+                alreadyLogIn();
+            });
+            case LOGIN_SUCCEED -> {
+                SimpleClient.setUser(new_message.getUser());
+                if (new_message.getUser().getClass().equals(Customer.class))
+                    SimpleChatClient.setRoot("CustomerPage");
+                else
+                    SimpleChatClient.setRoot("EmployeePage");
+            }
+        }
+    }
 
+    //Need to check if already registered to system!!
+    @FXML
+    public void alreadyLogIn()
+    {
+        wrongLogin.setText("This user is already logged in to system");
+    }
+
+
+    public void register(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("RegisterUser");
+    }
+
+    public void checkIn(ActionEvent event) {
+    }
+
+    public void checkOut(ActionEvent event) {
+    }
+
+    public void makeOrder(ActionEvent event) {
+    }
 }
 
 

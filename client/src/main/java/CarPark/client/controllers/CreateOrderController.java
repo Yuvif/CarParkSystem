@@ -26,10 +26,10 @@ import static CarPark.client.controllers.Controller.sendAlert;
 public class CreateOrderController {
 
     @FXML
-    private ComboBox arrivalHour;
+    private ComboBox<java.io.Serializable> arrivalHour;
 
     @FXML
-    private ComboBox arrivalMin;
+    private ComboBox<java.io.Serializable> arrivalMin;
 
     @FXML
     private DatePicker arrivalDate;
@@ -44,27 +44,31 @@ public class CreateOrderController {
     private DatePicker estLeavingDate;
 
     @FXML
-    private ComboBox estLeavingHour;
+    private ComboBox<java.io.Serializable> estLeavingHour;
 
     @FXML
-    private ComboBox estLeavingMin;
+    private ComboBox<java.io.Serializable> estLeavingMin;
 
     @FXML
     private TextField idTextBox;
 
     @FXML
-    private ComboBox parkingLotsOpt;
+    private ComboBox<String> parkingLotsOpt;
 
     @FXML
     private Button submitBtn;
 
     @FXML
     void submitDetails(ActionEvent event) throws IOException {
-        if (checkValidity()) // create an entity Order and send it to the server
+        if (checkValidity()) // create an order entity and send it to the server
         {
             Order order = createOrder();
             OrderMessage msg = new OrderMessage(Message.MessageType.REQUEST, OrderMessage.RequestType.CREATE_NEW_ORDER, order);
-            SimpleClient.getClient().sendToServer(msg);
+            try {
+                SimpleClient.getClient().sendToServer(msg);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -74,13 +78,15 @@ public class CreateOrderController {
             case ORDER_SUBMITTED:
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setHeaderText("Order Submitted!");
+                    alert.setHeaderText("Order Submitted! \n " +
+                            "A charge of " + new_message.newOrder.getOrdersPrice() + "₪ was made");
                     alert.show();
-                    PauseTransition pause = new PauseTransition(Duration.seconds(2.5));
+                    PauseTransition pause = new PauseTransition(Duration.seconds(5));
                     pause.setOnFinished((e -> {
                         alert.close();
                     }));
                     pause.play();
+                    resetFields();
                 });
                 break;
         }
@@ -90,7 +96,7 @@ public class CreateOrderController {
 
         if (idTextBox.getText().isEmpty() || carIdTextBox.getText().isEmpty() || emailAddress.getText().isEmpty() || arrivalDate.getValue() == null || estLeavingDate.getValue() == null
                 || arrivalHour.getItems().isEmpty() || arrivalMin.getItems().isEmpty() || estLeavingHour.getItems().isEmpty() || estLeavingMin.getItems().isEmpty() || parkingLotsOpt.getItems().isEmpty()) {
-            sendAlert("Some fields have not been filled", " Empty or Missing Fields", Alert.AlertType.WARNING);
+            sendAlert("Some fields have not been filled", "Empty or Missing Fields", Alert.AlertType.WARNING);
             return false;
         }
 
@@ -109,10 +115,6 @@ public class CreateOrderController {
             return false;
         }
 
-        if (!checkDateValidity()) {
-            sendAlert("Date is not valid", " Invalid Date", Alert.AlertType.WARNING);
-            return false;
-        }
 
         return true;
     }
@@ -141,23 +143,15 @@ public class CreateOrderController {
         return matcher.matches();
     }
 
-    private boolean checkDateValidity() {
-        LocalDate arrival = arrivalDate.getValue();
-        LocalDate leaving = estLeavingDate.getValue();
-        if (arrival.isAfter(leaving)) {
-            return false;
-        } else {
-            return true;
-        }
-    }
 
     @FXML
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
-        //think of a way to get the parking lots from the server **********************
-        for (int i = 0; i < 3; i++) {
-            parkingLotsOpt.getItems().add(i);
-        }
+        parkingLotsOpt.getItems().add("Haifa");
+        parkingLotsOpt.getItems().add("Tel Aviv");
+        parkingLotsOpt.getItems().add("Jerusalem");
+        parkingLotsOpt.getItems().add("Be'er Sheva");
+        parkingLotsOpt.getItems().add("Eilat");
 
         // Initialize the ComboBox with the hours
         for (int i = 0; i < 24; i++) {
@@ -201,15 +195,13 @@ public class CreateOrderController {
             }
         });
 
-
     }
-
 
     private Order createOrder() {
         Order order = new Order();
         order.setCarId(Integer.parseInt(carIdTextBox.getText()));
         order.setCustomerId(Integer.parseInt(idTextBox.getText()));
-        order.setParkingLotId(Integer.parseInt(parkingLotsOpt.getValue().toString()));
+        order.setParkingLotId(parkingLotsOpt.getValue());
         order.setEmail(emailAddress.getText());
 
         LocalDate arrival = arrivalDate.getValue();
@@ -224,4 +216,19 @@ public class CreateOrderController {
 
         return order;
     }
+
+    private void resetFields()
+    {
+        arrivalHour.valueProperty().set(null);
+        arrivalMin.valueProperty().set(null);
+        estLeavingDate.setValue(null);
+        arrivalDate.setValue(null);
+        carIdTextBox.setText("");
+        emailAddress.setText("");
+        estLeavingHour.valueProperty().set(null);
+        estLeavingMin.valueProperty().set(null);
+        idTextBox.setText("");
+        parkingLotsOpt.valueProperty().set(null);
+    }
+
 }

@@ -4,16 +4,14 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Parking Lot Workers")
-
 public class ParkingLotWorker extends Employee {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+
     private int parkingLotNumber;
 
 
-    public ParkingLotWorker(int employeeId, String firstName, String lastName, String email, String workersRole, int parkingLotNumber, String password) {
-        super(employeeId, firstName, lastName, email, workersRole, password);
+    public ParkingLotWorker(int employeeId, String password, String email, String firstName, String lastName, String workersRole, int parkingLotNumber,
+                            String pass) throws Exception {
+        super(employeeId,password,email,firstName, lastName, workersRole);
         this.parkingLotNumber = parkingLotNumber;
     }
 
@@ -26,9 +24,5 @@ public class ParkingLotWorker extends Employee {
 
     public void setParkingLotNumber(int parkingLotNumber) {
         this.parkingLotNumber = parkingLotNumber;
-    }
-
-    public int getId() {
-        return id;
     }
 }

@@ -1,12 +1,11 @@
 package CarPark.server;
-
-
 import CarPark.entities.*;
 import CarPark.entities.messages.*;
 import CarPark.server.handlers.*;
 import CarPark.server.ocsf.AbstractServer;
 import CarPark.server.ocsf.ConnectionToClient;
 import CarPark.server.ocsf.SubscribedClient;
+import com.textmagic.sdk.model.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -17,28 +16,29 @@ import org.hibernate.service.ServiceRegistry;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 
 public class SimpleServer extends AbstractServer {
     private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
     public static Session session;// encapsulation make public function so this can be private
 
-    public SimpleServer(int port) {
+    public SimpleServer(int port) throws Exception {
         super(port);
     }
 
 
     private static SessionFactory getSessionFactory() throws HibernateException {
         Configuration configuration = new Configuration();
+
         // Add ALL of your entities here. You can also try adding a whole package.
         configuration.addAnnotatedClass(Parkinglot.class);
         configuration.addAnnotatedClass(Price.class);
         configuration.addAnnotatedClass(Order.class);
-        configuration.addAnnotatedClass(CheckedIn.class);
-        configuration.addAnnotatedClass(ParkingSlot.class);
+        configuration.addAnnotatedClass(User.class);
+        configuration.addAnnotatedClass(Employee.class);
+        configuration.addAnnotatedClass(Customer.class);
+        configuration.addAnnotatedClass(Membership.class);
+
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();        //pull session factory config from hibernate properties
         return configuration.buildSessionFactory(serviceRegistry);
     }
@@ -48,44 +48,10 @@ public class SimpleServer extends AbstractServer {
         try {
             MessageHandler handler = null;
             Class<?> msgClass = msg.getClass();
-            System.out.println("Message received: " + msgClass.getName() + " from " + client);
             if (ConnectionMessage.class.equals(msgClass)) { //New client connection
                 SubscribedClient connection = new SubscribedClient(client);
                 SubscribersList.add(connection);
-                System.out.println("New client connection");
                 session = getSessionFactory().openSession();// Create new session for connection
-                session.beginTransaction();
-                System.out.println("New client connected");
-                List<Parkinglot> parkinglots = new LinkedList<Parkinglot>();
-                String[] plNames = new String[]{"CPS Haifa", "CPS Tel-Aviv", "CPS Be'er Sheva", "CPS Rehovot", "CPS Jerusalem", "CPS Eilat"};
-                int[] plParksPerRow = new int[]{5,4,6,8,5,6};
-                int[] totalParkingSpots = new int[]{45,36,54,72,45,54};
-                ParkingSlot[] parkingSlots1 = new ParkingSlot[6];
-
-                for (int i = 0; i < plNames.length; i++) {
-
-                    Parkinglot parkinglot = new Parkinglot(plNames[i], plParksPerRow[i],totalParkingSpots[i]);
-
-                    for(int j = 0 ; j<6 ; j++)
-                    {
-                        parkingSlots1[j] = new ParkingSlot(parkinglot);
-                        session.save(parkingSlots1[j]);
-                    }
-                    parkinglot.setTotalParkingLots(3*3*parkinglot.getParksPerRow());
-                    parkinglots.add(parkinglot);
-
-                    session.save(parkinglot);   //saves and flushes to database
-                    session.flush();
-                }
-                CheckedIn checkedIn = new CheckedIn(new Date(), 1234,1234,"test@gmail.com",new Date(),parkingSlots1[1]);
-                CheckedIn checkedIn2 = new CheckedIn(new Date(), 5555,12346,"test2@gmail.com",new Date(),parkingSlots1[0]);
-
-                session.save(checkedIn);
-                session.save(checkedIn2);
-                session.flush();
-                session.getTransaction().commit();
-                System.out.println("Parkinglots added to database");
-
             } else { //Get client requests
                 session.beginTransaction();
                 if (LoginMessage.class.equals(msgClass)) {
@@ -96,9 +62,13 @@ public class SimpleServer extends AbstractServer {
                     handler = new PricesTableHandler((PricesMessage) msg, session, client);
                 } else if (OrderMessage.class.equals(msgClass)) {
                     handler = new OrderHandler((OrderMessage) msg, session, client);
-                } else if (CheckInGuestMessage.class.equals(msgClass)) {
-                    handler = new CheckInHandler((CheckInGuestMessage) msg, session, client);
-                }
+                } else if (RegisterMessage.class.equals(msgClass)) {
+                    handler = new RegisterHandler((RegisterMessage) msg, session, client);
+                } else if (OrdersTableMessage.class.equals(msgClass)) {
+                    handler = new OrdersTableHandler((OrdersTableMessage) msg, session, client);
+
+                else if (RegisterUserMessage.class.equals(msgClass))
+                    handler = new RegisterUserHandler((RegisterUserMessage)msg,session,client);
                 if (handler != null) {
                     handler.handleMessage();
                     session.getTransaction().commit();
@@ -107,7 +77,7 @@ public class SimpleServer extends AbstractServer {
                 }
             }
         } catch (Exception exception) {
-            if(session.getTransaction().isActive())
+            if (session != null)
                 session.getTransaction().rollback();
             exception.printStackTrace();
         }
