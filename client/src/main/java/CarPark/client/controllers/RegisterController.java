@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,19 +23,19 @@ import static CarPark.client.controllers.Controller.sendAlert;
 public class RegisterController {//Daniel need to change name to new member reg, also in server...
 
     @FXML
-    private ComboBox arrivalHour;
+    private ComboBox<java.io.Serializable> arrivalHour;
     @FXML
-    private ComboBox arrivalMin;
+    private ComboBox<java.io.Serializable> arrivalMin;
     @FXML
     private TextField customerIdText;
     @FXML
-    private ComboBox parkingLots;
+    private ComboBox<String> parkingLots;
     @FXML
     private Button registerBtn;
     @FXML
     private DatePicker startDateOfMembership;
     @FXML
-    private ComboBox membershipOpt;
+    private ComboBox<String> membershipOpt;
     @FXML
     private TextField carIdNumber;
 
@@ -62,7 +63,7 @@ public class RegisterController {//Daniel need to change name to new member reg,
     @FXML
     void chooseMembership(ActionEvent event)
     {
-        if(membershipOpt.getValue() == "Full Membership")
+        if(Objects.equals(membershipOpt.getValue(), "Full Membership"))
         {
             parkingLots.setDisable(true);
             arrivalHour.setDisable(true);
@@ -80,11 +81,11 @@ public class RegisterController {//Daniel need to change name to new member reg,
     @FXML
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
-        //think of a way to get the parking lots from the server **********************
-        for(int i = 0; i < 3; i++)
-        {
-            parkingLots.getItems().add(i);
-        }
+        parkingLots.getItems().add("Haifa");
+        parkingLots.getItems().add("Tel Aviv");
+        parkingLots.getItems().add("Jerusalem");
+        parkingLots.getItems().add("Be'er Sheva");
+        parkingLots.getItems().add("Eilat");
 
         // Initialize the ComboBox with the hours
         for(int i = 0; i < 24; i++)
@@ -144,7 +145,6 @@ public class RegisterController {//Daniel need to change name to new member reg,
         return matcher.matches();
     }
 
-
     private boolean checkValidity()
     {
         if (customerIdText.getText().isEmpty() || carIdNumber.getText().isEmpty() || startDateOfMembership.getValue() == null
@@ -174,7 +174,8 @@ public class RegisterController {//Daniel need to change name to new member reg,
     {
         switch (new_message.response_type) {
             case REGISTRATION_SUCCEEDED:
-                sendAlert("Your Membership Number Is:" + new_message.newMembership.getMembershipId(),
+                sendAlert("Your Membership Number Is: \n" + new_message.newMembership.getMembershipId() +
+                                "\nA charge of " + new_message.newMembership.getMembershipsPrice() + "₪ was made",
                         "Membership Id Number", Alert.AlertType.INFORMATION);
                 break;
 
@@ -183,7 +184,6 @@ public class RegisterController {//Daniel need to change name to new member reg,
                 break;
         }
     }
-
 
     private Membership createMembership()
     {
@@ -194,7 +194,7 @@ public class RegisterController {//Daniel need to change name to new member reg,
         membership.setCustomerId(Long.parseLong(customerIdText.getText()));
         if(parkingLots.getValue() != null && arrivalHour.getValue() != null && arrivalMin.getValue() != null)
         {
-            membership.setRoutineParkingLot(parkingLots.getValue().toString());
+            membership.setRoutineParkingLot(parkingLots.getValue());
             arrivalTime = LocalTime.of(Integer.parseInt(arrivalHour.getValue().toString()), Integer.parseInt(arrivalMin.getValue().toString()));
             membership.setRoutineLeavingHour(arrivalTime);
         }
@@ -204,7 +204,7 @@ public class RegisterController {//Daniel need to change name to new member reg,
             membership.setRoutineLeavingHour(LocalTime.MIN);
         }
 
-        membership.setMembershipType((String) membershipOpt.getValue());
+        membership.setMembershipType(membershipOpt.getValue());
 
         LocalDate startDate = startDateOfMembership.getValue();
         LocalDateTime startDateTime = LocalDateTime.of(startDate, arrivalTime);

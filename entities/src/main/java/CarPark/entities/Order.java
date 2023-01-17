@@ -14,69 +14,62 @@ public class Order implements Serializable {
 
     private int customerId;
     private int carId;
-    private int ParkingLotId;
+    private String parkingLot;
     private String email;
     private LocalDateTime arrivalTime;
     private LocalDateTime estimatedLeavingTime;
+    private double ordersPrice;
 
-    public Order(int customerId, int carId, int parkingLotId, String email, LocalDateTime arrivalTime, LocalDateTime estimatedLeavingTime) {
+    public Order(int customerId, int carId, String parkingLot, String email,
+                 LocalDateTime arrivalTime, LocalDateTime estimatedLeavingTime, double ordersPrice)
+    {
         super();
         this.customerId = customerId;
         this.carId = carId;
-        this.ParkingLotId = parkingLotId;
+        this.parkingLot = parkingLot;
         this.email = email;
         this.arrivalTime = arrivalTime;
         this.estimatedLeavingTime = estimatedLeavingTime;
+        this.ordersPrice = ordersPrice;
     }
 
-    public Order() {
-    }
+    public Order() {}
 
     public int getCustomerId() {
         return customerId;
     }
+    public int getCarId() {
+        return carId;
+    }
+    public String getParkingLotId() { return parkingLot; }
+    public String getEmail() {
+        return email;
+    }
+    public LocalDateTime getArrivalTime() {
+        return arrivalTime;
+    }
+    public LocalDateTime getEstimatedLeavingTime() {
+        return estimatedLeavingTime;
+    }
+    public double getOrdersPrice() { return ordersPrice; }
 
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
     }
-
-    public int getCarId() {
-        return carId;
-    }
-
     public void setCarId(int carId) {
         this.carId = carId;
     }
-
-    public int getParkingLotId() {
-        return ParkingLotId;
+    public void setParkingLotId(String parkingLot) {
+        this.parkingLot = parkingLot;
     }
-
-    public void setParkingLotId(int parkingLotId) {
-        ParkingLotId = parkingLotId;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public LocalDateTime getArrivalTime() {
-        return arrivalTime;
-    }
-
     public void setArrivalTime(LocalDateTime arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
-
-    public LocalDateTime getEstimatedLeavingTime() {
-        return estimatedLeavingTime;
-    }
-
     public void setEstimatedLeavingTime(LocalDateTime estimatedLeavingTime) { this.estimatedLeavingTime = estimatedLeavingTime; }
+    public void setOrdersPrice(double ordersPrice) { this.ordersPrice = ordersPrice; }
 
     public int getId() {
         return id;

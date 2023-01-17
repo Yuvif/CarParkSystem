@@ -12,12 +12,10 @@ public class OrderMessage extends Message {
     public List<Parkinglot> parkingList;
 
     public enum RequestType {
-        GET_ALL_ORDERS,
         CREATE_NEW_ORDER
     }
 
     public enum ResponseType {
-        SET_ALL_ORDERS,
         ORDER_SUBMITTED
     }
 

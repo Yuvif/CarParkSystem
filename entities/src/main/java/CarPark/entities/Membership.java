@@ -20,9 +20,10 @@ public class Membership implements Serializable {
     private LocalDate startDate;
     private LocalDate endDate;
     private String membershipType;
+    private double membershipsPrice;
 
-    public Membership(int membershipId, long customerId, int carId, String routineParkingLot,
-                      LocalTime routineLeavingHour, LocalDate startDate, LocalDate endDate, String membershipType) {
+    public Membership(int membershipId, long customerId, int carId, String routineParkingLot, LocalTime routineLeavingHour,
+                      LocalDate startDate, LocalDate endDate, String membershipType, double membershipsPrice) {
         super();
         this.membershipId = membershipId;
         this.customerId = customerId;
@@ -32,6 +33,7 @@ public class Membership implements Serializable {
         this.startDate = startDate;
         this.membershipType = membershipType;
         this.endDate = endDate;
+        this.membershipsPrice = membershipsPrice;
     }
 
     public Membership() {}
@@ -39,62 +41,50 @@ public class Membership implements Serializable {
     public long getMembershipId() {
         return membershipId;
     }
+    public long getCustomerId() {
+        return customerId;
+    }
+    public long getCarId() {
+        return carId;
+    }
+    public LocalTime getRoutineLeavingHour() {
+        return routineLeavingHour;
+    }
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+    public String getRoutineParkingLot() {
+        return routineParkingLot;
+    }
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+    public String getMembershipType() { return membershipType; }
+    public double getMembershipsPrice() { return membershipsPrice; }
 
     public void setMembershipId(int membershipId) {
         this.membershipId = membershipId;
     }
-
-    public long getCustomerId() {
-        return customerId;
-    }
-
     public void setCustomerId(long customerId) {
         this.customerId = customerId;
     }
-
-    public long getCarId() {
-        return carId;
-    }
-
     public void setCarId(int carId) {
         this.carId = carId;
     }
-
-    public LocalTime getRoutineLeavingHour() {
-        return routineLeavingHour;
-    }
-
     public void setRoutineLeavingHour(LocalTime routineLeavingHour) {
         this.routineLeavingHour = routineLeavingHour;
     }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
-
-    public String getRoutineParkingLot() {
-        return routineParkingLot;
-    }
-
     public void setRoutineParkingLot(String routineParkingLot) {
         this.routineParkingLot = routineParkingLot;
     }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
-
-    public String MembershipType() { return membershipType; }
-
     public void setMembershipType(String membershipType) { this.membershipType = membershipType; }
+    public void setMembershipsPrice(double membershipsPrice) { this.membershipsPrice = membershipsPrice; }
 
     public int getId() {
         return id;
