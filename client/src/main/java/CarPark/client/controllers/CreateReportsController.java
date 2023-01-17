@@ -144,7 +144,7 @@ public class CreateReportsController extends AbstractReports {
     public void newResponse(ComplaintMessage new_message) {
         System.out.println("we got controller back from complaint message");
         switch (new_message.response_type) {
-            case ALL_COMPLAINTS -> Platform.runLater(()-> {
+            case SET_ALL_COMPLAINTS -> Platform.runLater(()-> {
                 showComplaints(new_message.complaints2Rep);
             });
         }

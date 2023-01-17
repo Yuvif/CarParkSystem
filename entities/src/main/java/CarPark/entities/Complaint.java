@@ -11,6 +11,7 @@ public class Complaint implements Serializable {    //only for customers
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private long customerId;
     @Column(name = "dateOfSubmit")
     private Date date;
 
@@ -23,16 +24,28 @@ public class Complaint implements Serializable {    //only for customers
     @JoinColumn(name = "parkinglot_id")
     private Parkinglot parkinglot;
 
-    public Complaint(Date date, String compText,Parkinglot parkinglot) {
+    public Complaint(Date date, String compText, Parkinglot parkinglot, long customerId) {
         this.date = date;
         this.compText = compText;
+        this.customerId = customerId;
         setParkinglot(parkinglot);
+    }
+    public Complaint(Date date, String compText, Parkinglot parkinglot) {
+        this.date = date;
+        this.compText = compText;
+        this.customerId = customerId;
     }
 
     public Complaint() {
     }
 
     public Complaint(Date date, String text) {
+    }
+
+    public Complaint(Date date, String text, long customerIdT) {
+        date = date;
+        this.compText = text;
+        this.customerId = customerIdT;
     }
 
     public Parkinglot getParkinglot()
@@ -42,10 +55,13 @@ public class Complaint implements Serializable {    //only for customers
     public  void setParkingLotId(Parkinglot parkinglot){
         this.parkinglot = parkinglot;
     }
-
     public String getCompText() {
         return compText;
     }
+    public long getCustomerId() {
+        return customerId;
+    }
+
 
     public void setCompText(String compText) {
         compText = compText;

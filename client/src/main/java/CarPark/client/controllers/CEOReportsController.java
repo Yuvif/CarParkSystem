@@ -198,7 +198,7 @@ public class CEOReportsController extends AbstractReports {
     public void newResponse(ComplaintMessage new_message) {
         System.out.println("we got controller back from complaints message");
         switch (new_message.response_type) {
-            case ALL_COMPLAINTS -> Platform.runLater(()-> {
+            case SET_ALL_COMPLAINTS -> Platform.runLater(()-> {
                 //case ALL_COMPLAINTS:
                     showComplaints(new_message.complaints2Rep);
             });
