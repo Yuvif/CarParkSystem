@@ -6,6 +6,7 @@ package CarPark.client.controllers;
 
 import CarPark.client.SimpleChatClient;
 import CarPark.entities.Complaint;
+import CarPark.entities.Parkinglot;
 import CarPark.entities.messages.ComplaintMessage;
 import CarPark.entities.messages.Message;
 import javafx.application.Platform;
@@ -17,21 +18,20 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
-public class ComplaintHandlerTableController extends Controller {
+public class ComplaintInspectionTableController extends Controller {
 
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
 
     @FXML // URL location of the FXML file that was given to the FXMLLoader
     private URL location;
+
 
     @FXML // fx:id="dateCol"
     private TableColumn<Complaint, Date> dateCol; // Value injected by FXMLLoader
@@ -42,8 +42,8 @@ public class ComplaintHandlerTableController extends Controller {
     @FXML // fx:id="inspectBtnsCol"
     private TableColumn<Complaint, Button> inspectBtnsCol; // Value injected by FXMLLoader
 
-    @FXML // fx:id="nameCol"
-    private TableColumn<Complaint, String> nameCol; // Value injected by FXMLLoader
+   // @FXML // fx:id="nameCol"
+    //private TableColumn<Complaint, String> nameCol; // Value injected by FXMLLoader
 
     @FXML // fx:id="statusCol"
     private TableColumn<Complaint, String> statusCol; // Value injected by FXMLLoader
@@ -60,7 +60,7 @@ public class ComplaintHandlerTableController extends Controller {
         EventBus.getDefault().register(this);
         assert dateCol != null : "fx:id=\"dateCol\" was not injected: check your FXML file 'ComplaintInspectionTable.fxml'.";
         assert inspectBtnsCol != null : "fx:id=\"inspectBtnsCol\" was not injected: check your FXML file 'ComplaintInspectionTable.fxml'.";
-        assert nameCol != null : "fx:id=\"nameCol\" was not injected: check your FXML file 'ComplaintInspectionTable.fxml'.";
+       // assert nameCol != null : "fx:id=\"nameCol\" was not injected: check your FXML file 'ComplaintInspectionTable.fxml'.";
         assert statusCol != null : "fx:id=\"statusCol\" was not injected: check your FXML file 'ComplaintInspectionTable.fxml'.";
         assert tableView != null : "fx:id=\"tableView\" was not injected: check your FXML file 'ComplaintInspectionTable.fxml'.";
 
@@ -137,22 +137,24 @@ public class ComplaintHandlerTableController extends Controller {
     /**
      * Displaying all the complaints in the table.
      *
-     * @param complaints
      */
-    public void pullComplaints(ObservableList<Complaint> complaints) {
+    @Subscribe
+    public void newResponse(ComplaintMessage new_message)  {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                tableView.setItems(complaints);
+                tableView.setItems((ObservableList<Complaint>) new_message.complaints);
                 int expired = 0;
-                for (Complaint complaint : complaints) {
+                for (Complaint complaint : new_message.complaints) {
                     if ((new Date().getTime()) - (complaint.getDate().getTime()) > 86400000) {
                         complaint.setCompletedOnTime(false);
                         expired++;
                     }
                 }
-                expireLabel.setText("You have " + complaints.size() + " complaints pending. Of which " + expired + " are expired!");
+                expireLabel.setText("You have " + new_message.complaints.size() + " complaints pending. Of which " + expired + " are expired!");
             }
         });
     }
+
+
 }

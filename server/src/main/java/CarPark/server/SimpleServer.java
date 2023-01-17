@@ -14,9 +14,12 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.time.Duration;
+import java.util.*;
 
 
 public class SimpleServer extends AbstractServer {
@@ -41,6 +44,48 @@ public class SimpleServer extends AbstractServer {
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();        //pull session factory config from hibernate properties
         return configuration.buildSessionFactory(serviceRegistry);
+    }
+        static List<Parkinglot> getAllParkingLots() throws IOException {
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Parkinglot> query = builder.createQuery(Parkinglot.class);
+        query.from(Parkinglot.class);
+        List<Parkinglot> data = session.createQuery(query).getResultList();
+        LinkedList<Parkinglot> list = new LinkedList<Parkinglot>();
+        for (Parkinglot parkinglot : data) {     //converts arraylist to linkedlist
+            list.add(parkinglot);
+        }
+        return list;
+    }
+
+
+    private static List<Complaint> generateComplaints(List<Parkinglot> p) throws Exception {       //generates new products
+        List<Complaint> complaints = new LinkedList<Complaint>();
+        int parkinglotN = 0;
+        String[] complaintsDiscription = new String[]{"Hello, a couple of days ago I went to your store in Haifa, and the receptionist Shlomit was being rude to me. \n Thanks.",
+                "Dear customer support, my order has arrived 2 hours later then what I asked for and ruined the surprise party.",
+                "Hello, I ordered 2 tulips but got only 1. I'd like to get refunded for that.",
+                "Dear Customer Support, I tried to buy with my visa and it didn't work, and then after multiple tries it charged me twice.",
+                "Hello there, I ordered from your chain, and didn't receive what I wanted.",
+                "Hello there, I ordered from your chain, and didn't receive what I desired."};
+        for (int i = 0; i < complaintsDiscription.length; i++) {
+            if (i < p.size())
+                parkinglotN = i % p.size();
+            if (i < complaintsDiscription.length) {
+                int rand = new Random().nextInt(30) + 1;
+                Date d = new Date();
+                Date date = new Date(d.getTime() - Duration.ofDays(i % rand).toMillis());
+                Complaint comp = new Complaint(date, complaintsDiscription[i], p.get(parkinglotN));
+                complaints.add(comp);
+                session.save(comp);
+                session.flush();
+            }/*else if(i== complaintsDiscription.length){
+                Complaint comp = new Complaint(c.get(i) ,new Date(),complaintsDiscription[complaintsDiscription.length-1], Complaint.Topic.OTHER, s.get(storeN));
+                complaints.add(comp);
+                session.save(comp);
+                session.flush();
+            }*/
+        }
+        return complaints;
     }
 
     @Override
@@ -69,6 +114,9 @@ public class SimpleServer extends AbstractServer {
                 }else if (PullOrdersMessage.class.equals(msgClass)) {
                     handler = new PullOrdersHandler((PullOrdersMessage) msg, session, client);
                 }else if (ComplaintMessage.class.equals(msgClass)) {
+//-------------
+                    generateComplaints(getAllParkingLots());
+
                     handler = new ComplaintHandler((ComplaintMessage) msg, session, client);
                     System.out.println("we got here");
                 }

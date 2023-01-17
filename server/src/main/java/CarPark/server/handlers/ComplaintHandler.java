@@ -30,12 +30,21 @@ public class ComplaintHandler extends MessageHandler {
                 break;
             case GET_ALL_COMPLAINTS:
                 class_message.complaints2Rep = getComplaintList();
-                class_message.response_type = ComplaintMessage.ResponseType.ALL_COMPLAINTS;
+                class_message.response_type = ComplaintMessage.ResponseType.SET_ALL_COMPLAINTS;
+                break;
+            case COMPENSATE_COMPLAINT:
+                //class_message.complaint2handle.user.setBalance(class_message.amount);
+               // class_message.complaint2handle.getCustomerId().setBalance(class_message.amount);
+                break;
         }
     }
 
     private void createComplaint() {
-        Complaint newComplaint = class_message.complaints2Rep.get(0) ;
+        Complaint newComplaint = class_message.complaint2handle ;
+        session.save(newComplaint);
+        newComplaint = class_message.complaints.get(0) ;
+        session.save(newComplaint);
+        newComplaint = class_message.complaints2Rep.get(0) ;
         session.save(newComplaint);
         session.flush();
     }
