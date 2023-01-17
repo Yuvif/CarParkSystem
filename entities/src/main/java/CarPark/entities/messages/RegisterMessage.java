@@ -14,8 +14,7 @@ public class RegisterMessage extends Message{
         REGISTER
     }
 
-    public enum ResponseType
-    {
+    public enum ResponseType {
         REGISTRATION_FAILED,
         REGISTRATION_SUCCEEDED
     }
@@ -31,6 +30,5 @@ public class RegisterMessage extends Message{
         super(message_type);
         this.response_type = response_type;
     }
-
 
 }
