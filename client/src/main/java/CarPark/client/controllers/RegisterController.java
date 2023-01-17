@@ -8,6 +8,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,11 +18,9 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.greenrobot.eventbus.Subscribe;
-
 import static CarPark.client.controllers.Controller.sendAlert;
 
-public class RegisterController {
+public class RegisterController {//Daniel need to change name to new member reg, also in server...
 
     @FXML
     private ComboBox<java.io.Serializable> arrivalHour;
@@ -42,7 +42,7 @@ public class RegisterController {
     @FXML
     void goBack(ActionEvent event) throws IOException
     {
-        SimpleChatClient.setRoot("Login");
+        SimpleChatClient.setRoot("CustomerPage");
     }
 
     @FXML
