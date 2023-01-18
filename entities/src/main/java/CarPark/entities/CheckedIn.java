@@ -12,25 +12,25 @@ public class CheckedIn implements Serializable {
     private int id;
 
     @Column(name = "entry_date")
+    private String parkinglot;
     private Date entryDate;
     private Integer carNumber;
     private Integer personId;
     private String email;
     private Date exitEstimatedDate;
     private boolean didHePay = false;
-    private String parkinglot_name;
 
     @OneToOne(fetch = FetchType.LAZY)
     private ParkingSlot parkingSlot;
 
-    public CheckedIn(Date entryDate, Integer personId, Integer carNumber, String email, Date exitEstimatedDate, ParkingSlot parkingSlot) {
+    public CheckedIn(String parkinglot,Date entryDate, Integer personId, Integer carNumber, String email, Date exitEstimatedDate, ParkingSlot parkingSlot) {
+        this.parkinglot = parkinglot;
         this.entryDate = entryDate;
         this.personId = personId;
         this.carNumber = carNumber;
         this.email = email;
         this.exitEstimatedDate = exitEstimatedDate;
         this.parkingSlot = parkingSlot;
-        this.parkinglot_name = null;
         setParkingSlot(parkingSlot);
         parkingSlot.setSpotStatus(ParkingSlot.Status.USED);
         parkingSlot.setCheckedIn(this);
@@ -38,14 +38,6 @@ public class CheckedIn implements Serializable {
 
     public CheckedIn() {
 
-    }
-
-    public String getParkinglot_name(){
-        return parkinglot_name;
-    }
-
-    public void setParkinglot_name(String parkinglot_id){
-        this.parkinglot_name = parkinglot_id;
     }
 
     public ParkingSlot getParkingSlot() {
@@ -86,5 +78,10 @@ public class CheckedIn implements Serializable {
 
     public void setExitEstimatedDate(Date exitEstimatedDate) {
         this.exitEstimatedDate = exitEstimatedDate;
+    }
+
+    public String getParkinglotId() {
+
+        return parkinglot;
     }
 }

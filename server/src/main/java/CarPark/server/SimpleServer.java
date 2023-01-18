@@ -40,11 +40,15 @@ public class SimpleServer extends AbstractServer {
         configuration.addAnnotatedClass(ParkingSlot.class);
         configuration.addAnnotatedClass(CheckedIn.class);
         configuration.addAnnotatedClass(Complaint.class);
+        configuration.addAnnotatedClass(User.class);
+        configuration.addAnnotatedClass(Employee.class);
+        configuration.addAnnotatedClass(Customer.class);
+        configuration.addAnnotatedClass(Membership.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();        //pull session factory config from hibernate properties
         return configuration.buildSessionFactory(serviceRegistry);
     }
-        static List<Parkinglot> getAllParkingLots() throws IOException {
+    static List<Parkinglot> getAllParkingLots() throws IOException {
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Parkinglot> query = builder.createQuery(Parkinglot.class);
         query.from(Parkinglot.class);
@@ -60,8 +64,7 @@ public class SimpleServer extends AbstractServer {
     private static List<Complaint> generateComplaints(List<Parkinglot> p) throws Exception {       //generates new products
         List<Complaint> complaints = new LinkedList<Complaint>();
         int parkinglotN = 0;
-        String[] complaintsDiscription = new String[]{"Hello, a couple of days ago I went to your store in Haifa, and the receptionist Shlomit was being rude to me. \n Thanks.",
-                "Dear customer support, my order has arrived 2 hours later then what I asked for and ruined the surprise party.",
+        String[] complaintsDiscription = new String[]{
                 "Hello, I ordered 2 tulips but got only 1. I'd like to get refunded for that.",
                 "Dear Customer Support, I tried to buy with my visa and it didn't work, and then after multiple tries it charged me twice.",
                 "Hello there, I ordered from your chain, and didn't receive what I wanted.",
@@ -77,15 +80,12 @@ public class SimpleServer extends AbstractServer {
                 complaints.add(comp);
                 session.save(comp);
                 session.flush();
-            }/*else if(i== complaintsDiscription.length){
-                Complaint comp = new Complaint(c.get(i) ,new Date(),complaintsDiscription[complaintsDiscription.length-1], Complaint.Topic.OTHER, s.get(storeN));
-                complaints.add(comp);
-                session.save(comp);
-                session.flush();
-            }*/
+            }
         }
         return complaints;
     }
+
+
 
     @Override
     protected void handleMessageFromClient(Object msg, ConnectionToClient client) throws IOException, SQLException {
@@ -106,19 +106,23 @@ public class SimpleServer extends AbstractServer {
                     handler = new PricesTableHandler((PricesMessage) msg, session, client);
                 } else if (CreateOrderMessage.class.equals(msgClass)) {
                     handler = new OrderHandler((CreateOrderMessage) msg, session, client);
-                } else if (ParkingSlotsMessage.class.equals(msgClass)) {
+                } else if (RegisterMessage.class.equals(msgClass)) {
+                    handler = new RegisterHandler((RegisterMessage) msg, session, client);
+                } else if (OrdersTableMessage.class.equals(msgClass)) {
+                    handler = new OrdersTableHandler((OrdersTableMessage) msg, session, client);
+                }
+                else if (ParkingSlotsMessage.class.equals(msgClass)) {
                     handler = new EditParkingSlotsHandler((ParkingSlotsMessage) msg, session, client);
                 }else if (PullParkingSlotsMessage.class.equals(msgClass)) {
                     handler = new PullParkingSlotsHandler((PullParkingSlotsMessage) msg, session, client);
                 }else if (PullOrdersMessage.class.equals(msgClass)) {
                     handler = new PullOrdersHandler((PullOrdersMessage) msg, session, client);
                 }else if (ComplaintMessage.class.equals(msgClass)) {
-//-------------
+                    //---------------------
                     generateComplaints(getAllParkingLots());
-
                     handler = new ComplaintHandler((ComplaintMessage) msg, session, client);
-                    System.out.println("we got here");
-                }
+                }else if (RegisterUserMessage.class.equals(msgClass))
+                    handler = new RegisterUserHandler((RegisterUserMessage)msg,session,client);
                 if (handler != null) {
                     handler.handleMessage();
                     session.getTransaction().commit();

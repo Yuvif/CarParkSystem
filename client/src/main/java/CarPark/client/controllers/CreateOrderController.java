@@ -209,7 +209,7 @@ public class CreateOrderController {
         Order order = new Order();
         order.setCarId(Integer.parseInt(carIdTextBox.getText()));
         order.setCustomerId(Integer.parseInt(idTextBox.getText()));
-        order.setParkingLotId(String.valueOf(Integer.parseInt(parkingLotsOpt.getValue().toString())));
+        order.setParkingLotId((String) parkingLotsOpt.getValue());
         order.setEmail(emailAddress.getText());
 
         LocalDate arrival = arrivalDate.getValue();

@@ -1,69 +1,24 @@
 package CarPark.entities;
-
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Employees")
-
-public class Employee {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private long employeeId;
-    private String firstName;
-    private String lastName;
-    private String email;
+@Table(name = "employees")
+//@AttributeOverrides({
+//        @AttributeOverride(name="userId", column=@Column(name="employeeId")
+//        )})
+public class Employee extends User {
     private String workersRole;
-    private String password;
 
 
-    public Employee(int employeeId, String firstName, String lastName, String email, String workersRole,String password) {
-        super();
-        this.employeeId = employeeId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
+    public Employee(long employeeId, String firstName, String lastName, String email, String workersRole,String password) throws Exception {
+        super(employeeId,password,email,firstName,lastName);
         this.workersRole = workersRole;
-        this.password = password;
     }
 
     public Employee() {
     }
 
-    public Employee(int employeeId, String firstName, String lastName, String email, String workersRole) {
-    }
 
-    public long getEmployeeId() {
-        return employeeId;
-    }
-
-    public void setEmployeeId(int employeeId) {
-        this.employeeId = employeeId;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getWorkersRole() {
         return workersRole;
@@ -73,13 +28,4 @@ public class Employee {
         this.workersRole = workersRole;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getPassword(){return password;}
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

@@ -33,6 +33,7 @@ public class ParkingSlot implements Serializable {
     }
 
     public ParkingSlot(Parkinglot parkinglot) {
+
         setParkinglot(parkinglot);
     }
 
@@ -59,7 +60,7 @@ public class ParkingSlot implements Serializable {
 
     public void setParkinglot(Parkinglot parkinglot) {
         this.parkinglot = parkinglot;
-        parkinglot.getParkingSlots().add(this);
+        //parkinglot.getParkingSlots().add(this);
 
     }
     public Boolean getStatus() {
