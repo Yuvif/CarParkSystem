@@ -3,6 +3,7 @@ package CarPark.client.controllers;
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.client.events.NewSubscriberEvent;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -27,8 +28,7 @@ public class CustomerPageController{
     public void createOrder(){}
     @FXML
     public void addComplaint(){}
-    @FXML
-    public void myMemberships(){}
+
     @FXML
     public void myOrders(){}
 
@@ -40,6 +40,31 @@ public class CustomerPageController{
 
     @Subscribe
     public void getStarterData(NewSubscriberEvent event) {
+    }
+
+    @FXML
+    private void myMemberships(ActionEvent event) throws IOException {
+        Platform.runLater(()->
+        {
+            try {
+                SimpleChatClient.setRoot("MembershipsView");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    private void newMembership(ActionEvent event)
+    {
+        Platform.runLater(()->
+        {
+            try {
+                SimpleChatClient.setRoot("RegisterAsMember");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
 

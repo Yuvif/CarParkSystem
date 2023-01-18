@@ -63,8 +63,8 @@ public class SimpleServer extends AbstractServer {
                     handler = new PricesTableHandler((PricesMessage) msg, session, client);
                 } else if (OrderMessage.class.equals(msgClass)) {
                     handler = new OrderHandler((OrderMessage) msg, session, client);
-                } else if (RegisterMessage.class.equals(msgClass)) {
-                    handler = new RegisterHandler((RegisterMessage) msg, session, client);
+                } else if (MembershipMessage.class.equals(msgClass)) {
+                    handler = new MembershipsHandler((MembershipMessage) msg, session, client);
                 } else if (OrdersTableMessage.class.equals(msgClass)) {
                     handler = new OrdersTableHandler((OrdersTableMessage) msg, session, client);
                 }

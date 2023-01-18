@@ -1,24 +1,231 @@
-.button {
-    display: inline-block;
-    padding: 15px 25px;
-    font-size: 24px;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
+.mybutton{
+    -fx-background-color: #CFEEE1;
+    -fx-text-fill: BLACK;
+    -fx-cursor: hand;
+}
+
+.mybutton:hover{
+    -fx-background-color:   #70caa6;
+}
+
+.mybutton-round{
+    -fx-border-radius: 60px;
+    -fx-background-radius: 5em;
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+    -fx-max-width: 40px;
+    -fx-max-height: 30px;
+}
+
+.nav-buttons{
+    -fx-background-color: transparent;
+    -fx-border-radius: 60px;
+    -fx-background-radius: 5em;
+    -fx-text-fill: #979797;
+}
+.nav-buttons:hover{
+    -fx-background-color: linear-gradient(to bottom right, lightpink, lightblue);
+    -fx-text-fill: white;
+}
+.nav-buttons:focused {
+    /*-fx-color: -fx-focused-base;*/
+    -fx-background-color: linear-gradient(to bottom right, lightpink, lightblue);
+    -fx-background-insets: -1.4, 0, 1, 2;
+    -fx-background-radius:  8.5, 5, 4, 3;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+
+
+
+/* Simple Buttons On Program*/
+.simple-btn{
+    -fx-background-color: transparent;
+    -fx-border-radius: 60px;
+    -fx-background-radius: 5em;
+}
+.simple-btn:hover{
+    -fx-background-color: linear-gradient(to bottom left, lightpink,lightgoldenrodyellow);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+.simple-btn:focused {
+    /*-fx-color: -fx-focused-base;*/
+    -fx-background-color: linear-gradient(to bottom left, lightpink,lightgoldenrodyellow);
+    -fx-background-insets: -1.4, 0, 1, 2;
+    -fx-background-radius:  8.5, 5, 4, 3;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.logout-btn{
+    -fx-background-color: linear-gradient(to bottom left, lightpink,lightgoldenrodyellow);
+    -fx-border-radius: 60px;
+    -fx-background-radius: 5em;
+    -fx-background-radius-color:red;
+}
+.logout-btn:hover{
+    -fx-background-color: linear-gradient(to bottom right, lightsalmon, coral);
+    -fx-text-fill: white;
+}
+
+
+.refresh-btn{
+    -fx-background-color: linear-gradient(to bottom right, lightblue, lightseagreen);
+    -fx-border-radius: 100px;
+    -fx-background-radius: 5em;
+}
+
+.close-icon {
+    -mfx-color: #da3312;
+    -fx-opacity: 0.5;
+}
+
+.close-icon:hover {
+    -fx-opacity: 1.0;
+}
+
+.minimize-icon {
+    -mfx-color: #ffbf37;
+    -fx-opacity: 0.5;
+}
+
+.minimize-icon:hover {
+    -fx-opacity: 1.0;
+}
+
+.always-on-top-icon {
+    -mfx-color: #c37ecd;
+    -fx-opacity: 0.5;
+}
+
+.always-on-top-icon:hover {
+    -fx-opacity: 1.0;
+}
+
+.always-on-top-icon:filled {
+    -fx-opacity: 1.0;
+}
+
+
+.refreshFeed {
+    -mfx-color: #2196f3;
+    -fx-opacity: 0.5;
+}
+
+.refreshFeed:hover {
+    -fx-opacity: 1.0;
+}
+
+
+h1{
+    font-size: 30px;
     color: #fff;
-    background-color: #70caa6;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #999;
+    text-transform: uppercase;
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 15px;
+}
+table{
+    width:100%;
+    table-layout: fixed;
+}
+.tbl-header{
+    background-color: rgba(255,255,255,0.3);
+}
+.tbl-content{
+    height:300px;
+    overflow-x:auto;
+    margin-top: 0px;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+th{
+    padding: 20px 15px;
+    text-align: left;
+    font-weight: 500;
+    font-size: 12px;
+    color: #fff;
+    text-transform: uppercase;
+}
+td{
+    padding: 15px;
+    text-align: left;
+    vertical-align:middle;
+    font-weight: 300;
+    font-size: 12px;
+    color: #fff;
+    border-bottom: solid 1px rgba(255,255,255,0.1);
 }
 
-.button:hover {
-    background-color: #3e8e41
+.table-view .column-header,
+.table-view .column-header-background .filler {
+    -fx-background-color:  #70caa6;
+}
+.table-view .column-header .label{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER_LEFT;
+}
+.table-view .cell{
+    -fx-cell-size: 35;
+    -fx-alignment: center-left;
+    -fx-background-color: #CFEEE1;
+    -fx-border-color: white;
+    -fx-font-family: "Open Sans", sans-serif;
+        -fx-text-fill: black;
+    -fx-alignment: CENTER_LEFT;
+
+}
+.table-row-cell:selected {
+    -fx-background-color: whitesmoke;
+    -fx-text-background-color:  #6622CC;
+
+
 }
 
-.button:pressed {
-    background-color: #3e8e41;
-    box-shadow: 0 5px #666;
-    transform: translateY(4px);
+/* scroll bar starts here */
+
+/* The increment and decrement button CSS class of scrollbar */
+.table-view .increment-button ,.table-view .decrement-button {
+    -fx-background-color:transparent;
+    -fx-background-radius: 2em;
+
+}
+
+/* The main scrollbar **track** CSS class  */
+.table-view .scroll-bar:horizontal .track,
+.table-view .scroll-bar:vertical .track{
+    -fx-background-color: transparent;
+    -fx-border-color:derive( #70caa6,80%);
+
+    -fx-background-radius: 2em;
+    -fx-border-radius:2em;
+}
+
+/* The main scrollbar **thumb** CSS class which we drag every time (movable) */
+.table-view .scroll-bar:horizontal .thumb,
+.table-view .scroll-bar:vertical .thumb {
+    -fx-background-color:derive( #70caa6,90%);
+    -fx-background-insets: 2, 0, 0;
+    -fx-background-radius: 2em;
+
+}
+
+/* chart properties */
+
+.chart {
+    -fx-padding: 10px;
+    -fx-background-color: transparent;
+    -fx-legend-visible: false;
+}
+.chart-plot-background {
+    -fx-background-color:transparent;
+}
+
+.chart-pie {
+    -fx-border-color: derive(-fx-pie-color, 1%);
+    -fx-border-width: 0px;
 }
