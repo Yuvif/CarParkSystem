@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<Pane xmlns:fx="http://javafx.com/fxml/1" maxHeight="Infinity" maxWidth="Infinity" prefHeight="600.0"
+      prefWidth="639.0" style="-fx-background-image: url(/assets/PricesTableGui.jpg);" translateX="3.0"
+      translateY="1.0" xmlns="http://javafx.com/javafx/17"
+      fx:controller="CarPark.client.controllers.PricesTableController">
+    <children>
+        <Label alignment="CENTER" cacheHint="SPEED" contentDisplay="CENTER" depthTest="ENABLE" graphicTextGap="0.0"
+               layoutX="7.0" layoutY="14.0" prefHeight="54.0" prefWidth="255.0" text="Prices table"
+               textAlignment="CENTER" textFill="WHITE">
+            <font>
+                <Font name="Bauhaus 93" size="48.0"/>
+            </font>
+            <cursor>
+                <Cursor fx:constant="DEFAULT"/>
+            </cursor>
+        </Label>
+        <TableView fx:id="pricesTable" layoutX="35.0" layoutY="105.0" prefHeight="280.0" prefWidth="567.0">
+            <columns>
+                <TableColumn id="typeCol" fx:id="typeCol" prefWidth="173.0" text="Parking type"/>
+                <TableColumn id="paymentCol" fx:id="paymentCol" prefWidth="143.0" text="Payment method"/>
+                <TableColumn id="priceCol" fx:id="pricesCol" minWidth="0.0" prefWidth="48.0" text="Price"/>
+                <TableColumn id="noCol" fx:id="noCol" prefWidth="93.0" text="Number of cars"/>
+                <TableColumn id="hopCol" fx:id="hopCol" prefWidth="109.0" text="Hours of parking"/>
+            </columns>
+        </TableView>
+        <Pane layoutY="78.0" prefHeight="5.0" prefWidth="201.0" style="-fx-background-color: white;"/>
+        <ImageView fx:id="back" fitHeight="60.0" fitWidth="60.0" layoutX="318.0" layoutY="402.0"
+                   onMouseClicked="#GoBack" style="-fx-color: BLACK;">
+            <image>
+                <Image url="@../../assets/arrow.png"/>
+            </image>
+            <cursor>
+                <Cursor fx:constant="HAND"/>
+            </cursor>
+        </ImageView>
+        <ImageView fitHeight="60.0" fitWidth="60.0" layoutX="565.0" layoutY="11.0" onMouseClicked="#Edit">
+            <image>
+                <Image url="@../../assets/Pencil.png"/>
+            </image>
+            <cursor>
+                <Cursor fx:constant="HAND"/>
+            </cursor>
+        </ImageView>
+    </children>
+</Pane>
