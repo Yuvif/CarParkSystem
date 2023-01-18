@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class CustomerPageController{
     @FXML
-    private Label welcomeUser;
+    private Label userName;
     @FXML
     private Button newMember;
 
@@ -35,7 +35,7 @@ public class CustomerPageController{
     @FXML
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
-        welcomeUser.setText("Welcome " + SimpleClient.getCurrent_user().getFirstName());
+        userName.setText("Hello, " + SimpleClient.getCurrent_user().getFirstName());
     }
 
     @Subscribe

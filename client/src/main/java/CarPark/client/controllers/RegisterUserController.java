@@ -5,9 +5,11 @@ import CarPark.client.SimpleClient;
 import CarPark.entities.Customer;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.RegisterUserMessage;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.greenrobot.eventbus.EventBus;
@@ -34,6 +36,8 @@ public class RegisterUserController {
     private TextField email;
     @FXML
     private Label wrongReg;
+    @FXML
+    private Button signUpButton;
 
     @FXML
     void initialize() throws IOException {
@@ -68,12 +72,16 @@ public class RegisterUserController {
     }
 
     private boolean checkValidity() {
-        if (checkIdValidity(userID.getText()) &&
+        if (checkEmptyFields()) {
+            wrongReg.setText("ONE OR MORE FIELDS ARE EMPTY!");
+            return false;
+        }
+        else if (checkIdValidity(userID.getText()) &&
                 checkPassValidity(password.getText()) &&
                 checkIfPassMatched(password.getText(),rePassword.getText()))
             return true;
         else
-            wrongReg.setText("Invalid Credentials");
+            wrongReg.setText("INVALID CREDENTIALS!");
             return false;
     }
 
@@ -104,6 +112,11 @@ public class RegisterUserController {
             return false;
         }
 
+        private boolean checkEmptyFields()
+        {
+            return email.getText().equals("") || firstName.getText().equals("") || lastName.getText().equals("");
+        }
+
     @Subscribe
     public void new_response(RegisterUserMessage new_message)
     {
@@ -112,7 +125,7 @@ public class RegisterUserController {
                 sendAlert("Registration succeed, welcome:" + new_message.newCustomer.getFirstName(),
                         "New User", Alert.AlertType.INFORMATION);
             case REGISTRATION_FAILED:
-                wrongReg.setText("User ID Or Email Already Taken");
+                Platform.runLater(()->wrongReg.setText("USER ID OR EMAIL ALREADY TAKEN!"));
         }
     }
 
