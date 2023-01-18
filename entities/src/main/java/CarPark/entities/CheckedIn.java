@@ -18,6 +18,7 @@ public class CheckedIn implements Serializable {
     private String email;
     private Date exitEstimatedDate;
     private boolean didHePay = false;
+    private String parkinglot_name;
 
     @OneToOne(fetch = FetchType.LAZY)
     private ParkingSlot parkingSlot;
@@ -29,6 +30,7 @@ public class CheckedIn implements Serializable {
         this.email = email;
         this.exitEstimatedDate = exitEstimatedDate;
         this.parkingSlot = parkingSlot;
+        this.parkinglot_name = null;
         setParkingSlot(parkingSlot);
         parkingSlot.setSpotStatus(ParkingSlot.Status.USED);
         parkingSlot.setCheckedIn(this);
@@ -36,6 +38,14 @@ public class CheckedIn implements Serializable {
 
     public CheckedIn() {
 
+    }
+
+    public String getParkinglot_name(){
+        return parkinglot_name;
+    }
+
+    public void setParkinglot_name(String parkinglot_id){
+        this.parkinglot_name = parkinglot_id;
     }
 
     public ParkingSlot getParkingSlot() {

@@ -3,6 +3,7 @@ package CarPark.server.handlers;
 import CarPark.entities.Parkinglot;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.ParkingListMessage;
+import CarPark.entities.messages.ParkingSlotsMessage;
 import CarPark.server.ocsf.ConnectionToClient;
 import org.hibernate.Session;
 
@@ -17,6 +18,7 @@ public class ParkingListHandler extends MessageHandler {
     public ParkingListHandler(Message msg, Session session, ConnectionToClient client) {
         super(msg, session, client);
         this.class_message = (ParkingListMessage) this.message;
+        class_message.response_type = ParkingListMessage.ResponseType.SET_ALL_PARKING_LOTS;
     }
 
     @Override

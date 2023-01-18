@@ -40,8 +40,8 @@ public class SimpleChatClient extends Application {
         client.openConnection();
         ConnectionMessage message = new ConnectionMessage(Message.MessageType.REQUEST);
         SimpleClient.getClient().sendToServer(message);
-        scene = new Scene(loadFXML("Login"));
-        //stage.initStyle(StageStyle.UNDECORATED);
+        scene = new Scene(loadFXML("ComplaintInspectionTable"), 640, 520);
+        // = new Scene(loadFXML("MenuEmployee"), 640, 520);
         stage.setScene(scene);
         stage.show();
     }
