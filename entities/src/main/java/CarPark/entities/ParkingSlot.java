@@ -1,10 +1,7 @@
 package CarPark.entities;
 
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 
 @Entity
@@ -36,8 +33,10 @@ public class ParkingSlot implements Serializable {
     }
 
     public ParkingSlot(Parkinglot parkinglot) {
+
         setParkinglot(parkinglot);
     }
+
 
     public int getId() {
         return id;
@@ -62,6 +61,7 @@ public class ParkingSlot implements Serializable {
     public void setParkinglot(Parkinglot parkinglot) {
         this.parkinglot = parkinglot;
         //parkinglot.getParkingSlots().add(this);
+
     }
     public Boolean getStatus() {
         return SpotStatus==Status.EMPTY;

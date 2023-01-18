@@ -1,8 +1,8 @@
 package CarPark.entities;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "Orders")
@@ -19,9 +19,13 @@ public class Order implements Serializable {
     private LocalDateTime arrivalTime;
     private LocalDateTime estimatedLeavingTime;
     private double ordersPrice;
+    private Date date;
+    private Status orderStatus = Status.APPROVED;
+
+    public enum Status {APPROVED, CANCELLED};
 
     public Order(int customerId, int carId, String parkingLot, String email,
-                 LocalDateTime arrivalTime, LocalDateTime estimatedLeavingTime, double ordersPrice)
+                 LocalDateTime arrivalTime, LocalDateTime estimatedLeavingTime, double ordersPrice, Date date)
     {
         super();
         this.customerId = customerId;
@@ -31,6 +35,7 @@ public class Order implements Serializable {
         this.arrivalTime = arrivalTime;
         this.estimatedLeavingTime = estimatedLeavingTime;
         this.ordersPrice = ordersPrice;
+        this.date = date;
     }
 
     public Order() {}
@@ -74,4 +79,19 @@ public class Order implements Serializable {
     public int getId() {
         return id;
     }
+    public Boolean getStatus() {
+        return orderStatus== Status.APPROVED;
+    }
+    public void setSpotStatus(Status spotStatus) {
+        orderStatus = spotStatus;
+    }
+
+    public  Date getDate(){
+        return date;
+    }
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+
 }

@@ -1,6 +1,4 @@
 package CarPark.entities;
-
-
 import CarPark.entities.Parkinglot;
 
 import javax.persistence.*;
@@ -9,11 +7,12 @@ import java.util.Date;
 
 @Entity
 @Table(name = "complaints")
-public class Complaint implements Serializable {    //only for customers
+public class Complaint implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    private long customerId;    //only for customers
     @Column(name = "dateOfSubmit")
     private Date date;
 
@@ -23,27 +22,41 @@ public class Complaint implements Serializable {    //only for customers
     private Boolean completedOnTime = false;
 
     @ManyToOne
-    @JoinColumn(name = "parkinglot_name")
+    @JoinColumn(name = "parkinglot_id")
     private Parkinglot parkinglot;
 
-    public Parkinglot getParkinglot() {
-        return parkinglot;
-    }
 
-    public void setParkinglot(Parkinglot parkinglot) {
-        this.parkinglot = parkinglot;
-    }
-
-    ;
-
-    public Complaint(Date date, String compText) {
+    public Complaint(Date date, String compText, Parkinglot parkinglot, long customerId) {
         this.date = date;
         this.compText = compText;
+        this.customerId = customerId;
+        setParkinglot(parkinglot);
+    }
+
+    public Complaint(Date date, String text, long customerIdT) {
+        date = date;
+        this.compText = text;
+        this.customerId = customerIdT;
+    }
+
+    public Complaint(long customerId) {
+
+        this.customerId = customerId;
     }
 
     public Complaint() {
 
     }
+
+    public void setParkinglot(Parkinglot parkinglot) {
+        this.parkinglot = parkinglot;
+        parkinglot.getComplaints().add(this);
+    }
+
+    public Parkinglot getParkinglot() {
+        return parkinglot;
+    }
+
 
     public String getCompText() {
         return compText;

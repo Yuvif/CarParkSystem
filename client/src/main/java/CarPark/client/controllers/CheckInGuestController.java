@@ -6,28 +6,19 @@ package CarPark.client.controllers;
 
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
-import CarPark.entities.ParkingSlot;
-import CarPark.entities.Parkinglot;
-import CarPark.entities.messages.CheckInGuestMessage;
 import CarPark.entities.CheckedIn;
+import CarPark.entities.ParkingSlot;
+import CarPark.entities.messages.CheckInGuestMessage;
 import CarPark.entities.messages.Message;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static CarPark.client.controllers.Controller.sendAlert;
 
 public class CheckInGuestController extends Controller{
 
@@ -91,8 +82,8 @@ public class CheckInGuestController extends Controller{
     }
 
     private CheckedIn createCheckedIn() {
-        CheckedIn checkedIn = new CheckedIn( new Date(), Integer.parseInt(idTf.getText()), Integer.parseInt(car_nTf.getText()), mailTf.getText(), new Date(), new ParkingSlot());
-        checkedIn.setParkinglot_name(plPick.getValue());
+        CheckedIn checkedIn = new CheckedIn( plPick.getValue(),new Date(), Integer.parseInt(idTf.getText()), Integer.parseInt(car_nTf.getText()), mailTf.getText(), new Date(), new ParkingSlot());
+        //checkedIn.setParkinglot_name(plPick.getValue());
         return checkedIn;
     }
     private boolean checkEmpty() {
