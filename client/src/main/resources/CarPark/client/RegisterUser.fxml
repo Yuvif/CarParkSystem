@@ -34,7 +34,7 @@
          <DropShadow />
       </effect>
    </Label>
-   <Pane blendMode="MULTIPLY" layoutX="92.0" layoutY="73.0" prefHeight="371.0" prefWidth="316.0" style="-fx-background-color: white; -fx-border-color: #58d788; -fx-border-radius: 20;">
+   <Pane blendMode="MULTIPLY" layoutX="92.0" layoutY="73.0" prefHeight="371.0" prefWidth="316.0" style="-fx-background-color: white; -fx-border-color: #77D0AA; -fx-border-radius: 20;">
       <cursor>
          <Cursor fx:constant="DEFAULT" />
       </cursor>
@@ -89,12 +89,12 @@
                   <Font name="SansSerif Regular" size="14.0" />
               </font>
           </PasswordField>
-         <Button layoutX="116.0" layoutY="327.0" mnemonicParsing="false" onAction="#signUp" prefHeight="30.0" prefWidth="84.0" style="-fx-background-color: #58d788; -fx-background-radius: 50;" text="Sign Up">
+         <Button fx:id="signUpButton" layoutX="116.0" layoutY="327.0" mnemonicParsing="false" onAction="#signUp" prefHeight="30.0" prefWidth="84.0" style="-fx-background-color: #77D0AA; -fx-background-radius: 50;" text="Sign Up">
             <cursor>
                <Cursor fx:constant="HAND" />
             </cursor>
          </Button>
-         <Label layoutX="102.0" layoutY="24.0" prefHeight="42.0" prefWidth="112.0" style="-fx-text-fill: #A9A9A9;" text="Sign-Up">
+         <Label accessibleRole="BUTTON" layoutX="102.0" layoutY="24.0" prefHeight="42.0" prefWidth="112.0" style="-fx-text-fill: #A9A9A9;" text="Sign-Up">
             <font>
                <Font name="SansSerif Regular" size="30.0" />
             </font>
@@ -106,12 +106,12 @@
          </ImageView>
       </children>
    </Pane>
-   <Label fx:id="wrongReg" layoutX="105.0" layoutY="465.0" prefHeight="24.0" prefWidth="285.0" style="-fx-text-fill: #58d788;">
+   <Label fx:id="wrongReg" contentDisplay="CENTER" layoutX="105.0" layoutY="465.0" prefHeight="24.0" prefWidth="285.0" style="-fx-text-fill: #58d788;">
       <font>
          <Font name="SansSerif Regular" size="12.0" />
       </font>
    </Label>
-   <Pane layoutX="8.0" layoutY="11.0" prefHeight="57.0" prefWidth="62.0" style="-fx-border-color: #58d788; -fx-border-radius: 20;">
+   <Pane layoutX="8.0" layoutY="11.0" prefHeight="57.0" prefWidth="62.0" style="-fx-border-color: #77D0AA; -fx-border-radius: 20;">
       <children>
          <ImageView accessibleRole="BUTTON" fitHeight="50.0" fitWidth="50.0" layoutX="6.0" layoutY="4.0" onMouseClicked="#loginPage" pickOnBounds="true">
             <image>
