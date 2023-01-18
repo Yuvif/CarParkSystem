@@ -22,6 +22,7 @@ public class Membership implements Serializable {
     private String membershipType;
     private double membershipsPrice;
 
+
     public Membership(int membershipId, long customerId, int carId, String routineParkingLot, LocalTime routineLeavingHour,
                       LocalDate startDate, LocalDate endDate, String membershipType, double membershipsPrice) {
         super();

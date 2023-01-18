@@ -1,6 +1,7 @@
 package CarPark.client.controllers;
 
 import CarPark.client.SimpleClient;
+import CarPark.entities.Customer;
 import CarPark.entities.Order;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.OrderMessage;
@@ -63,7 +64,8 @@ public class CreateOrderController {
         if (checkValidity()) // create an order entity and send it to the server
         {
             Order order = createOrder();
-            OrderMessage msg = new OrderMessage(Message.MessageType.REQUEST, OrderMessage.RequestType.CREATE_NEW_ORDER, order);
+            OrderMessage msg = new OrderMessage(Message.MessageType.REQUEST, OrderMessage.RequestType.CREATE_NEW_ORDER,
+                    order, (Customer)SimpleClient.getCurrent_user());
             try {
                 SimpleClient.getClient().sendToServer(msg);
             } catch (IOException e) {
@@ -197,7 +199,8 @@ public class CreateOrderController {
 
     }
 
-    private Order createOrder() {
+    private Order createOrder()
+    {
         Order order = new Order();
         order.setCarId(Integer.parseInt(carIdTextBox.getText()));
         order.setCustomerId(Integer.parseInt(idTextBox.getText()));
@@ -223,11 +226,11 @@ public class CreateOrderController {
         arrivalMin.valueProperty().set(null);
         estLeavingDate.setValue(null);
         arrivalDate.setValue(null);
-        carIdTextBox.setText("");
-        emailAddress.setText("");
+        carIdTextBox.setText(null);
+        emailAddress.setText(null);
         estLeavingHour.valueProperty().set(null);
         estLeavingMin.valueProperty().set(null);
-        idTextBox.setText("");
+        idTextBox.setText(null);
         parkingLotsOpt.valueProperty().set(null);
     }
 

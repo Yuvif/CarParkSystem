@@ -38,6 +38,8 @@ public class OrderHandler extends MessageHandler {
     {
         Order newOrder = class_message.newOrder;
         newOrder.setOrdersPrice(calculateOrdersPrice());
+        class_message.current_customer.addOrder(newOrder);
+        class_message.current_customer.addToBalance(newOrder.getOrdersPrice());
         session.save(newOrder);
         session.flush();
     }

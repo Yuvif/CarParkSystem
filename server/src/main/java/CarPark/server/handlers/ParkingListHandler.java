@@ -29,7 +29,7 @@ public class ParkingListHandler extends MessageHandler {
     }
 
     private List<Parkinglot> getParkingLots() throws Exception {
-        //generateParkingLots();
+        generateParkingLots();
         CriteriaQuery<Parkinglot> query = cb.createQuery(Parkinglot.class);
         query.from(Parkinglot.class);
         List<Parkinglot> data = session.createQuery(query).getResultList();
@@ -42,6 +42,15 @@ public class ParkingListHandler extends MessageHandler {
         session.flush();
         Parkinglot p_l2 = new Parkinglot("Tel Aviv", 7, 63);
         session.save(p_l2);
+        session.flush();
+        Parkinglot p_l3 = new Parkinglot("Jerusalem", 8, 72);
+        session.save(p_l3);
+        session.flush();
+        Parkinglot p_l4 = new Parkinglot("Be'er Sheva", 6, 54);
+        session.save(p_l4);
+        session.flush();
+        Parkinglot p_l5 = new Parkinglot("Eilat", 5, 45);
+        session.save(p_l5);
         session.flush();
     }
 }

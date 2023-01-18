@@ -8,6 +8,8 @@ import org.hibernate.Session;
 
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 
@@ -29,8 +31,28 @@ public class OrdersTableHandler extends MessageHandler{
         return data;
     }
 
+    //calculate the credit of the customer that cancels his order
+    private double calculateCancellationCredit(LocalDateTime arrivalTime)
+    {
+        LocalDateTime cancelTime = LocalDateTime.now();
+        long differenceInMinutes = ChronoUnit.MINUTES.between(cancelTime, arrivalTime);
+        if( differenceInMinutes >= 3 * 60)
+        {
+            return class_message.canceledOrder.getOrdersPrice() * 0.9;
+        }
+        else if(differenceInMinutes > 60)
+        {
+            return class_message.canceledOrder.getOrdersPrice() * 0.5;
+        }
+        else
+        {
+            return class_message.canceledOrder.getOrdersPrice() * 0.1;
+        }
+    }
+
     private void cancelOrder() throws Exception
     {
+
         String hql = "DELETE FROM Order WHERE carId = :carNum AND parkingLot = :p_l AND arrivalTime = :arrival AND estimatedLeavingTime = : leaving";
         Query query = session.createQuery(hql);
         query.setParameter("carNum",class_message.canceledOrder.getCarId());
@@ -39,6 +61,8 @@ public class OrdersTableHandler extends MessageHandler{
         query.setParameter("leaving",class_message.canceledOrder.getEstimatedLeavingTime());
         if(query.executeUpdate() > 0)
         {
+            //I need the customer here to update his balance (!!!!!!!)
+
             class_message.response_type = OrdersTableMessage.ResponseType.ORDER_CANCELED;
         }
     }

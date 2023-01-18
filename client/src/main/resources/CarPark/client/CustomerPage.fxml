@@ -16,7 +16,8 @@
       <left>
          <VBox prefHeight="409.0" prefWidth="210.0" style="-fx-background-color: #CFEEE1;" BorderPane.alignment="CENTER">
             <children>
-               <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="210.0" stylesheets="@../../assets/style.css" text="cevdr" />
+               <Button mnemonicParsing="false" onAction="#createNewOrder" prefHeight="60.0" prefWidth="210.0" stylesheets="@../../assets/style.css" text="Make Order" />
+               <Button mnemonicParsing="false" onAction="#createNewMembership" prefHeight="58.0" prefWidth="210.0" text="Create Membership" />
             </children>
          </VBox>
       </left>

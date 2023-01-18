@@ -52,9 +52,9 @@ public class RegisterHandler extends MessageHandler{
             class_message.newMembership = newMembership;
             class_message.response_type = RegisterMessage.ResponseType.REGISTRATION_SUCCEEDED;
             calculateMembershipsPrice();
+            class_message.current_customer.addMembership(newMembership);
             session.save(newMembership);
             session.flush();
-            class_message.current_customer.addMemberShip(newMembership);
         }
     }
 
@@ -137,10 +137,12 @@ public class RegisterHandler extends MessageHandler{
        if(Objects.equals(membership.getMembershipType(), "Routine Membership") && numOfCars == 0)
        {
            membership.setMembershipsPrice(makeQueryRoutineMembershipPrice());
+           class_message.current_customer.addToBalance(makeQueryRoutineMembershipPrice());
        }
        else if(Objects.equals(membership.getMembershipType(), "Routine Membership") && numOfCars >= 1)
        {
            membership.setMembershipsPrice(makeQueryRoutineMembershipMultipleCarsPrice());
+           class_message.current_customer.addToBalance(makeQueryRoutineMembershipMultipleCarsPrice());
            if(numOfCars == 1)
            {
                updateThePriceForMultipleCarsMembership(membership, numOfCars);
@@ -149,6 +151,7 @@ public class RegisterHandler extends MessageHandler{
        else //price for full membership
        {
            membership.setMembershipsPrice(makeQueryFullMembershipPrice());
+           class_message.current_customer.addToBalance(makeQueryFullMembershipPrice());
        }
     }
 

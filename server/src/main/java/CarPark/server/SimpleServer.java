@@ -1,12 +1,11 @@
 package CarPark.server;
-
-
 import CarPark.entities.*;
 import CarPark.entities.messages.*;
 import CarPark.server.handlers.*;
 import CarPark.server.ocsf.AbstractServer;
 import CarPark.server.ocsf.ConnectionToClient;
 import CarPark.server.ocsf.SubscribedClient;
+import com.textmagic.sdk.model.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -23,7 +22,7 @@ public class SimpleServer extends AbstractServer {
     private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
     public static Session session;// encapsulation make public function so this can be private
 
-    public SimpleServer(int port) {
+    public SimpleServer(int port) throws Exception {
         super(port);
     }
 
@@ -83,27 +82,4 @@ public class SimpleServer extends AbstractServer {
             exception.printStackTrace();
         }
     }
-/*
-	private void addComplaint(LinkedList<Object> msg) {
-		addNewInstance((Complaint) msg.get(1));
-	}
-
-	private void pullOpenComplaints(ConnectionToClient client) throws IOException {
-		List<Complaint> complaints = SimpleChatServer.getAllOpenComplaints();
-		List<Object> msg = new LinkedList<>();
-		msg.add("#PULL_COMPLAINTS");
-		msg.add(complaints);
-		client.sendToClient(msg);
-	}
-
-	private void pullParkingLots(ConnectionToClient client) throws IOException {
-		List<Parkinglot> parkinglots = SimpleChatServer.getAllParkingLots();
-		List<Object> msg = new LinkedList<>();
-		msg.add("#PULL_PARKINGLOTS");
-		msg.add(parkinglots);
-		client.sendToClient(msg);
-
-	*/
-
-
 }
