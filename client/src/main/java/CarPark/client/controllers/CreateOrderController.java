@@ -1,6 +1,7 @@
 package CarPark.client.controllers;
 
 import CarPark.client.SimpleClient;
+import CarPark.entities.Customer;
 import CarPark.entities.Order;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.CreateOrderMessage;
@@ -63,7 +64,7 @@ public class CreateOrderController {
         if (checkValidity()) // create an entity Order and send it to the server
         {
             Order order = createOrder();
-            CreateOrderMessage msg = new CreateOrderMessage(Message.MessageType.REQUEST, CreateOrderMessage.RequestType.CREATE_NEW_ORDER, order);
+            CreateOrderMessage msg = new CreateOrderMessage(Message.MessageType.REQUEST, CreateOrderMessage.RequestType.CREATE_NEW_ORDER, order, (Customer)SimpleClient.getCurrent_user());
             SimpleClient.getClient().sendToServer(msg);
         }
     }

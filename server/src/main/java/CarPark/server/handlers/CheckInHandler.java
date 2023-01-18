@@ -28,7 +28,7 @@ public class CheckInHandler extends MessageHandler {
     @Override
     public void handleMessage() throws Exception {
 
-        String parkingLot = class_message.checkedIn.getParkinglot();
+        String parkingLot = class_message.checkedIn.getParkinglot_name();
 
         CriteriaQuery<ParkingSlot> Query = cb.createQuery(ParkingSlot.class);
         Query.from(ParkingSlot.class);

@@ -2,18 +2,12 @@ package CarPark.server.handlers;
 
 import CarPark.entities.*;
 import CarPark.entities.messages.Message;
-import CarPark.entities.messages.ParkingListMessage;
 import CarPark.entities.messages.ParkingSlotsMessage;
-import CarPark.entities.messages.PricesMessage;
 import CarPark.server.ocsf.ConnectionToClient;
-import org.hibernate.QueryTimeoutException;
 import org.hibernate.Session;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 

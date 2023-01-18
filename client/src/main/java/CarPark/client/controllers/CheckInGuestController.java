@@ -1,7 +1,3 @@
-/**
- * Sample Skeleton for 'CheckInGuest.fxml' Controller Class
- */
-
 package CarPark.client.controllers;
 
 import CarPark.client.SimpleChatClient;

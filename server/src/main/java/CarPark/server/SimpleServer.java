@@ -76,7 +76,7 @@ public class SimpleServer extends AbstractServer {
                 int rand = new Random().nextInt(30) + 1;
                 Date d = new Date();
                 Date date = new Date(d.getTime() - Duration.ofDays(i % rand).toMillis());
-                Complaint comp = new Complaint(date, complaintsDiscription[i], p.get(parkinglotN));
+                Complaint comp = new Complaint(date, complaintsDiscription[i], p.get(parkinglotN).getId());
                 complaints.add(comp);
                 session.save(comp);
                 session.flush();
