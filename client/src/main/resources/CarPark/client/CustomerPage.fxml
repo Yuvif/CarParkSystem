@@ -16,8 +16,7 @@
       <left>
          <VBox prefHeight="409.0" prefWidth="210.0" style="-fx-background-color: #CFEEE1;" BorderPane.alignment="CENTER">
             <children>
-               <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="210.0" text="Button" />
-               <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="210.0" text="Button" />
+               <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="210.0" stylesheets="@../../assets/style.css" text="cevdr" />
             </children>
          </VBox>
       </left>
