@@ -27,7 +27,6 @@ public class PullOrdersMessage extends Message  {
         this.parkinglotId = parkinglotId;
         this.from = from;
         this.to = to;
-
     }
     public PullOrdersMessage(MessageType message_type, PullOrdersMessage.ResponseType response_type, LinkedList<Order> orders) {
         super(message_type);
