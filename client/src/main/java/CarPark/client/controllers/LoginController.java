@@ -118,8 +118,8 @@ public class LoginController{
     public void checkOut(ActionEvent event) {
     }
 
-    public void makeOrder(ActionEvent event) {
+    public void makeOrder(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("CreateOrder");
     }
 }
-
 

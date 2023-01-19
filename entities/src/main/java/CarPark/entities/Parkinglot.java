@@ -1,42 +1,69 @@
 package CarPark.entities;
 
-import com.sun.xml.bind.v2.model.core.ID;
-
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-@Entity
 @Table(name = "parkinglots")
+@Entity
 public class Parkinglot implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
     @Column(name = "name", nullable = false, length = 46)
-    private String name;
+    private String id;
 
-//    @Column(name = "rows")
-//    private Integer rows;
-
-    //    @Column(name = "floors")
-//    private Integer floors;
-//
     @Column(name = "parks_per_row")
     private Integer parksPerRow;
 
     @Column(name = "total_parking_lots")
     private Integer totalParkingLots;
 
+    @OneToMany(mappedBy = "parkinglot" )
+    private List<ParkingSlot> parkingSlots;
+
+    @OneToMany(mappedBy = "parkinglot" )
+    private List<Complaint> complaints;
+
+//    @Column(name = "rows")
+//    private Integer rows = 3;
+//
+//    @Column(name = "floors")
+//    private Integer floors = 3;
+
     public Parkinglot() {
 
     }
 
-    public Parkinglot(String name, int parksPerRow, int total_parking_lots) {
-        this.name = name;
+    public Parkinglot(String name, int parksPerRow, int totalParkingLots) {
+        this.id = name;
         this.parksPerRow = parksPerRow;
-        this.totalParkingLots = total_parking_lots;
+        this.totalParkingLots = totalParkingLots;
+        this.parkingSlots = new ArrayList<ParkingSlot>();
+        this.complaints = new ArrayList<Complaint>();
+
+    }
+    public Parkinglot(Parkinglot parkinglot) {
+        this.id = parkinglot.id;
+        this.parksPerRow = parkinglot.parksPerRow;
+        this.totalParkingLots = parkinglot.totalParkingLots;
+        this.parkingSlots = parkinglot.parkingSlots;
+    }
+
+    public List<ParkingSlot> getParkingSlots() {
+        return parkingSlots;
+    }
+    public List<Complaint> getComplaints() {
+        return complaints;
+    }
+
+    public void setParkingSlots(List<ParkingSlot> ParkedIns) {
+        this.parkingSlots = ParkedIns;
     }
 
 
+    public void addParkingSlots(ParkingSlot ParkedIn) {
+        parkingSlots.add(ParkedIn);
+    }
     public Integer getTotalParkingLots() {
         return totalParkingLots;
     }
@@ -69,15 +96,12 @@ public class Parkinglot implements Serializable {
 //        this.rows = rows;
 //    }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public void setId(String id) {
+        this.id=id;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 }

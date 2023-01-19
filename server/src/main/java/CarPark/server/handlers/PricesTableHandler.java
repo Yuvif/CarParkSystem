@@ -43,7 +43,7 @@ public class PricesTableHandler extends MessageHandler {
     }
 
     private List<Price> getPriceList() throws Exception {
-        //generatePricesTable();
+        generatePricesTable();
         CriteriaQuery<Price> query = cb.createQuery(Price.class);
         query.from(Price.class);
         List<Price> data = session.createQuery(query).getResultList();

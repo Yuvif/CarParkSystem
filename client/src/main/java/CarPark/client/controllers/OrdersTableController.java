@@ -85,7 +85,7 @@ public class OrdersTableController {
                                     OrdersTableMessage.RequestType.CANCEL_ORDER, order);
                             try {
                                 SimpleClient.getClient().sendToServer(msg);
-                                ordersTable.getItems().remove(getTableRow().getItem());
+                                ordersTable.getItems().remove(getTableRow().getItem()); //remove the order from table
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }

@@ -68,5 +68,27 @@ public class CustomerPageController{
     }
 
 
+    @FXML
+    void createNewMembership(ActionEvent event) throws IOException {
+        Platform.runLater(() -> {
+            try {
+                SimpleChatClient.setRoot("RegisterAsMember");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    void createNewOrder(ActionEvent event) throws IOException {
+        Platform.runLater(() -> {
+            try {
+                SimpleChatClient.setRoot("CreateOrder");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
 
 }

@@ -4,7 +4,7 @@ import CarPark.entities.Membership;
 import CarPark.entities.Order;
 import CarPark.entities.Price;
 import CarPark.entities.messages.Message;
-import CarPark.entities.messages.OrderMessage;
+import CarPark.entities.messages.CreateOrderMessage;
 import CarPark.server.ocsf.ConnectionToClient;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -17,11 +17,11 @@ import java.util.Objects;
 
 public class OrderHandler extends MessageHandler {
 
-    private final OrderMessage class_message;
+    private final CreateOrderMessage class_message;
 
     public OrderHandler(Message msg, Session session, ConnectionToClient client) {
         super(msg, session, client);
-        this.class_message = (OrderMessage) this.message;
+        this.class_message = (CreateOrderMessage) this.message;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class OrderHandler extends MessageHandler {
         switch (class_message.request_type) {
             case CREATE_NEW_ORDER:
                 createOrder();
-                class_message.response_type = OrderMessage.ResponseType.ORDER_SUBMITTED;
+                class_message.response_type = CreateOrderMessage.ResponseType.ORDER_SUBMITTED;
                 break;
         }
     }
@@ -38,6 +38,8 @@ public class OrderHandler extends MessageHandler {
     {
         Order newOrder = class_message.newOrder;
         newOrder.setOrdersPrice(calculateOrdersPrice());
+        class_message.current_customer.addOrder(newOrder);
+        class_message.current_customer.addToBalance(newOrder.getOrdersPrice());
         session.save(newOrder);
         session.flush();
     }
