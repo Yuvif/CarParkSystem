@@ -96,22 +96,28 @@ public class CreateOrderController {
         }
 
         if (!checkEmailValidity()) {
-            sendAlert("Email is not valid", " Invalid Email", Alert.AlertType.WARNING);
+            sendAlert("Email is not valid!", " Invalid Email", Alert.AlertType.WARNING);
             return false;
         }
 
         if (!checkIdValidity()) {
-            sendAlert("ID is not valid", " Invalid ID", Alert.AlertType.WARNING);
+            sendAlert("ID is not valid!", " Invalid ID", Alert.AlertType.WARNING);
             return false;
         }
 
         if (!checkCarIdValidity()) {
-            sendAlert("Car ID is not valid", " Invalid Car ID", Alert.AlertType.WARNING);
+            sendAlert("Car ID is not valid!", " Invalid Car ID", Alert.AlertType.WARNING);
             return false;
         }
 
         if (!checkDateValidity()) {
-            sendAlert("Date is not valid", " Invalid Date", Alert.AlertType.WARNING);
+            sendAlert("Date is not valid!", " Invalid Date", Alert.AlertType.WARNING);
+            return false;
+        }
+
+        if(!checkEstLeavingTimeValidity())
+        {
+            sendAlert("Est Leaving time is not valid!", " Invalid Estimated Leaving Time", Alert.AlertType.WARNING);
             return false;
         }
 
@@ -146,6 +152,16 @@ public class CreateOrderController {
         LocalDate arrival = arrivalDate.getValue();
         LocalDate leaving = estLeavingDate.getValue();
         if (arrival.isAfter(leaving)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private boolean checkEstLeavingTimeValidity() {
+        LocalTime arrivalTime = LocalTime.of(Integer.parseInt(arrivalHour.getValue().toString()), Integer.parseInt(arrivalMin.getValue().toString()));
+        LocalTime estLeavingTime = LocalTime.of(Integer.parseInt(estLeavingHour.getValue().toString()), Integer.parseInt(estLeavingMin.getValue().toString()));
+        if (arrivalTime.isAfter(estLeavingTime)) {
             return false;
         } else {
             return true;
