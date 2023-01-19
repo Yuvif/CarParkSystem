@@ -1,8 +1,5 @@
 package CarPark.entities;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -12,35 +9,33 @@ import java.util.List;
 })
 @Table(name = "customers")
 public class Customer extends User {
-    private double balance;
-
+    private int balance;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "customerId", cascade = CascadeType.ALL)
-    @Fetch(value = FetchMode.SUBSELECT)
-    private List<Membership> memberships;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customerId", cascade = CascadeType.ALL)
-    @Fetch(value = FetchMode.SUBSELECT)
-    private List<Order> orders;
+    List<Membership> memberships;
 
-    public Customer(long customerId, String firstName, String lastName, String email, double balance, String password) throws Exception
-    {
-        super(customerId, password, email, firstName, lastName);
-        this.balance = 0.0;
+    public Customer(long customerId, String firstName, String lastName, String email, int balance,String password) throws Exception {
+        super(customerId, password, email,firstName,lastName);
+        this.balance = balance;
         memberships = null;
-        orders = null;
     }
 
-    public Customer() {}
+    public Customer() {
+    }
 
-    public void addMembership(Membership membership) { memberships.add(membership); }
-    public void addOrder(Order order) { orders.add(order); }
+    public void addMemberShip(Membership membership){
+        memberships.add(membership);
+    }
 
-    public double getBalance() {
+    public List<Membership> getMemberships(){
+        return memberships;
+    }
+
+    public int getBalance() {
         return balance;
     }
 
     public void setBalance(int balance) {
         this.balance = balance;
     }
-    public void addToBalance(double sum) { this.balance += sum; }
 
 }

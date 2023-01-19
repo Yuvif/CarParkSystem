@@ -7,6 +7,7 @@ import java.io.Serializable;
 @Table(name="users")
 @Inheritance(strategy= InheritanceType.TABLE_PER_CLASS)
 public abstract class User implements Serializable {
+
     @Id
     @Column(name = "userId", nullable = false)
     private Long userId;
