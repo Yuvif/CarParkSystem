@@ -59,7 +59,6 @@ public class ComplaintSubmissionController extends Controller {
                 pause.play();
             });
         }
-
     }
 
     private boolean checkEmpty() {
