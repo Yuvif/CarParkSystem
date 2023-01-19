@@ -21,8 +21,7 @@ public class Order implements Serializable {
     private double ordersPrice;
     private Date date;
     private Status orderStatus = Status.APPROVED;
-
-    public enum Status {APPROVED, CANCELLED};
+    public enum Status {APPROVED, CANCELLED, CHECKED_IN, CHECKED_OUT};
 
     public Order(int customerId, int carId, String parkingLot, String email,
                  LocalDateTime arrivalTime, LocalDateTime estimatedLeavingTime, double ordersPrice, Date date)
@@ -47,6 +46,7 @@ public class Order implements Serializable {
         return carId;
     }
     public String getParkingLotId() { return parkingLot; }
+
     public String getEmail() {
         return email;
     }
@@ -70,6 +70,7 @@ public class Order implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
     public void setArrivalTime(LocalDateTime arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
