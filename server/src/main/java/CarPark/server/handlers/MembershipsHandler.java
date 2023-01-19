@@ -1,9 +1,10 @@
 package CarPark.server.handlers;
 
+import CarPark.entities.Customer;
 import CarPark.entities.Membership;
 import CarPark.entities.Price;
 import CarPark.entities.messages.Message;
-import CarPark.entities.messages.RegisterMessage;
+import CarPark.entities.messages.MembershipMessage;
 import CarPark.server.ocsf.ConnectionToClient;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -13,14 +14,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-public class RegisterHandler extends MessageHandler{
+public class MembershipsHandler extends MessageHandler{
 
-    private RegisterMessage class_message;
+    private MembershipMessage class_message;
 
-    public RegisterHandler(Message msg, Session session, ConnectionToClient client)
+    public MembershipsHandler(Message msg, Session session, ConnectionToClient client)
     {
         super(msg, session, client);
-        this.class_message = (RegisterMessage) this.message;
+        this.class_message = (MembershipMessage) this.message;
     }
 
     private List<Membership> getMembershipList() throws Exception
@@ -40,21 +41,22 @@ public class RegisterHandler extends MessageHandler{
         {
             if (membership.getCarId() == newMembership.getCarId() && membership.getCustomerId() == newMembership.getCustomerId())
             {
-                class_message.response_type = RegisterMessage.ResponseType.REGISTRATION_FAILED;
+                class_message.response_type = MembershipMessage.ResponseType.REGISTRATION_FAILED;
                 break;
             }
         }
 
-        if(class_message.response_type != RegisterMessage.ResponseType.REGISTRATION_FAILED)
+        if(class_message.response_type != MembershipMessage.ResponseType.REGISTRATION_FAILED)
         {
             Random rand = new Random();
             newMembership.setMembershipId(rand.nextInt(99999 + 1 - 10000) + 10000); //generate 5 digit membership number
             class_message.newMembership = newMembership;
-            class_message.response_type = RegisterMessage.ResponseType.REGISTRATION_SUCCEEDED;
+            class_message.response_type = MembershipMessage.ResponseType.REGISTRATION_SUCCEEDED;
             calculateMembershipsPrice();
-            class_message.current_customer.addMembership(newMembership);
             session.save(newMembership);
             session.flush();
+            Customer current_customer = session.get(Customer.class,class_message.current_customer.getId());
+            current_customer.addMemberShip(newMembership);
         }
     }
 
@@ -137,12 +139,10 @@ public class RegisterHandler extends MessageHandler{
        if(Objects.equals(membership.getMembershipType(), "Routine Membership") && numOfCars == 0)
        {
            membership.setMembershipsPrice(makeQueryRoutineMembershipPrice());
-           class_message.current_customer.addToBalance(makeQueryRoutineMembershipPrice());
        }
        else if(Objects.equals(membership.getMembershipType(), "Routine Membership") && numOfCars >= 1)
        {
            membership.setMembershipsPrice(makeQueryRoutineMembershipMultipleCarsPrice());
-           class_message.current_customer.addToBalance(makeQueryRoutineMembershipMultipleCarsPrice());
            if(numOfCars == 1)
            {
                updateThePriceForMultipleCarsMembership(membership, numOfCars);
@@ -151,7 +151,6 @@ public class RegisterHandler extends MessageHandler{
        else //price for full membership
        {
            membership.setMembershipsPrice(makeQueryFullMembershipPrice());
-           class_message.current_customer.addToBalance(makeQueryFullMembershipPrice());
        }
     }
 
@@ -162,7 +161,18 @@ public class RegisterHandler extends MessageHandler{
             case REGISTER:
                 createMembership();
                 break;
+            case GET_MY_MEMBERSHIPS:
+                getMyMemberships();
+                break;
         }
+    }
+
+    public void getMyMemberships() throws Exception {
+        String hql = "FROM Membership WHERE customerId = :id";
+        Query query = session.createQuery(hql);
+        query.setParameter("id", class_message.current_customer.getId());
+        class_message.memberships = query.getResultList();
+        class_message.response_type= MembershipMessage.ResponseType.SEND_TABLE;
     }
 
 

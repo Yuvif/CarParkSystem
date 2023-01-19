@@ -4,7 +4,7 @@ import CarPark.client.SimpleClient;
 import CarPark.entities.Customer;
 import CarPark.entities.Membership;
 import CarPark.entities.messages.Message;
-import CarPark.entities.messages.RegisterMessage;
+import CarPark.entities.messages.MembershipMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -52,7 +52,7 @@ public class RegisterAsMemberController {//Daniel need to change name to new mem
         if (checkValidity()) // create membership entity and send it to the server
         {
             Membership membership = createMembership();
-            RegisterMessage msg = new RegisterMessage(Message.MessageType.REQUEST, RegisterMessage.RequestType.REGISTER, membership,
+            MembershipMessage msg = new MembershipMessage(Message.MessageType.REQUEST, MembershipMessage.RequestType.REGISTER, membership,
                     (Customer)SimpleClient.getCurrent_user());
             try {
                 SimpleClient.getClient().sendToServer(msg);
@@ -159,7 +159,7 @@ public class RegisterAsMemberController {//Daniel need to change name to new mem
     }
 
     @Subscribe
-    public void newResponse(RegisterMessage new_message)
+    public void newResponse(MembershipMessage new_message)
     {
         switch (new_message.response_type) {
             case REGISTRATION_SUCCEEDED:
