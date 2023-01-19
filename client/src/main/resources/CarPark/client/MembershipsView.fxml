@@ -20,7 +20,7 @@
         <left>
             <VBox prefHeight="452.0" prefWidth="210.0" style="-fx-background-color: #CFEEE1;" BorderPane.alignment="CENTER">
                 <children>
-                    <Button mnemonicParsing="false" prefHeight="69.0" prefWidth="221.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="   MY ORDERS">
+                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="69.0" prefWidth="221.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="   MY ORDERS">
                         <graphic>
                             <ImageView fitHeight="35.0" fitWidth="35.0">
                                 <image>
@@ -84,7 +84,7 @@
                 </children></HBox>
         </top>
         <center>
-            <VBox prefHeight="453.0" prefWidth="801.0" BorderPane.alignment="CENTER">
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="453.0" prefWidth="801.0" BorderPane.alignment="CENTER">
                 <children>
                     <ImageView fitHeight="49.0" fitWidth="49.0" translateY="10.0">
                         <image>
@@ -96,7 +96,7 @@
                             <Font name="SansSerif Bold" size="27.0" />
                         </font>
                     </Label>
-               <TableView fx:id="membershipTableView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="336.0" prefWidth="730.0" stylesheets="@../../assets/style.css" translateX="40.0" translateY="-20.0">
+               <TableView fx:id="membershipTableView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="336.0" prefWidth="730.0" stylesheets="@../../assets/style.css" translateX="35.0" translateY="-20.0">
                  <columns>
                    <TableColumn fx:id="membership_id" prefWidth="103.0" text="ID" />
                      <TableColumn fx:id="car_id" prefWidth="105.0" text="Car ID" />

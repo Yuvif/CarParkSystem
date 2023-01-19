@@ -15,7 +15,7 @@
 <AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.CustomerPageController">
    <BorderPane prefHeight="509.0" prefWidth="1017.0">
       <left>
-         <VBox prefHeight="452.0" prefWidth="210.0" style="-fx-background-color: #CFEEE1;" BorderPane.alignment="CENTER">
+         <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="210.0" style="-fx-background-color: #CFEEE1;" BorderPane.alignment="CENTER">
             <children>
                <Button mnemonicParsing="false" prefHeight="69.0" prefWidth="221.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="   MY ORDERS">
                   <graphic>
@@ -57,7 +57,7 @@
          </VBox>
       </left>
       <top>
-         <HBox prefHeight="60.0" prefWidth="1017.0" style="-fx-background-color: #70caa6;" BorderPane.alignment="CENTER">
+         <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="1017.0" style="-fx-background-color: #70caa6;" BorderPane.alignment="CENTER">
             <children>
                <ImageView fitHeight="35.0" fitWidth="35.0" rotate="180.0" style="-fx-image: WHITE;" translateX="5.0" translateY="18.0">
                   <image>
