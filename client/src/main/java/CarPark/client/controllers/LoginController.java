@@ -41,7 +41,7 @@ public class LoginController{
     }
 
 
-    public void login() throws Exception {
+    public void login(ActionEvent event) throws Exception {
         if (checkIdValidity(userID.getText()) && checkPassValidity(password.getText())) //check if password and username are valid
         {
             //if valid send request to login with secured password
