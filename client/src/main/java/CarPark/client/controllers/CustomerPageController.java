@@ -94,5 +94,26 @@ public class CustomerPageController{
         });
     }
 
+    @FXML
+    void newComplaint(ActionEvent event) throws IOException {
+        Platform.runLater(() -> {
+            try {
+                SimpleChatClient.setRoot("ComplaintSubmission");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
 
+    @FXML
+    void myComplaints(ActionEvent event) throws IOException{
+    Platform.runLater(() -> {
+        try {
+            SimpleChatClient.setRoot("ComplaintInspectionTable");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    });
+    }
 }
+
