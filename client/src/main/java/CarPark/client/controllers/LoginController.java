@@ -2,7 +2,6 @@ package CarPark.client.controllers;
 
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
-import CarPark.entities.Customer;
 import CarPark.entities.messages.LoginMessage;
 import CarPark.entities.messages.Message;
 import javafx.application.Platform;
@@ -80,6 +79,13 @@ public class LoginController{
     @Subscribe
     public void newResponse(LoginMessage new_message) throws IOException {
         switch (new_message.response_type) {
+            case LOGIN_SUCCEED_CUSTOMER -> {
+                SimpleClient.setCurrent_user(new_message.getUser());
+                SimpleChatClient.setRoot("CustomerPage");}
+            case LOGIN_SUCCEED_EMPLOYEE -> {
+                SimpleClient.setCurrent_user(new_message.getUser());
+                SimpleChatClient.setRoot("EmployeePage");
+            }
             case LOGIN_FAILED -> Platform.runLater(() -> {
                 try {
                     setWrongLogin();
@@ -90,13 +96,6 @@ public class LoginController{
             case ALREADY_LOGGED -> Platform.runLater(() -> {
                 alreadyLogIn();
             });
-            case LOGIN_SUCCEED -> {
-                SimpleClient.setCurrent_user(new_message.getUser());
-                if (new_message.getUser().getClass().equals(Customer.class))
-                    SimpleChatClient.setRoot("CustomerPage");
-                else
-                    SimpleChatClient.setRoot("EmployeePage");
-            }
         }
     }
 

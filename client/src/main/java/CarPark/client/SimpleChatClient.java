@@ -2,6 +2,7 @@ package CarPark.client;
 
 import CarPark.client.events.MessageEvent;
 import CarPark.entities.messages.ConnectionMessage;
+import CarPark.entities.messages.LoginMessage;
 import CarPark.entities.messages.Message;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -40,9 +41,8 @@ public class SimpleChatClient extends Application {
         client.openConnection();
         ConnectionMessage message = new ConnectionMessage(Message.MessageType.REQUEST);
         SimpleClient.getClient().sendToServer(message);
-
         scene = new Scene(loadFXML("Login"));
-        scene = new Scene(loadFXML("ComplaintInspectionTable"), 640, 520);
+      //  scene = new Scene(loadFXML("ComplaintInspectionTable"), 640, 520);
         // = new Scene(loadFXML("MenuEmployee"), 640, 520);
 
         stage.setScene(scene);
@@ -52,6 +52,10 @@ public class SimpleChatClient extends Application {
     @Override
     public void stop() throws Exception {
         // TODO Auto-generated method stub
+        if (SimpleClient.getCurrent_user()!=null) {
+            LoginMessage logout = new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGOUT, SimpleClient.getCurrent_user().getId());
+            SimpleClient.getClient().sendToServer(logout);
+        }
         EventBus.getDefault().unregister(this);
         super.stop();
     }

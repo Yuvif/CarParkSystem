@@ -9,16 +9,16 @@ import java.io.Serializable;
 public class ParkingSlot implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int parkingSlotId;
 
     private Status SpotStatus = Status.EMPTY;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parkinglot_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "parkingLotId")
     private Parkinglot parkinglot;
 
-    @OneToOne
+    @OneToOne(mappedBy="parkingSlot")
     private CheckedIn checkedIn;
 
     public CheckedIn getCheckedIn() {
@@ -39,7 +39,7 @@ public class ParkingSlot implements Serializable {
 
 
     public int getId() {
-        return id;
+        return parkingSlotId;
     }
 
     public Status getSpotStatus() {
@@ -51,7 +51,7 @@ public class ParkingSlot implements Serializable {
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.parkingSlotId = id;
     }
 
     public Parkinglot getParkinglot() {

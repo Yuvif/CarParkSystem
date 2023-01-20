@@ -53,6 +53,7 @@ public class MembershipsHandler extends MessageHandler{
             class_message.newMembership = newMembership;
             class_message.response_type = MembershipMessage.ResponseType.REGISTRATION_SUCCEEDED;
             calculateMembershipsPrice();
+
             session.save(newMembership);
             session.flush();
             Customer current_customer = session.get(Customer.class,class_message.current_customer.getId());

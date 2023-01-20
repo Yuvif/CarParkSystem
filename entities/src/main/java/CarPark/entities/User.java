@@ -3,11 +3,8 @@ package CarPark.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
-@Table(name="users")
-@Inheritance(strategy= InheritanceType.TABLE_PER_CLASS)
+@MappedSuperclass
 public abstract class User implements Serializable {
-
     @Id
     @Column(name = "userId", nullable = false)
     private Long userId;

@@ -1,9 +1,11 @@
 package CarPark.client.controllers;
 
+import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
+import CarPark.entities.Customer;
 import CarPark.entities.Order;
 import CarPark.entities.messages.Message;
-import CarPark.entities.messages.OrdersTableMessage;
+import CarPark.entities.messages.OrderMessage;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -45,7 +47,7 @@ public class OrdersTableController {
         parkingLotCol.setCellValueFactory(new PropertyValueFactory<>("parkingLotId"));
         arrivalCol.setCellValueFactory(new PropertyValueFactory<>("arrivalTime"));
         estLeavingTimeCol.setCellValueFactory(new PropertyValueFactory<>("estimatedLeavingTime"));
-        OrdersTableMessage msg = new OrdersTableMessage(Message.MessageType.REQUEST, OrdersTableMessage.RequestType.GET_ORDERS_TABLE);
+        OrderMessage msg = new OrderMessage(Message.MessageType.REQUEST, OrderMessage.RequestType.GET_ORDERS_TABLE,(Customer)SimpleClient.getCurrent_user());
         try {
             SimpleClient.getClient().sendToServer(msg);
         } catch (IOException e) {
@@ -55,7 +57,7 @@ public class OrdersTableController {
 
     //initialize prices table from server
     @Subscribe
-    public void newResponse(OrdersTableMessage new_message)
+    public void newResponse(OrderMessage new_message)
     {
         switch (new_message.response_type) {
             case SET_ORDERS_TABLE -> {
@@ -81,8 +83,8 @@ public class OrdersTableController {
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             Order order = getTableRow().getItem();
-                            OrdersTableMessage msg = new OrdersTableMessage(Message.MessageType.REQUEST,
-                                    OrdersTableMessage.RequestType.CANCEL_ORDER, order);
+                            OrderMessage msg = new OrderMessage(Message.MessageType.REQUEST,
+                                    OrderMessage.RequestType.CANCEL_ORDER, order);
                             try {
                                 SimpleClient.getClient().sendToServer(msg);
                                 ordersTable.getItems().remove(getTableRow().getItem()); //remove the order from table
@@ -113,6 +115,14 @@ public class OrdersTableController {
 
     public void goBack(ActionEvent actionEvent)
     {
+        Platform.runLater(()->
+        {
+            try {
+                SimpleChatClient.setRoot("CustomerPage");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public void deleteRow()

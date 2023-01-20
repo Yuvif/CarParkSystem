@@ -1,5 +1,8 @@
 package CarPark.entities;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -22,6 +25,16 @@ public class Membership implements Serializable {
     private String membershipType;
     private double membershipsPrice;
 
+    @ManyToOne
+    private Customer customer;
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 
     public Membership(int membershipId, long customerId, int carId, String routineParkingLot, LocalTime routineLeavingHour,
                       LocalDate startDate, LocalDate endDate, String membershipType, double membershipsPrice) {

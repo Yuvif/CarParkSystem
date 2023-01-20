@@ -12,12 +12,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.CustomerPageController">
+<AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.CustomerPageController">
    <BorderPane prefHeight="509.0" prefWidth="1017.0">
       <left>
          <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="210.0" style="-fx-background-color: #CFEEE1;" BorderPane.alignment="CENTER">
             <children>
-               <Button mnemonicParsing="false" prefHeight="69.0" prefWidth="221.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="   MY ORDERS">
+               <Button mnemonicParsing="false" onAction="#myOrders" prefHeight="69.0" prefWidth="221.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="   MY ORDERS">
                   <graphic>
                      <ImageView fitHeight="35.0" fitWidth="35.0">
                         <image>
@@ -35,7 +35,7 @@
                      </ImageView>
                   </graphic>
                </Button>
-               <Button mnemonicParsing="false" prefHeight="69.0" prefWidth="221.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="   NEW ORDER">
+               <Button mnemonicParsing="false" onAction="#createNewOrder" prefHeight="69.0" prefWidth="221.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="   NEW ORDER">
                   <graphic>
                      <ImageView fitHeight="35.0" fitWidth="35.0">
                         <image>

@@ -25,7 +25,9 @@ public class CustomerPageController{
     }
 
     @FXML
-    public void createOrder(){}
+    public void createOrder(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("CreateOrder");
+    }
     @FXML
     public void addComplaint(){}
 
@@ -67,17 +69,19 @@ public class CustomerPageController{
         });
     }
 
-
     @FXML
-    void createNewMembership(ActionEvent event) throws IOException {
-        Platform.runLater(() -> {
+    void myOrders(ActionEvent event)
+    {
+        Platform.runLater(()->
+        {
             try {
-                SimpleChatClient.setRoot("RegisterAsMember");
+                SimpleChatClient.setRoot("OrdersTable");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
     }
+
 
     @FXML
     void createNewOrder(ActionEvent event) throws IOException {
