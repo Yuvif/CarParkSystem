@@ -13,6 +13,7 @@ public class OrderMessage extends Message {
     public ResponseType response_type;
     public List<Order> ordersList;
     public Order Order;
+    public double credit;
 
     //For reports
     public String parking_lot_id;
