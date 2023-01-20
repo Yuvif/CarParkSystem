@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
@@ -11,7 +12,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.LoginController">
+<AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.LoginController">
     <ImageView fitHeight="516.0" fitWidth="508.0" layoutX="509.0">
         <image>
             <Image url="@../../assets/background.png" />
@@ -40,14 +41,6 @@
                <Image url="@../../assets/padlock.png" />
             </image>
          </ImageView>
-         <ImageView fitHeight="82.0" fitWidth="90.0" layoutX="138.0" layoutY="181.0" onMouseClicked="#login" pickOnBounds="true">
-            <image>
-               <Image url="@../../assets/login.png" />
-            </image>
-            <cursor>
-               <Cursor fx:constant="HAND" />
-            </cursor>
-         </ImageView>
           <!--    <ImageView fitHeight="40.0" fitWidth="35.0" layoutX="110.0" layoutY="360.0" pickOnBounds="true" preserveRatio="true">-->
           <!--        <image>-->
           <!--            <Image url="@email.png" />-->
@@ -65,6 +58,18 @@
                   <Font name="SansSerif Regular" size="14.0" />
               </font>
           </TextField>
+         <Button layoutX="137.0" layoutY="208.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="90.0" style="-fx-background-radius: 10;" styleClass="mybutton" stylesheets="@../../assets/style.css">
+            <graphic>
+               <ImageView fitHeight="82.0" fitWidth="90.0" pickOnBounds="true">
+                  <image>
+                     <Image url="@../../assets/login.png" />
+                  </image>
+                  <cursor>
+                     <Cursor fx:constant="HAND" />
+                  </cursor>
+               </ImageView>
+            </graphic>
+         </Button>
       </children>
    </AnchorPane>
    <AnchorPane layoutX="76.0" layoutY="435.0" prefHeight="64.0" prefWidth="363.0" style="-fx-background-color: #77D0AA; -fx-background-radius: 30;">

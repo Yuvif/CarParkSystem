@@ -75,8 +75,8 @@ public class SimpleServer extends AbstractServer {
                 if (handler != null) {
                     handler.handleMessage();
                     session.getTransaction().commit();
-                    if (!(handler.getClass().equals(LoginHandler.class) && ((LoginMessage) msg).request_type.equals(LoginMessage.RequestType.LOGOUT))) {
-                        handler.message.message_type = Message.MessageType.RESPONSE;
+                    if (!(handler.getClass().equals(LoginHandler.class) && ((LoginMessage) msg).request_type.equals(LoginMessage.RequestType.LOGOUT)))
+                    {   handler.message.message_type = Message.MessageType.RESPONSE;
                         client.sendToClient(handler.message);
                     }
                 }
