@@ -21,7 +21,7 @@ public class Order implements Serializable {
     private double ordersPrice;
     private Date date;
     private Status orderStatus = Status.APPROVED;
-    public enum Status {APPROVED, CANCELLED, CHECKED_IN, CHECKED_OUT};
+    public enum Status {APPROVED, CANCELLED, NOTIFIED, CHECKED_IN, CHECKED_OUT};
 
     public Order(int customerId, int carId, String parkingLot, String email,
                  LocalDateTime arrivalTime, LocalDateTime estimatedLeavingTime, double ordersPrice, Date date)

@@ -116,7 +116,7 @@ public class SimpleServer extends AbstractServer {
                     EmailSender.sendEmail(email, subject, text);
                 }
                 try {
-                    Thread.sleep(120000);
+                    Thread.sleep(40000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -180,5 +180,4 @@ public class SimpleServer extends AbstractServer {
             }
         }
     }
-
 }
