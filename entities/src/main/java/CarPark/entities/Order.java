@@ -83,8 +83,8 @@ public class Order implements Serializable {
     public Boolean getStatus() {
         return orderStatus== Status.APPROVED;
     }
-    public void setSpotStatus(Status spotStatus) {
-        orderStatus = spotStatus;
+    public void setOrderStatus(Status OrderStatus) {
+        orderStatus = orderStatus;
     }
 
     public  Date getDate(){

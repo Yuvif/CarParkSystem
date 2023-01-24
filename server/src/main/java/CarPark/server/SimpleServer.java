@@ -103,9 +103,9 @@ public class SimpleServer extends AbstractServer {
         public void run() {
             var session = getSessionFactory().openSession();
             while (true) {
-//              get all orders that are at least 2 minutes late
+//              get all orders that are at least 5 minutes late
                 var orders = session.createQuery("from Order where arrivalTime = :time and orderStatus = :status")
-                        .setParameter("time", LocalDateTime.now().minusMinutes(2))
+                        .setParameter("time", LocalDateTime.now().minusMinutes(5))
                         .setParameter("status", Order.Status.APPROVED)
                         .list();
                 for (Object order : orders) {
@@ -115,8 +115,15 @@ public class SimpleServer extends AbstractServer {
                             "like to remind you that in case you are late or don't show up you will be charged according to the terms and conditions of the parking lot.\n\nBest regards,\nCarPark";
                     EmailSender.sendEmail(email, subject, text);
                 }
+//                change the status of the orders to be NOTIFIED
+                session.beginTransaction();
+                for (Object order : orders) {
+                    ((Order) order).setOrderStatus(Order.Status.NOTIFIED);
+                    session.update(order);
+                }
+                session.getTransaction().commit();
                 try {
-                    Thread.sleep(40000);
+                    Thread.sleep(120000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
