@@ -22,9 +22,15 @@ import java.util.ArrayList;
 public class SimpleServer extends AbstractServer {
     private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
     public static Session session;// encapsulation make public function so this can be private
+    private OrderReminderThread orderReminderThread;
+    private MembershipReminderThread membershipReminderThread;
 
     public SimpleServer(int port) {
         super(port);
+//        OrderReminderThread orderReminderThread = new OrderReminderThread();
+//        orderReminderThread.start();
+//        MembershipReminderThread membershipReminderThread = new MembershipReminderThread();
+//        membershipReminderThread.start();
     }
 
 
@@ -89,25 +95,65 @@ public class SimpleServer extends AbstractServer {
             exception.printStackTrace();
         }
     }
-/*
-	private void addComplaint(LinkedList<Object> msg) {
-		addNewInstance((Complaint) msg.get(1));
-	}
 
-	private void pullOpenComplaints(ConnectionToClient client) throws IOException {
-		List<Complaint> complaints = SimpleChatServer.getAllOpenComplaints();
-		List<Object> msg = new LinkedList<>();
-		msg.add("#PULL_COMPLAINTS");
-		msg.add(complaints);
-		client.sendToClient(msg);
-	}
-
-	private void pullParkingLots(ConnectionToClient client) throws IOException {
-		List<Parkinglot> parkinglots = SimpleChatServer.getAllParkingLots();
-		List<Object> msg = new LinkedList<>();
-		msg.add("#PULL_PARKINGLOTS");
-		msg.add(parkinglots);
-		client.sendToClient(msg);
+    public static class OrderReminderThread extends Thread {
+        @Override
+        public void run() {
+            var session = getSessionFactory().openSession();
+            while (true) {
+//              get all orders that are at least 2 minutes late
+                var orders = session.createQuery("from Order where arrivalTime = :time and orderStatus = :status")
+                        .setParameter("time", LocalDateTime.now().minusMinutes(2))
+                        .setParameter("status", Order.Status.APPROVED)
+                        .list();
+                for (Object order : orders) {
+                    String email = ((Order) order).getEmail();
+                    String subject = "Did you forget your order?";
+                    String text = "Hi, \nyou have an order that you haven't checked in yet and we would " +
+                            "like to remind you that in case you are late or don't show up you will be charged according to the terms and conditions of the parking lot.\n\nBest regards,\nCarPark";
+                    EmailSender.sendEmail(email, subject, text);
+                }
+                try {
+                    Thread.sleep(120000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    public static class MembershipReminderThread extends Thread {
+        @Override
+        public void run() {
+            while (true) {
+                var session = getSessionFactory().openSession();
+                var memberships = session.createQuery("from Membership where endDate = :time")
+                        .setParameter("time", LocalDateTime.now().plusDays(7))
+                        .list();
+//              for each membership get the customerId attribute and get the list of Customer objects having that id
+                for (Object membership : memberships) {
+//              get the customer object that has the same customerId as the membership
+                    var customer = session.createQuery("from Customer where userId = :id")
+                            .setParameter("id", ((Membership) membership).getCustomerId())
+                            .list();
+//                  get the email from the customer object
+                    String email = ((Customer) customer.get(0)).getEmail();
+                    String subject = "Your membership is about to expire";
+                    String text = "Hi, \nyour membership is about to expire in a week and we would like " +
+                            "to remind you that in case you are late or don't show up you will be charged according to the terms and conditions of the parking lot.\n\nBest regards,\nCarPark";
+                    EmailSender.sendEmail(email, subject, text);
+                }
+                // now wait for 7 days
+                try {
+                    Thread.sleep(604800000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    public static class EmailSender{
+        public static void sendEmail(String to, String subject, String text) {
+            String from = "ModernParkingSolutionsCPS@outlook.com";
 
 	*/
 
