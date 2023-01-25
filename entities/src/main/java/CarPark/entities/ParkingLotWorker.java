@@ -18,15 +18,8 @@ public class ParkingLotWorker extends Employee {
 
     public ParkingLotWorker() {}
 
-    public Parkinglot getParkingLot() {
-        return parkingLot;
-    }
-    public void setParkingLot(Parkinglot parkingLot) {
-        this.parkingLot = parkingLot;
-    }
+    public Parkinglot getParkingLot() { return parkingLot; }
+    public void setParkingLot(Parkinglot parkingLot) { this.parkingLot = parkingLot; }
 
-    public int getId()
-    {
-        return id;
-    }
+    public int getId() { return id; }
 }

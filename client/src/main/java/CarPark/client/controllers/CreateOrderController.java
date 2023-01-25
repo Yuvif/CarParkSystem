@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -151,21 +152,19 @@ public class CreateOrderController {
     private boolean checkDateValidity() {
         LocalDate arrival = arrivalDate.getValue();
         LocalDate leaving = estLeavingDate.getValue();
-        if (arrival.isAfter(leaving)) {
-            return false;
-        } else {
-            return true;
-        }
+        return (!arrival.isAfter(leaving));
     }
 
     private boolean checkEstLeavingTimeValidity() {
+        LocalDate arrival = arrivalDate.getValue();
         LocalTime arrivalTime = LocalTime.of(Integer.parseInt(arrivalHour.getValue().toString()), Integer.parseInt(arrivalMin.getValue().toString()));
-        LocalTime estLeavingTime = LocalTime.of(Integer.parseInt(estLeavingHour.getValue().toString()), Integer.parseInt(estLeavingMin.getValue().toString()));
-        if (arrivalTime.isAfter(estLeavingTime)) {
-            return false;
-        } else {
-            return true;
-        }
+        LocalDateTime arrivalDateTime = LocalDateTime.of(arrival, arrivalTime);
+
+        LocalDate leaving = estLeavingDate.getValue();
+        LocalTime leavingTime = LocalTime.of(Integer.parseInt(estLeavingHour.getValue().toString()), Integer.parseInt(estLeavingMin.getValue().toString()));
+        LocalDateTime leavingDateTime = LocalDateTime.of(leaving, leavingTime);
+
+        return (ChronoUnit.MINUTES.between(arrivalDateTime, leavingDateTime) >= 30);
     }
 
     @FXML

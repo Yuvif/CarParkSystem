@@ -22,10 +22,13 @@ public class Order implements Serializable {
     private Date date;
     private Status orderStatus = Status.APPROVED;
 
+    @ManyToOne
+    Customer customer;
+
     public enum Status {APPROVED, CANCELLED};
 
     public Order(int customerId, int carId, String parkingLot, String email,
-                 LocalDateTime arrivalTime, LocalDateTime estimatedLeavingTime, double ordersPrice, Date date)
+                 LocalDateTime arrivalTime, LocalDateTime estimatedLeavingTime, double ordersPrice, Date date, Customer customer)
     {
         super();
         this.customerId = customerId;
@@ -36,6 +39,7 @@ public class Order implements Serializable {
         this.estimatedLeavingTime = estimatedLeavingTime;
         this.ordersPrice = ordersPrice;
         this.date = date;
+        this.customer = customer;
     }
 
     public Order() {}
@@ -57,6 +61,7 @@ public class Order implements Serializable {
         return estimatedLeavingTime;
     }
     public double getOrdersPrice() { return ordersPrice; }
+    public Customer getCustomer() { return customer; }
 
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
@@ -75,6 +80,7 @@ public class Order implements Serializable {
     }
     public void setEstimatedLeavingTime(LocalDateTime estimatedLeavingTime) { this.estimatedLeavingTime = estimatedLeavingTime; }
     public void setOrdersPrice(double ordersPrice) { this.ordersPrice = ordersPrice; }
+    public void setCustomer(Customer customer) { this.customer = customer; }
 
     public int getId() {
         return id;
