@@ -1,15 +1,19 @@
 package CarPark.client.controllers;
-import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.entities.Complaint;
 import CarPark.entities.Order;
 import CarPark.entities.ParkingSlot;
-import CarPark.entities.Parkinglot;
-import CarPark.entities.messages.*;
+import CarPark.entities.messages.ComplaintMessage;
+import CarPark.entities.messages.Message;
+import CarPark.entities.messages.OrderMessage;
+import CarPark.entities.messages.PullParkingSlotsMessage;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.chart.*;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.StackedBarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -22,7 +26,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
 
 public class CreateReportsController extends AbstractReports {
 
@@ -92,7 +95,7 @@ public class CreateReportsController extends AbstractReports {
             String parkinglot = "CPS Eilat";
             Date from = getPickedDate(fromDate);
             Date to = addDays(getPickedDate(toDate), 1);
-            PullOrdersMessage ordersMsg = new PullOrdersMessage(Message.MessageType.REQUEST, PullOrdersMessage.RequestType.GET_SELECTED_ORDERS, parkinglot,from, to );
+            OrderMessage ordersMsg = new OrderMessage(Message.MessageType.REQUEST, OrderMessage.RequestType.GET_SELECTED_ORDERS, parkinglot,from, to );
             SimpleClient.getClient().sendToServer(ordersMsg);
             PullParkingSlotsMessage pslotMsg = new PullParkingSlotsMessage(Message.MessageType.REQUEST, PullParkingSlotsMessage.RequestType.GET_PARKING_SLOTS_REP, parkinglot,from, to );
             SimpleClient.getClient().sendToServer(pslotMsg);
@@ -121,12 +124,12 @@ public class CreateReportsController extends AbstractReports {
     }
 
     @Subscribe
-    public void newResponse(PullOrdersMessage new_message) {
+    public void newResponse(OrderMessage new_message) {
         System.out.println("we got controller back from order reports message");
 
         switch (new_message.response_type) {
             case SET_SELECTED_ORDERS -> Platform.runLater(() -> {
-                showOrders(new_message.orders);
+                showOrders((LinkedList<Order>) new_message.ordersList);
             });
         }
     }

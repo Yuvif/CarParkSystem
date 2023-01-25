@@ -50,8 +50,10 @@ public class RegisterUserController {
     }
 
     @FXML
-    void signUp(ActionEvent event) throws Exception {
-        if (checkValidity()) {
+    void signUp(ActionEvent event) throws Exception
+    {
+        if (checkValidity())
+        {
             Customer new_customer = createCustomer();
             RegisterUserMessage msg = new RegisterUserMessage(Message.MessageType.REQUEST, RegisterUserMessage.RequestType.REGISTER, new_customer);
             try {
@@ -64,23 +66,23 @@ public class RegisterUserController {
     }
 
     private Customer createCustomer() throws Exception {
-        Customer new_customer = new Customer(Long.parseLong(userID.getText()), firstName.getText(), lastName.getText(),
-                email.getText(), 0, password.getText());
-        return new_customer;
+            Customer new_customer = new Customer(Long.parseLong(userID.getText()),firstName.getText(),lastName.getText(),
+                    email.getText(),0,password.getText());
+            return  new_customer;
     }
 
     private boolean checkValidity() {
         if (checkEmptyFields()) {
             wrongReg.setText("ONE OR MORE FIELDS ARE EMPTY!");
             return false;
-        } else if (checkIdValidity(userID.getText()) &&
+        }
+        else if (checkIdValidity(userID.getText()) &&
                 checkPassValidity(password.getText()) &&
-                checkIfPassMatched(password.getText(), rePassword.getText()) &&
-                checkEmailValidity(email.getText()))
+                checkIfPassMatched(password.getText(),rePassword.getText()))
             return true;
         else
             wrongReg.setText("INVALID CREDENTIALS!");
-        return false;
+            return false;
     }
 
 
@@ -93,7 +95,8 @@ public class RegisterUserController {
         return false;
     }
 
-    private boolean checkPassValidity(String pass) {
+    private boolean checkPassValidity(String pass)
+    {
         String regex = ".{7,}$";    //password needs to be at least 7 chars
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(pass);
@@ -102,31 +105,27 @@ public class RegisterUserController {
         return false;
     }
 
-    private boolean checkIfPassMatched(String pass1, String pass2) {
-        if (pass1.equals(pass2))
-            return true;
-        return false;
-    }
+        private boolean checkIfPassMatched(String pass1,String pass2)
+        {
+            if (pass1.equals(pass2))
+                return true;
+            return false;
+        }
 
-    private boolean checkEmptyFields() {
-        return email.getText().equals("") || firstName.getText().equals("") || lastName.getText().equals("");
-    }
-
-    private boolean checkEmailValidity(String checkEmail) {
-        String regex = "^(.+)@(.+)$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(checkEmail);
-        return matcher.matches();
-    }
+        private boolean checkEmptyFields()
+        {
+            return email.getText().equals("") || firstName.getText().equals("") || lastName.getText().equals("");
+        }
 
     @Subscribe
-    public void new_response(RegisterUserMessage new_message) {
-        switch (new_message.response_type) {
+    public void new_response(RegisterUserMessage new_message)
+    {
+        switch (new_message.response_type){
+            case REGISTRATION_FAILED:
+                Platform.runLater(()->wrongReg.setText("USER ID OR EMAIL ALREADY TAKEN!"));
             case REGISTRATION_SUCCEEDED:
                 sendAlert("Registration succeed, welcome:" + new_message.newCustomer.getFirstName(),
                         "New User", Alert.AlertType.INFORMATION);
-            case REGISTRATION_FAILED:
-                Platform.runLater(() -> wrongReg.setText("USER ID OR EMAIL ALREADY TAKEN!"));
         }
     }
 

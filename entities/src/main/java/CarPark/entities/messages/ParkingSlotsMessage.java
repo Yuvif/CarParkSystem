@@ -31,7 +31,7 @@ public class ParkingSlotsMessage extends Message {
     public enum RequestType {
         GET_ALL_PARKING_LOTS,
         GET_SELECTED_PARKING_SLOTS,
-        SET_PARKING_SLOT_STATUS
+        SET_PARKING_SLOT_STATUS,
     }
 
     public enum ResponseType {

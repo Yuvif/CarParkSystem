@@ -1,5 +1,4 @@
 package CarPark.entities;
-import CarPark.entities.Parkinglot;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,8 +10,8 @@ public class Complaint implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private String customerId;    //only for customers
+    private int complaintId;
+    private long customerId;    //only for customers
     @Column(name = "dateOfSubmit")
     private Date date;
 
@@ -25,21 +24,32 @@ public class Complaint implements Serializable {
     @JoinColumn(name = "parkinglot_id")
     private Parkinglot parkinglot;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Customer customer;
 
-    public Complaint(Date date, String compText, Parkinglot parkinglot, String customerId) {
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Complaint(Date date, String compText, Parkinglot parkinglot, long customerId) {
         this.date = date;
         this.compText = compText;
         this.customerId = customerId;
         setParkinglot(parkinglot);
     }
 
-    public Complaint(Date date, String text, String customerIdT) {
-        date = date;
+    public Complaint(Date date, String text, long customerId) {
+        this.date = date;
         this.compText = text;
-        this.customerId = customerIdT;
+        this.customerId = customerId;
     }
 
-    public Complaint(String customerId) {
+    public Complaint(long customerId) {
 
         this.customerId = customerId;
     }
@@ -67,7 +77,7 @@ public class Complaint implements Serializable {
     }
 
     public int getId() {
-        return id;
+        return complaintId;
     }
 
     public Date getDate() {

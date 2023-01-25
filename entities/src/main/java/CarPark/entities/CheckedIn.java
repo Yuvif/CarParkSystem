@@ -9,7 +9,7 @@ import java.util.Date;
 public class CheckedIn implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int checkedInId;
 
     @Column(name = "entry_date")
     private String parkinglot;
@@ -21,10 +21,11 @@ public class CheckedIn implements Serializable {
     private boolean didHePay = false;
     private String parkinglot_name;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(optional = false, orphanRemoval = true)
+    @JoinColumn(name = "parking_slot_parking_slot_id", nullable = false)
     private ParkingSlot parkingSlot;
 
-    public CheckedIn(String parkinglot,Date entryDate, Integer personId, Integer carNumber, String email, Date exitEstimatedDate, ParkingSlot parkingSlot) {
+    public CheckedIn(String parkinglot, Date entryDate, Integer personId, Integer carNumber, String email, Date exitEstimatedDate, ParkingSlot parkingSlot) {
         this.parkinglot = parkinglot;
         this.entryDate = entryDate;
         this.personId = personId;
