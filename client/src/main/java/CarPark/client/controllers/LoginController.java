@@ -2,16 +2,13 @@ package CarPark.client.controllers;
 
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
-import CarPark.entities.Customer;
+import CarPark.entities.messages.CheckOutMessage;
 import CarPark.entities.messages.LoginMessage;
 import CarPark.entities.messages.Message;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -19,6 +16,8 @@ import org.greenrobot.eventbus.Subscribe;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static CarPark.client.controllers.Controller.sendAlert;
 
 public class LoginController{
 
@@ -36,20 +35,21 @@ public class LoginController{
     private Label wrongLogin;
 
 
+
     @FXML
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
     }
 
 
-    public void login() throws Exception {
+    public void login(ActionEvent event) throws Exception {
         if (checkIdValidity(userID.getText()) && checkPassValidity(password.getText())) //check if password and username are valid
         {
             //if valid send request to login with secured password
             long userId = Long.parseLong(userID.getText());
             String userPass = password.getText();
             LoginMessage msg =
-                    new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGIN,userId,userPass);
+                    new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGIN, userId, userPass);
             SimpleClient.getClient().sendToServer(msg);
         }
         else
@@ -80,6 +80,13 @@ public class LoginController{
     @Subscribe
     public void newResponse(LoginMessage new_message) throws IOException {
         switch (new_message.response_type) {
+            case LOGIN_SUCCEED_CUSTOMER -> {
+                SimpleClient.setCurrent_user(new_message.getUser());
+                SimpleChatClient.setRoot("CustomerPage");}
+            case LOGIN_SUCCEED_EMPLOYEE -> {
+                SimpleClient.setCurrent_user(new_message.getUser());
+                SimpleChatClient.setRoot("EmployeePage");
+            }
             case LOGIN_FAILED -> Platform.runLater(() -> {
                 try {
                     setWrongLogin();
@@ -90,13 +97,6 @@ public class LoginController{
             case ALREADY_LOGGED -> Platform.runLater(() -> {
                 alreadyLogIn();
             });
-            case LOGIN_SUCCEED -> {
-                SimpleClient.setCurrent_user(new_message.getUser());
-                if (new_message.getUser().getClass().equals(Customer.class))
-                    SimpleChatClient.setRoot("CustomerPage");
-                else
-                    SimpleChatClient.setRoot("EmployeePage");
-            }
         }
     }
 
@@ -112,10 +112,12 @@ public class LoginController{
         SimpleChatClient.setRoot("RegisterUser");
     }
 
-    public void checkIn(ActionEvent event) {
+    public void checkIn(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("CheckInGuest");
     }
 
-    public void checkOut(ActionEvent event) {
+    public void checkOut(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("CheckOut");
     }
 
     public void makeOrder(ActionEvent event) throws IOException {

@@ -17,9 +17,9 @@
       <left>
          <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="210.0" style="-fx-background-color: #CFEEE1;" BorderPane.alignment="CENTER">
             <children>
-               <Button mnemonicParsing="false" prefHeight="69.0" prefWidth="221.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="   MY ORDERS">
+               <Button graphicTextGap="0.0" mnemonicParsing="false" onAction="#myOrders" prefHeight="69.0" prefWidth="221.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="   MY ORDERS" translateY="3.0">
                   <graphic>
-                     <ImageView fitHeight="35.0" fitWidth="35.0">
+                     <ImageView fitHeight="35.0" fitWidth="35.0" translateX="-3.0">
                         <image>
                            <Image url="@../../assets/parking-sign.png" />
                         </image>
@@ -35,7 +35,16 @@
                      </ImageView>
                   </graphic>
                </Button>
-               <Button mnemonicParsing="false" prefHeight="69.0" prefWidth="221.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="   NEW ORDER">
+               <Button mnemonicParsing="false" onAction="#myComplaints" pickOnBounds="false" prefHeight="57.0" prefWidth="210.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="            MY COMPLAINTS">
+                  <graphic>
+                     <ImageView fitHeight="35.0" fitWidth="35.0" translateX="25.0" translateY="-5.0">
+                        <image>
+                           <Image url="@../../assets/myComplaint.png" />
+                        </image>
+                     </ImageView>
+                  </graphic>
+               </Button>
+               <Button mnemonicParsing="false" onAction="#createNewOrder" prefHeight="69.0" prefWidth="221.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="   NEW ORDER">
                   <graphic>
                      <ImageView fitHeight="35.0" fitWidth="35.0">
                         <image>
@@ -49,6 +58,15 @@
                      <ImageView fitHeight="35.0" fitWidth="35.0" translateX="30.0" translateY="-5.0">
                         <image>
                            <Image url="@../../assets/add_member.png" />
+                        </image>
+                     </ImageView>
+                  </graphic>
+               </Button>
+               <Button mnemonicParsing="false" onAction="#newComplaint" pickOnBounds="false" prefHeight="57.0" prefWidth="210.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="              NEW COMPLAINT">
+                  <graphic>
+                     <ImageView fitHeight="35.0" fitWidth="35.0" translateX="30.0" translateY="-5.0">
+                        <image>
+                           <Image url="@../../assets/complaint.png" />
                         </image>
                      </ImageView>
                   </graphic>
@@ -67,7 +85,7 @@
                      <Point3D y="1.0" />
                   </rotationAxis>
                </ImageView>
-               <Label text="Car Park System" translateX="10.0" translateY="20.0">
+               <Label pickOnBounds="false" text="Car Park System" translateX="10.0" translateY="20.0">
                   <font>
                      <Font name="SansSerif Bold" size="30.0" />
                   </font>
@@ -80,18 +98,15 @@
       <center>
          <VBox prefHeight="453.0" prefWidth="801.0" BorderPane.alignment="CENTER">
             <children>
-               <ImageView fitHeight="49.0" fitWidth="49.0" translateY="10.0">
+               <ImageView fitHeight="49.0" fitWidth="49.0" translateX="10.0" translateY="10.0">
                   <image>
                      <Image url="@../../assets/profile-user.png" />
                   </image>
                </ImageView>
-               <Label fx:id="userName" prefHeight="42.0" prefWidth="268.0" style="-fx-text-fill: black;" textFill="WHITE" translateX="55.0" translateY="-35.0">
+               <Label fx:id="userName" prefHeight="42.0" prefWidth="268.0" style="-fx-text-fill: black;" textFill="WHITE" translateX="65.0" translateY="-35.0">
                   <font>
                      <Font name="SansSerif Bold" size="27.0" />
                   </font>
-                  <effect>
-                     <DropShadow />
-                  </effect>
                </Label>
             </children>
          </VBox>

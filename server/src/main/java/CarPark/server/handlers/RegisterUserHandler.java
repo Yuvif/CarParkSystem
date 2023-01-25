@@ -1,7 +1,6 @@
 package CarPark.server.handlers;
 
 import CarPark.entities.Customer;
-import CarPark.entities.User;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.RegisterUserMessage;
 import CarPark.server.ocsf.ConnectionToClient;
@@ -19,22 +18,22 @@ public class RegisterUserHandler extends MessageHandler {
         this.class_message = (RegisterUserMessage) this.message;
     }
 
-    private List<User> getUsersList() throws Exception
+    private List<Customer> getUsersList() throws Exception
         {
-            CriteriaQuery<User> query = cb.createQuery(User.class);
-            query.from(User.class);
-            List<User> data = session.createQuery(query).getResultList();
+            CriteriaQuery<Customer> query = cb.createQuery(Customer.class);
+            query.from(Customer.class);
+            List<Customer> data = session.createQuery(query).getResultList();
             return data;
         }
 
         private void createUser() throws Exception
         {
             Customer new_customer = class_message.newCustomer;
-            List<User> users = getUsersList();
+            List<Customer> customers = getUsersList();
 
-            for (User user : users)
+            for (Customer customer : customers)
             {
-                if (user.getId().equals(new_customer.getId()) || user.getEmail() == new_customer.getEmail())
+                if (customer.getId().equals(new_customer.getId()) || customer.getEmail() == new_customer.getEmail())
                 {
                     class_message.response_type = RegisterUserMessage.ResponseType.REGISTRATION_FAILED;
                     break;

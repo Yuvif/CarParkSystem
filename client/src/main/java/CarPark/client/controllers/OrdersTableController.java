@@ -1,17 +1,16 @@
 package CarPark.client.controllers;
 
+import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
+import CarPark.entities.Customer;
 import CarPark.entities.Order;
 import CarPark.entities.messages.Message;
-import CarPark.entities.messages.OrdersTableMessage;
+import CarPark.entities.messages.OrderMessage;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 import org.greenrobot.eventbus.EventBus;
@@ -19,6 +18,8 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+
+import static CarPark.client.controllers.Controller.sendAlert;
 
 public class OrdersTableController {
     @FXML
@@ -45,7 +46,7 @@ public class OrdersTableController {
         parkingLotCol.setCellValueFactory(new PropertyValueFactory<>("parkingLotId"));
         arrivalCol.setCellValueFactory(new PropertyValueFactory<>("arrivalTime"));
         estLeavingTimeCol.setCellValueFactory(new PropertyValueFactory<>("estimatedLeavingTime"));
-        OrdersTableMessage msg = new OrdersTableMessage(Message.MessageType.REQUEST, OrdersTableMessage.RequestType.GET_ORDERS_TABLE);
+        OrderMessage msg = new OrderMessage(Message.MessageType.REQUEST, OrderMessage.RequestType.GET_ORDERS_TABLE,(Customer)SimpleClient.getCurrent_user());
         try {
             SimpleClient.getClient().sendToServer(msg);
         } catch (IOException e) {
@@ -55,14 +56,19 @@ public class OrdersTableController {
 
     //initialize prices table from server
     @Subscribe
-    public void newResponse(OrdersTableMessage new_message)
+    public void newResponse(OrderMessage new_message)
     {
         switch (new_message.response_type) {
             case SET_ORDERS_TABLE -> {
                 ordersTable.setItems(FXCollections.observableArrayList(new_message.ordersList));
                 Platform.runLater(this::addButtonToTable);
             }
-            case ORDER_CANCELED -> deleteRow();
+            case ORDER_CANCELED -> {
+                deleteRow();
+                sendAlert("Your Order Is Canceled!"+
+                                "\nA Compensation of " + new_message.credit + "₪ was made",
+                        "Cancellation Confirmed", Alert.AlertType.INFORMATION);
+            }
         }
     }
 
@@ -81,8 +87,8 @@ public class OrdersTableController {
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             Order order = getTableRow().getItem();
-                            OrdersTableMessage msg = new OrdersTableMessage(Message.MessageType.REQUEST,
-                                    OrdersTableMessage.RequestType.CANCEL_ORDER, order);
+                            OrderMessage msg = new OrderMessage(Message.MessageType.REQUEST,
+                                    OrderMessage.RequestType.CANCEL_ORDER, order,(Customer) SimpleClient.getCurrent_user());
                             try {
                                 SimpleClient.getClient().sendToServer(msg);
                                 ordersTable.getItems().remove(getTableRow().getItem()); //remove the order from table
@@ -113,6 +119,14 @@ public class OrdersTableController {
 
     public void goBack(ActionEvent actionEvent)
     {
+        Platform.runLater(()->
+        {
+            try {
+                SimpleChatClient.setRoot("CustomerPage");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public void deleteRow()

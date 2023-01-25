@@ -23,6 +23,10 @@ import javax.mail.MessagingException;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Properties;
 
 
@@ -48,18 +52,20 @@ public class SimpleServer extends AbstractServer {
         Configuration configuration = new Configuration();
 
         // Add ALL of your entities here. You can also try adding a whole package.
-        configuration.addAnnotatedClass(CheckedIn.class);
-        configuration.addAnnotatedClass(Complaint.class);
-        configuration.addAnnotatedClass(Customer.class);
-        configuration.addAnnotatedClass(Employee.class);
-        configuration.addAnnotatedClass(Membership.class);
-        configuration.addAnnotatedClass(Order.class);
         configuration.addAnnotatedClass(Parkinglot.class);
-        configuration.addAnnotatedClass(ParkingLotWorker.class);
+        configuration.addAnnotatedClass(Price.class);
+        configuration.addAnnotatedClass(Order.class);
+        configuration.addAnnotatedClass(User.class);
+        configuration.addAnnotatedClass(Employee.class);
+        configuration.addAnnotatedClass(Customer.class);
+        configuration.addAnnotatedClass(Membership.class);
+        configuration.addAnnotatedClass(Complaint.class);
         configuration.addAnnotatedClass(ParkingSlot.class);
         configuration.addAnnotatedClass(Price.class);
         configuration.addAnnotatedClass(User.class);
         configuration.addAnnotatedClass(Statistics.class);
+        configuration.addAnnotatedClass(CheckedIn.class);
+       // configuration.addAnnotatedClass(ParkingLotWorker.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();        //pull session factory config from hibernate properties
         return configuration.buildSessionFactory(serviceRegistry);
@@ -86,10 +92,10 @@ public class SimpleServer extends AbstractServer {
                     handler = new OrderHandler((OrderMessage) msg, session, client);
                 } else if (MembershipMessage.class.equals(msgClass)) {
                     handler = new MembershipsHandler((MembershipMessage) msg, session, client);
-                } else if (OrdersTableMessage.class.equals(msgClass)) {
-                    handler = new OrdersTableHandler((OrdersTableMessage) msg, session, client);
-                }  else if (ParkingLotMapMessage.class.equals(msgClass)) {
-                    handler = new OrdersTableHandler((ParkingLotMapMessage) msg, session, client);
+                } else if (ParkingLotMapMessage.class.equals(msgClass)) {
+                    handler = new ParkingLotMapHandler((ParkingLotMapMessage) msg, session, client);
+                }else if (CheckOutMessage.class.equals(msgClass)) {
+                handler = new CheckOutHandler((CheckOutMessage) msg, session, client);
                 }
                 else if (RegisterUserMessage.class.equals(msgClass))
                     handler = new RegisterUserHandler((RegisterUserMessage)msg,session,client);
@@ -248,4 +254,5 @@ public class SimpleServer extends AbstractServer {
             }
         }
     }
+
 }

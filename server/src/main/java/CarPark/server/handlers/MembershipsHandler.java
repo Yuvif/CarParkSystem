@@ -55,8 +55,6 @@ public class MembershipsHandler extends MessageHandler{
             calculateMembershipsPrice();
             session.save(newMembership);
             session.flush();
-            Customer current_customer = session.get(Customer.class,class_message.current_customer.getId());
-            current_customer.addMemberShip(newMembership);
         }
     }
 
@@ -152,6 +150,8 @@ public class MembershipsHandler extends MessageHandler{
        {
            membership.setMembershipsPrice(makeQueryFullMembershipPrice());
        }
+        Customer current_customer = session.get(Customer.class,class_message.current_customer.getId());
+        current_customer.addToBalance(membership.getMembershipsPrice());
     }
 
     @Override

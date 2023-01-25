@@ -1,8 +1,12 @@
 package CarPark.entities;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 
@@ -16,15 +20,25 @@ public class Membership implements Serializable {
     private long customerId;
     private int carId;
     private String routineParkingLot;
-    private LocalTime routineLeavingHour;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private LocalDateTime routineLeavingHour;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private String membershipType;
     private double membershipsPrice;
 
+    @ManyToOne
+    private Customer customer;
 
-    public Membership(int membershipId, long customerId, int carId, String routineParkingLot, LocalTime routineLeavingHour,
-                      LocalDate startDate, LocalDate endDate, String membershipType, double membershipsPrice) {
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Membership(int membershipId, long customerId, int carId, String routineParkingLot, LocalDateTime routineLeavingHour,
+                      LocalDateTime startDate, LocalDateTime endDate, String membershipType, double membershipsPrice) {
         super();
         this.membershipId = membershipId;
         this.customerId = customerId;
@@ -48,16 +62,16 @@ public class Membership implements Serializable {
     public long getCarId() {
         return carId;
     }
-    public LocalTime getRoutineLeavingHour() {
+    public LocalDateTime getRoutineLeavingHour() {
         return routineLeavingHour;
     }
-    public LocalDate getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
     public String getRoutineParkingLot() {
         return routineParkingLot;
     }
-    public LocalDate getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
     public String getMembershipType() { return membershipType; }
@@ -72,16 +86,16 @@ public class Membership implements Serializable {
     public void setCarId(int carId) {
         this.carId = carId;
     }
-    public void setRoutineLeavingHour(LocalTime routineLeavingHour) {
+    public void setRoutineLeavingHour(LocalDateTime routineLeavingHour) {
         this.routineLeavingHour = routineLeavingHour;
     }
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
     public void setRoutineParkingLot(String routineParkingLot) {
         this.routineParkingLot = routineParkingLot;
     }
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
     public void setMembershipType(String membershipType) { this.membershipType = membershipType; }

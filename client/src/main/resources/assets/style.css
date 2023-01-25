@@ -140,7 +140,8 @@ table{
     height:300px;
     overflow-x:auto;
     margin-top: 0px;
-    border: 1px solid rgba(255,255,255,0.3);
+    border: solid rgba(255,255,255,0.3);
+    border-width: 1px;
 }
 th{
     padding: 20px 15px;

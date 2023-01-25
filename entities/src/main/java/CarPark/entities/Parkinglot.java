@@ -9,8 +9,11 @@ import java.util.List;
 @Entity
 public class Parkinglot implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int parkingLotId;
+
     @Column(name = "name", nullable = false, length = 46)
-    private String id;
+    private String name;
 
     @Column(name = "parks_per_row")
     private Integer parksPerRow;
@@ -18,11 +21,13 @@ public class Parkinglot implements Serializable {
     @Column(name = "total_parking_lots")
     private Integer totalParkingLots;
 
-    @OneToMany(mappedBy = "parkinglot" )
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "parkingSlotId")
     private List<ParkingSlot> parkingSlots;
 
-    @OneToMany(mappedBy = "parkinglot" )
-    private List<Complaint> complaints;
+    @OneToMany(mappedBy = "parkinglot", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Complaint> complaints = new ArrayList<>();
 
 //    @Column(name = "rows")
 //    private Integer rows = 3;
@@ -35,7 +40,7 @@ public class Parkinglot implements Serializable {
     }
 
     public Parkinglot(String name, int parksPerRow, int totalParkingLots) {
-        this.id = name;
+        this.name = name;
         this.parksPerRow = parksPerRow;
         this.totalParkingLots = totalParkingLots;
         this.parkingSlots = new ArrayList<ParkingSlot>();
@@ -43,7 +48,7 @@ public class Parkinglot implements Serializable {
 
     }
     public Parkinglot(Parkinglot parkinglot) {
-        this.id = parkinglot.id;
+        this.name = parkinglot.name;
         this.parksPerRow = parkinglot.parksPerRow;
         this.totalParkingLots = parkinglot.totalParkingLots;
         this.parkingSlots = parkinglot.parkingSlots;
@@ -97,11 +102,11 @@ public class Parkinglot implements Serializable {
 //    }
 
     public String getId() {
-        return id;
+        return name;
     }
 
     public void setId(String id) {
-        this.id=id;
+        this.name=name;
     }
 
 }
