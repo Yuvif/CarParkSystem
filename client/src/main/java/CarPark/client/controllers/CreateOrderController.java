@@ -64,7 +64,6 @@ public class CreateOrderController {
     @FXML
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
-        //think of a way to get the parking lots from the server **********************
         parkingLotsOpt.getItems().add("Haifa");
         parkingLotsOpt.getItems().add("Tel Aviv");
         parkingLotsOpt.getItems().add("Jerusalem");

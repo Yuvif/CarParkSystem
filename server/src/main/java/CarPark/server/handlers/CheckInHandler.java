@@ -2,7 +2,7 @@ package CarPark.server.handlers;
 
 import CarPark.entities.ParkingSlot;
 import CarPark.entities.Parkinglot;
-import CarPark.entities.messages.CheckInGuestMessage;
+import CarPark.entities.messages.CheckInMessage;
 import CarPark.server.ocsf.ConnectionToClient;
 import org.hibernate.Session;
 
@@ -12,11 +12,11 @@ import java.util.List;
 
 
 public class CheckInHandler extends MessageHandler {
-    private final CheckInGuestMessage class_message;
-    public CheckInHandler(CheckInGuestMessage msg, Session session, ConnectionToClient client) {
-        super(msg, session, client);
-        this.class_message = (CheckInGuestMessage) this.message;
+    private final CheckInMessage class_message;
 
+    public CheckInHandler(CheckInMessage msg, Session session, ConnectionToClient client) {
+        super(msg, session, client);
+        this.class_message = (CheckInMessage) this.message;
     }
 
     @Override
@@ -39,6 +39,6 @@ public class CheckInHandler extends MessageHandler {
 //        store checkedIn guest in the database
         session.save(class_message.checkedIn);
         session.flush();
-        class_message.response_type = CheckInGuestMessage.ResponseType.CHECKED_IN;
+        class_message.response_type = CheckInMessage.ResponseType.CHECKED_IN;
     }
 }

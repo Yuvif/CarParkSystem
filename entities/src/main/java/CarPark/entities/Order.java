@@ -33,7 +33,7 @@ public class Order implements Serializable {
         this.customer = customer;
     }
 
-    public enum Status {APPROVED, CANCELLED};
+    public enum Status {APPROVED, CANCELLED, NOTIFIED};
 
     public Order(long customerId, int carId, String parkingLot, String email,
                  LocalDateTime arrivalTime, LocalDateTime estimatedLeavingTime, double ordersPrice, Date date)
