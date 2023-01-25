@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane prefHeight="510.0" prefWidth="773.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.OrdersTableController">
+<AnchorPane prefHeight="510.0" prefWidth="773.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.MyOrdersController">
    <children>
       <Label layoutX="306.0" layoutY="41.0" prefHeight="37.0" prefWidth="197.0" text="My Orders">
          <font>

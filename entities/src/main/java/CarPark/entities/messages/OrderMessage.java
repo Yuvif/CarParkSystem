@@ -45,7 +45,7 @@ public class OrderMessage extends Message {
         GET_ORDERS_TABLE,
         CANCEL_ORDER,
         GET_SELECTED_ORDERS,
-        CREATE_NEW_ORDER
+        CREATE_NEW_ORDER,
     }
 
     public enum ResponseType {

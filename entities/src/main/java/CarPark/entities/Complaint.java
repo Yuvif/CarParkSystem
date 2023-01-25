@@ -10,6 +10,7 @@ public class Complaint implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private int complaintId;
     private long customerId;    //only for customers
     @Column(name = "dateOfSubmit")
@@ -21,10 +22,9 @@ public class Complaint implements Serializable {
     private Boolean completedOnTime = false;
 
     @ManyToOne
-    @JoinColumn(name = "parkinglot_id")
     private Parkinglot parkinglot;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Customer customer;
 
 

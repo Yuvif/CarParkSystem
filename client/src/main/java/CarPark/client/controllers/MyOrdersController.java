@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 
 import static CarPark.client.controllers.Controller.sendAlert;
 
-public class OrdersTableController {
+public class MyOrdersController {
     @FXML
     private TableColumn<Order, LocalDateTime> arrivalCol;
     @FXML
