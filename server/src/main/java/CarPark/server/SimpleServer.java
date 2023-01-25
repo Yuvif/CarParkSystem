@@ -14,9 +14,15 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
+import javax.mail.MessagingException;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Properties;
 
 
 public class SimpleServer extends AbstractServer {
@@ -27,10 +33,10 @@ public class SimpleServer extends AbstractServer {
 
     public SimpleServer(int port) {
         super(port);
-//        OrderReminderThread orderReminderThread = new OrderReminderThread();
-//        orderReminderThread.start();
-//        MembershipReminderThread membershipReminderThread = new MembershipReminderThread();
-//        membershipReminderThread.start();
+        OrderReminderThread orderReminderThread = new OrderReminderThread();
+        orderReminderThread.start();
+        MembershipReminderThread membershipReminderThread = new MembershipReminderThread();
+        membershipReminderThread.start();
     }
 
 
@@ -155,7 +161,29 @@ public class SimpleServer extends AbstractServer {
         public static void sendEmail(String to, String subject, String text) {
             String from = "ModernParkingSolutionsCPS@outlook.com";
 
-	*/
+            Properties properties = new Properties();
+            properties.put("mail.smtp.host", "smtp-mail.outlook.com");
+            properties.put("mail.transport.protocol", "smtp");
+            properties.put("mail.smtp.starttls.enable", "true");
+            properties.put("mail.smtp.port", "587");
+            properties.put("mail.debug", "true");
+            properties.put("mail.smtp.ssl.protocols", "TLSv1.2");
+            javax.mail.Session mailSession = javax.mail.Session.getDefaultInstance(properties, null);
+
+            try {
+                javax.mail.Message msg = new MimeMessage(mailSession);
+                msg.setFrom(new InternetAddress(from));
+                msg.setRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(to));
+                msg.setSubject(subject);
+                msg.setText(text);
+
+                // Send the msg to the recipient.
+                Transport.send(msg, "ModernParkingSolutionsCPS@outlook.com", "cpsteam4");
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 
 }

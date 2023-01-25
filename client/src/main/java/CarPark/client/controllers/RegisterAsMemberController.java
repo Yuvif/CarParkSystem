@@ -185,20 +185,20 @@ public class RegisterAsMemberController {//Daniel need to change name to new mem
         {
             membership.setRoutineParkingLot(parkingLots.getValue());
             arrivalTime = LocalTime.of(Integer.parseInt(arrivalHour.getValue().toString()), Integer.parseInt(arrivalMin.getValue().toString()));
-            membership.setRoutineLeavingHour(arrivalTime);
+            membership.setRoutineLeavingHour(LocalDateTime.from(arrivalTime));
         }
         else
         {
             membership.setRoutineParkingLot("NULL");
-            membership.setRoutineLeavingHour(LocalTime.MIN);
+            membership.setRoutineLeavingHour(LocalDateTime.from(LocalTime.MIN));
         }
 
         membership.setMembershipType(membershipOpt.getValue());
 
         LocalDate startDate = startDateOfMembership.getValue();
         LocalDateTime startDateTime = LocalDateTime.of(startDate, arrivalTime);
-        membership.setStartDate(LocalDate.from(startDateTime));
-        membership.setEndDate(startDateOfMembership.getValue().plusDays(28)); //calculate the expiration date of the membership
+        membership.setStartDate(LocalDateTime.from(LocalDate.from(startDateTime)));
+        membership.setEndDate(LocalDateTime.from(startDateOfMembership.getValue().plusDays(28))); //calculate the expiration date of the membership
 
         return membership;
     }
