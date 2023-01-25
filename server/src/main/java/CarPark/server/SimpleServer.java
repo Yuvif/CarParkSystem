@@ -15,6 +15,7 @@ import org.hibernate.service.ServiceRegistry;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javax.mail.MessagingException;
@@ -86,8 +87,7 @@ public class SimpleServer extends AbstractServer {
                     handler = new OrdersTableHandler((OrdersTableMessage) msg, session, client);
                 } else if (RegisterUserMessage.class.equals(msgClass)) {
                     handler = new RegisterUserHandler((RegisterUserMessage) msg, session, client);
-                }
-                else if (Statistics.class.equals(msgClass)){
+                } else if (Statistics.class.equals(msgClass)) {
                     handler = new StatisticsHandler((StatisticsMessage) msg, session, client);
                 }
                 if (handler != null) {
@@ -141,22 +141,33 @@ public class SimpleServer extends AbstractServer {
         @Override
         public void run() {
             var session = getSessionFactory().openSession();
+            LocalDate today = LocalDate.now();
             while (true) {
 //              for each parking lot check if there is a statistics object for today
-                var parkingLots = session.createQuery("from Parkinglot").list();
-                for (Object parkingLot : parkingLots) {
-                    var parkingLotId = ((Parkinglot) parkingLot).getParkingLotId();
-                    var statistics = session.createQuery("from Statistics where parkingLotId = :parkingLotId and date = :date")
-                            .setParameter("parkingLotId", parkingLotId)
-                            .setParameter("date", LocalDateTime.now().toLocalDate())
-                            .uniqueResult();
-                    if (statistics == null) {
-                        statistics = new Statistics();
-                        ((Statistics) statistics).setParkingLotId(parkingLotId);
-                        ((Statistics) statistics).setDate(LocalDateTime.now().toLocalDate());
-                        ((Statistics) statistics).setTotalIncome(0);
-                        ((Statistics) statistics).setTotalOrders(0);
-                        ((Statistics) statistics).setTotalVisitors(0);
+                if (today.equals(LocalDate.now())) {
+                    ;
+                } else {
+                    today = LocalDate.now();
+                    var parkingLots = session.createQuery("from Parkinglot").list();
+                    for (Object parkingLot : parkingLots) {
+                        var parkingLotId = ((Parkinglot) parkingLot).getId();
+//                        select all orders from yesterday belonging to parkinglot
+                        var orders = session.createQuery("from Order where id = :parkingLotId and arrivalTime = :arrivalTime")
+                                .setParameter("parkingLotId", parkingLotId)
+                                .setParameter("arrivalTime", today.minusDays(1))
+                                .list();
+                        int totalOrders = orders.size();
+//                        for (Object order : orders) {
+////                            switch on orderStatus
+//                            switch (((Order) order).getStatus()) {
+////                                there's a problem that status is boolean
+//                            }
+//                        }
+                        Statistics statistics = new Statistics();
+                        statistics.setParkingLotId(parkingLotId);
+                        statistics.setNumberOfOrders(totalOrders);
+//                        add another fields
+                        statistics.setDate(today.minusDays(1));
                         session.beginTransaction();
                         session.save(statistics);
                         session.getTransaction().commit();
@@ -170,6 +181,7 @@ public class SimpleServer extends AbstractServer {
             }
         }
     }
+
     public static class MembershipReminderThread extends Thread {
         @Override
         public void run() {
@@ -200,7 +212,8 @@ public class SimpleServer extends AbstractServer {
             }
         }
     }
-    public static class EmailSender{
+
+    public static class EmailSender {
         public static void sendEmail(String to, String subject, String text) {
             String from = "ModernParkingSolutionsCPS@outlook.com";
 

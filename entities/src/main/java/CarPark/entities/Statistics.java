@@ -18,9 +18,9 @@ public class Statistics implements Serializable {
     private int numberOfOrders;
     private int numberOfOrdersCancelled;
     private int numberOfOrdersLate;
-    private int parkingLotId;
+    private String parkingLotId;
 
-    public Statistics(LocalDate date, int numberOfOrders, int numberOfOrdersCancelled, int numberOfOrdersLate, int parkingLotId) {
+    public Statistics(LocalDate date, int numberOfOrders, int numberOfOrdersCancelled, int numberOfOrdersLate, String parkingLotId) {
         this.date = date;
         this.numberOfOrders = numberOfOrders;
         this.numberOfOrdersCancelled = numberOfOrdersCancelled;
@@ -47,7 +47,7 @@ public class Statistics implements Serializable {
         return numberOfOrdersLate;
     }
 
-    public int getParkingLotId() {
+    public String getParkingLotId() {
         return parkingLotId;
     }
 
@@ -67,7 +67,7 @@ public class Statistics implements Serializable {
         this.numberOfOrdersLate = numberOfOrdersLate;
     }
 
-    public void setParkingLotId(int parkingLotId) {
+    public void setParkingLotId(String parkingLotId) {
         this.parkingLotId = parkingLotId;
     }
 }

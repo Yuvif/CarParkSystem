@@ -80,8 +80,8 @@ public class Order implements Serializable {
     public int getId() {
         return id;
     }
-    public Boolean getStatus() {
-        return orderStatus== Status.APPROVED;
+    public boolean getStatus() {
+        return orderStatus == Status.APPROVED;
     }
     public void setOrderStatus(Status OrderStatus) {
         orderStatus = orderStatus;
