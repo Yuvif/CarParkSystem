@@ -1,6 +1,5 @@
 package CarPark.server;
 
-
 import CarPark.entities.*;
 import CarPark.entities.messages.*;
 import CarPark.server.handlers.*;
@@ -30,6 +29,7 @@ public class SimpleServer extends AbstractServer {
     public static Session session;// encapsulation make public function so this can be private
     private OrderReminderThread orderReminderThread;
     private MembershipReminderThread membershipReminderThread;
+    private StatisticsThread statisticsThread;
 
     public SimpleServer(int port) {
         super(port);
@@ -37,8 +37,9 @@ public class SimpleServer extends AbstractServer {
 //        orderReminderThread.start();
 //        MembershipReminderThread membershipReminderThread = new MembershipReminderThread();
 //        membershipReminderThread.start();
+//        StatisticsThread statisticsThread = new StatisticsThread();
+//        statisticsThread.start();
     }
-
 
     private static SessionFactory getSessionFactory() throws HibernateException {
         Configuration configuration = new Configuration();
@@ -54,6 +55,7 @@ public class SimpleServer extends AbstractServer {
         configuration.addAnnotatedClass(ParkingSlot.class);
         configuration.addAnnotatedClass(Price.class);
         configuration.addAnnotatedClass(User.class);
+        configuration.addAnnotatedClass(Statistics.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();        //pull session factory config from hibernate properties
         return configuration.buildSessionFactory(serviceRegistry);
@@ -82,8 +84,12 @@ public class SimpleServer extends AbstractServer {
                     handler = new MembershipsHandler((MembershipMessage) msg, session, client);
                 } else if (OrdersTableMessage.class.equals(msgClass)) {
                     handler = new OrdersTableHandler((OrdersTableMessage) msg, session, client);
-                } else if (RegisterUserMessage.class.equals(msgClass))
+                } else if (RegisterUserMessage.class.equals(msgClass)) {
                     handler = new RegisterUserHandler((RegisterUserMessage) msg, session, client);
+                }
+                else if (Statistics.class.equals(msgClass)){
+                    handler = new StatisticsHandler((StatisticsMessage) msg, session, client);
+                }
                 if (handler != null) {
                     handler.handleMessage();
                     session.getTransaction().commit();
@@ -124,6 +130,40 @@ public class SimpleServer extends AbstractServer {
                 session.getTransaction().commit();
                 try {
                     Thread.sleep(120000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static class StatisticsThread extends Thread {
+        @Override
+        public void run() {
+            var session = getSessionFactory().openSession();
+            while (true) {
+//              for each parking lot check if there is a statistics object for today
+                var parkingLots = session.createQuery("from Parkinglot").list();
+                for (Object parkingLot : parkingLots) {
+                    var parkingLotId = ((Parkinglot) parkingLot).getParkingLotId();
+                    var statistics = session.createQuery("from Statistics where parkingLotId = :parkingLotId and date = :date")
+                            .setParameter("parkingLotId", parkingLotId)
+                            .setParameter("date", LocalDateTime.now().toLocalDate())
+                            .uniqueResult();
+                    if (statistics == null) {
+                        statistics = new Statistics();
+                        ((Statistics) statistics).setParkingLotId(parkingLotId);
+                        ((Statistics) statistics).setDate(LocalDateTime.now().toLocalDate());
+                        ((Statistics) statistics).setTotalIncome(0);
+                        ((Statistics) statistics).setTotalOrders(0);
+                        ((Statistics) statistics).setTotalVisitors(0);
+                        session.beginTransaction();
+                        session.save(statistics);
+                        session.getTransaction().commit();
+                    }
+                }
+                try {
+                    Thread.sleep(86400000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
