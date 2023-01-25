@@ -21,10 +21,14 @@ public class Order implements Serializable {
     private double ordersPrice;
     private Date date;
     private Status orderStatus = Status.APPROVED;
-    public enum Status {APPROVED, CANCELLED, NOTIFIED, CHECKED_IN, CHECKED_OUT};
+
+    @ManyToOne
+    Customer customer;
+
+    public enum Status {APPROVED, CANCELLED};
 
     public Order(int customerId, int carId, String parkingLot, String email,
-                 LocalDateTime arrivalTime, LocalDateTime estimatedLeavingTime, double ordersPrice, Date date)
+                 LocalDateTime arrivalTime, LocalDateTime estimatedLeavingTime, double ordersPrice, Date date, Customer customer)
     {
         super();
         this.customerId = customerId;
@@ -35,6 +39,7 @@ public class Order implements Serializable {
         this.estimatedLeavingTime = estimatedLeavingTime;
         this.ordersPrice = ordersPrice;
         this.date = date;
+        this.customer = customer;
     }
 
     public Order() {}
@@ -46,7 +51,6 @@ public class Order implements Serializable {
         return carId;
     }
     public String getParkingLotId() { return parkingLot; }
-
     public String getEmail() {
         return email;
     }
@@ -57,6 +61,7 @@ public class Order implements Serializable {
         return estimatedLeavingTime;
     }
     public double getOrdersPrice() { return ordersPrice; }
+    public Customer getCustomer() { return customer; }
 
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
@@ -70,21 +75,21 @@ public class Order implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-
     public void setArrivalTime(LocalDateTime arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
     public void setEstimatedLeavingTime(LocalDateTime estimatedLeavingTime) { this.estimatedLeavingTime = estimatedLeavingTime; }
     public void setOrdersPrice(double ordersPrice) { this.ordersPrice = ordersPrice; }
+    public void setCustomer(Customer customer) { this.customer = customer; }
 
     public int getId() {
         return id;
     }
-    public boolean getStatus() {
-        return orderStatus == Status.APPROVED;
+    public Boolean getStatus() {
+        return orderStatus== Status.APPROVED;
     }
-    public void setOrderStatus(Status OrderStatus) {
-        orderStatus = orderStatus;
+    public void setSpotStatus(Status spotStatus) {
+        orderStatus = spotStatus;
     }
 
     public  Date getDate(){

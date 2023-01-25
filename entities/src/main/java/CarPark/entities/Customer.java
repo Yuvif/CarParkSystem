@@ -10,8 +10,10 @@ import java.util.List;
 @Table(name = "customers")
 public class Customer extends User {
     private int balance;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customerId", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customerId", cascade = CascadeType.ALL)
     List<Membership> memberships;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "customerId", cascade = CascadeType.ALL)
+    List<Order> orders;
 
     public Customer(long customerId, String firstName, String lastName, String email, int balance,String password) throws Exception {
         super(customerId, password, email,firstName,lastName);
