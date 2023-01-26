@@ -33,6 +33,9 @@ public class Order implements Serializable {
         this.customer = customer;
     }
 
+    public void setOrderStatus(Status notified) {
+    }
+
     public enum Status {APPROVED, CANCELLED, NOTIFIED};
 
     public Order(long customerId, int carId, String parkingLot, String email,
@@ -90,8 +93,8 @@ public class Order implements Serializable {
     public int getId() {
         return id;
     }
-    public Boolean getStatus() {
-        return orderStatus== Status.APPROVED;
+    public Status getStatus() {
+        return orderStatus;
     }
     public void setSpotStatus(Status spotStatus) {
         orderStatus = spotStatus;
