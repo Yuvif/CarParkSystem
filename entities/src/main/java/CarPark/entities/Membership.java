@@ -20,7 +20,7 @@ public class Membership implements Serializable {
     private long customerId;
     private int carId;
     private String routineParkingLot;
-    private LocalDateTime routineLeavingHour;
+    private LocalTime routineLeavingHour;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String membershipType;
@@ -37,7 +37,7 @@ public class Membership implements Serializable {
         this.customer = customer;
     }
 
-    public Membership(int membershipId, long customerId, int carId, String routineParkingLot, LocalDateTime routineLeavingHour,
+    public Membership(int membershipId, long customerId, int carId, String routineParkingLot, LocalTime routineLeavingHour,
                       LocalDateTime startDate, LocalDateTime endDate, String membershipType, double membershipsPrice) {
         super();
         this.membershipId = membershipId;
@@ -62,7 +62,7 @@ public class Membership implements Serializable {
     public long getCarId() {
         return carId;
     }
-    public LocalDateTime getRoutineLeavingHour() {
+    public LocalTime getRoutineLeavingHour() {
         return routineLeavingHour;
     }
     public LocalDateTime getStartDate() {
@@ -86,7 +86,7 @@ public class Membership implements Serializable {
     public void setCarId(int carId) {
         this.carId = carId;
     }
-    public void setRoutineLeavingHour(LocalDateTime routineLeavingHour) {
+    public void setRoutineLeavingHour(LocalTime routineLeavingHour) {
         this.routineLeavingHour = routineLeavingHour;
     }
     public void setStartDate(LocalDateTime startDate) {

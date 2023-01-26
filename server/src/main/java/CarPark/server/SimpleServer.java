@@ -20,8 +20,7 @@ import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Properties;
+import java.util.*;
 
 
 public class SimpleServer extends AbstractServer {
@@ -68,6 +67,11 @@ public class SimpleServer extends AbstractServer {
                 SubscribedClient connection = new SubscribedClient(client);
                 SubscribersList.add(connection);
                 session = getSessionFactory().openSession();// Create new session for connection
+
+//                session.beginTransaction();
+//                generateParkingLots();
+//                session.getTransaction().commit();
+
             } else { //Get client requests
                 session.beginTransaction();
                 if (LoginMessage.class.equals(msgClass)) {
@@ -100,6 +104,54 @@ public class SimpleServer extends AbstractServer {
             if (session != null)
                 session.getTransaction().rollback();
             exception.printStackTrace();
+        }
+    }
+
+    private void generateParkingLots() {
+        String current_id;
+        List<Parkinglot> parkingLotList = new LinkedList<>();
+        Parkinglot haifa = new Parkinglot("Haifa", 4, 36);
+        session.save(haifa);
+        session.flush();
+        parkingLotList.add(haifa);
+        Parkinglot tlv = new Parkinglot("Tel Aviv", 7, 63);
+        session.save(tlv);
+        session.flush();
+        parkingLotList.add(tlv);
+        Parkinglot jerusalem = new Parkinglot("Jerusalem", 8, 72);
+        session.save(jerusalem);
+        session.flush();
+        parkingLotList.add(jerusalem);
+        Parkinglot bash = new Parkinglot("Be'er Sheva", 6, 54);
+        session.save(bash);
+        session.flush();
+        parkingLotList.add(bash);
+        Parkinglot eilat = new Parkinglot("Eilat", 5, 45);
+        session.save(eilat);
+        session.flush();
+        parkingLotList.add(eilat);
+        List<String> spots = Arrays.asList("A", "B", "C");
+        int f = 1; //floor number
+        int currentSpot = 1; //current spot number
+        for (int i = 0; i < parkingLotList.size(); i++) {
+            Parkinglot parkinglot = parkingLotList.get(i);
+            int spotIndex = 0;
+            int carsPerFloor = parkinglot.getTotalParkingSlots() / 3; //set the number of cars per floor here
+            for (int j = 0; j < parkinglot.getTotalParkingSlots(); j++) {
+                String currentId = f + "." + spots.get(spotIndex) + currentSpot;
+                ParkingSlot parkingSlot = new ParkingSlot(currentId, parkinglot);
+                session.save(parkingSlot);
+                session.flush();
+                currentSpot++;
+                if (currentSpot > carsPerFloor) {
+                    currentSpot = 1;
+                    spotIndex++;
+                    if (spotIndex >= spots.size()) {
+                        spotIndex = 0;
+                        f++;
+                    }
+                }
+            }
         }
     }
 
