@@ -3,7 +3,6 @@ package CarPark.entities.messages;
 import CarPark.entities.Statistics;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class StatisticsMessage extends Message{
     public RequestType request_type;
@@ -12,10 +11,10 @@ public class StatisticsMessage extends Message{
     private Statistics statistics;
     private LocalDate date;
 
-    public StatisticsMessage(MessageType message_type, RequestType request_type, int parkinglot_id, LocalDate date) {
+    public StatisticsMessage(MessageType message_type, RequestType request_type, String parkinglot_id, LocalDate date) {
         super(message_type);
         this.request_type = request_type;
-        this.parkinglot_id = parkinglot_id;
+        this.parkinglot_id = Integer.parseInt(parkinglot_id);
         this.date = date;
     }
 

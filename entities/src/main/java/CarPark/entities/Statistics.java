@@ -18,21 +18,30 @@ public class Statistics implements Serializable {
     private int numberOfOrders;
     private int numberOfOrdersCancelled;
     private int numberOfOrdersLate;
+    private int totalRevenue;
     private String parkingLotId;
 
-    public Statistics(LocalDate date, int numberOfOrders, int numberOfOrdersCancelled, int numberOfOrdersLate, String parkingLotId) {
+    public Statistics(LocalDate date, int numberOfOrders, int numberOfOrdersCancelled, int numberOfOrdersLate, String parkingLotId, int totalRevenue) {
         this.date = date;
         this.numberOfOrders = numberOfOrders;
         this.numberOfOrdersCancelled = numberOfOrdersCancelled;
         this.numberOfOrdersLate = numberOfOrdersLate;
         this.parkingLotId = parkingLotId;
+        this.totalRevenue = totalRevenue;
     }
 
     public Statistics() {}
 
-
     public LocalDate getDate() {
         return date;
+    }
+
+    public void setTotalRevenue(int totalRevenue) {
+        this.totalRevenue = totalRevenue;
+    }
+
+    public int getTotalRevenue() {
+        return totalRevenue;
     }
 
     public int getNumberOfOrders() {

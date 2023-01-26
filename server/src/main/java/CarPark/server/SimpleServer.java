@@ -176,7 +176,9 @@ public class SimpleServer extends AbstractServer {
                             int totalOrders = orders.size();
                             int numberOfOrdersCancelled = 0;
                             int numberOfOrdersLate = 0;
+                            int totalRevenue = 0;
                             for (Object order : orders) {
+                                totalRevenue += ((Order) order).getOrdersPrice();
                                 switch (((Order) order).getStatus()) {
                                     case APPROVED:
                                         break;
@@ -188,9 +190,10 @@ public class SimpleServer extends AbstractServer {
                                         break;
                                 }
                             }
-                            Statistics statistics = new Statistics(yesterday, totalOrders, numberOfOrdersCancelled, numberOfOrdersLate, parkingLotId);
+                            Statistics statistics = new Statistics(yesterday, totalOrders, numberOfOrdersCancelled, numberOfOrdersLate, parkingLotId, totalRevenue);
                             session.beginTransaction();
                             session.save(statistics);
+                            System.out.println("Statistics for parking lot " + parkingLotId + " for yesterday were saved"+statistics);
                             session.getTransaction().commit();
                         }
                     }
