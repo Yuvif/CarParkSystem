@@ -106,7 +106,15 @@ public class Parkinglot implements Serializable {
     }
 
     public void setId(String id) {
-        this.name=name;
+        this.name = id;
+    }
+
+    public int getParkingLotId() {
+        return parkingLotId;
+    }
+
+    public void setParkingLotId(int parkingLotId) {
+        this.parkingLotId = parkingLotId;
     }
 
 }

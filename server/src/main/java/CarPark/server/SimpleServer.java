@@ -1,6 +1,5 @@
 package CarPark.server;
 
-
 import CarPark.entities.*;
 import CarPark.entities.messages.*;
 import CarPark.server.handlers.*;
@@ -18,15 +17,12 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import javax.mail.MessagingException;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Properties;
 
 
@@ -43,8 +39,8 @@ public class SimpleServer extends AbstractServer {
 //        orderReminderThread.start();
 //        MembershipReminderThread membershipReminderThread = new MembershipReminderThread();
 //        membershipReminderThread.start();
-//        StatisticsThread statisticsThread = new StatisticsThread();
-//        statisticsThread.start();
+        StatisticsThread statisticsThread = new StatisticsThread();
+        statisticsThread.start();
     }
 
 
@@ -61,8 +57,6 @@ public class SimpleServer extends AbstractServer {
         configuration.addAnnotatedClass(Membership.class);
         configuration.addAnnotatedClass(Complaint.class);
         configuration.addAnnotatedClass(ParkingSlot.class);
-        configuration.addAnnotatedClass(Price.class);
-        configuration.addAnnotatedClass(User.class);
         configuration.addAnnotatedClass(Statistics.class);
         configuration.addAnnotatedClass(CheckedIn.class);
        // configuration.addAnnotatedClass(ParkingLotWorker.class);
@@ -94,10 +88,9 @@ public class SimpleServer extends AbstractServer {
                     handler = new MembershipsHandler((MembershipMessage) msg, session, client);
                 } else if (ParkingLotMapMessage.class.equals(msgClass)) {
                     handler = new ParkingLotMapHandler((ParkingLotMapMessage) msg, session, client);
-                }else if (CheckOutMessage.class.equals(msgClass)) {
-                handler = new CheckOutHandler((CheckOutMessage) msg, session, client);
-                }
-                else if (RegisterUserMessage.class.equals(msgClass))
+                } else if (CheckOutMessage.class.equals(msgClass)) {
+                    handler = new CheckOutHandler((CheckOutMessage) msg, session, client);
+                } else if (RegisterUserMessage.class.equals(msgClass)){
                     handler = new RegisterUserHandler((RegisterUserMessage)msg,session,client);
                 } else if (RegisterUserMessage.class.equals(msgClass)) {
                     handler = new RegisterUserHandler((RegisterUserMessage) msg, session, client);
@@ -123,21 +116,26 @@ public class SimpleServer extends AbstractServer {
         public void run() {
             var session = getSessionFactory().openSession();
             while (true) {
-//              get all orders that are at least 5 minutes late
-                var orders = session.createQuery("from Order where arrivalTime = :time and orderStatus = :status")
-                        .setParameter("time", LocalDateTime.now().minusMinutes(5))
-                        .setParameter("status", Order.Status.APPROVED)
-                        .list();
+//              get all orders which their arrival time was between now and 5 minutes ago and orderStatus is APPROVED
+                var orders = session.createQuery("from Order where orderStatus = 'APPROVED' and arrivalTime between :five_minutes_ago and :now")
+                        .setParameter("now", LocalDateTime.now())
+                        .setParameter("five_minutes_ago", LocalDateTime.now().minusMinutes(5))
+                        .getResultList();
                 for (Object order : orders) {
                     String email = ((Order) order).getEmail();
                     String subject = "Did you forget your order?";
-                    String text = "Hi, \nyou have an order that you haven't checked in yet and we would " +
+                    String text = "Hi, \nYou have an order that you haven't checked in yet and we would " +
                             "like to remind you that in case you are late or don't show up you will be charged according to the terms and conditions of the parking lot.\n\nBest regards,\nCarPark";
                     EmailSender.sendEmail(email, subject, text);
                 }
 //                change the status of the orders to be NOTIFIED
                 session.beginTransaction();
                 for (Object order : orders) {
+//                    update the order status to be NOTIFIED
+                    session.createQuery("update Order set orderStatus = :status where id = :id")
+                            .setParameter("status", Order.Status.NOTIFIED)
+                            .setParameter("id", ((Order) order).getId())
+                            .executeUpdate();
                     ((Order) order).setOrderStatus(Order.Status.NOTIFIED);
                     session.update(order);
                 }
@@ -155,38 +153,47 @@ public class SimpleServer extends AbstractServer {
         @Override
         public void run() {
             var session = getSessionFactory().openSession();
-            LocalDate today = LocalDate.now();
             while (true) {
-//              for each parking lot check if there is a statistics object for today
-                if (today.equals(LocalDate.now())) {
-                    ;
-                } else {
-                    today = LocalDate.now();
                     var parkingLots = session.createQuery("from Parkinglot").list();
                     for (Object parkingLot : parkingLots) {
-                        var parkingLotId = ((Parkinglot) parkingLot).getId();
-//                        select all orders from yesterday belonging to parkinglot
-                        var orders = session.createQuery("from Order where id = :parkingLotId and arrivalTime = :arrivalTime")
-                                .setParameter("parkingLotId", parkingLotId)
-                                .setParameter("arrivalTime", today.minusDays(1))
-                                .list();
-                        int totalOrders = orders.size();
-//                        for (Object order : orders) {
-////                            switch on orderStatus
-//                            switch (((Order) order).getStatus()) {
-////                                there's a problem that status is boolean
-//                            }
-//                        }
-                        Statistics statistics = new Statistics();
-                        statistics.setParkingLotId(parkingLotId);
-                        statistics.setNumberOfOrders(totalOrders);
-//                        add another fields
-                        statistics.setDate(today.minusDays(1));
-                        session.beginTransaction();
-                        session.save(statistics);
-                        session.getTransaction().commit();
+//                        check if there is an entry for yesterday
+                        var yesterday = LocalDate.now().minusDays(1);
+                        var yesterdayStatistics = session.createQuery("from Statistics where parkingLotId = :parkingLotId and date = :date")
+                                .setParameter("parkingLotId", ((Parkinglot) parkingLot).getId())
+                                .setParameter("date", yesterday)
+                                .getResultList();
+                        if (yesterdayStatistics.size() == 0) {
+                            String parkingLotId = String.valueOf(((Parkinglot) parkingLot).getParkingLotId());
+                            //                        select all orders from the begiining of yesterday to the end of yesterday
+//                            wrap yesterday in a LocalDateTime object
+                            LocalDateTime yesterdayStart = LocalDateTime.of(yesterday, LocalTime.MIN);
+                            LocalDateTime yesterdayEnd = LocalDateTime.of(yesterday, LocalTime.MAX);
+                            var orders = session.createQuery("from Order where parkingLot = :parkingLotId and arrivalTime between :yesterday_start and :yesterday_end")
+                                    .setParameter("parkingLotId", parkingLotId)
+                                    .setParameter("yesterday_start", yesterdayStart)
+                                    .setParameter("yesterday_end", yesterdayEnd)
+                                    .getResultList();
+                            int totalOrders = orders.size();
+                            int numberOfOrdersCancelled = 0;
+                            int numberOfOrdersLate = 0;
+                            for (Object order : orders) {
+                                switch (((Order) order).getStatus()) {
+                                    case APPROVED:
+                                        break;
+                                    case NOTIFIED:
+                                        numberOfOrdersLate++;
+                                        break;
+                                    case CANCELLED:
+                                        numberOfOrdersCancelled++;
+                                        break;
+                                }
+                            }
+                            Statistics statistics = new Statistics(yesterday, totalOrders, numberOfOrdersCancelled, numberOfOrdersLate, parkingLotId);
+                            session.beginTransaction();
+                            session.save(statistics);
+                            session.getTransaction().commit();
+                        }
                     }
-                }
                 try {
                     Thread.sleep(86400000);
                 } catch (InterruptedException e) {
@@ -201,9 +208,12 @@ public class SimpleServer extends AbstractServer {
         public void run() {
             while (true) {
                 var session = getSessionFactory().openSession();
-                var memberships = session.createQuery("from Membership where endDate = :time")
-                        .setParameter("time", LocalDateTime.now().plusDays(7))
-                        .list();
+//                get all members whose membership is about to expire between now and in 7 days
+                var memberships = session.createQuery("from Membership where endDate between :now and :seven_days_from_now")
+                        .setParameter("now", LocalDateTime.now())
+                        .setParameter("seven_days_from_now", LocalDateTime.now().plusDays(7))
+                        .getResultList();
+                System.out.println(memberships.size() + " memberships are about to expire");
 //              for each membership get the customerId attribute and get the list of Customer objects having that id
                 for (Object membership : memberships) {
 //              get the customer object that has the same customerId as the membership
@@ -213,13 +223,14 @@ public class SimpleServer extends AbstractServer {
 //                  get the email from the customer object
                     String email = ((Customer) customer.get(0)).getEmail();
                     String subject = "Your membership is about to expire";
-                    String text = "Hi, \nyour membership is about to expire in a week and we would like " +
-                            "to remind you that in case you are late or don't show up you will be charged according to the terms and conditions of the parking lot.\n\nBest regards,\nCarPark";
+//                    send a text with the expiration date
+                    String text = "Hi, \nWe'd like to inform you that Your membership is about to expire on " + ((Membership) membership).getEndDate() + "\nYou can login to your" +
+                            "acount in order to renew it :)"+"\n\nBest regards,\nCarParkSystem";
                     EmailSender.sendEmail(email, subject, text);
                 }
                 // now wait for 7 days
                 try {
-                    Thread.sleep(604800000);
+                    Thread.sleep(604000000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
