@@ -3,13 +3,13 @@ package CarPark.client.controllers;
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.entities.CheckedIn;
-import CarPark.entities.ParkingSlot;
 import CarPark.entities.messages.CheckInMessage;
 import CarPark.entities.messages.Message;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
@@ -48,9 +48,9 @@ public class CheckInGuestController{
 
     @FXML
     void initialize() {
-        String[] plNames = new String[]{"Haifa", "Tel-Aviv","Jerusalem",
+        EventBus.getDefault().register(this);
+        String[] plNames = new String[]{"Haifa", "Tel Aviv","Jerusalem",
                 "Be'er Sheva", "Eilat"};
-        plPick.getItems().add("Set ParkingLot");
         for (String n : plNames)
             plPick.getItems().add(n);
         // Initialize the ComboBox with the hours
@@ -85,6 +85,7 @@ public class CheckInGuestController{
         if (checkEmpty()) {
             CheckedIn checkedIn = createCheckedIn();
             CheckInMessage message = new CheckInMessage(Message.MessageType.REQUEST, CheckInMessage.RequestType.CHECK_ME_IN_GUEST, checkedIn);
+            message.selectedParkingLot = plPick.getValue();
             try {
                 SimpleClient.getClient().sendToServer(message);
             } catch (IOException e) {
@@ -97,8 +98,7 @@ public class CheckInGuestController{
         LocalDate leaving = estLeavingDate.getValue();
         LocalTime leavingTime = LocalTime.of(Integer.parseInt(estLeavingHour.getValue().toString()), Integer.parseInt(estLeavingMin.getValue().toString()));
         LocalDateTime leavingDateTime = LocalDateTime.of(leaving, leavingTime);
-        CheckedIn checkedIn = new CheckedIn( plPick.getValue(),LocalDateTime.now(), Integer.parseInt(idTf.getText()), Integer.parseInt(car_nTf.getText()), mailTf.getText(), leavingDateTime, new ParkingSlot());
-        checkedIn.setParkinglot_name(plPick.getValue());
+        CheckedIn checkedIn = new CheckedIn(LocalDateTime.now(), Integer.parseInt(idTf.getText()), Integer.parseInt(car_nTf.getText()), mailTf.getText(), leavingDateTime,"GUEST");
         return checkedIn;
     }
     private boolean checkEmpty() {
@@ -119,10 +119,16 @@ public class CheckInGuestController{
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setHeaderText("Welcome \n " +
-                            "to CPS " + new_message.checkedIn.getParkinglot_name());
+                            "to CPS " + new_message.selectedParkingLot +"\n Your Parking Slot is: " + new_message.checkedIn.getParkingSlot().getId());
                     alert.show();
                 });
             }
+            case PARKING_LOT_IS_FULL -> Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("This parking lot is full at the moment \n " +
+                        "You can go to CPS " + new_message.alternativeParkingLot + " instead");
+                alert.show();
+            });
         }
     }
 

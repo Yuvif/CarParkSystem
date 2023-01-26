@@ -26,8 +26,11 @@ public class Parkinglot implements Serializable {
     private List<Complaint> complaints = new ArrayList<>();
 
     @OneToMany
-    @JoinColumn(name = "parking_slot_id")
     private List<ParkingSlot> parkingSlot;
+
+    @OneToMany
+    private List<CheckedIn> checkedIns;
+
 
     public List<ParkingSlot> getParkingSlot() {
         return parkingSlot;

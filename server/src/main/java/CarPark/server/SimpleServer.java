@@ -60,9 +60,9 @@ public class SimpleServer extends AbstractServer {
                 SubscribedClient connection = new SubscribedClient(client);
                 SubscribersList.add(connection);
                 session = getSessionFactory().openSession();// Create new session for connection
-                //session.beginTransaction();
-                //generateParkingLots();
-                //session.getTransaction().commit();
+//                session.beginTransaction();
+//                generateParkingLots();
+//                session.getTransaction().commit();
             } else { //Get client requests
                 session.beginTransaction();
                 if (LoginMessage.class.equals(msgClass)) {
@@ -77,8 +77,11 @@ public class SimpleServer extends AbstractServer {
                     handler = new MembershipsHandler((MembershipMessage) msg, session, client);
                 } else if (OrderMessage.class.equals(msgClass)) {
                     handler = new OrderHandler((OrderMessage) msg, session, client);
-                } else if (RegisterUserMessage.class.equals(msgClass))
+                } else if (RegisterUserMessage.class.equals(msgClass)) {
                     handler = new RegisterUserHandler((RegisterUserMessage) msg, session, client);
+                } else if (CheckInMessage.class.equals(msgClass)) {
+                    handler = new CheckInHandler((CheckInMessage) msg, session, client);
+                }
                 if (handler != null) {
                     handler.handleMessage();
                     session.getTransaction().commit();

@@ -45,7 +45,7 @@ public class RegisterUserController {
     }
 
     @FXML
-    private void loginPage() throws IOException {
+    private void loginPage(ActionEvent event) throws IOException {
         SimpleChatClient.setRoot("Login");
     }
 

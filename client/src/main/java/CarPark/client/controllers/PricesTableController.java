@@ -35,8 +35,8 @@ public class PricesTableController {
 
 
     @FXML
-    private void GoBack() throws IOException {
-        SimpleChatClient.setRoot("MainScreen");
+    private void loginPage() throws IOException {
+        SimpleChatClient.setRoot("Login");
     }
 
     @FXML

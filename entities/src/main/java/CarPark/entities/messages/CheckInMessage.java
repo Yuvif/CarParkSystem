@@ -7,6 +7,7 @@ public class CheckInMessage extends Message {
     public CheckInMessage.ResponseType response_type;
     public CheckedIn checkedIn;
     public String alternativeParkingLot;
+    public String selectedParkingLot;
 
     public enum RequestType {
         CHECK_ME_IN_GUEST

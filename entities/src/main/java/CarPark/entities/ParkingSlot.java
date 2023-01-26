@@ -23,7 +23,8 @@ public class ParkingSlot implements Serializable {
     @JoinColumn(name = "parkingLotId")
     private Parkinglot parkinglot;
 
-    @OneToOne(mappedBy="parkingSlot")
+    @OneToOne
+    @JoinColumn(name = "checkedInId")
     private CheckedIn checkedIn;
 
     public CheckedIn getCheckedIn() {

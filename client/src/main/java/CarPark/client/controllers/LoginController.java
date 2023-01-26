@@ -11,7 +11,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -107,18 +106,19 @@ public class LoginController{
     }
 
 
-    public void signUp(MouseEvent event) throws IOException {
+    public void signUp(ActionEvent event) throws IOException {
         SimpleChatClient.setRoot("RegisterUser");
     }
 
-    public void checkIn(ActionEvent event) {
+    public void checkInAsGuest(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("CheckInGuest");
     }
 
-    public void checkOut(ActionEvent event) {
+    public void checkOutAsGuest(ActionEvent event) {
     }
 
-    public void makeOrder(ActionEvent event) throws IOException {
-        SimpleChatClient.setRoot("CreateOrder");
+    public void prices(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("Prices");
     }
 }
 
