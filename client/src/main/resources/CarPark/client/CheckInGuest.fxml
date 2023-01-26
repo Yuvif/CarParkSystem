@@ -39,7 +39,7 @@
             <Font name="SansSerif Regular" size="12.0" />
         </font>
     </Label>
-    <AnchorPane layoutX="59.0" layoutY="73.0" prefHeight="406.0" prefWidth="378.0" style="-fx-background-color: #77D0AA; -fx-background-radius: 20;">
+    <AnchorPane layoutX="59.0" layoutY="55.0" prefHeight="406.0" prefWidth="378.0" style="-fx-background-color: #77D0AA; -fx-background-radius: 20;">
         <children>
             <TextField fx:id="idTf" layoutX="39.0" layoutY="79.0" prefHeight="30.0" prefWidth="300.0" promptText="ID" style="-fx-border-width: 2; -fx-border-color: black; -fx-border-radius: 5; -fx-background-color: white;">
                 <font>

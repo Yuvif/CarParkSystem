@@ -2,22 +2,21 @@ package CarPark.client.controllers;
 
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
-import CarPark.entities.messages.CheckOutMessage;
 import CarPark.entities.messages.LoginMessage;
 import CarPark.entities.messages.Message;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static CarPark.client.controllers.Controller.sendAlert;
 
 public class LoginController{
 
@@ -35,7 +34,6 @@ public class LoginController{
     private Label wrongLogin;
 
 
-
     @FXML
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
@@ -49,7 +47,7 @@ public class LoginController{
             long userId = Long.parseLong(userID.getText());
             String userPass = password.getText();
             LoginMessage msg =
-                    new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGIN, userId, userPass);
+                    new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGIN,userId,userPass);
             SimpleClient.getClient().sendToServer(msg);
         }
         else
@@ -108,20 +106,19 @@ public class LoginController{
     }
 
 
-    public void signUp(MouseEvent event) throws IOException {
+    public void signUp(ActionEvent event) throws IOException {
         SimpleChatClient.setRoot("RegisterUser");
     }
 
-    public void checkIn(ActionEvent event) throws IOException {
+    public void checkInAsGuest(ActionEvent event) throws IOException {
         SimpleChatClient.setRoot("CheckInGuest");
     }
 
-    public void checkOut(ActionEvent event) throws IOException {
-        SimpleChatClient.setRoot("CheckOut");
+    public void checkOutAsGuest(ActionEvent event) {
     }
 
-    public void makeOrder(ActionEvent event) throws IOException {
-        SimpleChatClient.setRoot("CreateOrder");
+    public void prices(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("Prices");
     }
 }
 

@@ -13,43 +13,38 @@ public class CheckedIn implements Serializable {
     private int checkedInId;
 
     @Column(name = "entry_date")
-    private String parkinglot;
     private LocalDateTime entryDate;
+
     private Integer carNumber;
     private Integer personId;
     private String email;
     private LocalDateTime exitEstimatedDate;
     private String type;
-    private String parkinglot_name;
 
+    @ManyToOne
+    @JoinColumn(name = "parkingLotId")
+    private Parkinglot parkinglot;
 
-
-    @OneToOne(optional = false, orphanRemoval = true)
-    @JoinColumn(name = "parking_slot_parking_slot_id", nullable = false)
+    @OneToOne
+    @JoinColumn(name = "parkingSlotId")
     private ParkingSlot parkingSlot;
 
-    public CheckedIn(String parkinglot, LocalDateTime entryDate, Integer personId, Integer carNumber, String email, LocalDateTime exitEstimatedDate, ParkingSlot parkingSlot) {
-        this.parkinglot = parkinglot;
+    public CheckedIn(LocalDateTime entryDate, Integer personId, Integer carNumber, String email, LocalDateTime exitEstimatedDate, String type) {
         this.entryDate = entryDate;
         this.personId = personId;
         this.carNumber = carNumber;
         this.email = email;
         this.exitEstimatedDate = exitEstimatedDate;
-        this.parkingSlot = parkingSlot;
-        this.parkinglot_name = null;
+        this.type = type;
     }
 
     public CheckedIn() {
 
     }
 
-    public String getParkinglot_name(){
-        return parkinglot_name;
-    }
+    public Parkinglot getParkinglot(){return parkinglot;}
 
-    public void setParkinglot_name(String parkinglot_id){
-        this.parkinglot_name = parkinglot_id;
-    }
+    public void setParkinglot(Parkinglot parkinglot){this.parkinglot = parkinglot;}
 
     public ParkingSlot getParkingSlot() {
         return parkingSlot;
@@ -93,8 +88,4 @@ public class CheckedIn implements Serializable {
         this.exitEstimatedDate = exitEstimatedDate;
     }
 
-    public String getParkinglotId() {
-
-        return parkinglot;
-    }
 }

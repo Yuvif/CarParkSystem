@@ -28,14 +28,16 @@ public class CheckInHandler extends MessageHandler {
     }
 
     public void checkInGuest() {
-        String parkingLot = class_message.checkedIn.getParkinglot_name();
+        String selectedParkingLot = class_message.selectedParkingLot;
         CriteriaQuery<ParkingSlot> Query = cb.createQuery(ParkingSlot.class);
         Query.from(ParkingSlot.class);
-        List<ParkingSlot> parkingSlots = session.createQuery(Query).getResultList();
-        for (ParkingSlot parkingSlot : parkingSlots) {
+        List<ParkingSlot> totalParkingSlots = session.createQuery(Query).getResultList();
+        for (ParkingSlot parkingSlot : totalParkingSlots) {
 //        find a parking slot in the chosen parking lot which is also empty
             Parkinglot parkinglot = parkingSlot.getParkinglot();
-            if (parkinglot.getId().equals(parkingLot) && parkingSlot.getStatus().equals("EMPTY")) {
+            System.out.println(parkinglot.getName());
+            System.out.println(parkingSlot.getStatus());
+            if (parkinglot.getName().equals(selectedParkingLot) && parkingSlot.getStatus()) {
                 class_message.checkedIn.setParkingSlot(parkingSlot);
                 break;
             }
@@ -43,7 +45,7 @@ public class CheckInHandler extends MessageHandler {
         if (class_message.checkedIn.getParkingSlot() == null)
         {
             class_message.response_type=CheckInMessage.ResponseType.PARKING_LOT_IS_FULL;
-            findAlternativeParkingLots(parkingSlots);
+            findAlternativeParkingLots(totalParkingSlots);
         }
         else {
 //        store checkedIn guest in the database
