@@ -4,19 +4,20 @@ import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.entities.CheckedIn;
 import CarPark.entities.ParkingSlot;
-import CarPark.entities.messages.CheckInGuestMessage;
+import CarPark.entities.messages.CheckInMessage;
 import CarPark.entities.messages.Message;
-import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.util.Duration;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
-public class CheckInGuestController extends Controller{
+public class CheckInGuestController{
 
 
 
@@ -36,62 +37,98 @@ public class CheckInGuestController extends Controller{
     private ComboBox<String> plPick; // Value injected by FXMLLoader
 
     @FXML // fx:id="leavingTimeTF"
-    private DatePicker leavingTimeTF; // Value injected by FXMLLoader
+    private DatePicker estLeavingDate; // Value injected by FXMLLoader
+
+    @FXML
+    private ComboBox<java.io.Serializable> estLeavingHour;
+
+    @FXML
+    private ComboBox<java.io.Serializable> estLeavingMin;
+
 
     @FXML
     void initialize() {
-        String[] plNames = new String[]{"CPS Haifa", "CPS Tel-Aviv",
-                "CPS Be'er Sheva", "CPS Rehovot", "CPS Jerusalem", "CPS Eilat"};
+        String[] plNames = new String[]{"Haifa", "Tel-Aviv","Jerusalem",
+                "Be'er Sheva", "Eilat"};
         plPick.getItems().add("Set ParkingLot");
-        plPick.setValue("Set ParkingLot");
         for (String n : plNames)
             plPick.getItems().add(n);
+        // Initialize the ComboBox with the hours
+        for (int i = 0; i < 24; i++) {
+            if (i < 10) {
+                estLeavingHour.getItems().add("0" + i);
+            } else {
+                estLeavingHour.getItems().add(i);
+            }
+        }
+
+        // Initialize the ComboBox with the minutes
+        for (int i = 0; i < 60; i++) {
+            if (i < 10) {
+                estLeavingMin.getItems().add("0" + i);
+            } else {
+                estLeavingMin.getItems().add(i);
+            }
+        }
+        estLeavingDate.setDayCellFactory(picker -> new DateCell() {
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                LocalDate today = LocalDate.now();
+                // Disable all past dates
+                setDisable(empty || date.compareTo(today) < 0);
+            }
+        });
     }
 
     @FXML
     void checkIn(ActionEvent event) throws IOException {
         if (checkEmpty()) {
             CheckedIn checkedIn = createCheckedIn();
-            CheckInGuestMessage message = new CheckInGuestMessage(Message.MessageType.REQUEST, CheckInGuestMessage.RequestType.CHECK_ME_IN, checkedIn);
+            CheckInMessage message = new CheckInMessage(Message.MessageType.REQUEST, CheckInMessage.RequestType.CHECK_ME_IN_GUEST, checkedIn);
             try {
                 SimpleClient.getClient().sendToServer(message);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText("Welcome");
-                alert.show();
-                PauseTransition pause = new PauseTransition(Duration.seconds(2.5));
-                pause.setOnFinished((e -> {
-                    alert.close();
-                    try {
-                        screenChangeMain();
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                }));
-                pause.play();
-            });
         }
     }
 
     private CheckedIn createCheckedIn() {
-        CheckedIn checkedIn = new CheckedIn( plPick.getValue(),new Date(), Integer.parseInt(idTf.getText()), Integer.parseInt(car_nTf.getText()), mailTf.getText(), new Date(), new ParkingSlot());
-        //checkedIn.setParkinglot_name(plPick.getValue());
+        LocalDate leaving = estLeavingDate.getValue();
+        LocalTime leavingTime = LocalTime.of(Integer.parseInt(estLeavingHour.getValue().toString()), Integer.parseInt(estLeavingMin.getValue().toString()));
+        LocalDateTime leavingDateTime = LocalDateTime.of(leaving, leavingTime);
+        CheckedIn checkedIn = new CheckedIn( plPick.getValue(),LocalDateTime.now(), Integer.parseInt(idTf.getText()), Integer.parseInt(car_nTf.getText()), mailTf.getText(), leavingDateTime, new ParkingSlot());
+        checkedIn.setParkinglot_name(plPick.getValue());
         return checkedIn;
     }
     private boolean checkEmpty() {
         if (idTf.getText().isEmpty() || car_nTf.getText().isEmpty() || mailTf.getText().isEmpty() || plPick.getValue() == null) {
-            sendAlert("Please fill all the fields", "warning", Alert.AlertType.WARNING);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText("Please fill all the fields!");
+            alert.show();
             return false;
         }
 
         return true;
     }
+
+    @Subscribe
+    public void newResponse(CheckInMessage new_message) throws IOException {
+        switch (new_message.response_type) {
+            case CHECKED_IN_GUEST -> {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setHeaderText("Welcome \n " +
+                            "to CPS " + new_message.checkedIn.getParkinglot_name());
+                    alert.show();
+                });
+            }
+        }
+    }
+
+
     @FXML
-    private void screenChangeMain() throws IOException {
-        SimpleChatClient.setRoot("MainScreenTest");
+    private void loginPage(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("Login");
     }
 }

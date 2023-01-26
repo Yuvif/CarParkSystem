@@ -11,6 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -27,11 +28,11 @@ public class MyComplaintsController {
     @FXML
     private TableView<Complaint> complaintsTableView;
     @FXML
-    private TableColumn<Complaint,Integer> complaintID;
+    private TableColumn<Complaint,Integer> complaint_id;
     @FXML
-    private TableColumn<Complaint, LocalDate> subDate;
+    private TableColumn<Complaint,LocalDate> subDate;
     @FXML
-    private TableColumn<Complaint, Boolean> status;
+    private TableColumn<Complaint,Boolean> status;
 
 
 
@@ -39,9 +40,9 @@ public class MyComplaintsController {
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
         userName.setText(SimpleClient.getCurrent_user().getFirstName());
-        complaintID.setCellValueFactory(new PropertyValueFactory<>("complaintId"));
+        complaint_id.setCellValueFactory(new PropertyValueFactory<>("complaintId"));
         subDate.setCellValueFactory(new PropertyValueFactory<>("date"));
-        status.setCellValueFactory(new PropertyValueFactory<>("appStatus"));
+        status.setCellValueFactory(new PropertyValueFactory<Complaint, Boolean>("appStatus"));
         ComplaintMessage msg = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.GET_MY_COMPLAINTS,
                 (Customer)SimpleClient.getCurrent_user());
         SimpleClient.getClient().sendToServer(msg);
@@ -52,9 +53,18 @@ public class MyComplaintsController {
     public void newResponse(ComplaintMessage message) {
         switch (message.response_type) {
             case SET_MY_COMPLAINTS:
-                for (Complaint complaint : message.complaints)
-
                 complaintsTableView.setItems(FXCollections.observableArrayList(message.complaints));
+                status.setCellFactory(col -> new TableCell<Complaint, Boolean>() {
+                    @Override
+                    protected void updateItem(Boolean item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setText(null);
+                        } else {
+                            setText(item ? "Handled" : "Waiting");
+                        }
+                    }
+                });
                 break;
         }
     }

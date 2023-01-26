@@ -112,7 +112,7 @@
                     </Label>
                <TableView fx:id="complaintsTableView" maxWidth="-Infinity" prefHeight="278.0" prefWidth="400.0" stylesheets="@../../assets/style.css" translateX="200.0">
                  <columns>
-                   <TableColumn fx:id="complaintID" prefWidth="141.0" text="Complaint ID" />
+                   <TableColumn fx:id="complaint_id" prefWidth="141.0" text="Complaint ID" />
                    <TableColumn fx:id="subDate" prefWidth="159.0" text="Submission Date" />
                      <TableColumn fx:id="status" prefWidth="99.0" text="Status" />
                  </columns>

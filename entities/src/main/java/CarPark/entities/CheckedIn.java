@@ -2,6 +2,7 @@ package CarPark.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -13,19 +14,21 @@ public class CheckedIn implements Serializable {
 
     @Column(name = "entry_date")
     private String parkinglot;
-    private Date entryDate;
+    private LocalDateTime entryDate;
     private Integer carNumber;
     private Integer personId;
     private String email;
-    private Date exitEstimatedDate;
-    private boolean didHePay = false;
+    private LocalDateTime exitEstimatedDate;
+    private String type;
     private String parkinglot_name;
+
+
 
     @OneToOne(optional = false, orphanRemoval = true)
     @JoinColumn(name = "parking_slot_parking_slot_id", nullable = false)
     private ParkingSlot parkingSlot;
 
-    public CheckedIn(String parkinglot, Date entryDate, Integer personId, Integer carNumber, String email, Date exitEstimatedDate, ParkingSlot parkingSlot) {
+    public CheckedIn(String parkinglot, LocalDateTime entryDate, Integer personId, Integer carNumber, String email, LocalDateTime exitEstimatedDate, ParkingSlot parkingSlot) {
         this.parkinglot = parkinglot;
         this.entryDate = entryDate;
         this.personId = personId;
@@ -34,9 +37,6 @@ public class CheckedIn implements Serializable {
         this.exitEstimatedDate = exitEstimatedDate;
         this.parkingSlot = parkingSlot;
         this.parkinglot_name = null;
-        setParkingSlot(parkingSlot);
-        parkingSlot.setSpotStatus(ParkingSlot.Status.USED);
-        parkingSlot.setCheckedIn(this);
     }
 
     public CheckedIn() {
@@ -56,14 +56,16 @@ public class CheckedIn implements Serializable {
     }
 
     public void setParkingSlot(ParkingSlot parkingSlot) {
+        parkingSlot.setSpotStatus(ParkingSlot.Status.USED);
+        parkingSlot.setCheckedIn(this);
         this.parkingSlot = parkingSlot;
     }
 
-    public Date getEntryDate() {
+    public LocalDateTime getEntryDate() {
         return entryDate;
     }
 
-    public void setEntryDate(Date entryDate) {
+    public void setEntryDate(LocalDateTime entryDate) {
         this.entryDate = entryDate;
     }
 
@@ -83,11 +85,11 @@ public class CheckedIn implements Serializable {
         this.email = email;
     }
 
-    public Date getExitEstimatedDate() {
+    public LocalDateTime getExitEstimatedDate() {
         return exitEstimatedDate;
     }
 
-    public void setExitEstimatedDate(Date exitEstimatedDate) {
+    public void setExitEstimatedDate(LocalDateTime exitEstimatedDate) {
         this.exitEstimatedDate = exitEstimatedDate;
     }
 

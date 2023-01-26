@@ -10,6 +10,7 @@ import org.hibernate.query.Query;
 import javax.persistence.criteria.CriteriaQuery;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 public class ComplaintHandler extends MessageHandler {
 
@@ -43,6 +44,8 @@ public class ComplaintHandler extends MessageHandler {
 
     private void createComplaint() {
         Complaint newComplaint = class_message.complaint2handle ;
+        Random rand = new Random();
+        newComplaint.setComplaintId(rand.nextInt(99999 + 1 - 10000) + 10000); //generate 5 digit membership number
         session.save(newComplaint);
         session.flush();
     }

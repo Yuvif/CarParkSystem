@@ -1,5 +1,7 @@
 package CarPark.entities;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -9,12 +11,15 @@ import java.io.Serializable;
 public class ParkingSlot implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int parkingSlotId;
+    private Long id;
 
-    private Status SpotStatus = Status.EMPTY;
+    @Column(unique = true)
+    private String generatedValue;
+
+    private Status SpotStatus;
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "parkingLotId")
     private Parkinglot parkinglot;
 
@@ -32,14 +37,15 @@ public class ParkingSlot implements Serializable {
     public ParkingSlot() {
     }
 
-    public ParkingSlot(Parkinglot parkinglot) {
-
+    public ParkingSlot(String parkingSlotId,Parkinglot parkinglot) {
+        this.generatedValue = parkingSlotId;
         setParkinglot(parkinglot);
+        SpotStatus = Status.EMPTY;
     }
 
 
-    public int getId() {
-        return parkingSlotId;
+    public String getId() {
+        return generatedValue;
     }
 
     public Status getSpotStatus() {
@@ -50,8 +56,8 @@ public class ParkingSlot implements Serializable {
         SpotStatus = spotStatus;
     }
 
-    public void setId(int id) {
-        this.parkingSlotId = id;
+    public void setId(String id) {
+        this.generatedValue = id;
     }
 
     public Parkinglot getParkinglot() {
@@ -60,10 +66,8 @@ public class ParkingSlot implements Serializable {
 
     public void setParkinglot(Parkinglot parkinglot) {
         this.parkinglot = parkinglot;
-        parkinglot.getParkingSlots().add(this);
-
-
     }
+
     public Boolean getStatus() {
         return SpotStatus==Status.EMPTY;
     }
