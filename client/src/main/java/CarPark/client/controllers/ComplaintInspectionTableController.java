@@ -6,7 +6,6 @@ package CarPark.client.controllers;
 
 import CarPark.client.SimpleChatClient;
 import CarPark.entities.Complaint;
-import CarPark.entities.Parkinglot;
 import CarPark.entities.messages.ComplaintMessage;
 import CarPark.entities.messages.Message;
 import javafx.application.Platform;
@@ -22,7 +21,8 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.Date;
+import java.util.ResourceBundle;
 
 public class ComplaintInspectionTableController extends Controller {
 
@@ -68,7 +68,7 @@ public class ComplaintInspectionTableController extends Controller {
         dateCol.setStyle("-fx-alignment: CENTER");
 
         statusCol.setCellValueFactory(cellData -> {
-            boolean status = cellData.getValue().getStatus();
+            boolean status = cellData.getValue().getAppStatus();
             return new ReadOnlyStringWrapper(status ? "Open" : "Closed");
         });
         statusCol.setStyle("-fx-alignment:e CENTER");

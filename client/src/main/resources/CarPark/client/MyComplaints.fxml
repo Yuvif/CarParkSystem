@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Point3D?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,21 +14,21 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.MyMembershipsController">
+<AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.MyComplaintsController">
     <BorderPane prefHeight="509.0" prefWidth="1017.0">
         <left>
-            <VBox prefHeight="452.0" prefWidth="210.0" style="-fx-background-color: #CFEEE1;" BorderPane.alignment="CENTER">
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="210.0" style="-fx-background-color: #CFEEE1;" BorderPane.alignment="CENTER">
                 <children>
-                    <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="69.0" prefWidth="221.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="   MY ORDERS">
+                    <Button graphicTextGap="0.0" mnemonicParsing="false" onAction="#myOrders" prefHeight="69.0" prefWidth="221.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="   MY ORDERS" translateY="3.0">
                         <graphic>
-                            <ImageView fitHeight="35.0" fitWidth="35.0">
+                            <ImageView fitHeight="35.0" fitWidth="35.0" translateX="-3.0">
                                 <image>
                                     <Image url="@../../assets/parking-sign.png" />
                                 </image>
                             </ImageView>
                         </graphic>
                     </Button>
-                    <Button cancelButton="true" mnemonicParsing="false" prefHeight="69.0" prefWidth="221.0" style="-fx-background-color: #70caa6;" styleClass="mybutton" stylesheets="@../../assets/style.css" text="             MY MEMBERSHIPS">
+                    <Button mnemonicParsing="false" onAction="#myMemberships" prefHeight="69.0" prefWidth="221.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="             MY MEMBERSHIPS">
                         <graphic>
                             <ImageView fitHeight="35.0" fitWidth="35.0" translateX="30.0">
                                 <image>
@@ -37,11 +36,17 @@
                                 </image>
                             </ImageView>
                         </graphic>
-                  <cursor>
-                     <Cursor fx:constant="DEFAULT" />
-                  </cursor>
                     </Button>
-                    <Button mnemonicParsing="false" prefHeight="69.0" prefWidth="221.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="   NEW ORDER">
+                    <Button mnemonicParsing="false" pickOnBounds="false" prefHeight="57.0" prefWidth="210.0" style="-fx-background-color: #70caa6;" styleClass="mybutton" stylesheets="@../../assets/style.css" text="            MY COMPLAINTS">
+                        <graphic>
+                            <ImageView fitHeight="35.0" fitWidth="35.0" translateX="25.0" translateY="-5.0">
+                                <image>
+                                    <Image url="@../../assets/myComplaint.png" />
+                                </image>
+                            </ImageView>
+                        </graphic>
+                    </Button>
+                    <Button mnemonicParsing="false" onAction="#createNewOrder" prefHeight="69.0" prefWidth="221.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="   NEW ORDER">
                         <graphic>
                             <ImageView fitHeight="35.0" fitWidth="35.0">
                                 <image>
@@ -59,11 +64,20 @@
                             </ImageView>
                         </graphic>
                     </Button>
+                    <Button mnemonicParsing="false" onAction="#newComplaint" pickOnBounds="false" prefHeight="57.0" prefWidth="210.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="              NEW COMPLAINT">
+                        <graphic>
+                            <ImageView fitHeight="35.0" fitWidth="35.0" translateX="30.0" translateY="-5.0">
+                                <image>
+                                    <Image url="@../../assets/complaint.png" />
+                                </image>
+                            </ImageView>
+                        </graphic>
+                    </Button>
                 </children>
             </VBox>
         </left>
         <top>
-            <HBox prefHeight="60.0" prefWidth="1017.0" style="-fx-background-color: #70caa6;" BorderPane.alignment="CENTER">
+            <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="1017.0" style="-fx-background-color: #70caa6;" BorderPane.alignment="CENTER">
                 <children>
                     <ImageView fitHeight="35.0" fitWidth="35.0" rotate="180.0" style="-fx-image: WHITE;" translateX="5.0" translateY="18.0">
                         <image>
@@ -73,39 +87,34 @@
                             <Point3D y="1.0" />
                         </rotationAxis>
                     </ImageView>
-                    <Label text="Car Park System" translateX="10.0" translateY="20.0">
+                    <Label pickOnBounds="false" text="Car Park System" translateX="10.0" translateY="20.0">
                         <font>
                             <Font name="SansSerif Bold" size="30.0" />
                         </font>
                         <effect>
-                     <Bloom threshold="1.0" />
+                            <DropShadow height="70.83" radius="67.035" width="199.31" />
                         </effect>
                     </Label>
                 </children></HBox>
         </top>
         <center>
-            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="453.0" prefWidth="801.0" BorderPane.alignment="CENTER">
+            <VBox prefHeight="453.0" prefWidth="801.0" BorderPane.alignment="CENTER">
                 <children>
-                    <ImageView fitHeight="49.0" fitWidth="49.0" translateY="10.0">
+                    <ImageView fitHeight="49.0" fitWidth="49.0" translateX="10.0" translateY="10.0">
                         <image>
                             <Image url="@../../assets/profile-user.png" />
                         </image>
                     </ImageView>
-                    <Label fx:id="userName" prefHeight="42.0" prefWidth="268.0" style="-fx-text-fill: black;" textFill="WHITE" translateX="55.0" translateY="-35.0">
+                    <Label fx:id="userName" prefHeight="42.0" prefWidth="268.0" style="-fx-text-fill: black;" textFill="WHITE" translateX="65.0" translateY="-35.0">
                         <font>
                             <Font name="SansSerif Bold" size="27.0" />
                         </font>
                     </Label>
-               <TableView fx:id="membershipTableView" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="336.0" prefWidth="730.0" stylesheets="@../../assets/style.css" translateX="35.0" translateY="-20.0">
+               <TableView fx:id="complaintsTableView" maxWidth="-Infinity" prefHeight="278.0" prefWidth="400.0" stylesheets="@../../assets/style.css" translateX="200.0">
                  <columns>
-                   <TableColumn fx:id="membership_id" prefWidth="103.0" text="ID" />
-                     <TableColumn fx:id="car_id" prefWidth="105.0" text="Car ID" />
-                     <TableColumn fx:id="parking_lot" prefWidth="121.0" text="Parking Lot" />
-                     <TableColumn fx:id="leaving_hour" prefWidth="118.0" text="Leaving Hour" />
-                   <TableColumn fx:id="start_date" prefWidth="92.0" text="Start Date" />
-                     <TableColumn fx:id="end_date" prefWidth="82.0" text="End Date" />
-                     <TableColumn fx:id="type" prefWidth="120.0" text="Type" />
-                     <TableColumn prefWidth="65.0" />
+                   <TableColumn fx:id="complaint_id" prefWidth="141.0" text="Complaint ID" />
+                   <TableColumn fx:id="subDate" prefWidth="159.0" text="Submission Date" />
+                     <TableColumn fx:id="status" prefWidth="99.0" text="Status" />
                  </columns>
                </TableView>
                 </children>

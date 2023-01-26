@@ -2,47 +2,73 @@ package CarPark.client.controllers;
 
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
-import CarPark.client.events.NewSubscriberEvent;
+import CarPark.entities.Complaint;
+import CarPark.entities.Customer;
+import CarPark.entities.messages.ComplaintMessage;
+import CarPark.entities.messages.Message;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
+import java.time.LocalDate;
 
-public class CustomerPageController{
+public class MyComplaintsController {
+
     @FXML
     private Label userName;
     @FXML
-    private Button newMember;
+    private TableView<Complaint> complaintsTableView;
+    @FXML
+    private TableColumn<Complaint,Integer> complaint_id;
+    @FXML
+    private TableColumn<Complaint,LocalDate> subDate;
+    @FXML
+    private TableColumn<Complaint,Boolean> status;
 
-    @FXML
-    public void registerAsMember(ActionEvent event) throws IOException {
-        SimpleChatClient.setRoot("RegisterAsMember");
-    }
 
-    @FXML
-    public void createOrder(ActionEvent event) throws IOException {
-        SimpleChatClient.setRoot("CreateOrder");
-    }
-    @FXML
-    public void addComplaint(){}
-
-    @FXML
-    public void myOrders(){}
 
     @FXML
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
-        userName.setText("Hello, " + SimpleClient.getCurrent_user().getFirstName());
+        userName.setText(SimpleClient.getCurrent_user().getFirstName());
+        complaint_id.setCellValueFactory(new PropertyValueFactory<>("complaintId"));
+        subDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        status.setCellValueFactory(new PropertyValueFactory<Complaint, Boolean>("appStatus"));
+        ComplaintMessage msg = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.GET_MY_COMPLAINTS,
+                (Customer)SimpleClient.getCurrent_user());
+        SimpleClient.getClient().sendToServer(msg);
     }
 
+
     @Subscribe
-    public void getStarterData(NewSubscriberEvent event) {
+    public void newResponse(ComplaintMessage message) {
+        switch (message.response_type) {
+            case SET_MY_COMPLAINTS:
+                complaintsTableView.setItems(FXCollections.observableArrayList(message.complaints));
+                status.setCellFactory(col -> new TableCell<Complaint, Boolean>() {
+                    @Override
+                    protected void updateItem(Boolean item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setText(null);
+                        } else {
+                            setText(item ? "Handled" : "Waiting");
+                        }
+                    }
+                });
+                break;
+        }
     }
+
 
     @FXML
     private void myMemberships(ActionEvent event) throws IOException {
@@ -104,16 +130,4 @@ public class CustomerPageController{
             }
         });
     }
-
-    @FXML
-    void myComplaints(ActionEvent event) throws IOException{
-    Platform.runLater(() -> {
-        try {
-            SimpleChatClient.setRoot("MyComplaints");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    });
-    }
 }
-

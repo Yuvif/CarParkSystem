@@ -95,11 +95,9 @@ public class CheckInGuestController{
 
     private CheckedIn createCheckedIn() {
         LocalDate leaving = estLeavingDate.getValue();
-        LocalTime leavingTime = LocalTime.of(Integer.parseInt(estLeavingHour.getValue().toString()),
-                Integer.parseInt(estLeavingMin.getValue().toString()));
+        LocalTime leavingTime = LocalTime.of(Integer.parseInt(estLeavingHour.getValue().toString()), Integer.parseInt(estLeavingMin.getValue().toString()));
         LocalDateTime leavingDateTime = LocalDateTime.of(leaving, leavingTime);
-        CheckedIn checkedIn = new CheckedIn( plPick.getValue(),LocalDateTime.now(),
-                Integer.parseInt(idTf.getText()), Integer.parseInt(car_nTf.getText()), mailTf.getText(), leavingDateTime, new ParkingSlot());
+        CheckedIn checkedIn = new CheckedIn( plPick.getValue(),LocalDateTime.now(), Integer.parseInt(idTf.getText()), Integer.parseInt(car_nTf.getText()), mailTf.getText(), leavingDateTime, new ParkingSlot());
         checkedIn.setParkinglot_name(plPick.getValue());
         return checkedIn;
     }

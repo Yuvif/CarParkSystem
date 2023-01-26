@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class MembershipsViewController {
+public class MyMembershipsController {
 
     @FXML
     private Label userName;

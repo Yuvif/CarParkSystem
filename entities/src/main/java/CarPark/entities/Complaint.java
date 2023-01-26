@@ -10,6 +10,7 @@ public class Complaint implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private int complaintId;
     private long customerId;    //only for customers
     @Column(name = "dateOfSubmit")
@@ -17,14 +18,13 @@ public class Complaint implements Serializable {
 
     @Column(name = "description")
     private String compText;
-    private Boolean appStatus = true;        // true= complaint filed successfully- yet to be inspected, false = complaint fulfilled
+    private Boolean appStatus = false;        // true= complaint filed successfully- yet to be inspected, false = complaint fulfilled
     private Boolean completedOnTime = false;
 
     @ManyToOne
-    @JoinColumn(name = "parkinglot_id")
     private Parkinglot parkinglot;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Customer customer;
 
 
@@ -76,15 +76,12 @@ public class Complaint implements Serializable {
         compText = compText;
     }
 
-    public int getId() {
-        return complaintId;
-    }
 
     public Date getDate() {
         return date;
     }
 
-    public Boolean getStatus() {
+    public Boolean getAppStatus() {
         return appStatus;
     }
 
@@ -100,5 +97,11 @@ public class Complaint implements Serializable {
         this.completedOnTime = completedOnTime;
     }
 
+    public void setComplaintId(int complaintId) {
+        this.complaintId = complaintId;
+    }
 
+    public int getComplaintId() {
+        return complaintId;
+    }
 }

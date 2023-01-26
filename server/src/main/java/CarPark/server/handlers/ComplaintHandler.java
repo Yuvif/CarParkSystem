@@ -1,16 +1,16 @@
 package CarPark.server.handlers;
 
 import CarPark.entities.Complaint;
-import CarPark.entities.ParkingSlot;
 import CarPark.entities.messages.ComplaintMessage;
 import CarPark.entities.messages.Message;
 import CarPark.server.ocsf.ConnectionToClient;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import javax.persistence.criteria.CriteriaQuery;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 public class ComplaintHandler extends MessageHandler {
 
@@ -36,15 +36,16 @@ public class ComplaintHandler extends MessageHandler {
                 //class_message.complaint2handle.user.setBalance(class_message.amount);
                // class_message.complaint2handle.getCustomerId().setBalance(class_message.amount);
                 break;
+            case GET_MY_COMPLAINTS:
+               getMyComplaints();
+               break;
         }
     }
 
     private void createComplaint() {
         Complaint newComplaint = class_message.complaint2handle ;
-        session.save(newComplaint);
-        newComplaint = class_message.complaints.get(0) ;
-        session.save(newComplaint);
-        newComplaint = class_message.complaints2Rep.get(0) ;
+        Random rand = new Random();
+        newComplaint.setComplaintId(rand.nextInt(99999 + 1 - 10000) + 10000); //generate 5 digit membership number
         session.save(newComplaint);
         session.flush();
     }
@@ -59,5 +60,13 @@ public class ComplaintHandler extends MessageHandler {
             res.add(c);
         }
         return res;
+    }
+
+    public void getMyComplaints() throws Exception {
+        String hql = "FROM Complaint WHERE customerId = :id";
+        Query query = session.createQuery(hql);
+        query.setParameter("id", class_message.current_customer.getId());
+        class_message.complaints = query.getResultList();
+        class_message.response_type= ComplaintMessage.ResponseType.SET_MY_COMPLAINTS;
     }
 }
