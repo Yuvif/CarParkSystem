@@ -47,7 +47,7 @@ public class StatisticsController {
                 LocalDate today = LocalDate.now();
 
                 // Disable all future dates
-                setDisable(empty || date.compareTo(today) < 0);
+                setDisable(empty || date.compareTo(today) > 0);
             }
         });
     }

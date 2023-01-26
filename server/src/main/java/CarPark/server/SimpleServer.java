@@ -192,8 +192,8 @@ public class SimpleServer extends AbstractServer {
                             }
                             Statistics statistics = new Statistics(yesterday, totalOrders, numberOfOrdersCancelled, numberOfOrdersLate, parkingLotId, totalRevenue);
                             session.beginTransaction();
+//                            save the statistics to the table
                             session.save(statistics);
-                            System.out.println("Statistics for parking lot " + parkingLotId + " for yesterday were saved"+statistics);
                             session.getTransaction().commit();
                         }
                     }
