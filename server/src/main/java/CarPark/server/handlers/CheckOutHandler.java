@@ -22,7 +22,7 @@ public class CheckOutHandler extends MessageHandler {
 
     public CheckedIn findCheckedInGuest()
     {
-        String hql = "FROM CheckedIn WHERE userId = :id";
+        String hql = "FROM CheckedIn WHERE personId = :id";
         Query query = session.createQuery(hql);
         query.setParameter("id", class_message.current_customer.getId());
         return (CheckedIn)query.uniqueResult();
@@ -30,7 +30,7 @@ public class CheckOutHandler extends MessageHandler {
 
     public CheckedIn findCheckedInCustomer()
     {
-        String hql = "FROM CheckedIn WHERE userId = :id AND carNumber = :carId";
+        String hql = "FROM CheckedIn WHERE personId = :id AND carNumber = :carId";
         Query query = session.createQuery(hql);
         query.setParameter("id", class_message.current_customer.getId());
         query.setParameter("carId", class_message.carNumber);
@@ -67,7 +67,7 @@ public class CheckOutHandler extends MessageHandler {
         double pricePH = price.getPrice();
 
         CheckedIn checkedInGuest = findCheckedInGuest();
-        return calculateCharges(checkedInGuest.getEntryDate() ,checkedInGuest.getEstimatedLeavingTime(),LocalDateTime.now(), pricePH);
+        return calculateCharges(checkedInGuest.getEntryDate() ,checkedInGuest.getExitEstimatedDate(),LocalDateTime.now(), pricePH);
     }
 
     public void guestCheckOut()

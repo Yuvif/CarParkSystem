@@ -70,7 +70,7 @@ public class ParkingSlot implements Serializable {
     }
 
     public Boolean getStatus() {
-        return SpotStatus==Status.EMPTY;
+        return SpotStatus == Status.EMPTY;
     }
     public enum Status {EMPTY, USED, RESTRICTED, RESERVED}
 }
