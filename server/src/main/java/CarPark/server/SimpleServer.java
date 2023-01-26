@@ -1,6 +1,5 @@
 package CarPark.server;
 
-
 import CarPark.entities.*;
 import CarPark.entities.messages.*;
 import CarPark.server.handlers.*;
@@ -83,11 +82,13 @@ public class SimpleServer extends AbstractServer {
                     handler = new MembershipsHandler((MembershipMessage) msg, session, client);
                 } else if (ParkingLotMapMessage.class.equals(msgClass)) {
                     handler = new ParkingLotMapHandler((ParkingLotMapMessage) msg, session, client);
-                }else if (CheckOutMessage.class.equals(msgClass)) {
-                handler = new CheckOutHandler((CheckOutMessage) msg, session, client);
+                } else if (CheckOutMessage.class.equals(msgClass)) {
+                    handler = new CheckOutHandler((CheckOutMessage) msg, session, client);
+                } else if (RegisterUserMessage.class.equals(msgClass)) {
+                    handler = new RegisterUserHandler((RegisterUserMessage) msg, session, client);
+                }else if (CheckInMessage.class.equals(msgClass)) {
+                    handler = new CheckInHandler((CheckInMessage) msg, session, client);
                 }
-                else if (RegisterUserMessage.class.equals(msgClass))
-                    handler = new RegisterUserHandler((RegisterUserMessage)msg,session,client);
                 if (handler != null) {
                     handler.handleMessage();
                     session.getTransaction().commit();
