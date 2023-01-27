@@ -29,7 +29,7 @@ public class StatisticsHandler extends MessageHandler{
 
     private void getStatisticsOfDayAndParkinglot(int parkinglot_id, LocalDate date) throws Exception {
         var yesterdayStatistics = session.createQuery("from Statistics where parkingLotId = :parkingLotId and date = :date")
-                .setParameter("parkingLotId", parkinglot_id)
+                .setParameter("parkingLotId", String.valueOf(parkinglot_id))
                 .setParameter("date", date)
                 .getResultList();
         if (yesterdayStatistics.size() == 0) {
