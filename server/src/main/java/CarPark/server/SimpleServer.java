@@ -20,6 +20,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.time.LocalTime;
@@ -39,12 +40,12 @@ public class SimpleServer extends AbstractServer {
 
     public SimpleServer(int port) {
         super(port);
-//        OrderReminderThread orderReminderThread = new OrderReminderThread();
-//        orderReminderThread.start();
-//        MembershipReminderThread membershipReminderThread = new MembershipReminderThread();
-//        membershipReminderThread.start();
-        StatisticsThread statisticsThread = new StatisticsThread();
-        statisticsThread.start();
+        OrderReminderThread orderReminderThread = new OrderReminderThread();
+        orderReminderThread.start();
+        MembershipReminderThread membershipReminderThread = new MembershipReminderThread();
+        membershipReminderThread.start();
+  //      StatisticsThread statisticsThread = new StatisticsThread();
+  //      statisticsThread.start();
     }
 
 
@@ -200,62 +201,62 @@ public class SimpleServer extends AbstractServer {
         }
     }
 
-    public static class StatisticsThread extends Thread {
-        @Override
-        public void run() {
-            var session = getSessionFactory().openSession();
-            while (true) {
-                    var parkingLots = session.createQuery("from Parkinglot").list();
-                    for (Object parkingLot : parkingLots) {
-//                        check if there is an entry for yesterday
-                        var yesterday = LocalDate.now().minusDays(1);
-                        var yesterdayStatistics = session.createQuery("from Statistics where parkingLotId = :parkingLotId and date = :date")
-                                .setParameter("parkingLotId", ((Parkinglot) parkingLot).getId())
-                                .setParameter("date", yesterday)
-                                .getResultList();
-                        if (yesterdayStatistics.size() == 0) {
-                            String parkingLotId = String.valueOf(((Parkinglot) parkingLot).getParkingLotId());
-                            //                        select all orders from the begiining of yesterday to the end of yesterday
-//                            wrap yesterday in a LocalDateTime object
-                            LocalDateTime yesterdayStart = LocalDateTime.of(yesterday, LocalTime.MIN);
-                            LocalDateTime yesterdayEnd = LocalDateTime.of(yesterday, LocalTime.MAX);
-                            var orders = session.createQuery("from Order where parkingLot = :parkingLotId and arrivalTime between :yesterday_start and :yesterday_end")
-                                    .setParameter("parkingLotId", parkingLotId)
-                                    .setParameter("yesterday_start", yesterdayStart)
-                                    .setParameter("yesterday_end", yesterdayEnd)
-                                    .getResultList();
-                            int totalOrders = orders.size();
-                            int numberOfOrdersCancelled = 0;
-                            int numberOfOrdersLate = 0;
-                            int totalRevenue = 0;
-                            for (Object order : orders) {
-                                totalRevenue += ((Order) order).getOrdersPrice();
-                                switch (((Order) order).getStatus()) {
-                                    case APPROVED:
-                                        break;
-                                    case NOTIFIED:
-                                        numberOfOrdersLate++;
-                                        break;
-                                    case CANCELLED:
-                                        numberOfOrdersCancelled++;
-                                        break;
-                                }
-                            }
-                            Statistics statistics = new Statistics(yesterday, totalOrders, numberOfOrdersCancelled, numberOfOrdersLate, parkingLotId, totalRevenue);
-                            session.beginTransaction();
-//                            save the statistics to the table
-                            session.save(statistics);
-                            session.getTransaction().commit();
-                        }
-                    }
-                try {
-                    Thread.sleep(86400000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
+//    public static class StatisticsThread extends Thread {
+//        @Override
+//        public void run() {
+//            var session = getSessionFactory().openSession();
+//            while (true) {
+//                    var parkingLots = session.createQuery("from Parkinglot").list();
+//                    for (Object parkingLot : parkingLots) {
+////                        check if there is an entry for yesterday
+//                        var yesterday = LocalDate.now().minusDays(1);
+//                        var yesterdayStatistics = session.createQuery("from Statistics where parkingLotId = :parkingLotId and date = :date")
+//                                .setParameter("parkingLotId", ((Parkinglot) parkingLot).getId())
+//                                .setParameter("date", yesterday)
+//                                .getResultList();
+//                        if (yesterdayStatistics.size() == 0) {
+//                            String parkingLotId = String.valueOf(((Parkinglot) parkingLot).getParkingLotId());
+//                            //                        select all orders from the begiining of yesterday to the end of yesterday
+////                            wrap yesterday in a LocalDateTime object
+//                            LocalDateTime yesterdayStart = LocalDateTime.of(yesterday, LocalTime.MIN);
+//                            LocalDateTime yesterdayEnd = LocalDateTime.of(yesterday, LocalTime.MAX);
+//                            var orders = session.createQuery("from Order where parkingLot = :parkingLotId and arrivalTime between :yesterday_start and :yesterday_end")
+//                                    .setParameter("parkingLotId", parkingLotId)
+//                                    .setParameter("yesterday_start", yesterdayStart)
+//                                    .setParameter("yesterday_end", yesterdayEnd)
+//                                    .getResultList();
+//                            int totalOrders = orders.size();
+//                            int numberOfOrdersCancelled = 0;
+//                            int numberOfOrdersLate = 0;
+//                            int totalRevenue = 0;
+//                            for (Object order : orders) {
+//                                totalRevenue += ((Order) order).getOrdersPrice();
+//                                switch (((Order) order).getStatus()) {
+//                                    case APPROVED:
+//                                        break;
+//                                    case NOTIFIED:
+//                                        numberOfOrdersLate++;
+//                                        break;
+//                                    case CANCELLED:
+//                                        numberOfOrdersCancelled++;
+//                                        break;
+//                                }
+//                            }
+//                            Statistics statistics = new Statistics(yesterday, totalOrders, numberOfOrdersCancelled, numberOfOrdersLate, parkingLotId, totalRevenue);
+//                            session.beginTransaction();
+////                            save the statistics to the table
+//                            session.save(statistics);
+//                            session.getTransaction().commit();
+//                        }
+//                    }
+//                try {
+//                    Thread.sleep(86400000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//    }
 
     public static class MembershipReminderThread extends Thread {
         @Override
