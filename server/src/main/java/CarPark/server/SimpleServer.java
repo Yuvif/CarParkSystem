@@ -38,8 +38,8 @@ public class SimpleServer extends AbstractServer {
         super(port);
         OrderReminderThread orderReminderThread = new OrderReminderThread();
         orderReminderThread.start();
-        MembershipReminderThread membershipReminderThread = new MembershipReminderThread();
-        membershipReminderThread.start();
+        //MembershipReminderThread membershipReminderThread = new MembershipReminderThread();
+        //membershipReminderThread.start();
         StatisticsThread statisticsThread = new StatisticsThread();
         statisticsThread.start();
     }
@@ -172,8 +172,9 @@ public class SimpleServer extends AbstractServer {
                 for (Object order : orders) {
                     String email = ((Order) order).getEmail();
                     String subject = "Did you forget your order?";
-                    String text = "Hi, \nYou have an order that you haven't checked in yet and we would " +
-                            "like to remind you that in case you are late or don't show up you will be charged according to the terms and conditions of the parking lot.\n\nBest regards,\nCarPark";
+                    String text = "Hi there, \nYou have an order that you haven't checked in yet.\nWe would " +
+                            "like to remind you that in case you are late or don't show up you will be charged according to the terms and conditions of the parking lot." +
+                            "\n\nBest regards,\nCarParkSystem";
                     EmailSender.sendEmail(email, subject, text);
                 }
 //                change the status of the orders to be NOTIFIED
@@ -254,14 +255,16 @@ public class SimpleServer extends AbstractServer {
         }
     }
 
+
     public static class MembershipReminderThread extends Thread {
         @Override
         public void run() {
             while (true) {
                 var session = getSessionFactory().openSession();
-                var memberships = session.createQuery("from Membership where endDate = :time")
-                        .setParameter("time", LocalDateTime.now().plusDays(7))
-                        .list();
+                var memberships = session.createQuery("from Membership where endDate between :now and :seven_days_from_now")
+                        .setParameter("now", LocalDateTime.now())
+                        .setParameter("seven_days_from_now", LocalDateTime.now().plusDays(7))
+                        .getResultList();
 //              for each membership get the customerId attribute and get the list of Customer objects having that id
                 for (Object membership : memberships) {
 //              get the customer object that has the same customerId as the membership
@@ -272,8 +275,9 @@ public class SimpleServer extends AbstractServer {
                     String email = ((Customer) customer.get(0)).getEmail();
                     String subject = "Your membership is about to expire";
 //                    send a text with the expiration date
-                    String text = "Hi, \nWe'd like to inform you that Your membership is about to expire on " + ((Membership) membership).getEndDate() + "\nYou can login to your" +
-                            "acount in order to renew it :)"+"\n\nBest regards,\nCarParkSystem";
+                    String text = "Hi there, \nWe'd like to inform you that your membership is about to expire on " + ((Membership) membership).getEndDate().toLocalDate() +" at "
+                     + ((Membership) membership).getEndDate().toLocalTime() + ".\nYou can login to your" +
+                            " account in order to renew it :)"+"\n\nBest regards,\nCarParkSystem";
                     EmailSender.sendEmail(email, subject, text);
                 }
                 // now wait for 7 days
