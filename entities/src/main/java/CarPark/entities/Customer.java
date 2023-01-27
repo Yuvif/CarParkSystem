@@ -18,7 +18,7 @@ public class Customer extends User {
 
     @OneToMany(mappedBy = "customerId", cascade = CascadeType.PERSIST)
     @LazyCollection(LazyCollectionOption.FALSE)
-     List<Membership> membershipList = new LinkedList<>();
+    List<Membership> membershipList = new LinkedList<>();
 
     @OneToMany(mappedBy = "customerId", cascade = CascadeType.PERSIST)
     @LazyCollection(LazyCollectionOption.FALSE)

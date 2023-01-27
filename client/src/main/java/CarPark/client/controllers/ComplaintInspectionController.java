@@ -75,18 +75,16 @@ public class ComplaintInspectionController extends Controller {
         if (!b) {
             Controller.sendAlert("Complaint completed too late", "Late Inspection", Alert.AlertType.WARNING);
         }
+        int amount = 0;
         if (compensationCheckbox.isSelected()) {
             if (compensationField.getText().isEmpty()) {
                 sendAlert("No amount entered", "No Refund Given", Alert.AlertType.WARNING);
                 return;
             }
-            int amount = Integer.parseInt(compensationField.getText());
-            ComplaintMessage msg = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.COMPENSATE_COMPLAINT, complaint, amount);
-            SimpleClient.getClient().sendToServer(msg);
-        } else {
-            ComplaintMessage msg = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.NON_COMPENSATE_COMPLAINT, complaint);
-            SimpleClient.getClient().sendToServer(msg);
+            amount = Integer.parseInt(compensationField.getText());
         }
+        ComplaintMessage msg = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.COMPENSATE_COMPLAINT, complaint, amount);
+        SimpleClient.getClient().sendToServer(msg);
         complaint.setStatus(true);
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -103,7 +101,6 @@ public class ComplaintInspectionController extends Controller {
             }));
             pause.play();
         });
-        SimpleChatClient.setRoot("ComplaintInspectionTable");
 
     }
 

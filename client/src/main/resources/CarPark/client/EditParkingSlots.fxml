@@ -15,7 +15,8 @@
             <columns>
                 <TableColumn fx:id="idCol" prefWidth="163.0" text="parkingSlot id" />
                 <TableColumn fx:id="currStaCol" minWidth="8.0" prefWidth="199.0" text="current status" />
-                <TableColumn fx:id="editStaCol" prefWidth="147.0" text="edit status" />
+<!--                <TableColumn fx:id="editStaCol" prefWidth="147.0" text="edit status" />-->
+                <TableColumn prefWidth="147.0" text="edit status" />
             </columns>
         </TableView>
         <Label layoutX="40.0" layoutY="116.0" prefHeight="35.0" prefWidth="266.0" text="EDIT PARKINGSLOTS" textFill="#42d7ee">

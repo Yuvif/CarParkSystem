@@ -11,6 +11,8 @@ public class ParkingSlotsMessage extends Message {
     public String parkinglotId;
     //public ObservableList<ParkingSlot> parkingslots;
     public List<ParkingSlot> parkingSlots;
+    public ParkingSlot parkingSlot;
+    public ParkingSlot.Status newStatus;
 
     public ParkingSlotsMessage(MessageType message_type, ParkingSlotsMessage.RequestType requestType) {
         super(message_type);
@@ -20,6 +22,12 @@ public class ParkingSlotsMessage extends Message {
         super(message_type);
         this.request_type = request_type;
         this.parkinglotId = parkinglotId;
+    }
+    public ParkingSlotsMessage(MessageType message_type, ParkingSlotsMessage.RequestType request_type, ParkingSlot parkingSlot, ParkingSlot.Status newStatus) {
+        super(message_type);
+        this.request_type = request_type;
+        this.parkingSlot = parkingSlot;
+        this.newStatus = newStatus;
     }
     public ParkingSlotsMessage(MessageType message_type, ParkingSlotsMessage.ResponseType response_type, List<ParkingSlot> parkingSlots) {
         super(message_type);

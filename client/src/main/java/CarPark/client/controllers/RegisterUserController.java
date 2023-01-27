@@ -66,9 +66,9 @@ public class RegisterUserController {
     }
 
     private Customer createCustomer() throws Exception {
-            Customer new_customer = new Customer(Long.parseLong(userID.getText()),firstName.getText(),lastName.getText(),
-                    email.getText(),0,password.getText());
-            return  new_customer;
+        Customer new_customer = new Customer(Long.parseLong(userID.getText()),firstName.getText(),lastName.getText(),
+                email.getText(),0,password.getText());
+        return  new_customer;
     }
 
     private boolean checkValidity() {
@@ -82,7 +82,7 @@ public class RegisterUserController {
             return true;
         else
             wrongReg.setText("INVALID CREDENTIALS!");
-            return false;
+        return false;
     }
 
 
@@ -105,17 +105,17 @@ public class RegisterUserController {
         return false;
     }
 
-        private boolean checkIfPassMatched(String pass1,String pass2)
-        {
-            if (pass1.equals(pass2))
-                return true;
-            return false;
-        }
+    private boolean checkIfPassMatched(String pass1,String pass2)
+    {
+        if (pass1.equals(pass2))
+            return true;
+        return false;
+    }
 
-        private boolean checkEmptyFields()
-        {
-            return email.getText().equals("") || firstName.getText().equals("") || lastName.getText().equals("");
-        }
+    private boolean checkEmptyFields()
+    {
+        return email.getText().equals("") || firstName.getText().equals("") || lastName.getText().equals("");
+    }
 
     @Subscribe
     public void new_response(RegisterUserMessage new_message)

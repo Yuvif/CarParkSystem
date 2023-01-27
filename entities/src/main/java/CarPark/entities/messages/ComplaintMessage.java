@@ -69,7 +69,6 @@ public class ComplaintMessage extends Message {
         GET_ALL_COMPLAINTS,
         CREATE_NEW_COMPLAINT,
         COMPENSATE_COMPLAINT,
-        NON_COMPENSATE_COMPLAINT,
         GET_MY_COMPLAINTS
     }
 

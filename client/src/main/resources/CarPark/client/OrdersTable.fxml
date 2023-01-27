@@ -10,25 +10,25 @@
 
 
 <AnchorPane prefHeight="510.0" prefWidth="773.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.MyOrdersController">
-   <children>
-      <Label layoutX="306.0" layoutY="41.0" prefHeight="37.0" prefWidth="197.0" text="My Orders">
-         <font>
-            <Font name="Trebuchet MS Bold" size="31.0" />
-         </font>
-      </Label>
-      <Separator layoutX="73.0" layoutY="78.0" prefHeight="12.0" prefWidth="625.0" />
-      <TableView fx:id="ordersTable" layoutX="80.0" layoutY="99.0" prefHeight="295.0" prefWidth="613.0">
-        <columns>
-          <TableColumn fx:id="carIdCol" prefWidth="105.0" text="Car Number" />
-          <TableColumn fx:id="parkingLotCol" prefWidth="88.0" text="Parking Lot" />
-            <TableColumn fx:id="arrivalCol" prefWidth="149.0" text="Arrival Time" />
-            <TableColumn fx:id="estLeavingTimeCol" prefWidth="173.0" text="Estimated Leavint Time" />
-        </columns>
-      </TableView>
-      <Button fx:id="backButton" layoutX="316.0" layoutY="432.0" mnemonicParsing="false" onAction="#goBack" prefHeight="26.0" prefWidth="132.0" text="Back">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Button>
-   </children>
+    <children>
+        <Label layoutX="306.0" layoutY="41.0" prefHeight="37.0" prefWidth="197.0" text="My Orders">
+            <font>
+                <Font name="Trebuchet MS Bold" size="31.0" />
+            </font>
+        </Label>
+        <Separator layoutX="73.0" layoutY="78.0" prefHeight="12.0" prefWidth="625.0" />
+        <TableView fx:id="ordersTable" layoutX="80.0" layoutY="99.0" prefHeight="295.0" prefWidth="613.0">
+            <columns>
+                <TableColumn fx:id="carIdCol" prefWidth="105.0" text="Car Number" />
+                <TableColumn fx:id="parkingLotCol" prefWidth="88.0" text="Parking Lot" />
+                <TableColumn fx:id="arrivalCol" prefWidth="149.0" text="Arrival Time" />
+                <TableColumn fx:id="estLeavingTimeCol" prefWidth="173.0" text="Estimated Leavint Time" />
+            </columns>
+        </TableView>
+        <Button fx:id="backButton" layoutX="316.0" layoutY="432.0" mnemonicParsing="false" onAction="#goBack" prefHeight="26.0" prefWidth="132.0" text="Back">
+            <font>
+                <Font size="20.0" />
+            </font>
+        </Button>
+    </children>
 </AnchorPane>

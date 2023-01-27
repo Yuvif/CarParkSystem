@@ -121,4 +121,3 @@ public class LoginController{
         SimpleChatClient.setRoot("Prices");
     }
 }
-

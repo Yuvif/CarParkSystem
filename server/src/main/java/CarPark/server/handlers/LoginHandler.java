@@ -27,6 +27,8 @@ public class LoginHandler extends MessageHandler {
 
     public void login() throws Exception {
         //generateEmployees();
+        //generateCustomers();
+
         Customer customer;
         String hql = "FROM Customer WHERE userId = :user_id AND password = :pass";
         Query query = session.createQuery(hql);
@@ -88,6 +90,14 @@ public class LoginHandler extends MessageHandler {
             session.save(employee2);
             session.flush();
         }
+    private void generateCustomers() throws Exception {
+        Customer customer1 = new Customer(318172848,"Daniel","Glazman","glazman.daniel@gmail.com",100.0,"1234567");
+        session.save(customer1);
+        session.flush();
+        Customer customer2 = new Customer(313598484,"Yuval","Fisher","fisheryuval96@gmail.com",50.5, "7777777");
+        session.save(customer2);
+        session.flush();
+    }
 
     }
 

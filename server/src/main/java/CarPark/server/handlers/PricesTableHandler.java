@@ -1,5 +1,6 @@
 package CarPark.server.handlers;
 
+import CarPark.entities.Customer;
 import CarPark.entities.Price;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.PricesMessage;
@@ -14,6 +15,7 @@ public class PricesTableHandler extends MessageHandler {
     private PricesMessage class_message;
 
     public PricesTableHandler(Message msg, Session session, ConnectionToClient client) {
+
         super(msg, session, client);
         this.class_message = (PricesMessage) this.message;
     }
@@ -26,6 +28,7 @@ public class PricesTableHandler extends MessageHandler {
     public void handleMessage() throws Exception {
         switch (class_message.request_type) {
             case GET_PRICES_TABLE:
+                generateCustomers();
                 class_message.priceList = getPriceList();
                 class_message.response_type = PricesMessage.ResponseType.SET_PRICES_TABLE;
                 break;
@@ -43,6 +46,7 @@ public class PricesTableHandler extends MessageHandler {
     }
 
     private List<Price> getPriceList() throws Exception {
+        System.out.println("customers generated");
         generatePricesTable();
         CriteriaQuery<Price> query = cb.createQuery(Price.class);
         query.from(Price.class);
@@ -66,6 +70,15 @@ public class PricesTableHandler extends MessageHandler {
         session.flush();
         Price pr5 = new Price("Premium monthly subscriber", "Permanent price", 108, 1, 72);
         session.save(pr5);
+        session.flush();
+    }
+
+    private void generateCustomers() throws Exception {
+        Customer customer1 = new Customer(318172848,"Daniel","Glazman","glazman.daniel@gmail.com",100.0,"1234567");
+        session.save(customer1);
+        session.flush();
+        Customer customer2 = new Customer(313598484,"Yuval","Fisher","fisheryuval96@gmail.com",50.5, "7777777");
+        session.save(customer2);
         session.flush();
     }
 }
