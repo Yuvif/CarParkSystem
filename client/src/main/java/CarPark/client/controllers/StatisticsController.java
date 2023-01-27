@@ -35,11 +35,11 @@ public class StatisticsController {
     @FXML
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
-        parkingLotOpt.getItems().add("Haifa");
-        parkingLotOpt.getItems().add("Tel Aviv");
-        parkingLotOpt.getItems().add("Jerusalem");
-        parkingLotOpt.getItems().add("Be'er Sheva");
-        parkingLotOpt.getItems().add("Eilat");
+        parkingLotOpt.getItems().add("Haifa (1)");
+        parkingLotOpt.getItems().add("Tel Aviv (2)");
+        parkingLotOpt.getItems().add("Jerusalem (3)");
+        parkingLotOpt.getItems().add("Be'er Sheva (4)");
+        parkingLotOpt.getItems().add("Eilat (5)");
 
         statisticsDate.setDayCellFactory(picker -> new DateCell() {
             public void updateItem(LocalDate date, boolean empty) {
@@ -69,9 +69,13 @@ public class StatisticsController {
     @FXML
     void GetData(ActionEvent event) throws IOException {
 //        initialize a StatisticsMessage with the date and parking lot chosen by the user
+//        with regexextract the number of parking lot from the string
+        String parkingLot = parkingLotOpt.getValue();
+        String parkingLotId = parkingLot.replaceAll("[^0-9]", "");
         StatisticsMessage msg = new StatisticsMessage(Message.MessageType.REQUEST, StatisticsMessage.RequestType.GET_STATISTICS,
-                parkingLotOpt.getValue(), statisticsDate.getValue());
+                parkingLotId, statisticsDate.getValue());
         SimpleClient.getClient().sendToServer(msg);
+        System.out.println("Sent message to server");
     }
 
     @FXML
