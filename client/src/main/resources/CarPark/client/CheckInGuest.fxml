@@ -92,7 +92,7 @@
                <Font name="SansSerif Bold Italic" size="14.0" />
             </font>
          </Label>
-         <Label layoutX="37.0" layoutY="297.0" text="Estimated Leaving Time">
+         <Label layoutX="37.0" layoutY="297.0" text="Estimated Leaving Date">
             <font>
                <Font name="SansSerif Bold Italic" size="14.0" />
             </font>

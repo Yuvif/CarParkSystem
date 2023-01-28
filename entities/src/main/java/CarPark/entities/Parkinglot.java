@@ -31,6 +31,10 @@ public class Parkinglot implements Serializable {
     @OneToMany
     private List<CheckedIn> checkedIns;
 
+    public Parkinglot(String parkingLotName) {
+
+    }
+
 
     public List<ParkingSlot> getParkingSlot() {
         return parkingSlot;
