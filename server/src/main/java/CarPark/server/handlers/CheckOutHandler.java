@@ -1,8 +1,6 @@
 package CarPark.server.handlers;
 
-import CarPark.entities.CheckedIn;
-import CarPark.entities.ParkingSlot;
-import CarPark.entities.Price;
+import CarPark.entities.*;
 import CarPark.entities.messages.CheckOutMessage;
 import CarPark.entities.messages.Message;
 import CarPark.server.ocsf.ConnectionToClient;
@@ -22,9 +20,10 @@ public class CheckOutHandler extends MessageHandler {
 
     public CheckedIn findCheckedInGuest()
     {
-        String hql = "FROM CheckedIn WHERE personId = :id";
+        String hql = "FROM CheckedIn WHERE personId = :id AND carNumber = :carId";
         Query query = session.createQuery(hql);
-        query.setParameter("id", class_message.current_customer.getId());
+        query.setParameter("id", class_message.userId);
+        query.setParameter("carId", class_message.carNumber);
         return (CheckedIn)query.uniqueResult();
     }
 
@@ -37,11 +36,14 @@ public class CheckOutHandler extends MessageHandler {
         return (CheckedIn)query.uniqueResult();
     }
 
-
+    public boolean checkLate(LocalDateTime leavingTime, LocalDateTime estimatedLeavingTime)
+    {
+        return !leavingTime.isBefore(estimatedLeavingTime) && !leavingTime.isEqual(estimatedLeavingTime);
+    }
 
     public double calculateCharges(LocalDateTime arrivalTime, LocalDateTime leavingTime, LocalDateTime estimatedLeavingTime, double pricePH)
     {
-        if(leavingTime.isBefore(estimatedLeavingTime) ||  leavingTime.isEqual(estimatedLeavingTime))
+        if(!checkLate(leavingTime, estimatedLeavingTime))
         {
             double differenceInMinutes = ChronoUnit.MINUTES.between(arrivalTime, leavingTime);
             double differenceInHours = differenceInMinutes / 60;
@@ -58,7 +60,7 @@ public class CheckOutHandler extends MessageHandler {
     }
 
     //calculation of charges for guests
-    public double calcGuestBalance()
+    public double calcGuestCredit()
     {
         String hql = "FROM Price WHERE parkingType = :type";
         Query query = session.createQuery(hql);
@@ -67,23 +69,93 @@ public class CheckOutHandler extends MessageHandler {
         double pricePH = price.getPrice();
 
         CheckedIn checkedInGuest = findCheckedInGuest();
-        return calculateCharges(checkedInGuest.getEntryDate() ,checkedInGuest.getExitEstimatedDate(),LocalDateTime.now(), pricePH);
+        return calculateCharges(checkedInGuest.getEntryDate(), checkedInGuest.getExitEstimatedDate(), LocalDateTime.now(), pricePH);
+    }
+
+    public double calcOrdersCredit()
+    {
+        String hql = "FROM Price WHERE parkingType = :type";
+        Query query = session.createQuery(hql);
+        query.setParameter("type", "Casual ordered parking");
+        Price price = (Price) query.uniqueResult();
+        return price.getPrice();
+    }
+
+    public boolean checkCustomersMembership()
+    {
+        String hql = "FROM Membership WHERE customerId = :id AND carId = :carId";
+        Query query = session.createQuery(hql);
+        query.setParameter("id", class_message.current_customer.getId());
+        query.setParameter("carId", class_message.carNumber);
+        return (query.uniqueResult() != null);
+    }
+
+    public void checkCustomersOrder()
+    {
+        double additionalCharge = 0.0;
+        String hql = "FROM Order WHERE customerId = :id AND carId = :carId";
+        Query query = session.createQuery(hql);
+        query.setParameter("id", class_message.current_customer.getId());
+        query.setParameter("carId", class_message.carNumber);
+        Order order = (Order) query.uniqueResult();
+
+        if(order != null)
+        {
+            class_message.hasAnOrder = true;
+            //calculate the additional charges for late
+            if(checkLate(LocalDateTime.now(), order.getEstimatedLeavingTime()))
+            {
+                double differenceInMinutes_TimeDeviation = ChronoUnit.MINUTES.between(order.getEstimatedLeavingTime(), LocalDateTime.now());
+                double differenceInHours_TimeDeviation = differenceInMinutes_TimeDeviation / 60;
+                additionalCharge = 1.1 * calcOrdersCredit() * differenceInHours_TimeDeviation;
+                class_message.current_customer.addToBalance(additionalCharge);
+            }
+        }
+    }
+
+    public void calcCustomerCredit()
+    {
+        if(!checkCustomersMembership())
+        {
+            checkCustomersOrder();
+        }
+        else
+        {
+            class_message.payment = calcGuestCredit();
+        }
+    }
+
+    public void deleteFromCheckedIn()
+    {
+        String hql = "FROM CheckedIn WHERE personId = :id AND carNumber = :carId";
+        Query query = session.createQuery(hql);
+        query.setParameter("id", class_message.userId);
+        query.setParameter("carId", class_message.carNumber);
+        CheckedIn checkedOut = (CheckedIn)query.uniqueResult();
+
+        String hql2 = "FROM ParkingSlot WHERE checkedIn = :checkedOut";
+        Query query2 = session.createQuery(hql2);
+        query2.setParameter("checkedOut", checkedOut);
+        ParkingSlot parkingSlot = (ParkingSlot)query2.uniqueResult();
+        parkingSlot.setCheckedIn(null);
+        parkingSlot.setSpotStatus(ParkingSlot.Status.EMPTY);
+
+        checkedOut.setParkingSlot(new ParkingSlot());
+
+        session.delete(checkedOut);
     }
 
     public void guestCheckOut()
     {
-        CheckedIn checkedInGuest = findCheckedInGuest();
-        checkedInGuest.getParkingSlot().setSpotStatus(ParkingSlot.Status.EMPTY);
-
-        //delete the checkedIn from the session
+        class_message.payment = calcGuestCredit();
+        deleteFromCheckedIn();
+        //class_message.current_customer.addToBalance(calcGuestCredit()); //update guests credit
     }
 
     public void customerCheckOut()
     {
-        CheckedIn checkedInCustomer = findCheckedInCustomer();
-        checkedInCustomer.getParkingSlot().setSpotStatus(ParkingSlot.Status.EMPTY);
-
-        //delete the checkedIn from the session
+        calcCustomerCredit();
+        deleteFromCheckedIn();
     }
 
     @Override
@@ -99,6 +171,5 @@ public class CheckOutHandler extends MessageHandler {
             }
         }
     }
-
 
 }

@@ -1,6 +1,5 @@
 package CarPark.server;
 
-
 import CarPark.entities.*;
 import CarPark.entities.messages.*;
 import CarPark.server.handlers.*;
@@ -36,8 +35,8 @@ public class SimpleServer extends AbstractServer {
 
     public SimpleServer(int port) {
         super(port);
-        OrderReminderThread orderReminderThread = new OrderReminderThread();
-        orderReminderThread.start();
+//        OrderReminderThread orderReminderThread = new OrderReminderThread();
+//        orderReminderThread.start();
         //MembershipReminderThread membershipReminderThread = new MembershipReminderThread();
         //membershipReminderThread.start();
         StatisticsThread statisticsThread = new StatisticsThread();
@@ -96,6 +95,8 @@ public class SimpleServer extends AbstractServer {
                     handler = new RegisterUserHandler((RegisterUserMessage) msg, session, client);
                 } else if (StatisticsMessage.class.equals(msgClass)) {
                     handler = new StatisticsHandler((StatisticsMessage) msg, session, client);
+                } else if (CheckInMessage.class.equals(msgClass)) {
+                    handler = new CheckInHandler((CheckInMessage) msg, session, client);
                 }
                 if (handler != null) {
                     handler.handleMessage();

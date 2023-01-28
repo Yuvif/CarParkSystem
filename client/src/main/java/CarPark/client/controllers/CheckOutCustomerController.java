@@ -37,7 +37,9 @@ public class CheckOutCustomerController {
         if (checkValidity())
         {
             CheckOutMessage checkOutMessage = new CheckOutMessage(Message.MessageType.REQUEST, CheckOutMessage.RequestType.CHECK_ME_OUT,
-                    Long.parseLong(carNumber.getText()));
+                    (Customer) SimpleClient.getCurrent_user(), Integer.parseInt(carNumber.getText()), 0.0 , false);
+            checkOutMessage.userId = checkOutMessage.current_customer.getId();
+
             try {
                 SimpleClient.getClient().sendToServer(checkOutMessage);
             } catch (IOException e) {
@@ -51,9 +53,26 @@ public class CheckOutCustomerController {
         switch (new_message.response_type) {
             case CHECKED_OUT -> {
                 //if the checked out user is a guest
-                sendAlert("You were checked out successfully! \nA charge of *** ₪ was made. " +
-                                "\n Thank You! Goodbye!" ,
-                        "Check Out", Alert.AlertType.INFORMATION);
+                if(new_message.payment != 0.0)
+                {
+                    sendAlert("You were checked out successfully!" +
+                                    "\nThank You! Goodbye!" ,
+                            "Check Out", Alert.AlertType.INFORMATION);
+                }
+                else if(new_message.hasAnOrder)
+                {
+                    sendAlert("You were checked out successfully!" +
+                                    "\nA charge of " + String.format("%.2f",new_message.payment) + " ₪ was made. " +
+                                    "\n Thank You! Goodbye!" ,
+                            "Check Out", Alert.AlertType.INFORMATION);
+                }
+                else
+                {
+                    sendAlert("You were checked out successfully!" +
+                                    "\nA charge of " + String.format("%.2f",new_message.payment) + " ₪ was made. " +
+                                    "\n Thank You! Goodbye!" ,
+                            "Check Out", Alert.AlertType.INFORMATION);
+                }
             }
         }
     }
