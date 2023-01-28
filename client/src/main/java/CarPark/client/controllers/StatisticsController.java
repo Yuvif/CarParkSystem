@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -24,13 +25,22 @@ public class StatisticsController {
     private Button GoBack;
 
     @FXML
-    private TableView<Integer> StatisticsTable;
+    private TableColumn<?, String> noOfOrders;
+
+    @FXML
+    private TableColumn<?, String> ordersDelayed;
+
+    @FXML
+    private TableColumn<?, String> orderscanceled;
 
     @FXML
     private ComboBox<String> parkingLotOpt;
 
     @FXML
     private DatePicker statisticsDate;
+
+    @FXML
+    private TableColumn<?, String> totalIncome;
 
     @FXML
     void initialize() throws IOException {
@@ -50,19 +60,25 @@ public class StatisticsController {
                 setDisable(empty || date.compareTo(today) > 0);
             }
         });
+        noOfOrders.setCellValueFactory(new PropertyValueFactory<>("numberOfOrders"));
+        ordersDelayed.setCellValueFactory(new PropertyValueFactory<>("numberOfOrdersLate"));
+        orderscanceled.setCellValueFactory(new PropertyValueFactory<>("numberOfOrdersCancelled"));
+        totalIncome.setCellValueFactory(new PropertyValueFactory<>("totalRevenue"));
     }
 
     @Subscribe
-    public void newResponce(StatisticsMessage msg) throws IOException {
+    public void newResponse(StatisticsMessage msg) throws IOException {
         switch (msg.response_type) {
             case NO_STATISTICS_AVAILABLE -> {
+                System.out.println("StatisticsController: NO_STATISTICS_AVAILABLE");
                 sendAlert("No data for this date and parking lot", "No info available", Alert.AlertType.WARNING);
             }
             case STATISTICS -> {
-                 StatisticsTable.getItems().add(msg.getStatistics().getNumberOfOrders());
-                 StatisticsTable.getItems().add(msg.getStatistics().getNumberOfOrdersCancelled());
-                 StatisticsTable.getItems().add(msg.getStatistics().getNumberOfOrdersLate());
-                 StatisticsTable.getItems().add(msg.getStatistics().getTotalRevenue());
+                System.out.println("StatisticsController: STATISTICS");
+                noOfOrders.setText(String.valueOf(msg.getStatistics().getNumberOfOrders()));
+                ordersDelayed.setText(String.valueOf(msg.getStatistics().getNumberOfOrdersLate()));
+                orderscanceled.setText(String.valueOf(msg.getStatistics().getNumberOfOrdersCancelled()));
+                totalIncome.setText(String.valueOf(msg.getStatistics().getTotalRevenue()));
             }
         }
     }

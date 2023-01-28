@@ -9,21 +9,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.StatisticsController">
    <children>
       <DatePicker fx:id="statisticsDate" layoutX="402.0" layoutY="60.0" />
       <ComboBox fx:id="parkingLotOpt" layoutX="231.0" layoutY="60.0" prefWidth="150.0" />
       <TextField layoutX="402.0" layoutY="22.0" prefHeight="24.0" prefWidth="92.0" text="Chose date" />
       <TextField layoutX="231.0" layoutY="22.0" prefHeight="24.0" prefWidth="86.0" text="Chose Lot" />
-      <TableView fx:id="StatisticsTable" layoutX="71.0" layoutY="176.0" prefHeight="67.0" prefWidth="470.0">
-        <columns>
-          <TableColumn prefWidth="109.0" text="Total orders" />
-          <TableColumn prefWidth="125.0" text="orders Canceled" />
-            <TableColumn minWidth="6.0" prefWidth="123.0" text="Delayed Orders" />
-            <TableColumn minWidth="0.0" prefWidth="112.0" text="totalRevenue" />
-        </columns>
-      </TableView>
       <TextField prefHeight="24.0" prefWidth="198.0" text="Statistics">
          <font>
             <Font size="24.0" />
@@ -31,5 +22,13 @@
       </TextField>
       <Button fx:id="GoBack" layoutX="286.0" layoutY="331.0" mnemonicParsing="false" onAction="#GoBack" text="Go Back" />
       <Button fx:id="GetData" layoutX="360.0" layoutY="106.0" mnemonicParsing="false" onAction="#GetData" text="Get Data" />
+      <TableView layoutX="51.0" layoutY="161.0" prefHeight="66.0" prefWidth="510.0">
+         <columns>
+            <TableColumn fx:id="noOfOrders" prefWidth="125.0" text="No. of Orders" />
+            <TableColumn fx:id="ordersDelayed" prefWidth="145.0" text="Orders With Delay" />
+            <TableColumn fx:id="orderscanceled" prefWidth="133.0" text="Orders Canceled" />
+            <TableColumn fx:id="totalIncome" prefWidth="106.0" text="Total Income " />
+         </columns>
+      </TableView>
    </children>
 </AnchorPane>
