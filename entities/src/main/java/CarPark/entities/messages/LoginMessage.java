@@ -12,6 +12,12 @@ public class LoginMessage extends Message {
     @ManyToOne
     private User user;
 
+    public LoginMessage(MessageType request, RequestType logout, Long id) {
+        super(request);
+        this.request_type = logout;
+        this.user_id = id;
+    }
+
     public User getUser() {
         return user;
     }
@@ -28,13 +34,15 @@ public class LoginMessage extends Message {
     }
 
     public enum RequestType {
-        LOGIN
+        LOGIN,
+        LOGOUT
     }
 
     public enum ResponseType {
-        LOGIN_SUCCEED,
+        LOGIN_SUCCEED_EMPLOYEE,
+        LOGIN_SUCCEED_CUSTOMER,
         LOGIN_FAILED,
-        ALREADY_LOGGED;
+        ALREADY_LOGGED
     }
 
     public long getUserId() {

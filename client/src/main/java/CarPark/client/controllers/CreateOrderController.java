@@ -1,10 +1,11 @@
 package CarPark.client.controllers;
 
+import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.entities.Customer;
 import CarPark.entities.Order;
 import CarPark.entities.messages.Message;
-import CarPark.entities.messages.CreateOrderMessage;
+import CarPark.entities.messages.OrderMessage;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,10 +29,10 @@ import static CarPark.client.controllers.Controller.sendAlert;
 public class CreateOrderController {
 
     @FXML
-    private ComboBox arrivalHour;
+    private ComboBox<java.io.Serializable> arrivalHour;
 
     @FXML
-    private ComboBox arrivalMin;
+    private ComboBox<java.io.Serializable> arrivalMin;
 
     @FXML
     private DatePicker arrivalDate;
@@ -45,121 +47,33 @@ public class CreateOrderController {
     private DatePicker estLeavingDate;
 
     @FXML
-    private ComboBox estLeavingHour;
+    private ComboBox<java.io.Serializable> estLeavingHour;
 
     @FXML
-    private ComboBox estLeavingMin;
+    private ComboBox<java.io.Serializable> estLeavingMin;
 
     @FXML
     private TextField idTextBox;
 
     @FXML
-    private ComboBox parkingLotsOpt;
+    private ComboBox<String> parkingLotsOpt;
 
     @FXML
     private Button submitBtn;
 
-    @FXML
-    void submitDetails(ActionEvent event) throws IOException {
-        if (checkValidity()) // create an entity Order and send it to the server
-        {
-            Order order = createOrder();
-            CreateOrderMessage msg = new CreateOrderMessage(Message.MessageType.REQUEST, CreateOrderMessage.RequestType.CREATE_NEW_ORDER, order, (Customer)SimpleClient.getCurrent_user());
-            SimpleClient.getClient().sendToServer(msg);
-        }
-    }
-
-    @Subscribe
-    public void newResponse(CreateOrderMessage new_message) {
-        switch (new_message.response_type) {
-            case ORDER_SUBMITTED:
-                Platform.runLater(() -> {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setHeaderText("Order Submitted!");
-                    alert.show();
-                    PauseTransition pause = new PauseTransition(Duration.seconds(2.5));
-                    pause.setOnFinished((e -> {
-                        alert.close();
-                    }));
-                    pause.play();
-                });
-                break;
-        }
-    }
-
-    private boolean checkValidity() {
-
-        if (idTextBox.getText().isEmpty() || carIdTextBox.getText().isEmpty() || emailAddress.getText().isEmpty() || arrivalDate.getValue() == null || estLeavingDate.getValue() == null
-                || arrivalHour.getItems().isEmpty() || arrivalMin.getItems().isEmpty() || estLeavingHour.getItems().isEmpty() || estLeavingMin.getItems().isEmpty() || parkingLotsOpt.getItems().isEmpty()) {
-            sendAlert("Some fields have not been filled", " Empty or Missing Fields", Alert.AlertType.WARNING);
-            return false;
-        }
-
-        if (!checkEmailValidity()) {
-            sendAlert("Email is not valid", " Invalid Email", Alert.AlertType.WARNING);
-            return false;
-        }
-
-        if (!checkIdValidity()) {
-            sendAlert("ID is not valid", " Invalid ID", Alert.AlertType.WARNING);
-            return false;
-        }
-
-        if (!checkCarIdValidity()) {
-            sendAlert("Car ID is not valid", " Invalid Car ID", Alert.AlertType.WARNING);
-            return false;
-        }
-
-        if (!checkDateValidity()) {
-            sendAlert("Date is not valid", " Invalid Date", Alert.AlertType.WARNING);
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean checkEmailValidity() {
-        String email = emailAddress.getText();
-        String regex = "^(.+)@(.+)$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
-    private boolean checkIdValidity() {
-        String id = idTextBox.getText();
-        String regex = "^[0-9]{9}$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(id);
-        return matcher.matches();
-    }
-
-    private boolean checkCarIdValidity() {
-        String carId = carIdTextBox.getText();
-        String regex = "^[0-9]{7}$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(carId);
-        return matcher.matches();
-    }
-
-    private boolean checkDateValidity() {
-        LocalDate arrival = arrivalDate.getValue();
-        LocalDate leaving = estLeavingDate.getValue();
-        if (arrival.isAfter(leaving)) {
-            return false;
-        } else {
-            return true;
-        }
-    }
 
     @FXML
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
-        //think of a way to get the parking lots from the server **********************
-        for (int i = 0; i < 3; i++) {
-            parkingLotsOpt.getItems().add(i);
-        }
-
+        parkingLotsOpt.getItems().add("Haifa");
+        parkingLotsOpt.getItems().add("Tel Aviv");
+        parkingLotsOpt.getItems().add("Jerusalem");
+        parkingLotsOpt.getItems().add("Be'er Sheva");
+        parkingLotsOpt.getItems().add("Eilat");
+        emailAddress.setText(SimpleClient.getCurrent_user().getEmail());
+        emailAddress.setDisable(true);
+        idTextBox.setText(SimpleClient.getCurrent_user().getId().toString());
+        idTextBox.setDisable(true);
         // Initialize the ComboBox with the hours
         for (int i = 0; i < 24; i++) {
             if (i < 10) {
@@ -201,16 +115,119 @@ public class CreateOrderController {
                 setDisable(empty || date.compareTo(arrivalDateValue) < 0);
             }
         });
-
-
     }
 
+    @FXML
+    void submitDetails(ActionEvent event) throws IOException {
+        if (checkValidity()) // create an entity Order and send it to the server
+        {
+            Order order = createOrder();
+            OrderMessage msg = new OrderMessage(Message.MessageType.REQUEST, OrderMessage.RequestType.CREATE_NEW_ORDER, order, (Customer)SimpleClient.getCurrent_user());
+            SimpleClient.getClient().sendToServer(msg);
+        }
+    }
+
+    @Subscribe
+    public void newResponse(OrderMessage new_message) {
+        if (new_message.response_type == OrderMessage.ResponseType.ORDER_SUBMITTED) {
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("Order Submitted! \n " +
+                        "A charge of " + String.format("%.2f", new_message.Order.getOrdersPrice()) + "₪ was made");
+                alert.show();
+                PauseTransition pause = new PauseTransition(Duration.seconds(5));
+                pause.setOnFinished((e -> {
+                    alert.close();
+                }));
+                pause.play();
+                resetFields();
+            });
+        }
+    }
+
+    private boolean checkValidity() {
+
+        if (idTextBox.getText().isEmpty() || carIdTextBox.getText().isEmpty() || emailAddress.getText().isEmpty() || arrivalDate.getValue() == null || estLeavingDate.getValue() == null
+                || arrivalHour.getItems().isEmpty() || arrivalMin.getItems().isEmpty() || estLeavingHour.getItems().isEmpty() || estLeavingMin.getItems().isEmpty() || parkingLotsOpt.getItems().isEmpty()) {
+            sendAlert("Some fields have not been filled", " Empty or Missing Fields", Alert.AlertType.WARNING);
+            return false;
+        }
+
+        if (!checkEmailValidity()) {
+            sendAlert("Email is not valid", " Invalid Email", Alert.AlertType.WARNING);
+            return false;
+        }
+
+        if (!checkIdValidity()) {
+            sendAlert("ID is not valid", " Invalid ID", Alert.AlertType.WARNING);
+            return false;
+        }
+
+        if (!checkCarIdValidity()) {
+            sendAlert("Car ID is not valid", " Invalid Car ID", Alert.AlertType.WARNING);
+            return false;
+        }
+
+        if (!checkDateValidity()) {
+            sendAlert("Date is not valid", " Invalid Date", Alert.AlertType.WARNING);
+            return false;
+        }
+        if(!checkEstLeavingTimeValidity())
+        {
+            sendAlert("Est Leaving time is not valid!", " Invalid Estimated Leaving Time", Alert.AlertType.WARNING);
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean checkEmailValidity() {
+        String email = emailAddress.getText();
+        String regex = "^(.+)@(.+)$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    private boolean checkIdValidity() {
+        String id = idTextBox.getText();
+        String regex = "^[0-9]{9}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(id);
+        return matcher.matches();
+    }
+
+    private boolean checkCarIdValidity() {
+        String carId = carIdTextBox.getText();
+        String regex = "^[0-9]{7}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(carId);
+        return matcher.matches();
+    }
+
+    private boolean checkDateValidity() {
+        LocalDate arrival = arrivalDate.getValue();
+        LocalDate leaving = estLeavingDate.getValue();
+        return !arrival.isAfter(leaving);
+    }
+
+    private boolean checkEstLeavingTimeValidity() {
+        LocalDate arrival = arrivalDate.getValue();
+        LocalTime arrivalTime = LocalTime.of(Integer.parseInt(arrivalHour.getValue().toString()), Integer.parseInt(arrivalMin.getValue().toString()));
+        LocalDateTime arrivalDateTime = LocalDateTime.of(arrival, arrivalTime);
+
+        LocalDate leaving = estLeavingDate.getValue();
+        LocalTime leavingTime = LocalTime.of(Integer.parseInt(estLeavingHour.getValue().toString()), Integer.parseInt(estLeavingMin.getValue().toString()));
+        LocalDateTime leavingDateTime = LocalDateTime.of(leaving, leavingTime);
+
+        return (ChronoUnit.MINUTES.between(arrivalDateTime, leavingDateTime) >= 30);
+    }
 
     private Order createOrder() {
         Order order = new Order();
         order.setCarId(Integer.parseInt(carIdTextBox.getText()));
         order.setCustomerId(Integer.parseInt(idTextBox.getText()));
-        order.setParkingLotId((String) parkingLotsOpt.getValue());
+        order.setParkingLotId(parkingLotsOpt.getValue());
         order.setEmail(emailAddress.getText());
 
         LocalDate arrival = arrivalDate.getValue();
@@ -224,5 +241,24 @@ public class CreateOrderController {
         order.setEstimatedLeavingTime(leavingDateTime);
 
         return order;
+    }
+
+    private void resetFields()
+    {
+        arrivalHour.valueProperty().set(null);
+        arrivalMin.valueProperty().set(null);
+        estLeavingDate.setValue(null);
+        arrivalDate.setValue(null);
+        carIdTextBox.setText(null);
+        emailAddress.setText(null);
+        estLeavingHour.valueProperty().set(null);
+        estLeavingMin.valueProperty().set(null);
+        idTextBox.setText(null);
+        parkingLotsOpt.valueProperty().set(null);
+    }
+
+    @FXML
+    void goBack(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("CustomerPage");
     }
 }

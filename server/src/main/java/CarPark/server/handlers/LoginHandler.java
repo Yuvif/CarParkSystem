@@ -1,6 +1,6 @@
 package CarPark.server.handlers;
+import CarPark.entities.Customer;
 import CarPark.entities.Employee;
-import CarPark.entities.User;
 import CarPark.entities.messages.LoginMessage;
 import CarPark.server.ocsf.ConnectionToClient;
 import org.hibernate.Session;
@@ -17,26 +17,67 @@ public class LoginHandler extends MessageHandler {
     }
 
     @Override
-    public void handleMessage() throws Exception {
+    public void handleMessage() throws Exception{
+        switch (class_message.request_type) {
+            case LOGIN -> login();
+            case LOGOUT -> logout();
+        }
+
+    }
+
+    public void login() throws Exception {
         //generateEmployees();
-        CarPark.entities.User user = null;
-        String hql = "FROM User WHERE userId = :user_id AND password = :pass";
+        Customer customer;
+        String hql = "FROM Customer WHERE userId = :user_id AND password = :pass";
         Query query = session.createQuery(hql);
         query.setParameter("user_id", class_message.getUserId());
         query.setParameter("pass", class_message.getPassword());
-        user = (User) query.uniqueResult();
-        if (user!=null) {
-            if (user.isLogged())
+        customer = (Customer) query.uniqueResult();
+        Employee employee;
+        hql = "FROM Employee WHERE userId = :user_id AND password = :pass";
+        query = session.createQuery(hql);
+        query.setParameter("user_id", class_message.getUserId());
+        query.setParameter("pass", class_message.getPassword());
+        employee = (Employee) query.uniqueResult();
+        if (customer != null) {
+            if (customer.isLogged())
                 class_message.response_type = LoginMessage.ResponseType.ALREADY_LOGGED;
             else {
-                class_message.setUser(user);
-                class_message.response_type = LoginMessage.ResponseType.LOGIN_SUCCEED;
-                user.setLogged(true);
+                class_message.setUser(customer);
+                class_message.response_type = LoginMessage.ResponseType.LOGIN_SUCCEED_CUSTOMER;
+                customer.setLogged(true);
+            }
+        } else {
+            if (employee != null) {
+                if (employee.isLogged())
+                    class_message.response_type = LoginMessage.ResponseType.ALREADY_LOGGED;
+                else {
+                    class_message.setUser(employee);
+                    class_message.response_type = LoginMessage.ResponseType.LOGIN_SUCCEED_EMPLOYEE;
+                    employee.setLogged(true);
+                }
+            } else {
+                class_message.response_type = LoginMessage.ResponseType.LOGIN_FAILED;
             }
         }
-        else {
-                class_message.response_type = LoginMessage.ResponseType.LOGIN_FAILED;
-        }
+    }
+
+    public void logout()
+    {
+        Customer customer;
+        String hql = "FROM Customer WHERE userId = :user_id";
+        Query query = session.createQuery(hql);
+        query.setParameter("user_id", class_message.getUserId());
+        customer = (Customer) query.uniqueResult();
+        Employee employee;
+        hql = "FROM Employee WHERE userId = :user_id";
+        query = session.createQuery(hql);
+        query.setParameter("user_id", class_message.getUserId());
+        employee = (Employee) query.uniqueResult();
+        if (employee!=null)
+            employee.setLogged(false);
+        else
+            customer.setLogged(false);
     }
 
         private void generateEmployees() throws Exception {

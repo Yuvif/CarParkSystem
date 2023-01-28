@@ -12,7 +12,7 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int customerId;
+    private long customerId;
     private int carId;
     private String parkingLot;
     private String email;
@@ -22,9 +22,23 @@ public class Order implements Serializable {
     private Date date;
     private Status orderStatus = Status.APPROVED;
 
-    public enum Status {APPROVED, CANCELLED};
+    @ManyToOne
+    private Customer customer;
 
-    public Order(int customerId, int carId, String parkingLot, String email,
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public void setOrderStatus(Status notified) {
+    }
+
+    public enum Status {APPROVED, CANCELLED, NOTIFIED};
+
+    public Order(long customerId, int carId, String parkingLot, String email,
                  LocalDateTime arrivalTime, LocalDateTime estimatedLeavingTime, double ordersPrice, Date date)
     {
         super();
@@ -40,7 +54,7 @@ public class Order implements Serializable {
 
     public Order() {}
 
-    public int getCustomerId() {
+    public long getCustomerId() {
         return customerId;
     }
     public int getCarId() {
@@ -58,7 +72,7 @@ public class Order implements Serializable {
     }
     public double getOrdersPrice() { return ordersPrice; }
 
-    public void setCustomerId(int customerId) {
+    public void setCustomerId(long customerId) {
         this.customerId = customerId;
     }
     public void setCarId(int carId) {
@@ -79,8 +93,8 @@ public class Order implements Serializable {
     public int getId() {
         return id;
     }
-    public Boolean getStatus() {
-        return orderStatus== Status.APPROVED;
+    public Status getStatus() {
+        return orderStatus;
     }
     public void setSpotStatus(Status spotStatus) {
         orderStatus = spotStatus;

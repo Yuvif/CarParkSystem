@@ -2,7 +2,6 @@ package CarPark.client.controllers;
 
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
-import CarPark.entities.Customer;
 import CarPark.entities.messages.LoginMessage;
 import CarPark.entities.messages.Message;
 import javafx.application.Platform;
@@ -12,7 +11,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -42,7 +40,7 @@ public class LoginController{
     }
 
 
-    public void login() throws Exception {
+    public void login(ActionEvent event) throws Exception {
         if (checkIdValidity(userID.getText()) && checkPassValidity(password.getText())) //check if password and username are valid
         {
             //if valid send request to login with secured password
@@ -80,6 +78,13 @@ public class LoginController{
     @Subscribe
     public void newResponse(LoginMessage new_message) throws IOException {
         switch (new_message.response_type) {
+            case LOGIN_SUCCEED_CUSTOMER -> {
+                SimpleClient.setCurrent_user(new_message.getUser());
+                SimpleChatClient.setRoot("CustomerPage");}
+            case LOGIN_SUCCEED_EMPLOYEE -> {
+                SimpleClient.setCurrent_user(new_message.getUser());
+                SimpleChatClient.setRoot("EmployeePage");
+            }
             case LOGIN_FAILED -> Platform.runLater(() -> {
                 try {
                     setWrongLogin();
@@ -90,13 +95,6 @@ public class LoginController{
             case ALREADY_LOGGED -> Platform.runLater(() -> {
                 alreadyLogIn();
             });
-            case LOGIN_SUCCEED -> {
-                SimpleClient.setCurrent_user(new_message.getUser());
-                if (new_message.getUser().getClass().equals(Customer.class))
-                    SimpleChatClient.setRoot("CustomerPage");
-                else
-                    SimpleChatClient.setRoot("EmployeePage");
-            }
         }
     }
 
@@ -108,18 +106,20 @@ public class LoginController{
     }
 
 
-    public void signUp(MouseEvent event) throws IOException {
+    public void signUp(ActionEvent event) throws IOException {
         SimpleChatClient.setRoot("RegisterUser");
     }
 
-    public void checkIn(ActionEvent event) {
+    public void checkInAsGuest(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("CheckInGuest");
     }
 
-    public void checkOut(ActionEvent event) {
+    public void checkOutAsGuest(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("CheckOutGuest");
     }
 
-    public void makeOrder(ActionEvent event) throws IOException {
-        SimpleChatClient.setRoot("CreateOrder");
+    public void prices(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("Prices");
     }
 }
 

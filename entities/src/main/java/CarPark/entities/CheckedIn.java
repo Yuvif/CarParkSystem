@@ -2,6 +2,7 @@ package CarPark.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -9,68 +10,65 @@ import java.util.Date;
 public class CheckedIn implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int checkedInId;
 
     @Column(name = "entry_date")
-    private String parkinglot;
-    private Date entryDate;
-    private Integer carNumber;
-    private Integer personId;
-    private String email;
-    private Date exitEstimatedDate;
-    private boolean didHePay = false;
-    private String parkinglot_name;
+    private LocalDateTime entryDate;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    private Integer carNumber;
+    private Long personId;
+    private String email;
+    private LocalDateTime exitEstimatedDate;
+    private String type;
+
+    @ManyToOne
+    @JoinColumn(name = "parkingLotId")
+    private Parkinglot parkinglot;
+
+    @OneToOne
+    @JoinColumn(name = "parkingSlotId")
     private ParkingSlot parkingSlot;
 
-    public CheckedIn(String parkinglot,Date entryDate, Integer personId, Integer carNumber, String email, Date exitEstimatedDate, ParkingSlot parkingSlot) {
-        this.parkinglot = parkinglot;
+    public CheckedIn(LocalDateTime entryDate, Long personId, Integer carNumber, String email, LocalDateTime exitEstimatedDate, String type) {
         this.entryDate = entryDate;
         this.personId = personId;
         this.carNumber = carNumber;
         this.email = email;
         this.exitEstimatedDate = exitEstimatedDate;
-        this.parkingSlot = parkingSlot;
-        this.parkinglot_name = null;
-        setParkingSlot(parkingSlot);
-        parkingSlot.setSpotStatus(ParkingSlot.Status.USED);
-        parkingSlot.setCheckedIn(this);
+        this.type = type;
     }
 
     public CheckedIn() {
 
     }
 
-    public String getParkinglot_name(){
-        return parkinglot_name;
-    }
+    public Parkinglot getParkinglot(){return parkinglot;}
 
-    public void setParkinglot_name(String parkinglot_id){
-        this.parkinglot_name = parkinglot_id;
-    }
+    public void setParkinglot(Parkinglot parkinglot){this.parkinglot = parkinglot;}
 
     public ParkingSlot getParkingSlot() {
         return parkingSlot;
     }
 
     public void setParkingSlot(ParkingSlot parkingSlot) {
+        parkingSlot.setSpotStatus(ParkingSlot.Status.USED);
+        parkingSlot.setCheckedIn(this);
         this.parkingSlot = parkingSlot;
     }
 
-    public Date getEntryDate() {
+    public LocalDateTime getEntryDate() {
         return entryDate;
     }
 
-    public void setEntryDate(Date entryDate) {
+    public void setEntryDate(LocalDateTime entryDate) {
         this.entryDate = entryDate;
     }
 
-    public Integer getPersonId() {
+    public Long getPersonId() {
         return personId;
     }
 
-    public void setPersonId(Integer personId) {
+    public void setPersonId(Long personId) {
         this.personId = personId;
     }
 
@@ -82,16 +80,13 @@ public class CheckedIn implements Serializable {
         this.email = email;
     }
 
-    public Date getExitEstimatedDate() {
+    public LocalDateTime getExitEstimatedDate() {
         return exitEstimatedDate;
     }
 
-    public void setExitEstimatedDate(Date exitEstimatedDate) {
+    public void setExitEstimatedDate(LocalDateTime exitEstimatedDate) {
         this.exitEstimatedDate = exitEstimatedDate;
     }
 
-    public String getParkinglotId() {
-
-        return parkinglot;
-    }
+    public int getId() { return checkedInId; }
 }

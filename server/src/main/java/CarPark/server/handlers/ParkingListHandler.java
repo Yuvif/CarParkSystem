@@ -31,7 +31,7 @@ public class ParkingListHandler extends MessageHandler {
     }
 
     private List<Parkinglot> getParkingLots() throws Exception {
-        generateParkingLots();
+        //generateParkingLots();
         CriteriaQuery<Parkinglot> query = cb.createQuery(Parkinglot.class);
         query.from(Parkinglot.class);
         List<Parkinglot> data = session.createQuery(query).getResultList();

@@ -1,6 +1,8 @@
 package CarPark.entities.messages;
 
 import CarPark.entities.Complaint;
+import CarPark.entities.Customer;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,6 +12,7 @@ public class ComplaintMessage extends Message {
     public RequestType request_type;
     public ResponseType response_type;
     public Complaint complaint2handle;
+    public Customer current_customer;
     public int amount;
     public List<Complaint> complaints;
     public LinkedList<Complaint> complaints2Rep;
@@ -48,20 +51,33 @@ public class ComplaintMessage extends Message {
         this.complaints2Rep = complaints;
     }
 
+    public ComplaintMessage(MessageType request, RequestType getMyComplaints, Customer current_user) {
+        super(request);
+        this.request_type = getMyComplaints;
+        this.current_customer = current_user;
+    }
+
+    public ComplaintMessage(MessageType request, RequestType createNewComplaint, Complaint complaint, Customer current_user) {
+        super(request);
+        this.request_type = createNewComplaint;
+        this.complaint2handle = complaint;
+        this.current_customer = current_user;
+    }
 
 
     public enum RequestType {
         GET_ALL_COMPLAINTS,
         CREATE_NEW_COMPLAINT,
         COMPENSATE_COMPLAINT,
-        NON_COMPENSATE_COMPLAINT
-
+        NON_COMPENSATE_COMPLAINT,
+        GET_MY_COMPLAINTS
     }
 
     public enum ResponseType {
         SET_ALL_COMPLAINTS,
         COMPLAINT_SUBMITTED,
-        COMPLAINT_CLOSED
+        COMPLAINT_CLOSED,
+        SET_MY_COMPLAINTS
     }
 
 

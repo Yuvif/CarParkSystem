@@ -1,6 +1,5 @@
 package CarPark.server.handlers;
 
-import CarPark.entities.Order;
 import CarPark.entities.ParkingSlot;
 import CarPark.entities.Parkinglot;
 import CarPark.entities.messages.*;
