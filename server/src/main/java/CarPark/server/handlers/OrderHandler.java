@@ -45,7 +45,7 @@ public class OrderHandler extends MessageHandler {
                 class_message.response_type = OrderMessage.ResponseType.SET_SELECTED_ORDERS;
                 class_message.ordersList.removeIf(order -> order.getParkingLotId().equals(class_message.parking_lot_id)
                         || order.getDate().compareTo(class_message.from) < 0 || order.getDate().compareTo(class_message.to) > 0
-                        || order.getStatus());
+                        || order.getStatus() == Order.Status.APPROVED);
         }
     }
 
@@ -108,7 +108,6 @@ public class OrderHandler extends MessageHandler {
     }
 
 
-
     private void getMyOrdersList() throws Exception
     {
         String hql = "FROM Order WHERE customerId = :id";
@@ -150,8 +149,6 @@ public class OrderHandler extends MessageHandler {
         query.setParameter("leaving",class_message.Order.getEstimatedLeavingTime());
         if(query.executeUpdate() > 0)
         {
-            //I need the customer here to update his balance (!!!!!!!)
-
             class_message.response_type = OrderMessage.ResponseType.ORDER_CANCELED;
             class_message.credit = credit * (-1);
         }

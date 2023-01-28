@@ -1,5 +1,6 @@
 package CarPark.client.controllers;
 
+import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.entities.Customer;
 import CarPark.entities.Order;
@@ -132,7 +133,7 @@ public class CreateOrderController {
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setHeaderText("Order Submitted! \n " +
-                        "A charge of " + new_message.Order.getOrdersPrice() + "₪ was made");
+                        "A charge of " + String.format("%.2f", new_message.Order.getOrdersPrice()) + "₪ was made");
                 alert.show();
                 PauseTransition pause = new PauseTransition(Duration.seconds(5));
                 pause.setOnFinished((e -> {
@@ -254,5 +255,10 @@ public class CreateOrderController {
         estLeavingMin.valueProperty().set(null);
         idTextBox.setText(null);
         parkingLotsOpt.valueProperty().set(null);
+    }
+
+    @FXML
+    void goBack(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("CustomerPage");
     }
 }
