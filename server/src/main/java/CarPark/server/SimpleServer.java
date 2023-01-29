@@ -31,15 +31,14 @@ import java.util.Properties;
 public class SimpleServer extends AbstractServer {
     private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
     public static Session session;// encapsulation make public function so this can be private
-    private OrderReminderThread orderReminderThread;
 
     public SimpleServer(int port) {
         super(port);
-        OrderReminderThread orderReminderThread = new OrderReminderThread();
-        orderReminderThread.start();
+        RemindersThread remindersThread = new RemindersThread();
+        remindersThread.start();
         StatisticsThread statisticsThread = new StatisticsThread();
         statisticsThread.start();
-        System.out.println("Server is running");
+
     }
 
 
@@ -158,15 +157,12 @@ public class SimpleServer extends AbstractServer {
         }
     }
 
-    public static class OrderReminderThread extends Thread {
+    public static class RemindersThread extends Thread {
         @Override
         public void run() {
-            var session = getSessionFactory().openSession();
-//            session.beginTransaction();
-//            generateParkingLots(session);
-//            session.getTransaction().commit();
             var yesterday = LocalDate.now().minusDays(1);
             while (true) {
+                var session = getSessionFactory().openSession();
 //              get all orders which their arrival time was between now and 5 minutes ago and orderStatus is APPROVED
                 var orders = session.createQuery("from Order where orderStatus = 'APPROVED' and arrivalTime between :five_minutes_ago and :now")
                         .setParameter("now", LocalDateTime.now())
@@ -225,6 +221,7 @@ public class SimpleServer extends AbstractServer {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                session.close();
             }
         }
     }
@@ -232,8 +229,8 @@ public class SimpleServer extends AbstractServer {
     public static class StatisticsThread extends Thread {
         @Override
         public void run() {
-            var session = getSessionFactory().openSession();
             while (true) {
+                    var session = getSessionFactory().openSession();
                     var parkingLots = session.createQuery("from Parkinglot").list();
                     for (Object parkingLot : parkingLots) {
 //                        check if there is an entry for yesterday
@@ -253,12 +250,7 @@ public class SimpleServer extends AbstractServer {
                                     .setParameter("yesterday_start", yesterdayStart)
                                     .setParameter("yesterday_end", yesterdayEnd)
                                     .getResultList();
-//                            delete all those orders from the database (they are not needed anymore)
-                            session.beginTransaction();
-                            for (Object order : orders) {
-                                session.delete(order);
-                            }
-                            session.getTransaction().commit();
+
                             int totalOrders = orders.size();
                             int numberOfOrdersCancelled = 0;
                             int numberOfOrdersLate = 0;
@@ -291,12 +283,19 @@ public class SimpleServer extends AbstractServer {
                     for (Object membership : expiredMemberships) {
                         session.delete(membership);
                     }
+//                    Have to add 'CHECKED_OUT' as a status for orders
+//                    var expiredOrders = session.createQuery("from Order where orderStatus = 'CHECKED_OUT'")
+//                            .getResultList();
+//                    for (Object order : expiredOrders) {
+//                        session.delete(order);
+//                    }
                     session.getTransaction().commit();
                 try {
                     Thread.sleep(86400000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                session.close();
             }
         }
     }

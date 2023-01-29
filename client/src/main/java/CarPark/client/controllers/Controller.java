@@ -6,12 +6,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 
+import java.security.SecureRandom;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public abstract class Controller {
     public static void sendAlert(String error, String title, Alert.AlertType type) {

@@ -3,6 +3,7 @@ package CarPark.client.controllers;
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.entities.Customer;
+import CarPark.entities.HashPipeline;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.RegisterUserMessage;
 import javafx.application.Platform;
@@ -63,8 +64,10 @@ public class RegisterUserController {
     }
 
     private Customer createCustomer() throws Exception {
+        byte[] salt = HashPipeline.getSalt();
         Customer new_customer = new Customer(Long.parseLong(userID.getText()), firstName.getText(), lastName.getText(),
-                email.getText(), 0, password.getText());
+                email.getText(), 0, HashPipeline.toHexString(HashPipeline.getSHA(password.getText(), salt)), salt);
+
         return new_customer;
     }
 

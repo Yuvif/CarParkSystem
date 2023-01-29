@@ -17,6 +17,10 @@ import org.greenrobot.eventbus.Subscribe;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class LoginController{
 
@@ -45,9 +49,8 @@ public class LoginController{
         {
             //if valid send request to login with secured password
             long userId = Long.parseLong(userID.getText());
-            String userPass = password.getText();
             LoginMessage msg =
-                    new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGIN,userId,userPass);
+                    new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGIN,userId, password.getText());
             SimpleClient.getClient().sendToServer(msg);
         }
         else
@@ -74,6 +77,8 @@ public class LoginController{
         Matcher matcher = pattern.matcher(pass);
         return matcher.matches();
     }
+
+
 
     @Subscribe
     public void newResponse(LoginMessage new_message) throws IOException {

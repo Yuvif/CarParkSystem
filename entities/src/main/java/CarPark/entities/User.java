@@ -10,6 +10,7 @@ public abstract class User implements Serializable {
     private Long userId;
     @Column(name = "password")
     private String password;
+    private byte[] salt;
     private String email;
     private String firstName;
     private String lastName;
@@ -23,9 +24,10 @@ public abstract class User implements Serializable {
         return userId;
     }
 
-    public User(long userId, String password, String email, String firstName, String lastName) {
+    public User(long userId, String password, byte[] salt, String email, String firstName, String lastName) {
         this.userId = userId;
         this.password = password;
+        this.salt = salt;
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -38,6 +40,14 @@ public abstract class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public byte[] getSalt() {
+        return salt;
+    }
+
+    public void setSalt(byte[] salt) {
+        this.salt = salt;
     }
 
     public String getEmail() {

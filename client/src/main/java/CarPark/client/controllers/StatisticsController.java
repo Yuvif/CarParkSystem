@@ -25,13 +25,13 @@ public class StatisticsController {
     private Button GoBack;
 
     @FXML
-    private TableColumn<?, String> noOfOrders;
+    private TableColumn<String, String> noOfOrders;
 
     @FXML
-    private TableColumn<?, String> ordersDelayed;
+    private TableColumn<String, String> ordersDelayed;
 
     @FXML
-    private TableColumn<?, String> orderscanceled;
+    private TableColumn<String, String> orderscanceled;
 
     @FXML
     private ComboBox<String> parkingLotOpt;
@@ -64,6 +64,16 @@ public class StatisticsController {
         ordersDelayed.setCellValueFactory(new PropertyValueFactory<>("numberOfOrdersLate"));
         orderscanceled.setCellValueFactory(new PropertyValueFactory<>("numberOfOrdersCancelled"));
         totalIncome.setCellValueFactory(new PropertyValueFactory<>("totalRevenue"));
+//        wait for 5 seconds
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        noOfOrders.setText("0");
+        ordersDelayed.setText("1");
+        orderscanceled.setText("2");
+        totalIncome.setText("3");
     }
 
     @Subscribe
