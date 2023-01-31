@@ -24,7 +24,7 @@ public class ParkingSlot implements Serializable {
     private Parkinglot parkinglot;
 
     @OneToOne
-    @JoinColumn(name = "checkedInId")
+    @JoinColumn(name = "checkedInId", nullable = true)
     private CheckedIn checkedIn;
 
     public CheckedIn getCheckedIn() {
@@ -70,7 +70,7 @@ public class ParkingSlot implements Serializable {
     }
 
     public Boolean getStatus() {
-        return SpotStatus==Status.EMPTY;
+        return SpotStatus == Status.EMPTY;
     }
     public enum Status {EMPTY, USED, RESTRICTED, RESERVED}
 }

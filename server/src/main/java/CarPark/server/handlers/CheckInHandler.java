@@ -16,7 +16,6 @@ public class CheckInHandler extends MessageHandler {
     public CheckInHandler(CheckInMessage msg, Session session, ConnectionToClient client) {
         super(msg, session, client);
         this.class_message = (CheckInMessage) this.message;
-
     }
 
     @Override

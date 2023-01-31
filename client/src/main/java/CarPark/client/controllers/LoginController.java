@@ -114,7 +114,8 @@ public class LoginController{
         SimpleChatClient.setRoot("CheckInGuest");
     }
 
-    public void checkOutAsGuest(ActionEvent event) {
+    public void checkOutAsGuest(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("CheckOutGuest");
     }
 
     public void prices(ActionEvent event) throws IOException {
