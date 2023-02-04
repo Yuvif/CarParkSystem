@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="522.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.ComplaintInspectionController">
     <children>
@@ -20,7 +21,7 @@
                 <HBox maxWidth="700.0" prefHeight="30.0" prefWidth="150.0">
                     <children>
                         <TextArea fx:id="complainerName" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" />
-                        <Label fx:id="parkinglot" prefHeight="30.0" prefWidth="127.0" text="store">
+                        <Label fx:id="parkinglot" prefHeight="30.0" prefWidth="127.0" text="parking lot">
                             <HBox.margin>
                                 <Insets left="150.0" />
                             </HBox.margin>
@@ -46,6 +47,11 @@
                         <Button fx:id="submitBtn" mnemonicParsing="false" onAction="#submitInspection" style="-fx-background-color: #00acef;" text="Submit inspection" />
                     </children>
                 </HBox>
+            <Button fx:id="backBtn" alignment="BOTTOM_LEFT" mnemonicParsing="false" onAction="#goBack" text="Back">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
             </children>
             <padding>
                 <Insets left="50.0" right="100.0" />

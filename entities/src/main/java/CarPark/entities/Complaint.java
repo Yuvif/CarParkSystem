@@ -31,6 +31,9 @@ public class Complaint implements Serializable {
     public Customer getCustomer() {
         return customer;
     }
+    public  long getCustomerId(){
+        return customerId;
+    }
 
     public void setCustomer(Customer customer) {
         this.customer = customer;

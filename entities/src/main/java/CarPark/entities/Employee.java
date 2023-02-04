@@ -10,16 +10,16 @@ import javax.persistence.*;
 @Inheritance(strategy= InheritanceType.TABLE_PER_CLASS)
 public class Employee extends User {
     private String workersRole;
-    @OneToOne
-    @JoinColumn(name = "complaint_to_inspect_complaint_id")
-    private Complaint complaintToInspect= null;
 
-    public Complaint getComplaintToInspect() {
-        return complaintToInspect;
+    @ManyToOne
+    @JoinColumn(name = "complaint_2_inspect_id")
+    private Complaint complaint2Inspect = null;
+
+    public Complaint getComplaint2Inspect() {
+        return complaint2Inspect;
     }
-
-    public void setComplaintToInspect(Complaint complaintToInspect) {
-        this.complaintToInspect = complaintToInspect;
+    public void setComplaint2Inspect(Complaint complaint){
+        complaint2Inspect = complaint;
     }
 
 
@@ -31,6 +31,10 @@ public class Employee extends User {
     public Employee() {
     }
 
+    @Override
+    public void setComplaintToInspect(Complaint complaint) {
+
+    }
 
 
     public String getWorkersRole() {

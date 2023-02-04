@@ -1,7 +1,6 @@
 package CarPark.server.handlers;
 
 import CarPark.entities.Complaint;
-import CarPark.entities.Customer;
 import CarPark.entities.messages.ComplaintMessage;
 import CarPark.entities.messages.Message;
 import CarPark.server.ocsf.ConnectionToClient;
@@ -30,8 +29,8 @@ public class ComplaintHandler extends MessageHandler {
                 class_message.response_type = ComplaintMessage.ResponseType.COMPLAINT_SUBMITTED;
                 break;
             case GET_ALL_COMPLAINTS:
-
-                class_message.complaints2Rep = getComplaintList();
+                class_message.complaints = getComplaintList();
+                //class_message.complaints2Rep = (LinkedList<Complaint>) ();
                 class_message.response_type = ComplaintMessage.ResponseType.SET_ALL_COMPLAINTS;
                 break;
             case COMPENSATE_COMPLAINT:
@@ -52,8 +51,7 @@ public class ComplaintHandler extends MessageHandler {
         session.flush();
     }
 
-    private LinkedList<Complaint> getComplaintList() throws Exception {
-        System.out.println("complaint handler");
+    private List<Complaint> getComplaintList() throws Exception {
         CriteriaQuery<Complaint> query = cb.createQuery(Complaint.class);
         query.from(Complaint.class);
         List<Complaint> data = session.createQuery(query).getResultList();
@@ -62,7 +60,8 @@ public class ComplaintHandler extends MessageHandler {
         {
             res.add(c);
         }
-        return res;
+        //return res;
+        return data;
     }
 
     public void getMyComplaints() throws Exception {
@@ -72,7 +71,4 @@ public class ComplaintHandler extends MessageHandler {
         class_message.complaints = query.getResultList();
         class_message.response_type= ComplaintMessage.ResponseType.SET_MY_COMPLAINTS;
     }
-
-
-
 }

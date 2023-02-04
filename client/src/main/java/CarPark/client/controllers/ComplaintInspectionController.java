@@ -3,6 +3,7 @@ package CarPark.client.controllers;
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.entities.Complaint;
+import CarPark.entities.Employee;
 import CarPark.entities.messages.ComplaintMessage;
 import CarPark.entities.messages.Message;
 import javafx.animation.PauseTransition;
@@ -26,6 +27,10 @@ public class ComplaintInspectionController extends Controller {
         change.setText(change.getText().replaceAll("[^0-9]", ""));
         return pattern1.matcher(change.getControlNewText()).matches() ? change : null;
     });
+
+    @FXML
+    private Button backBtn;
+
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
     @FXML // URL location of the FXML file that was given to the FXMLLoader
@@ -42,6 +47,7 @@ public class ComplaintInspectionController extends Controller {
     private Button submitBtn; // Value injected by FXMLLoader
     @FXML // fx:id="store"
     private Label parkinglot; // Value injected by FXMLLoader
+
     private Complaint complaint;
 
     public void setComplaint(Complaint complaint) {
@@ -107,6 +113,7 @@ public class ComplaintInspectionController extends Controller {
     @FXML
         // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
+
         assert compensationCheckbox != null : "fx:id=\"compensationCheckbox\" was not injected: check your FXML file 'ComplaintInspection.fxml'.";
         assert compensationField != null : "fx:id=\"compensationField\" was not injected: check your FXML file 'ComplaintInspection.fxml'.";
         assert complainerName != null : "fx:id=\"complainerName\" was not injected: check your FXML file 'ComplaintInspection.fxml'.";
@@ -114,15 +121,25 @@ public class ComplaintInspectionController extends Controller {
         assert submitBtn != null : "fx:id=\"submitBtn\" was not injected: check your FXML file 'ComplaintInspection.fxml'.";
         assert parkinglot != null : "fx:id=\"store\" was not injected: check your FXML file 'ComplaintInspection.fxml'.";
         Platform.runLater(() -> {
-            complaintText.setText(complaint.getCompText());
+
+           // complaint = (Complaint) SimpleClient.getCurrent_user().getComplaint2Inspect();
+
+//            if (SimpleClient.getCurrent_user() instanceof Employee)
+//                complaintText.setText(complaint.getCompText());
+
             //complainerName.setText(complaint.getCustomer().getName());
             complaintText.setEditable(false);
             complainerName.setEditable(false);
             compensationField.setDisable(true);
             compensationField.setTextFormatter(formatter1);
-            parkinglot.setText(complaint.getParkinglot().getId());
+            parkinglot.setText(complaint.getParkinglot().getName());
 
         });
+    }
+
+    @FXML
+    void goBack(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("ComplaintInspectionTable");
     }
 
 }

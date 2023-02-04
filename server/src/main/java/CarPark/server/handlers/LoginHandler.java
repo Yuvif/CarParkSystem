@@ -91,12 +91,13 @@ public class LoginHandler extends MessageHandler {
             session.flush();
         }
     private void generateCustomers() throws Exception {
-        Customer customer1 = new Customer(318172848,"Daniel","Glazman","glazman.daniel@gmail.com",100.0,"1234567");
+        Customer customer1 = new Customer(207944414,"Noy","Blitz","noy.b@gmail.com",0,"1111111");
         session.save(customer1);
         session.flush();
-        Customer customer2 = new Customer(313598484,"Yuval","Fisher","fisheryuval96@gmail.com",50.5, "7777777");
+        Customer customer2 = new Customer(987654321,"Noya","Blitz","noy.b1@gmail.com",0,"0000000");
         session.save(customer2);
         session.flush();
+
     }
 
     }

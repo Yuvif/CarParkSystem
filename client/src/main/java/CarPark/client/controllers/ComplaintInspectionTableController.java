@@ -29,6 +29,10 @@ import java.util.*;
 
 public class ComplaintInspectionTableController extends Controller {
 
+
+    @FXML
+    private Button backBtn;
+
     @FXML // fx:id="btonCol"
     private TableColumn<Complaint, Void> btnCol; // Value injected by FXMLLoader
 
@@ -36,7 +40,7 @@ public class ComplaintInspectionTableController extends Controller {
     private TableView<Complaint> complaintsTableView; // Value injected by FXMLLoader
 
     @FXML // fx:id="customerid"
-    private TableColumn<Complaint, String> customerid; // Value injected by FXMLLoader
+    private TableColumn<Complaint, Long> customerid; // Value injected by FXMLLoader
 
     @FXML // fx:id="desc"
     private TableColumn<Complaint, String> desc; // Value injected by FXMLLoader
@@ -69,14 +73,19 @@ public class ComplaintInspectionTableController extends Controller {
         subDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         subDate.setStyle("-fx-alignment: CENTER");
 
-        desc.setCellValueFactory(new PropertyValueFactory<>("description"));
+        //desc.setCellValueFactory(new PropertyValueFactory<>("description"));
+        desc.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getCompText()));
         desc.setStyle("-fx-alignment: CENTER");
 
-        plotID.setCellValueFactory(new PropertyValueFactory<>("parkinglot id"));
+        //plotID.setCellValueFactory(new PropertyValueFactory<>("parkinglot id"));
+        plotID.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getParkinglot().getName()));
         plotID.setStyle("-fx-alignment: CENTER");
 
         customerid.setCellValueFactory(new PropertyValueFactory<>("customer id"));
+        //customerid.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(String.valueOf(cellData.getValue().getCustomerId())));
         customerid.setStyle("-fx-alignment: CENTER");
+
+
 
 
 //        status.setCellValueFactory(cellData -> {
@@ -113,8 +122,7 @@ public class ComplaintInspectionTableController extends Controller {
                             Complaint complaint = getTableView().getItems().get(getIndex());
                             if (SimpleClient.getCurrent_user() instanceof Employee)
                             {
-                                //((Employee) SimpleClient.getCurrent_user()).setComplaintToInspect(complaint);
-                                //ComplaintInspectionController
+                                ((Employee) SimpleClient.getCurrent_user()).setComplaintToInspect(complaint);
                             }
 
                             try {
@@ -171,7 +179,8 @@ public class ComplaintInspectionTableController extends Controller {
                 System.out.println("complaint controller response back");
                 //complaintsTableView.setItems(FXCollections.observableArrayList(new_message.complaints));
 
-                complaintsTableView.setItems((ObservableList<Complaint>) new_message.complaints);
+                //complaintsTableView.setItems((ObservableList<Complaint>) new_message.complaints);
+                complaintsTableView.setItems(FXCollections.observableArrayList(new_message.complaints));
                 int expired = 0;
                 for (Complaint complaint : new_message.complaints) {
                     if ((new Date().getTime()) - (complaint.getDate().getTime()) > 86400000) {
@@ -182,6 +191,11 @@ public class ComplaintInspectionTableController extends Controller {
                 //expireLabel.setText("You have " + new_message.complaints.size() + " complaints pending. Of which " + expired + " are expired!");
             }
         });
+    }
+
+    @FXML
+    void goBack(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("EmployeePage");
     }
 
 

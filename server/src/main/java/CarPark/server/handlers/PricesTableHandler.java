@@ -15,7 +15,6 @@ public class PricesTableHandler extends MessageHandler {
     private PricesMessage class_message;
 
     public PricesTableHandler(Message msg, Session session, ConnectionToClient client) {
-
         super(msg, session, client);
         this.class_message = (PricesMessage) this.message;
     }
@@ -28,7 +27,6 @@ public class PricesTableHandler extends MessageHandler {
     public void handleMessage() throws Exception {
         switch (class_message.request_type) {
             case GET_PRICES_TABLE:
-                generateCustomers();
                 class_message.priceList = getPriceList();
                 class_message.response_type = PricesMessage.ResponseType.SET_PRICES_TABLE;
                 break;
@@ -46,8 +44,9 @@ public class PricesTableHandler extends MessageHandler {
     }
 
     private List<Price> getPriceList() throws Exception {
-        System.out.println("customers generated");
         generatePricesTable();
+        //generateCustomers();
+
         CriteriaQuery<Price> query = cb.createQuery(Price.class);
         query.from(Price.class);
         List<Price> data = session.createQuery(query).getResultList();
@@ -74,11 +73,12 @@ public class PricesTableHandler extends MessageHandler {
     }
 
     private void generateCustomers() throws Exception {
-        Customer customer1 = new Customer(318172848,"Daniel","Glazman","glazman.daniel@gmail.com",100.0,"1234567");
+        Customer customer1 = new Customer(207944414,"Noy","Blitz","noy.b@gmail.com",0,"1111111");
         session.save(customer1);
         session.flush();
-        Customer customer2 = new Customer(313598484,"Yuval","Fisher","fisheryuval96@gmail.com",50.5, "7777777");
+        Customer customer2 = new Customer(987654321,"Noya","Blitz","noy.b1@gmail.com",0,"0000000");
         session.save(customer2);
         session.flush();
+
     }
 }

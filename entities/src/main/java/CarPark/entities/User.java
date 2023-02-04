@@ -68,4 +68,7 @@ public abstract class User implements Serializable {
         isLogged = logged;
     }
 
+    public abstract void setComplaintToInspect(Complaint complaint);
+
+    public abstract Object getComplaint2Inspect();
 }
