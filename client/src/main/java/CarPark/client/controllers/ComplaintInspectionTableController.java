@@ -10,6 +10,7 @@ import CarPark.entities.Complaint;
 import CarPark.entities.Employee;
 import CarPark.entities.messages.ComplaintMessage;
 import CarPark.entities.messages.Message;
+import antlr.ASTNULLType;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -33,8 +34,8 @@ public class ComplaintInspectionTableController extends Controller {
     @FXML
     private Button backBtn;
 
-    @FXML // fx:id="btonCol"
-    private TableColumn<Complaint, Void> btnCol; // Value injected by FXMLLoader
+    @FXML
+    private Label expireLabel;
 
     @FXML // fx:id="complaintsTableView"
     private TableView<Complaint> complaintsTableView; // Value injected by FXMLLoader
@@ -86,8 +87,6 @@ public class ComplaintInspectionTableController extends Controller {
         customerid.setStyle("-fx-alignment: CENTER");
 
 
-
-
 //        status.setCellValueFactory(cellData -> {
 //            String status = cellData.getValue();
 //            return new ReadOnlyStringWrapper(status ? "Open" : "Closed");
@@ -109,7 +108,7 @@ public class ComplaintInspectionTableController extends Controller {
      * Adding button to each instance in the table.
      */
     private void addButtonToTable() {
-        btnCol = new TableColumn("Inspect complaint");
+        TableColumn btnCol = new TableColumn("Inspect complaint");
 
         Callback<TableColumn<Complaint, Void>, TableCell<Complaint, Void>> cellFactory = new Callback<>() {
             @Override
@@ -135,7 +134,7 @@ public class ComplaintInspectionTableController extends Controller {
 
                             complaintsTableView.getItems().remove(getTableRow().getItem()); //remove the order from table
                         });
-                        btn.setStyle("-fx-background-color:  #00acef");
+                        btn.setStyle("-fx-background-color:  #1aaf71");
                         btn.setText("Inspect");
                     }
 
@@ -188,7 +187,8 @@ public class ComplaintInspectionTableController extends Controller {
                         expired++;
                     }
                 }
-                //expireLabel.setText("You have " + new_message.complaints.size() + " complaints pending. Of which " + expired + " are expired!");
+
+                expireLabel.setText("You have " + new_message.complaints.size() + " complaints pending. Of which " + expired + " are expired!");
             }
         });
     }
