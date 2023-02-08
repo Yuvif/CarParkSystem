@@ -1,7 +1,7 @@
 package CarPark.server.handlers;
 
 import CarPark.entities.*;
-import CarPark.entities.messages.CheckOutMessage;
+import CarPark.entities.messages.*;
 import CarPark.entities.messages.Message;
 import CarPark.server.ocsf.ConnectionToClient;
 import org.hibernate.Session;

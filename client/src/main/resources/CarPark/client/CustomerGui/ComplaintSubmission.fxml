@@ -19,56 +19,56 @@
         <left>
             <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="210.0" style="-fx-background-color: #CFEEE1;" BorderPane.alignment="CENTER">
                 <children>
-                    <Button graphicTextGap="0.0" mnemonicParsing="false" onAction="#myOrders" prefHeight="69.0" prefWidth="221.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="   MY ORDERS" translateY="3.0">
+                    <Button graphicTextGap="0.0" mnemonicParsing="false" onAction="#myOrders" prefHeight="69.0" prefWidth="221.0" styleClass="mybutton" stylesheets="@../../../assets/style.css" text="   MY ORDERS" translateY="3.0">
                         <graphic>
                             <ImageView fitHeight="35.0" fitWidth="35.0" translateX="-3.0">
                                 <image>
-                                    <Image url="@../../assets/parking-sign.png" />
+                                    <Image url="@../../../assets/parking-sign.png" />
                                 </image>
                             </ImageView>
                         </graphic>
                     </Button>
-                    <Button mnemonicParsing="false" onAction="#myMemberships" prefHeight="69.0" prefWidth="221.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="             MY MEMBERSHIPS">
+                    <Button mnemonicParsing="false" onAction="#myMemberships" prefHeight="69.0" prefWidth="221.0" styleClass="mybutton" stylesheets="@../../../assets/style.css" text="             MY MEMBERSHIPS">
                         <graphic>
                             <ImageView fitHeight="35.0" fitWidth="35.0" translateX="30.0">
                                 <image>
-                                    <Image url="@../../assets/member-card.png" />
+                                    <Image url="@../../../assets/member-card.png" />
                                 </image>
                             </ImageView>
                         </graphic>
                     </Button>
-                    <Button mnemonicParsing="false" onAction="#myComplaints" pickOnBounds="false" prefHeight="57.0" prefWidth="210.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="            MY COMPLAINTS">
+                    <Button mnemonicParsing="false" onAction="#myComplaints" pickOnBounds="false" prefHeight="57.0" prefWidth="210.0" styleClass="mybutton" stylesheets="@../../../assets/style.css" text="            MY COMPLAINTS">
                         <graphic>
                             <ImageView fitHeight="35.0" fitWidth="35.0" translateX="25.0" translateY="-5.0">
                                 <image>
-                                    <Image url="@../../assets/myComplaint.png" />
+                                    <Image url="@../../../assets/myComplaint.png" />
                                 </image>
                             </ImageView>
                         </graphic>
                     </Button>
-                    <Button mnemonicParsing="false" onAction="#createNewOrder" prefHeight="69.0" prefWidth="221.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="   NEW ORDER">
+                    <Button mnemonicParsing="false" onAction="#createNewOrder" prefHeight="69.0" prefWidth="221.0" styleClass="mybutton" stylesheets="@../../../assets/style.css" text="   NEW ORDER">
                         <graphic>
                             <ImageView fitHeight="35.0" fitWidth="35.0">
                                 <image>
-                                    <Image url="@../../assets/online-order.png" />
+                                    <Image url="@../../../assets/online-order.png" />
                                 </image>
                             </ImageView>
                         </graphic>
                     </Button>
-                    <Button mnemonicParsing="false" onAction="#newMembership" pickOnBounds="false" prefHeight="57.0" prefWidth="210.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="              NEW MEMBERSHIP">
+                    <Button mnemonicParsing="false" onAction="#newMembership" pickOnBounds="false" prefHeight="57.0" prefWidth="210.0" styleClass="mybutton" stylesheets="@../../../assets/style.css" text="              NEW MEMBERSHIP">
                         <graphic>
                             <ImageView fitHeight="35.0" fitWidth="35.0" translateX="30.0" translateY="-5.0">
                                 <image>
-                                    <Image url="@../../assets/add_member.png" />
+                                    <Image url="@../../../assets/add_member.png" />
                                 </image>
                             </ImageView>
                         </graphic>
                     </Button>
-                    <Button mnemonicParsing="false" pickOnBounds="false" prefHeight="57.0" prefWidth="210.0" style="-fx-background-color: #70caa6;" styleClass="mybutton" stylesheets="@../../assets/style.css" text="              NEW COMPLAINT">
+                    <Button mnemonicParsing="false" pickOnBounds="false" prefHeight="57.0" prefWidth="210.0" style="-fx-background-color: #70caa6;" styleClass="mybutton" stylesheets="@../../../assets/style.css" text="              NEW COMPLAINT">
                         <graphic>
                             <ImageView fitHeight="35.0" fitWidth="35.0" translateX="30.0" translateY="-5.0">
                                 <image>
-                                    <Image url="@../../assets/complaint.png" />
+                                    <Image url="@../../../assets/complaint.png" />
                                 </image>
                             </ImageView>
                         </graphic>
@@ -81,7 +81,7 @@
                 <children>
                     <ImageView fitHeight="35.0" fitWidth="35.0" rotate="180.0" style="-fx-image: WHITE;" translateX="5.0" translateY="18.0">
                         <image>
-                            <Image url="@../../assets/parked-car.png" />
+                            <Image url="@../../../assets/parked-car.png" />
                         </image>
                         <rotationAxis>
                             <Point3D y="1.0" />
@@ -102,7 +102,7 @@
                 <children>
                     <ImageView fitHeight="49.0" fitWidth="49.0" translateX="10.0" translateY="10.0">
                         <image>
-                            <Image url="@../../assets/profile-user.png" />
+                            <Image url="@../../../assets/profile-user.png" />
                         </image>
                     </ImageView>
                     <Label fx:id="userName" prefHeight="42.0" prefWidth="268.0" style="-fx-text-fill: black;" textFill="WHITE" translateX="65.0" translateY="-35.0">
@@ -117,7 +117,7 @@
                </TextField>
                <TextField fx:id="customerIdT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" promptText="SET YOUR ID" style="-fx-background-color: #CFEEE1;" translateX="110.0" translateY="-220.0" />
                <ComboBox fx:id="plPick" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0" promptText="Select Parkinglot" translateX="540.0" translateY="-245.0" />
-               <Button fx:id="sendComplaintBtn" mnemonicParsing="false" onAction="#sendComplaint" styleClass="mybutton" stylesheets="@../../assets/style.css" text="Send Complaint" translateX="355.0" translateY="30.0">
+               <Button fx:id="sendComplaintBtn" mnemonicParsing="false" onAction="#sendComplaint" styleClass="mybutton" stylesheets="@../../../assets/style.css" text="Send Complaint" translateX="355.0" translateY="30.0">
                   <font>
                      <Font name="SansSerif Bold" size="12.0" />
                   </font>

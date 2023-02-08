@@ -15,7 +15,7 @@
 <AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.LoginController">
     <ImageView fitHeight="516.0" fitWidth="508.0" layoutX="509.0">
         <image>
-            <Image url="@../../assets/background.png" />
+            <Image url="@../../../assets/background.png" />
         </image>
     </ImageView>
     <Label layoutX="641.0" layoutY="276.0" prefHeight="42.0" prefWidth="268.0" text="CAR PARK SYSTEM" textFill="WHITE">
@@ -38,7 +38,7 @@
       <children>
          <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="157.0" layoutY="28.0">
             <image>
-               <Image url="@../../assets/padlock.png" />
+               <Image url="@../../../assets/padlock.png" />
             </image>
          </ImageView>
           <!--    <ImageView fitHeight="40.0" fitWidth="35.0" layoutX="110.0" layoutY="360.0" pickOnBounds="true" preserveRatio="true">-->
@@ -58,11 +58,11 @@
                   <Font name="SansSerif Regular" size="14.0" />
               </font>
           </TextField>
-         <Button layoutX="137.0" layoutY="208.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="90.0" style="-fx-background-radius: 10;" styleClass="mybutton" stylesheets="@../../assets/style.css">
+         <Button layoutX="137.0" layoutY="208.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="90.0" style="-fx-background-radius: 10;" styleClass="mybutton" stylesheets="@../../../assets/style.css">
             <graphic>
                <ImageView fitHeight="82.0" fitWidth="90.0" pickOnBounds="true">
                   <image>
-                     <Image url="@../../assets/login.png" />
+                     <Image url="@../../../assets/login.png" />
                   </image>
                   <cursor>
                      <Cursor fx:constant="HAND" />
@@ -77,11 +77,11 @@
          <Line endX="-100.0" endY="-55.0" layoutX="188.0" layoutY="55.0" startX="-100.0" startY="5.0" />
          <Line endX="-100.0" endY="-60.0" layoutX="269.0" layoutY="54.0" startX="-100.0" startY="5.0" />
          <Line endX="-100.0" endY="-60.0" layoutX="350.0" layoutY="53.0" startX="-100.0" startY="6.0" />
-         <Button layoutX="8.0" mnemonicParsing="false" onAction="#signUp" prefHeight="60.0" prefWidth="79.0" styleClass="mybutton" stylesheets="@../../assets/style.css">
+         <Button layoutX="8.0" mnemonicParsing="false" onAction="#signUp" prefHeight="60.0" prefWidth="79.0" styleClass="mybutton" stylesheets="@../../../assets/style.css">
             <graphic>
                <ImageView accessibleRole="BUTTON" fitHeight="50.0" fitWidth="50.0" onMouseClicked="#signUp" pickOnBounds="true">
                   <image>
-                     <Image url="@../../assets/signup.png" />
+                     <Image url="@../../../assets/signup.png" />
                   </image>
                   <cursor>
                      <Cursor fx:constant="HAND" />
@@ -89,11 +89,11 @@
                </ImageView>
             </graphic>
          </Button>
-         <Button layoutX="89.0" mnemonicParsing="false" onAction="#checkInAsGuest" prefHeight="60.0" prefWidth="79.0" styleClass="mybutton" stylesheets="@../../assets/style.css">
+         <Button layoutX="89.0" mnemonicParsing="false" onAction="#checkInAsGuest" prefHeight="60.0" prefWidth="79.0" styleClass="mybutton" stylesheets="@../../../assets/style.css">
             <graphic>
                <ImageView accessibleRole="BUTTON" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#signUp" pickOnBounds="true" translateY="7.0">
                   <image>
-                     <Image url="@../../assets/point.png" />
+                     <Image url="@../../../assets/point.png" />
                   </image>
                   <cursor>
                      <Cursor fx:constant="HAND" />
@@ -106,11 +106,11 @@
                <Font name="SansSerif Bold" size="14.0" />
             </font>
          </Label>
-         <Button layoutX="170.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#checkOutAsGuest" prefHeight="60.0" prefWidth="79.0" styleClass="mybutton" stylesheets="@../../assets/style.css">
+         <Button layoutX="170.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#checkOutAsGuest" prefHeight="60.0" prefWidth="79.0" styleClass="mybutton" stylesheets="@../../../assets/style.css">
             <graphic>
                <ImageView accessibleRole="BUTTON" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#signUp" pickOnBounds="true" translateY="7.0">
                   <image>
-                     <Image url="@../../assets/out.png" />
+                     <Image url="@../../../assets/out.png" />
                   </image>
                   <cursor>
                      <Cursor fx:constant="HAND" />
@@ -123,11 +123,11 @@
                <Font name="SansSerif Bold" size="14.0" />
             </font>
          </Label>
-         <Button layoutX="251.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#prices" prefHeight="60.0" prefWidth="79.0" styleClass="mybutton" stylesheets="@../../assets/style.css">
+         <Button layoutX="251.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#prices" prefHeight="60.0" prefWidth="79.0" styleClass="mybutton" stylesheets="@../../../assets/style.css">
             <graphic>
                <ImageView accessibleRole="BUTTON" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#signUp" pickOnBounds="true" translateY="7.0">
                   <image>
-                     <Image url="@../../assets/price-tag.png" />
+                     <Image url="@../../../assets/price-tag.png" />
                   </image>
                   <cursor>
                      <Cursor fx:constant="HAND" />
@@ -149,7 +149,7 @@
    </Label>
    <ImageView accessibleRole="BUTTON" fitHeight="30.0" fitWidth="30.0" layoutX="979.0" layoutY="13.0"  pickOnBounds="true">
       <image>
-         <Image url="@../../assets/instagram.png" />
+         <Image url="@../../../assets/instagram.png" />
       </image>
       <cursor>
          <Cursor fx:constant="HAND" />
@@ -157,7 +157,7 @@
    </ImageView>
    <ImageView accessibleRole="BUTTON" fitHeight="30.0" fitWidth="30.0" layoutX="942.0" layoutY="13.0" pickOnBounds="true">
       <image>
-         <Image url="@../../assets/twitter.png" />
+         <Image url="@../../../assets/twitter.png" />
       </image>
       <cursor>
          <Cursor fx:constant="HAND" />
@@ -165,7 +165,7 @@
    </ImageView>
    <ImageView accessibleRole="BUTTON" fitHeight="30.0" fitWidth="30.0" layoutX="903.0" layoutY="13.0" pickOnBounds="true">
       <image>
-         <Image url="@../../assets/facebook.png" />
+         <Image url="@../../../assets/facebook.png" />
       </image>
       <cursor>
          <Cursor fx:constant="HAND" />

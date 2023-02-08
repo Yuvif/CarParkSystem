@@ -180,7 +180,7 @@ public class RegisterAsMemberController {//Daniel need to change name to new mem
         LocalTime arrivalTime = LocalTime.MIN;
 
         membership.setCarId(Integer.parseInt(carIdNumber.getText()));
-        membership.setCustomerId(Long.parseLong(customerIdText.getText()));
+        membership.setCustomerId(customerIdText.getText());
         if(parkingLots.getValue() != null && arrivalHour.getValue() != null && arrivalMin.getValue() != null)
         {
             membership.setRoutineParkingLot(parkingLots.getValue());

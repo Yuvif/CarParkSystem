@@ -7,7 +7,7 @@ import java.io.Serializable;
 public abstract class User implements Serializable {
     @Id
     @Column(name = "userId", nullable = false)
-    private Long userId;
+    private String userId;
     @Column(name = "password")
     private String password;
     private String email;
@@ -19,11 +19,11 @@ public abstract class User implements Serializable {
 
     }
 
-    public Long getId() {
+    public String getId() {
         return userId;
     }
 
-    public User(long userId, String password, String email, String firstName, String lastName) {
+    public User(String userId, String password, String email, String firstName, String lastName) {
         this.userId = userId;
         this.password = password;
         this.email = email;

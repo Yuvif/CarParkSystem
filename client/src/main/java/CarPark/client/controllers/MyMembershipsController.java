@@ -68,8 +68,10 @@ public class MyMembershipsController {
         }
     }
 
+
     @FXML
-    private void newMembership(ActionEvent event){
+    private void newMembership(ActionEvent event)
+    {
         Platform.runLater(()->
         {
             try {
@@ -79,4 +81,64 @@ public class MyMembershipsController {
             }
         });
     }
+
+    @FXML
+    void myOrders(ActionEvent event)
+    {
+        Platform.runLater(()->
+        {
+            try {
+                SimpleChatClient.setRoot("MyOrders");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+
+    @FXML
+    void createNewOrder(ActionEvent event) throws IOException {
+        Platform.runLater(() -> {
+            try {
+                SimpleChatClient.setRoot("CreateOrder");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    void newComplaint(ActionEvent event) throws IOException {
+        Platform.runLater(() -> {
+            try {
+                SimpleChatClient.setRoot("ComplaintSubmission");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    void myComplaints(ActionEvent event) throws IOException{
+        Platform.runLater(() -> {
+            try {
+                SimpleChatClient.setRoot("MyComplaints");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    private void myMemberships(ActionEvent event) throws IOException {
+        Platform.runLater(()->
+        {
+            try {
+                SimpleChatClient.setRoot("MembershipsView");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
 }

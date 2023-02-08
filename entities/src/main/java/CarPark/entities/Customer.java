@@ -28,7 +28,7 @@ public class Customer extends User {
     @LazyCollection(LazyCollectionOption.FALSE)
     List<Complaint> complaintList = new LinkedList<>();
 
-    public Customer(long customerId, String firstName, String lastName, String email, double balance,String password) throws Exception {
+    public Customer(String customerId, String firstName, String lastName, String email, double balance, String password) throws Exception {
         super(customerId, password, email, firstName, lastName);
         this.balance = balance;
     }

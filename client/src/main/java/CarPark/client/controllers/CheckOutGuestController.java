@@ -1,9 +1,8 @@
 package CarPark.client.controllers;
 
 import CarPark.client.SimpleChatClient;
-import CarPark.client.SimpleClient;
-import CarPark.entities.Customer;
-import CarPark.entities.messages.CheckOutMessage;
+import CarPark.client.*;
+import CarPark.entities.messages.*;
 import CarPark.entities.messages.Message;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -36,7 +35,7 @@ public class CheckOutGuestController {
         if (checkValidity())
         {
             CheckOutMessage checkOutMessage = new CheckOutMessage(Message.MessageType.REQUEST, CheckOutMessage.RequestType.CHECK_ME_OUT_GUEST,
-                    Long.parseLong(userId.getText()), Integer.parseInt(carNumber.getText()), false);
+                    userId.getText(), Integer.parseInt(carNumber.getText()), false);
             try {
                 SimpleClient.getClient().sendToServer(checkOutMessage);
             } catch (IOException e) {

@@ -13,7 +13,7 @@ public class Employee extends User {
 
 
 
-    public Employee(long employeeId, String firstName, String lastName, String email, String workersRole,String password) {
+    public Employee(String employeeId, String firstName, String lastName, String email, String workersRole, String password) {
         super(employeeId,password,email,firstName,lastName);
         this.workersRole = workersRole;
     }

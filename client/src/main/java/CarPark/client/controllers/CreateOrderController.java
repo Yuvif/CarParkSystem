@@ -27,7 +27,8 @@ import static CarPark.client.controllers.Controller.sendAlert;
 
 
 public class CreateOrderController {
-
+    @FXML
+    private Label userName;
     @FXML
     private ComboBox<java.io.Serializable> arrivalHour;
 
@@ -65,6 +66,7 @@ public class CreateOrderController {
     @FXML
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
+        userName.setText(SimpleClient.getCurrent_user().getFirstName());
         parkingLotsOpt.getItems().add("Haifa");
         parkingLotsOpt.getItems().add("Tel Aviv");
         parkingLotsOpt.getItems().add("Jerusalem");
@@ -226,7 +228,7 @@ public class CreateOrderController {
     private Order createOrder() {
         Order order = new Order();
         order.setCarId(Integer.parseInt(carIdTextBox.getText()));
-        order.setCustomerId(Integer.parseInt(idTextBox.getText()));
+        order.setCustomerId(idTextBox.getText());
         order.setParkingLotId(parkingLotsOpt.getValue());
         order.setEmail(emailAddress.getText());
 
@@ -258,7 +260,74 @@ public class CreateOrderController {
     }
 
     @FXML
-    void goBack(ActionEvent event) throws IOException {
-        SimpleChatClient.setRoot("CustomerPage");
+    private void newMembership(ActionEvent event)
+    {
+        Platform.runLater(()->
+        {
+            try {
+                SimpleChatClient.setRoot("RegisterAsMember");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    void myOrders(ActionEvent event)
+    {
+        Platform.runLater(()->
+        {
+            try {
+                SimpleChatClient.setRoot("MyOrders");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+
+    @FXML
+    void createNewOrder(ActionEvent event) throws IOException {
+        Platform.runLater(() -> {
+            try {
+                SimpleChatClient.setRoot("CreateOrder");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    void newComplaint(ActionEvent event) throws IOException {
+        Platform.runLater(() -> {
+            try {
+                SimpleChatClient.setRoot("ComplaintSubmission");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    void myComplaints(ActionEvent event) throws IOException{
+        Platform.runLater(() -> {
+            try {
+                SimpleChatClient.setRoot("MyComplaints");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    private void myMemberships(ActionEvent event) throws IOException {
+        Platform.runLater(()->
+        {
+            try {
+                SimpleChatClient.setRoot("MembershipsView");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

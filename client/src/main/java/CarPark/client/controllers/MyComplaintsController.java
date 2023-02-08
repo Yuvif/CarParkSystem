@@ -71,7 +71,7 @@ public class MyComplaintsController {
 
 
     @FXML
-    private void myMemberships(ActionEvent event) throws IOException {
+    private void myMemberships(ActionEvent event) {
         Platform.runLater(()->
         {
             try {
@@ -101,7 +101,7 @@ public class MyComplaintsController {
         Platform.runLater(()->
         {
             try {
-                SimpleChatClient.setRoot("OrdersTable");
+                SimpleChatClient.setRoot("MyOrders");
             } catch (IOException e) {
                 e.printStackTrace();
             }

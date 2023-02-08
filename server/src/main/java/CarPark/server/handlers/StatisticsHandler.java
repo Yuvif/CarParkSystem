@@ -35,7 +35,7 @@ public class StatisticsHandler extends MessageHandler{
         if (yesterdayStatistics.size() == 0) {
             class_message.response_type = StatisticsMessage.ResponseType.NO_STATISTICS_AVAILABLE;
         } else {
-            class_message.setStatistics((CarPark.entities.Statistics) yesterdayStatistics.get(0));
+            //class_message.setStatistics(Statistics)yesterdayStatistics.get(0));
             class_message.response_type = StatisticsMessage.ResponseType.STATISTICS;
         }
     }

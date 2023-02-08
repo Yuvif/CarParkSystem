@@ -81,10 +81,10 @@ public class LoginHandler extends MessageHandler {
     }
 
         private void generateEmployees() throws Exception {
-            Employee employee1 = new Employee(318172848,"Daniel","Glazman","glazman.daniel@gmail.com","ParkingLotWorker","1234567");
+            Employee employee1 = new Employee("318172848","Daniel","Glazman","glazman.daniel@gmail.com","ParkingLotWorker","1234567");
             session.save(employee1);
             session.flush();
-            Employee employee2 = new Employee(313598484,"Yuval","Fisher","fisheryuval96@gmail.com","CEO", "7777777");
+            Employee employee2 = new Employee("313598484","Yuval","Fisher","fisheryuval96@gmail.com","CEO", "7777777");
             session.save(employee2);
             session.flush();
         }

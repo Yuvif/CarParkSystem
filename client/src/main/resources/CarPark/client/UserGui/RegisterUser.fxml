@@ -14,7 +14,7 @@
 <AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.RegisterUserController">
    <ImageView fitHeight="516.0" fitWidth="508.0" layoutX="509.0">
       <image>
-         <Image url="@../../assets/background.png" />
+         <Image url="@../../../assets/background.png" />
       </image>
    </ImageView>
    <Label layoutX="726.0" layoutY="333.0" text="Makes Park Easy" textFill="WHITE">
@@ -90,7 +90,7 @@
                   <Font name="SansSerif Regular" size="14.0" />
               </font>
           </PasswordField>
-         <Button fx:id="signUpButton" layoutX="115.0" layoutY="335.0" mnemonicParsing="false" onAction="#signUp" prefHeight="30.0" prefWidth="84.0" style="-fx-background-radius: 50;" styleClass="mybutton" stylesheets="@../../assets/style.css" text="Sign Up">
+         <Button fx:id="signUpButton" layoutX="115.0" layoutY="335.0" mnemonicParsing="false" onAction="#signUp" prefHeight="30.0" prefWidth="84.0" style="-fx-background-radius: 50;" styleClass="mybutton" stylesheets="@../../../assets/style.css" text="Sign Up">
             <cursor>
                <Cursor fx:constant="HAND" />
             </cursor>
@@ -102,16 +102,16 @@
          </Label>
          <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="88.0" layoutY="22.0">
             <image>
-               <Image url="@../../assets/add-user.png" />
+               <Image url="@../../../assets/add-user.png" />
             </image>
          </ImageView>
       </children>
    </AnchorPane>
-   <Button layoutX="932.0" layoutY="440.0" mnemonicParsing="false" onAction="#loginPage" prefHeight="67.0" prefWidth="71.0" style="-fx-background-radius: 50;" styleClass="mybutton" stylesheets="@../../assets/style.css">
+   <Button layoutX="932.0" layoutY="440.0" mnemonicParsing="false" onAction="#loginPage" prefHeight="67.0" prefWidth="71.0" style="-fx-background-radius: 50;" styleClass="mybutton" stylesheets="@../../../assets/style.css">
       <graphic>
          <ImageView accessibleRole="BUTTON" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true">
             <image>
-               <Image url="@../../assets/backToLogin.png" />
+               <Image url="@../../../assets/backToLogin.png" />
             </image>
             <cursor>
                <Cursor fx:constant="HAND" />

@@ -12,7 +12,7 @@ public class Complaint implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int complaintId;
-    private long customerId;    //only for customers
+    private String customerId;    //only for customers
     @Column(name = "dateOfSubmit")
     private Date date;
 
@@ -36,20 +36,20 @@ public class Complaint implements Serializable {
         this.customer = customer;
     }
 
-    public Complaint(Date date, String compText, Parkinglot parkinglot, long customerId) {
+    public Complaint(Date date, String compText, Parkinglot parkinglot, String customerId) {
         this.date = date;
         this.compText = compText;
         this.customerId = customerId;
         setParkinglot(parkinglot);
     }
 
-    public Complaint(Date date, String text, long customerId) {
+    public Complaint(Date date, String text, String customerId) {
         this.date = date;
         this.compText = text;
         this.customerId = customerId;
     }
 
-    public Complaint(long customerId) {
+    public Complaint(String customerId) {
 
         this.customerId = customerId;
     }

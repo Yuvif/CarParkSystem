@@ -15,7 +15,7 @@
 <AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.CheckInGuestController">
     <ImageView fitHeight="516.0" fitWidth="508.0" layoutX="509.0">
         <image>
-            <Image url="@../../assets/background.png" />
+            <Image url="@../../../assets/background.png" />
         </image>
     </ImageView>
     <Label layoutX="726.0" layoutY="333.0" text="Makes Park Easy" textFill="WHITE">
@@ -64,7 +64,7 @@
                     <Cursor fx:constant="TEXT" />
                 </cursor>
             </TextField>
-            <Button fx:id="checkInB" layoutX="255.0" layoutY="345.0" mnemonicParsing="false" onAction="#checkIn" prefHeight="30.0" prefWidth="84.0" style="-fx-background-radius: 50;" styleClass="mybutton" stylesheets="@../../assets/style.css" text="Check-in">
+            <Button fx:id="checkInB" layoutX="255.0" layoutY="345.0" mnemonicParsing="false" onAction="#checkIn" prefHeight="30.0" prefWidth="84.0" style="-fx-background-radius: 50;" styleClass="mybutton" stylesheets="@../../../assets/style.css" text="Check-in">
                 <cursor>
                     <Cursor fx:constant="HAND" />
                 </cursor>
@@ -76,7 +76,7 @@
             </Label>
             <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="89.0" layoutY="26.0">
                 <image>
-                    <Image url="@../../assets/check-in.png" />
+                    <Image url="@../../../assets/check-in.png" />
                 </image>
             </ImageView>
          <ComboBox fx:id="plPick" layoutX="217.0" layoutY="237.0" prefHeight="25.0" prefWidth="139.0" style="-fx-background-color: #CFEEE1; -fx-background-radius: 20;" />
@@ -100,11 +100,11 @@
          <DatePicker fx:id="estLeavingDate" layoutX="37.0" layoutY="320.0" style="-fx-background-color: #CFEEE1; -fx-background-radius: 20;" />
         </children>
     </AnchorPane>
-   <Button layoutX="932.0" layoutY="440.0" mnemonicParsing="false" onAction="#loginPage" prefHeight="67.0" prefWidth="71.0" style="-fx-background-radius: 50;" styleClass="mybutton" stylesheets="@../../assets/style.css">
+   <Button layoutX="932.0" layoutY="440.0" mnemonicParsing="false" onAction="#loginPage" prefHeight="67.0" prefWidth="71.0" style="-fx-background-radius: 50;" styleClass="mybutton" stylesheets="@../../../assets/style.css">
       <graphic>
             <ImageView accessibleRole="BUTTON" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true">
                 <image>
-                    <Image url="@../../assets/backToLogin.png" />
+                    <Image url="@../../../assets/backToLogin.png" />
                 </image>
                 <cursor>
                     <Cursor fx:constant="HAND" />

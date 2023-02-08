@@ -2,7 +2,9 @@ package CarPark.client.controllers;
 
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
-import CarPark.client.events.NewSubscriberEvent;
+import CarPark.entities.Customer;
+import CarPark.entities.messages.Message;
+import CarPark.entities.messages.PricesMessage;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,6 +19,8 @@ public class CustomerPageController{
     @FXML
     private Label userName;
     @FXML
+    private Label balance;
+    @FXML
     private Button newMember;
 
     @FXML
@@ -24,10 +28,6 @@ public class CustomerPageController{
         SimpleChatClient.setRoot("RegisterAsMember");
     }
 
-    @FXML
-    public void createOrder(ActionEvent event) throws IOException {
-        SimpleChatClient.setRoot("CreateOrder");
-    }
     @FXML
     public void addComplaint(){}
 
@@ -37,11 +37,19 @@ public class CustomerPageController{
     @FXML
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
-        userName.setText("Hello, " + SimpleClient.getCurrent_user().getFirstName());
+        Customer current_customer = (Customer)SimpleClient.getCurrent_user();
+        PricesMessage msg = new PricesMessage
+                (Message.MessageType.REQUEST, PricesMessage.RequestType.GET_CURRENT_BALANCE,current_customer);
+        SimpleClient.getClient().sendToServer(msg);
+        userName.setText("Hello, " + current_customer.getFirstName());
     }
 
     @Subscribe
-    public void getStarterData(NewSubscriberEvent event) {
+    public void newResponse(PricesMessage new_message){
+        switch (new_message.response_type) {
+            case SET_CURRENT_BALANCE:
+                Platform.runLater(()->balance.setText(String.valueOf(new_message.price)));
+        }
     }
 
     @FXML
@@ -75,7 +83,7 @@ public class CustomerPageController{
         Platform.runLater(()->
         {
             try {
-                SimpleChatClient.setRoot("OrdersTable");
+                SimpleChatClient.setRoot("MyOrders");
             } catch (IOException e) {
                 e.printStackTrace();
             }

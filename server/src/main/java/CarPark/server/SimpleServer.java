@@ -70,7 +70,6 @@ public class SimpleServer extends AbstractServer {
         try {
             MessageHandler handler = null;
             Class<?> msgClass = msg.getClass();
-            System.out.println("Message received: " + msg + " from " + client);
             if (ConnectionMessage.class.equals(msgClass)) { //New client connection
                 SubscribedClient connection = new SubscribedClient(client);
                 SubscribersList.add(connection);
@@ -97,6 +96,8 @@ public class SimpleServer extends AbstractServer {
                     handler = new StatisticsHandler((StatisticsMessage) msg, session, client);
                 } else if (CheckInMessage.class.equals(msgClass)) {
                     handler = new CheckInHandler((CheckInMessage) msg, session, client);
+                }else if (ComplaintMessage.class.equals(msgClass)){
+                    handler = new ComplaintHandler((ComplaintMessage)msg,session,client);
                 }
                 if (handler != null) {
                     handler.handleMessage();

@@ -1,5 +1,6 @@
 package CarPark.server.handlers;
 
+import CarPark.entities.Customer;
 import CarPark.entities.Price;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.PricesMessage;
@@ -33,6 +34,9 @@ public class PricesTableHandler extends MessageHandler {
                 editPrice();
                 class_message.response_type = PricesMessage.ResponseType.PRICE_EDITED;
                 break;
+            case GET_CURRENT_BALANCE:
+                getCustomerBalance();
+                break;
         }
     }
 
@@ -47,6 +51,11 @@ public class PricesTableHandler extends MessageHandler {
         query.from(Price.class);
         List<Price> data = session.createQuery(query).getResultList();
         return data;
+    }
+    private void getCustomerBalance(){
+        Customer customer = session.get(Customer.class,class_message.customer.getId());
+        class_message.price = customer.getBalance();
+        class_message.response_type = PricesMessage.ResponseType.SET_CURRENT_BALANCE;
     }
 
     private void generatePricesTable() throws Exception {

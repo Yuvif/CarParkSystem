@@ -7,12 +7,12 @@ import javax.persistence.ManyToOne;
 public class LoginMessage extends Message {
     public RequestType request_type;
     public ResponseType response_type;
-    private long user_id;
+    private String user_id;
     private String password;
     @ManyToOne
     private User user;
 
-    public LoginMessage(MessageType request, RequestType logout, Long id) {
+    public LoginMessage(MessageType request, RequestType logout, String id) {
         super(request);
         this.request_type = logout;
         this.user_id = id;
@@ -22,7 +22,7 @@ public class LoginMessage extends Message {
         return user;
     }
 
-    public LoginMessage(MessageType message_type, RequestType request_type, long user_id, String pass) {
+    public LoginMessage(MessageType message_type, RequestType request_type, String user_id, String pass) {
         super(message_type);
         this.request_type = request_type;
         this.user_id = user_id;
@@ -45,11 +45,11 @@ public class LoginMessage extends Message {
         ALREADY_LOGGED
     }
 
-    public long getUserId() {
+    public String getUserId() {
         return user_id;
     }
 
-    public void setUserId(long user_id) {
+    public void setUserId(String user_id) {
         this.user_id = user_id;
     }
 

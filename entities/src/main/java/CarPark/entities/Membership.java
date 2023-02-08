@@ -1,11 +1,7 @@
 package CarPark.entities;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -17,7 +13,7 @@ public class Membership implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int membershipId;
-    private long customerId;
+    private String customerId;
     private int carId;
     private String routineParkingLot;
     private LocalTime routineLeavingHour;
@@ -37,7 +33,7 @@ public class Membership implements Serializable {
         this.customer = customer;
     }
 
-    public Membership(int membershipId, long customerId, int carId, String routineParkingLot, LocalTime routineLeavingHour,
+    public Membership(int membershipId, String customerId, int carId, String routineParkingLot, LocalTime routineLeavingHour,
                       LocalDateTime startDate, LocalDateTime endDate, String membershipType, double membershipsPrice) {
         super();
         this.membershipId = membershipId;
@@ -56,7 +52,7 @@ public class Membership implements Serializable {
     public long getMembershipId() {
         return membershipId;
     }
-    public long getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
     public long getCarId() {
@@ -80,7 +76,7 @@ public class Membership implements Serializable {
     public void setMembershipId(int membershipId) {
         this.membershipId = membershipId;
     }
-    public void setCustomerId(long customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
     public void setCarId(int carId) {

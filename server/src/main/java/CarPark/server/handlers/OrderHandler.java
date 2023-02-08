@@ -84,7 +84,7 @@ public class OrderHandler extends MessageHandler {
 
         for(Membership membership : memberships)
         {
-            if(membership.getCustomerId() == newOrder.getCustomerId() &&
+            if(membership.getCustomerId().equals(newOrder.getCustomerId()) &&
                     membership.getCarId() == newOrder.getCarId())
             {
                 return membership.getMembershipType();

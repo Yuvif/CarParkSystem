@@ -10,10 +10,7 @@ import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.util.Duration;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -22,6 +19,9 @@ import java.io.IOException;
 import java.util.Date;
 
 public class ComplaintSubmissionController extends Controller {
+
+    @FXML
+    private Label userName;
 
     @FXML // fx:id="complaintDesc"
     private TextField complaintDesc; // Value injected by FXMLLoader
@@ -42,7 +42,7 @@ public class ComplaintSubmissionController extends Controller {
     void sendComplaint(ActionEvent event) {
         if (checkEmpty()) {
 //            create a complaint with the description
-            Complaint complaint = new Complaint(new Date(), complaintDesc.getText(), Long.parseLong(customerIdT.getText()));
+            Complaint complaint = new Complaint(new Date(), complaintDesc.getText(), customerIdT.getText());
 //            create a list with the complaint
 //            send the complaint to the server
             ComplaintMessage complaintMessage = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.CREATE_NEW_COMPLAINT, complaint,

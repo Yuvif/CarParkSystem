@@ -63,7 +63,7 @@ public class RegisterUserController {
     }
 
     private Customer createCustomer() throws Exception {
-        Customer new_customer = new Customer(Long.parseLong(userID.getText()), firstName.getText(), lastName.getText(),
+        Customer new_customer = new Customer(userID.getText(), firstName.getText(), lastName.getText(),
                 email.getText(), 0, password.getText());
         return new_customer;
     }
@@ -123,9 +123,11 @@ public class RegisterUserController {
         switch (new_message.response_type) {
             case REGISTRATION_FAILED:
                 Platform.runLater(() -> wrongReg.setText("USER ID OR EMAIL ALREADY TAKEN!"));
+                break;
             case REGISTRATION_SUCCEEDED:
                 sendAlert("Registration succeed, welcome:" + new_message.newCustomer.getFirstName(),
                         "New User", Alert.AlertType.INFORMATION);
+                break;
         }
     }
 

@@ -25,7 +25,7 @@ public class MyOrdersController {
     @FXML
     private TableColumn<Order, LocalDateTime> arrivalCol;
     @FXML
-    private Button backButton;
+    private Label userName;
     @FXML
     private TableColumn<Order, Void> cancelCol;
     @FXML
@@ -42,6 +42,7 @@ public class MyOrdersController {
     void initialize() throws IOException
     {
         EventBus.getDefault().register(this);
+        userName.setText(SimpleClient.getCurrent_user().getFirstName());
         carIdCol.setCellValueFactory(new PropertyValueFactory<>("carId"));
         parkingLotCol.setCellValueFactory(new PropertyValueFactory<>("parkingLotId"));
         arrivalCol.setCellValueFactory(new PropertyValueFactory<>("arrivalTime"));
@@ -117,20 +118,81 @@ public class MyOrdersController {
         ordersTable.getColumns().add(cancelCol);
     }
 
-    public void goBack(ActionEvent actionEvent)
+
+    public void deleteRow()
     {
+
+    }
+
+    @FXML
+    private void myMemberships(ActionEvent event) throws IOException {
         Platform.runLater(()->
         {
             try {
-                SimpleChatClient.setRoot("CustomerPage");
+                SimpleChatClient.setRoot("MembershipsView");
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
     }
 
-    public void deleteRow()
+    @FXML
+    private void newMembership(ActionEvent event)
     {
+        Platform.runLater(()->
+        {
+            try {
+                SimpleChatClient.setRoot("RegisterAsMember");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
 
+    @FXML
+    void myOrders(ActionEvent event)
+    {
+        Platform.runLater(()->
+        {
+            try {
+                SimpleChatClient.setRoot("OrdersTable");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+
+    @FXML
+    void createNewOrder(ActionEvent event) throws IOException {
+        Platform.runLater(() -> {
+            try {
+                SimpleChatClient.setRoot("CreateOrder");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    void newComplaint(ActionEvent event) throws IOException {
+        Platform.runLater(() -> {
+            try {
+                SimpleChatClient.setRoot("ComplaintSubmission");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    void myComplaints(ActionEvent event) throws IOException{
+        Platform.runLater(() -> {
+            try {
+                SimpleChatClient.setRoot("MyComplaints");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
