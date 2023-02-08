@@ -1,6 +1,7 @@
 package CarPark.client.controllers;
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
+import CarPark.entities.Statistics;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.StatisticsMessage;
 import javafx.collections.FXCollections;
@@ -25,22 +26,25 @@ public class StatisticsController {
     private Button GoBack;
 
     @FXML
-    private TableColumn<String, String> noOfOrders;
-
-    @FXML
-    private TableColumn<String, String> ordersDelayed;
-
-    @FXML
-    private TableColumn<String, String> orderscanceled;
-
-    @FXML
     private ComboBox<String> parkingLotOpt;
 
     @FXML
     private DatePicker statisticsDate;
 
     @FXML
-    private TableColumn<?, String> totalIncome;
+    private TableColumn<Statistics, Integer> delayedEntries;
+
+    @FXML
+    private TableColumn<Statistics, Integer> totalRevenue;
+
+    @FXML
+    private TableColumn<Statistics, Integer> orders;
+
+    @FXML
+    private TableColumn<Statistics, Integer> ordersCancelled;
+
+    @FXML
+    private TableView<Statistics> table;
 
     @FXML
     void initialize() throws IOException {
@@ -60,20 +64,10 @@ public class StatisticsController {
                 setDisable(empty || date.compareTo(today) > 0);
             }
         });
-        noOfOrders.setCellValueFactory(new PropertyValueFactory<>("numberOfOrders"));
-        ordersDelayed.setCellValueFactory(new PropertyValueFactory<>("numberOfOrdersLate"));
-        orderscanceled.setCellValueFactory(new PropertyValueFactory<>("numberOfOrdersCancelled"));
-        totalIncome.setCellValueFactory(new PropertyValueFactory<>("totalRevenue"));
-//        wait for 5 seconds
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        noOfOrders.setText("0");
-        ordersDelayed.setText("1");
-        orderscanceled.setText("2");
-        totalIncome.setText("3");
+        orders.setCellValueFactory(new PropertyValueFactory<>("numberOfOrders"));
+        delayedEntries.setCellValueFactory(new PropertyValueFactory<>("numberOfOrdersLate"));
+        ordersCancelled.setCellValueFactory(new PropertyValueFactory<>("numberOfOrdersCancelled"));
+        totalRevenue.setCellValueFactory(new PropertyValueFactory<>("totalRevenue"));
     }
 
     @Subscribe
@@ -85,10 +79,7 @@ public class StatisticsController {
             }
             case STATISTICS -> {
                 System.out.println("StatisticsController: STATISTICS");
-                noOfOrders.setText(String.valueOf(msg.getStatistics().getNumberOfOrders()));
-                ordersDelayed.setText(String.valueOf(msg.getStatistics().getNumberOfOrdersLate()));
-                orderscanceled.setText(String.valueOf(msg.getStatistics().getNumberOfOrdersCancelled()));
-                totalIncome.setText(String.valueOf(msg.getStatistics().getTotalRevenue()));
+                table.setItems(FXCollections.observableArrayList(msg.getStatistics()));
             }
         }
     }

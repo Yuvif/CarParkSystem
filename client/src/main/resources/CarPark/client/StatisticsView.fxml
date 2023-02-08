@@ -13,8 +13,8 @@
    <children>
       <DatePicker fx:id="statisticsDate" layoutX="402.0" layoutY="60.0" />
       <ComboBox fx:id="parkingLotOpt" layoutX="231.0" layoutY="60.0" prefWidth="150.0" />
-      <TextField layoutX="402.0" layoutY="22.0" prefHeight="24.0" prefWidth="92.0" text="Chose date" />
-      <TextField layoutX="231.0" layoutY="22.0" prefHeight="24.0" prefWidth="86.0" text="Chose Lot" />
+      <TextField layoutX="402.0" layoutY="22.0" prefHeight="24.0" prefWidth="92.0" text="Choose date" />
+      <TextField layoutX="231.0" layoutY="22.0" prefHeight="24.0" prefWidth="86.0" text="Choose Lot" />
       <TextField prefHeight="24.0" prefWidth="198.0" text="Statistics">
          <font>
             <Font size="24.0" />
@@ -22,13 +22,13 @@
       </TextField>
       <Button fx:id="GoBack" layoutX="286.0" layoutY="331.0" mnemonicParsing="false" onAction="#GoBack" text="Go Back" />
       <Button fx:id="GetData" layoutX="360.0" layoutY="106.0" mnemonicParsing="false" onAction="#GetData" text="Get Data" />
-      <TableView layoutX="51.0" layoutY="161.0" prefHeight="66.0" prefWidth="510.0">
-         <columns>
-            <TableColumn fx:id="noOfOrders" prefWidth="125.0" text="No. of Orders" />
-            <TableColumn fx:id="ordersDelayed" prefWidth="145.0" text="Orders With Delay" />
-            <TableColumn fx:id="orderscanceled" prefWidth="133.0" text="Orders Canceled" />
-            <TableColumn fx:id="totalIncome" prefWidth="106.0" text="Total Income " />
-         </columns>
+      <TableView fx:id="table" layoutX="65.0" layoutY="180.0" prefHeight="61.0" prefWidth="431.0">
+        <columns>
+          <TableColumn fx:id="totalRevenue" prefWidth="112.0" text="Total Revenue" />
+          <TableColumn fx:id="orders" prefWidth="62.0" text="Orders" />
+            <TableColumn fx:id="ordersCancelled" prefWidth="135.0" text="Orders Cancelled" />
+            <TableColumn fx:id="delayedEntries" prefWidth="121.0" text="Delayed entries" />
+        </columns>
       </TableView>
    </children>
 </AnchorPane>
