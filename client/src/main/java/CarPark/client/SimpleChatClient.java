@@ -60,8 +60,12 @@ public class SimpleChatClient extends Application {
             LoginMessage logout = new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGOUT_BY_TERMINATION, String.valueOf(SimpleClient.getCurrent_user().getId()));
             SimpleClient.getClient().sendToServer(logout);
         }
+        try {
+            client.closeConnection();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
         EventBus.getDefault().unregister(this);
-        super.stop();
     }
 
     @Subscribe
