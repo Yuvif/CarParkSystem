@@ -69,6 +69,14 @@ public class ParkingSlot implements Serializable {
         this.parkinglot = parkinglot;
     }
 
+    public String getGeneratedValue() {
+        return generatedValue;
+    }
+
+    public void setGeneratedValue(String generatedValue) {
+        this.generatedValue = generatedValue;
+    }
+
     public Boolean getStatus() {
         return SpotStatus == Status.EMPTY;
     }
