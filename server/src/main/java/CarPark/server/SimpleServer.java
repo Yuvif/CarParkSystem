@@ -1,5 +1,6 @@
 package CarPark.server;
 
+
 import CarPark.entities.*;
 import CarPark.entities.messages.*;
 import CarPark.server.handlers.*;
@@ -30,17 +31,16 @@ import java.util.Properties;
 public class SimpleServer extends AbstractServer {
     private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
     public static Session session;// encapsulation make public function so this can be private
-    private OrderReminderThread orderReminderThread;
-    private MembershipReminderThread membershipReminderThread;
+
+
 
     public SimpleServer(int port) {
         super(port);
-//        OrderReminderThread orderReminderThread = new OrderReminderThread();
-//        orderReminderThread.start();
-        //MembershipReminderThread membershipReminderThread = new MembershipReminderThread();
-        //membershipReminderThread.start();
+        RemindersThread remindersThread = new RemindersThread();
+        remindersThread.start();
         StatisticsThread statisticsThread = new StatisticsThread();
         statisticsThread.start();
+
     }
 
 
@@ -94,10 +94,6 @@ public class SimpleServer extends AbstractServer {
                     handler = new RegisterUserHandler((RegisterUserMessage) msg, session, client);
                 } else if (StatisticsMessage.class.equals(msgClass)) {
                     handler = new StatisticsHandler((StatisticsMessage) msg, session, client);
-                } else if (CheckInMessage.class.equals(msgClass)) {
-                    handler = new CheckInHandler((CheckInMessage) msg, session, client);
-                }else if (ComplaintMessage.class.equals(msgClass)){
-                    handler = new ComplaintHandler((ComplaintMessage)msg,session,client);
                 }
                 if (handler != null) {
                     handler.handleMessage();
@@ -113,7 +109,7 @@ public class SimpleServer extends AbstractServer {
         }
     }
 
-    private void generateParkingLots() {
+    private static void generateParkingLots(Session session) {
         String current_id;
         List<Parkinglot> parkingLotList = new LinkedList<>();
         Parkinglot haifa = new Parkinglot("Haifa", 4, 36);
@@ -161,11 +157,12 @@ public class SimpleServer extends AbstractServer {
         }
     }
 
-    public static class OrderReminderThread extends Thread {
+    public static class RemindersThread extends Thread {
         @Override
         public void run() {
-            var session = getSessionFactory().openSession();
+            var yesterday = LocalDate.now().minusDays(1);
             while (true) {
+                var session = getSessionFactory().openSession();
 //              get all orders which their arrival time was between now and 5 minutes ago and orderStatus is APPROVED
                 var orders = session.createQuery("from Order where orderStatus = 'APPROVED' and arrivalTime between :five_minutes_ago and :now")
                         .setParameter("now", LocalDateTime.now())
@@ -191,11 +188,40 @@ public class SimpleServer extends AbstractServer {
                     session.update(order);
                 }
                 session.getTransaction().commit();
+
+//              ---- now for membership reminders ----
+
+                var today = LocalDate.now();
+                if(today != yesterday) {
+                    yesterday = today;
+                    LocalDateTime start = LocalDateTime.of(today, LocalTime.MIN);
+                    var memberships = session.createQuery("from Membership where endDate between :now and :seven_days_from_now")
+                            .setParameter("now", LocalDateTime.of(today, LocalTime.MIN).plusDays(6))
+                            .setParameter("seven_days_from_now", LocalDateTime.of(today, LocalTime.MIN).plusDays(7))
+                            .getResultList();
+                    //              for each membership get the customerId attribute and get the list of Customer objects having that id
+                    for (Object membership : memberships) {
+                        //              get the customer object that has the same customerId as the membership
+                        var customer = session.createQuery("from Customer where userId = :id")
+                                .setParameter("id", ((Membership) membership).getCustomerId())
+                                .list();
+                        //                  get the email from the customer object
+                        String email = ((Customer) customer.get(0)).getEmail();
+                        String subject = "Your membership is about to expire";
+                        //                    send a text with the expiration date
+                        String text = "Hi there, \nWe'd like to inform you that your membership is about to expire on " + ((Membership) membership).getEndDate().toLocalDate() + " at "
+                                + ((Membership) membership).getEndDate().toLocalTime() + ".\nYou can login to your" +
+                                " account in order to renew it :)" + "\n\nBest regards,\nCarParkSystem";
+                        EmailSender.sendEmail(email, subject, text);
+                    }
+                }
+
                 try {
-                    Thread.sleep(120000);
+                    Thread.sleep(180000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                session.close();
             }
         }
     }
@@ -203,18 +229,18 @@ public class SimpleServer extends AbstractServer {
     public static class StatisticsThread extends Thread {
         @Override
         public void run() {
-            var session = getSessionFactory().openSession();
             while (true) {
+                    var session = getSessionFactory().openSession();
                     var parkingLots = session.createQuery("from Parkinglot").list();
                     for (Object parkingLot : parkingLots) {
 //                        check if there is an entry for yesterday
+                        String parkingLotId = String.valueOf(((Parkinglot) parkingLot).getParkingLotId());
                         var yesterday = LocalDate.now().minusDays(1);
                         var yesterdayStatistics = session.createQuery("from Statistics where parkingLotId = :parkingLotId and date = :date")
-                                .setParameter("parkingLotId", ((Parkinglot) parkingLot).getId())
+                                .setParameter("parkingLotId", parkingLotId)
                                 .setParameter("date", yesterday)
                                 .getResultList();
                         if (yesterdayStatistics.size() == 0) {
-                            String parkingLotId = String.valueOf(((Parkinglot) parkingLot).getParkingLotId());
                             //                        select all orders from the begiining of yesterday to the end of yesterday
 //                            wrap yesterday in a LocalDateTime object
                             LocalDateTime yesterdayStart = LocalDateTime.of(yesterday, LocalTime.MIN);
@@ -224,6 +250,7 @@ public class SimpleServer extends AbstractServer {
                                     .setParameter("yesterday_start", yesterdayStart)
                                     .setParameter("yesterday_end", yesterdayEnd)
                                     .getResultList();
+
                             int totalOrders = orders.size();
                             int numberOfOrdersCancelled = 0;
                             int numberOfOrdersLate = 0;
@@ -248,49 +275,33 @@ public class SimpleServer extends AbstractServer {
                             session.getTransaction().commit();
                         }
                     }
+//                    delete all expired memberships from the database
+                    var expiredMemberships = session.createQuery("from Membership where endDate < :now")
+                            .setParameter("now", LocalDateTime.now())
+                            .getResultList();
+                    session.beginTransaction();
+                    for (Object membership : expiredMemberships) {
+                        session.delete(membership);
+                    }
+//                    Have to add 'CHECKED_OUT' as a status for orders
+//                    var expiredOrders = session.createQuery("from Order where orderStatus = 'CHECKED_OUT'")
+//                            .getResultList();
+//                    for (Object order : expiredOrders) {
+//                        session.delete(order);
+//                    }
+                    session.getTransaction().commit();
                 try {
                     Thread.sleep(86400000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                session.close();
             }
         }
     }
 
 
-    public static class MembershipReminderThread extends Thread {
-        @Override
-        public void run() {
-            while (true) {
-                var session = getSessionFactory().openSession();
-                var memberships = session.createQuery("from Membership where endDate between :now and :seven_days_from_now")
-                        .setParameter("now", LocalDateTime.now())
-                        .setParameter("seven_days_from_now", LocalDateTime.now().plusDays(7))
-                        .getResultList();
-//              for each membership get the customerId attribute and get the list of Customer objects having that id
-                for (Object membership : memberships) {
-//              get the customer object that has the same customerId as the membership
-                    var customer = session.createQuery("from Customer where userId = :id")
-                            .setParameter("id", ((Membership) membership).getCustomerId())
-                            .list();
-//                  get the email from the customer object
-                    String email = ((Customer) customer.get(0)).getEmail();
-                    String subject = "Your membership is about to expire";
-//                    send a text with the expiration date
-                    String text = "Hi there, \nWe'd like to inform you that your membership is about to expire on " + ((Membership) membership).getEndDate().toLocalDate() +" at "
-                     + ((Membership) membership).getEndDate().toLocalTime() + ".\nYou can login to your" +
-                            " account in order to renew it :)"+"\n\nBest regards,\nCarParkSystem";
-                    EmailSender.sendEmail(email, subject, text);
-                }
-                // now wait for 7 days
-                try {
-                    Thread.sleep(604000000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
+
 
     public static class EmailSender {
         public static void sendEmail(String to, String subject, String text) {
