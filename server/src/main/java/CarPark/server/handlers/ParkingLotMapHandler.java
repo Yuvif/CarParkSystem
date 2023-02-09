@@ -38,6 +38,16 @@ public class ParkingLotMapHandler extends MessageHandler {
         return data;
     }
 
+    public void updateParkingSlotsTable(List<ParkingSlot> parkingSlotList)
+    {
+        for(ParkingSlot parkingSlot : parkingSlotList)
+        {
+            ParkingSlot currParkingSlot = session.get(ParkingSlot.class, parkingSlot.getSerialId());
+            currParkingSlot.setSpotStatus(parkingSlot.getSpotStatus());
+            session.update(currParkingSlot);
+        }
+    }
+
     @Override
     public void handleMessage() throws Exception {
         switch (class_message.request_type) {
@@ -47,10 +57,11 @@ public class ParkingLotMapHandler extends MessageHandler {
                 break;
             case GET_PARKING_SLOTS:
                 class_message.parkingSlots = getParkingSlots();
+                class_message.rows = getParkingLotRows();
                 class_message.response_type = ParkingLotMapMessage.ResponseType.SEND_PARKING_SLOTS;
                 break;
             case SHOW_PARKING_LOT_MAP:
-                //algorithm-*********************
+                updateParkingSlotsTable(class_message.parkingSlots);
                 class_message.response_type = ParkingLotMapMessage.ResponseType.SEND_PARKING_LOT_MAP;
                 break;
             case ARRANGE_MAP:

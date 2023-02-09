@@ -4,9 +4,13 @@ import CarPark.entities.ParkingSlot;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.ParkingLotMapMessage;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import org.greenrobot.eventbus.EventBus;
 import javafx.event.ActionEvent;
@@ -37,18 +41,18 @@ public class ParkingLotMapController {
     private ComboBox<String> parkingLotChoice;
 
     @FXML
-    private ComboBox<Integer> floorChoice;
+    private ComboBox<String> floorChoice;
 
     @FXML
     void goBack(ActionEvent event) {}
 
     int rows;
     List<ParkingSlot> parkingSlotsList;
+    ParkingSlot changedStatus;
 
     @FXML
     void getParkingLotRowNum(ActionEvent event)
     {
-
         ParkingLotMapMessage message = new ParkingLotMapMessage(Message.MessageType.REQUEST, ParkingLotMapMessage.RequestType.GET_ROW,
                 parkingLotChoice.getValue());
         try {
@@ -65,49 +69,77 @@ public class ParkingLotMapController {
             e.printStackTrace();
         }
 
+        if(floorChoice.getValue() == null)
+        {
+            createParkingLotMap("A");
+            setOccupiedSlots("A");
+        }
     }
 
 
     @FXML
     void chooseFloor(ActionEvent event)
     {
-        ParkingLotMapMessage message = new ParkingLotMapMessage(Message.MessageType.REQUEST, ParkingLotMapMessage.RequestType.GET_PARKING_SLOTS, parkingLotChoice.getValue());
+        ParkingLotMapMessage message = new ParkingLotMapMessage(Message.MessageType.REQUEST,
+                ParkingLotMapMessage.RequestType.GET_PARKING_SLOTS, parkingLotChoice.getValue());
         try {
             SimpleClient.getClient().sendToServer(message);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        if(floorChoice.getValue() == 0)
+        if(Objects.equals(floorChoice.getValue(), "A"))
         {
             createParkingLotMap("A");
             setOccupiedSlots("A");
         }
-        else if(floorChoice.getValue() == 1)
+        else if(Objects.equals(floorChoice.getValue(), "B"))
         {
             createParkingLotMap("B");
             setOccupiedSlots("B");
         }
-        else if(floorChoice.getValue() == 2)
+        else if(Objects.equals(floorChoice.getValue(), "C"))
         {
             createParkingLotMap("C");
             setOccupiedSlots("C");
         }
     }
 
-    public boolean isOccupied(String slotId, String parkingLotId)
+    public int isOccupied(String slotId, String parkingLotId)
     {
         for(ParkingSlot parkingSlot : parkingSlotsList)
         {
+            if(!String.valueOf(parkingSlot.getGeneratedValue().charAt(0)).equals(findParkingLotsIndex(parkingLotChoice.getValue())))
+            {
+                continue;
+            }
+
             if(Objects.equals(Integer.parseInt(parkingLotId), parkingSlot.getParkinglot().getParkingLotId()) &&
-                    parkingSlot.getGeneratedValue().contains(slotId) &&
+                    parkingSlot.getGeneratedValue().substring(2).equals(slotId) &&
+                Objects.equals(String.valueOf(parkingSlot.getSpotStatus()), "EMPTY"))
+            {
+                return 0;
+            }
+            else if(Objects.equals(Integer.parseInt(parkingLotId), parkingSlot.getParkinglot().getParkingLotId()) &&
+                    parkingSlot.getGeneratedValue().substring(2).equals(slotId) &&
                     Objects.equals(String.valueOf(parkingSlot.getSpotStatus()), "USED"))
             {
-                System.out.println(parkingSlot.getParkinglot().getParkingLotId());
-                return true;
+                return 1;
+            }
+            else if(Objects.equals(Integer.parseInt(parkingLotId), parkingSlot.getParkinglot().getParkingLotId()) &&
+                    parkingSlot.getGeneratedValue().substring(2).equals(slotId) &&
+                    Objects.equals(String.valueOf(parkingSlot.getSpotStatus()), "RESTRICTED"))
+            {
+                return 2;
+            }
+            else if(Objects.equals(Integer.parseInt(parkingLotId), parkingSlot.getParkinglot().getParkingLotId()) &&
+                    parkingSlot.getGeneratedValue().substring(2).equals(slotId) &&
+                    Objects.equals(String.valueOf(parkingSlot.getSpotStatus()), "RESERVED"))
+            {
+                return 3;
             }
         }
-        return false;
+        return -1;
     }
 
     @FXML
@@ -121,7 +153,6 @@ public class ParkingLotMapController {
                 Rectangle rect = new Rectangle(100, 50);
                 rect.setFill(Color.LIGHTGRAY);
                 rect.setStroke(Color.BLACK);
-                //rect.setOnMouseClicked(event -> rect.setFill(Color.GREEN));
                 parkingLotMap.add(rect, col, row);
                 Text label = new Text(floor + (1 + row * rows + col));
 
@@ -151,17 +182,121 @@ public class ParkingLotMapController {
         {
             for (int col = 0; col < rows; col++)
             {
-                Text label = new Text(floor + (1 + row * rows + col));
-                Rectangle rect = new Rectangle(100, 50);
-                if (isOccupied(String.valueOf(label.getText()), findParkingLotsIndex(parkingLotChoice.getValue())))
+                String label = floor + (1 + row * rows + col);
+
+                System.out.println(label);
+
+                Text labelText = new Text(floor + (1 + row * rows + col));
+                Rectangle rect = (Rectangle)getNodeByRowColumnIndex(row, col, parkingLotMap);
+
+                if (isOccupied(label, findParkingLotsIndex(parkingLotChoice.getValue())) == 0)
                 {
-                    rect.setFill(Color.RED);
-                    parkingLotMap.add(rect, col, row);
-                    parkingLotMap.add(label, col, row);
+                    rect.setFill(Color.LIGHTGRAY); //dye the rectangle represents the slot in light gray if it's vacant
+                    parkingLotMap.add(labelText, col, row);
+                }
+                else if (isOccupied(label, findParkingLotsIndex(parkingLotChoice.getValue())) == 1)
+                {
+                    rect.setFill(Color.GREEN); //dye the rectangle represents the parking slot in green if it's occupied
+                    parkingLotMap.add(labelText, col, row);
+                }
+                else if (isOccupied(label, findParkingLotsIndex(parkingLotChoice.getValue())) == 2)
+                {
+                    rect.setFill(Color.RED); //dye the rectangle represents the parking slot in green if it's faulty
+                    parkingLotMap.add(labelText, col, row);
+                }
+                else if (isOccupied(label, findParkingLotsIndex(parkingLotChoice.getValue())) == 3)
+                {
+                    rect.setFill(Color.BLUE); //dye the rectangle represents the parking slot in blue if it's reserved
+                    parkingLotMap.add(labelText, col, row);
+                }
+
+                //By clicking on an empty slot
+                Paint currentColor = rect.getFill();
+                if(currentColor != Color.GREEN)
+                {
+                    rect.setOnMouseClicked(event -> {
+                        Paint currentColor2 = rect.getFill();
+                        if (currentColor2 == Color.BLUE) {
+                            rect.setFill(Color.RED);
+                        } else if (currentColor2 == Color.RED) {
+                            rect.setFill(Color.LIGHTGRAY);
+                        } else {
+                            rect.setFill(Color.BLUE);
+                        }
+                    });
                 }
             }
         }
     }
+
+    public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane)
+    {
+        Node result = null;
+        ObservableList<Node> children = gridPane.getChildren();
+
+        for (Node node : children) {
+            if(GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column)
+            {
+                result = node;
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    @FXML
+    void submitChanges(ActionEvent event)
+    {
+        for (ParkingSlot parkingSlot : parkingSlotsList)
+        {
+            if(!String.valueOf(parkingSlot.getGeneratedValue().charAt(0)).equals(findParkingLotsIndex(parkingLotChoice.getValue())))
+            {
+                continue;
+            }
+
+            Node rect;
+            String label;
+            for (int row = 0; row < 3; row++)
+            {
+                for (int col = 0; col < rows; col++)
+                {
+                    rect = getNodeByRowColumnIndex(row, col, parkingLotMap);
+                    label =  floorChoice.getValue() + (1 + row * rows + col);
+                    Rectangle rectangle = (Rectangle)rect;
+
+                    Paint currentColor = rectangle.getFill();
+
+                    System.out.println(currentColor.toString());
+
+                    if (currentColor == Color.RED && parkingSlot.getGeneratedValue().substring(2).equals(label))
+                    {
+                        System.out.println("1 " + label);
+                        parkingSlot.setStatus(ParkingSlot.Status.valueOf("RESTRICTED"));
+                    }
+                    else if (currentColor == Color.BLUE && parkingSlot.getGeneratedValue().substring(2).equals(label))
+                    {
+                        System.out.println("2 " + label);
+                        parkingSlot.setStatus(ParkingSlot.Status.valueOf("RESERVED"));
+                    }
+                    else if (currentColor == Color.LIGHTGRAY && parkingSlot.getGeneratedValue().substring(2).equals(label))
+                    {
+                        System.out.println("3 " + label);
+                        parkingSlot.setStatus(ParkingSlot.Status.valueOf("EMPTY"));
+                    }
+                }
+            }
+        }
+
+        ParkingLotMapMessage message = new ParkingLotMapMessage(Message.MessageType.REQUEST,
+                ParkingLotMapMessage.RequestType.SHOW_PARKING_LOT_MAP, parkingSlotsList);
+        try {
+            SimpleClient.getClient().sendToServer(message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @FXML
     void initialize() throws IOException {
@@ -172,9 +307,9 @@ public class ParkingLotMapController {
         parkingLotChoice.getItems().add("Be'er Sheva");
         parkingLotChoice.getItems().add("Eilat");
 
-        floorChoice.getItems().add(0);
-        floorChoice.getItems().add(1);
-        floorChoice.getItems().add(2);
+        floorChoice.getItems().add("A");
+        floorChoice.getItems().add("B");
+        floorChoice.getItems().add("C");
         floorChoice.setPromptText("Choose Floor");
     }
 
@@ -184,7 +319,7 @@ public class ParkingLotMapController {
             case SET_ROW:
                 Platform.runLater(() -> {
                     this.rows = new_message.rows;
-                    createParkingLotMap("A");
+                    floorChoice.setValue("Floor");
                 });
                 break;
             case SEND_PARKING_SLOTS:

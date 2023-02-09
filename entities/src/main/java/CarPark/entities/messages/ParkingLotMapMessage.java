@@ -31,4 +31,10 @@ public class ParkingLotMapMessage extends Message{
         this.request_type = request_type;
         this.pl_name = pl_name;
     }
+
+    public ParkingLotMapMessage(MessageType message_type, RequestType request_type, List<ParkingSlot> parkingSlots) {
+        super(message_type);
+        this.request_type = request_type;
+        this.parkingSlots = parkingSlots;
+    }
 }

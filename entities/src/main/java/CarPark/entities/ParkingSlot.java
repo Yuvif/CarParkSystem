@@ -48,6 +48,7 @@ public class ParkingSlot implements Serializable {
     public String getId() {
         return generatedValue;
     }
+    public Long getSerialId() { return id; }
 
     public Status getSpotStatus() {
         return SpotStatus;
@@ -80,5 +81,6 @@ public class ParkingSlot implements Serializable {
     public Boolean getStatus() {
         return SpotStatus == Status.EMPTY;
     }
-    public enum Status {EMPTY, USED, RESTRICTED, RESERVED}
+    public void setStatus(Status spotStatus) { this.SpotStatus = spotStatus; }
+    public enum Status {EMPTY, USED, RESERVED, RESTRICTED}
 }
