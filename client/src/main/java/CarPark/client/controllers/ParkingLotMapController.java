@@ -7,7 +7,6 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Paint;
@@ -50,6 +49,8 @@ public class ParkingLotMapController {
     List<ParkingSlot> parkingSlotsList;
     ParkingSlot changedStatus;
 
+
+    //get the size of the parking lot in order to render its map using suitable messages
     @FXML
     void getParkingLotRowNum(ActionEvent event)
     {
@@ -88,6 +89,7 @@ public class ParkingLotMapController {
             e.printStackTrace();
         }
 
+        //by choosing the desired floor we render the chosen floor view
         if(Objects.equals(floorChoice.getValue(), "A"))
         {
             createParkingLotMap("A");
@@ -105,6 +107,8 @@ public class ParkingLotMapController {
         }
     }
 
+
+    //check the status of the slot
     public int isOccupied(String slotId, String parkingLotId)
     {
         for(ParkingSlot parkingSlot : parkingSlotsList)
@@ -142,6 +146,11 @@ public class ParkingLotMapController {
         return -1;
     }
 
+
+    /**
+     * render the basic parking lot map - using the sizes we've got before
+     */
+
     @FXML
     public void createParkingLotMap(String floor)
     {
@@ -161,6 +170,9 @@ public class ParkingLotMapController {
         }
     }
 
+    /**
+     * find the parking lot index through the combo-box order
+     */
     public String findParkingLotsIndex(String name)
     {
         List<String> parkingLotList = parkingLotChoice.getItems();
@@ -176,6 +188,15 @@ public class ParkingLotMapController {
         return String.valueOf(index);
     }
 
+
+    /**
+     * An important function that allows the parking lot worker to manage the parking lot slots.
+     * By clicking the rectangle, representing the slot, the worker changes the status of the slot as follows:
+     * (one click for each color and status transition)
+     * 1. EMPTY -> RESTRICTED: LightGray -> Red
+     * 2. RESTRICTED -> RESERVED: Red -> Blue
+     * 3. RESERVED -> EMPTY: Blue -> LightGray
+     */
     public void setOccupiedSlots(String floor)
     {
         for (int row = 0; row < 3; row++)
@@ -183,8 +204,6 @@ public class ParkingLotMapController {
             for (int col = 0; col < rows; col++)
             {
                 String label = floor + (1 + row * rows + col);
-
-                System.out.println(label);
 
                 Text labelText = new Text(floor + (1 + row * rows + col));
                 Rectangle rect = (Rectangle)getNodeByRowColumnIndex(row, col, parkingLotMap);
@@ -229,6 +248,7 @@ public class ParkingLotMapController {
         }
     }
 
+
     public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane)
     {
         Node result = null;
@@ -244,6 +264,13 @@ public class ParkingLotMapController {
 
         return result;
     }
+
+
+    /**
+     * By clicking on the Submit button the worker confirms the changes that have been made.
+     * The parking slots DB will be updated accordingly, by sending the updated list of objects
+     * to the server.
+     */
 
     @FXML
     void submitChanges(ActionEvent event)
@@ -264,10 +291,7 @@ public class ParkingLotMapController {
                     rect = getNodeByRowColumnIndex(row, col, parkingLotMap);
                     label =  floorChoice.getValue() + (1 + row * rows + col);
                     Rectangle rectangle = (Rectangle)rect;
-
                     Paint currentColor = rectangle.getFill();
-
-                    System.out.println(currentColor.toString());
 
                     if (currentColor == Color.RED && parkingSlot.getGeneratedValue().substring(2).equals(label))
                     {
@@ -297,7 +321,7 @@ public class ParkingLotMapController {
         }
     }
 
-
+  //initialize the GUI
     @FXML
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
@@ -324,8 +348,6 @@ public class ParkingLotMapController {
                 break;
             case SEND_PARKING_SLOTS:
                 this.parkingSlotsList = new_message.parkingSlots;
-                break;
-            case SEND_ARRANGED_MAP:
                 break;
             case SEND_PARKING_LOT_MAP:
                 break;

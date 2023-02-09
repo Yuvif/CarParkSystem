@@ -15,15 +15,13 @@ public class ParkingLotMapMessage extends Message{
     public enum RequestType {
         GET_ROW,
         GET_PARKING_SLOTS,
-        SHOW_PARKING_LOT_MAP,
-        ARRANGE_MAP
+        SHOW_PARKING_LOT_MAP
     }
 
     public enum ResponseType {
         SET_ROW,
         SEND_PARKING_SLOTS,
-        SEND_PARKING_LOT_MAP,
-        SEND_ARRANGED_MAP
+        SEND_PARKING_LOT_MAP
     }
 
     public ParkingLotMapMessage(MessageType message_type, RequestType request_type, String pl_name) {

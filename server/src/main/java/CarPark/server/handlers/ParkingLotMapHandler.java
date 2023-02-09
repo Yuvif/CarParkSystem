@@ -64,10 +64,6 @@ public class ParkingLotMapHandler extends MessageHandler {
                 updateParkingSlotsTable(class_message.parkingSlots);
                 class_message.response_type = ParkingLotMapMessage.ResponseType.SEND_PARKING_LOT_MAP;
                 break;
-            case ARRANGE_MAP:
-                //update the map
-                class_message.response_type = ParkingLotMapMessage.ResponseType.SEND_ARRANGED_MAP;
-                break;
         }
     }
 }
