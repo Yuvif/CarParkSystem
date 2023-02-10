@@ -75,6 +75,9 @@ public class SimpleServer extends AbstractServer {
                 SubscribedClient connection = new SubscribedClient(client);
                 SubscribersList.add(connection);
                 session = getSessionFactory().openSession();// Create new session for connection
+//                session.beginTransaction();
+//                generateParkingLots();
+//                session.getTransaction().commit();
             } else { //Get client requests
                 session.beginTransaction();
                 if (LoginMessage.class.equals(msgClass)) {
@@ -97,6 +100,8 @@ public class SimpleServer extends AbstractServer {
                     handler = new StatisticsHandler((StatisticsMessage) msg, session, client);
                 } else if (CheckInMessage.class.equals(msgClass)) {
                     handler = new CheckInHandler((CheckInMessage) msg, session, client);
+                }else if (ComplaintMessage.class.equals(msgClass)) {
+                    handler = new ComplaintHandler((ComplaintMessage) msg, session, client);
                 }
                 if (handler != null) {
                     handler.handleMessage();
@@ -111,6 +116,7 @@ public class SimpleServer extends AbstractServer {
             exception.printStackTrace();
         }
     }
+
 
     private void generateParkingLots() {
         String current_id;
@@ -158,6 +164,14 @@ public class SimpleServer extends AbstractServer {
                 }
             }
         }
+        //session.beginTransaction();
+//        Complaint complaint = new Complaint(new Date(), "Hey, I want to create a new complaint", eilat, 207944414);
+//        session.save(complaint);
+//        session.flush();
+//        Complaint complaint2 = new Complaint(new Date(), "Hello ! I want to complaint about your service", haifa, 987654321);
+//        session.save(complaint2);
+//        session.flush();
+        //session.getTransaction().commit();
     }
 
     public static class OrderReminderThread extends Thread {

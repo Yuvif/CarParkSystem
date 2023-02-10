@@ -5,11 +5,16 @@
 package CarPark.client.controllers;
 
 import CarPark.client.SimpleChatClient;
+import CarPark.client.SimpleClient;
 import CarPark.entities.Complaint;
+import CarPark.entities.Employee;
 import CarPark.entities.messages.ComplaintMessage;
 import CarPark.entities.messages.Message;
+import antlr.ASTNULLType;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleLongProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,10 +26,32 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Date;
-import java.util.ResourceBundle;
+import java.util.*;
+
 
 public class ComplaintInspectionTableController extends Controller {
+
+
+    @FXML
+    private Button backBtn;
+
+    @FXML
+    private Label expireLabel;
+
+    @FXML // fx:id="complaintsTableView"
+    private TableView<Complaint> complaintsTableView; // Value injected by FXMLLoader
+
+    @FXML // fx:id="customerid"
+    private TableColumn<Complaint, Long> customerid; // Value injected by FXMLLoader
+
+    @FXML // fx:id="desc"
+    private TableColumn<Complaint, String> desc; // Value injected by FXMLLoader
+
+    @FXML // fx:id="plotID"
+    private TableColumn<Complaint, String> plotID; // Value injected by FXMLLoader
+
+    @FXML // fx:id="subDate"
+    private TableColumn<Complaint, Date> subDate; // Value injected by FXMLLoader
 
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -33,45 +60,40 @@ public class ComplaintInspectionTableController extends Controller {
     private URL location;
 
 
-    @FXML // fx:id="dateCol"
-    private TableColumn<Complaint, Date> dateCol; // Value injected by FXMLLoader
-
-    @FXML
-    private Label expireLabel;
-
-    @FXML // fx:id="inspectBtnsCol"
-    private TableColumn<Complaint, Button> inspectBtnsCol; // Value injected by FXMLLoader
-
-   // @FXML // fx:id="nameCol"
-    //private TableColumn<Complaint, String> nameCol; // Value injected by FXMLLoader
-
-    @FXML // fx:id="statusCol"
-    private TableColumn<Complaint, String> statusCol; // Value injected by FXMLLoader
-
-    @FXML // fx:id="tableView"
-    private TableView<Complaint> tableView; // Value injected by FXMLLoader
-
-    @FXML
-    private TableColumn<Complaint, Void> btnCol;
 
     @FXML
         // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
         EventBus.getDefault().register(this);
-        assert dateCol != null : "fx:id=\"dateCol\" was not injected: check your FXML file 'ComplaintInspectionTable.fxml'.";
-        assert inspectBtnsCol != null : "fx:id=\"inspectBtnsCol\" was not injected: check your FXML file 'ComplaintInspectionTable.fxml'.";
-       // assert nameCol != null : "fx:id=\"nameCol\" was not injected: check your FXML file 'ComplaintInspectionTable.fxml'.";
-        assert statusCol != null : "fx:id=\"statusCol\" was not injected: check your FXML file 'ComplaintInspectionTable.fxml'.";
-        assert tableView != null : "fx:id=\"tableView\" was not injected: check your FXML file 'ComplaintInspectionTable.fxml'.";
+        assert subDate != null : "fx:id=\"subDate\" was not injected: check your FXML file 'ComplaintInspectionTable.fxml'.";
+        assert desc != null : "fx:id=\"desc\" was not injected: check your FXML file 'ComplaintInspectionTable.fxml'.";
+        assert plotID != null : "fx:id=\"plotID\" was not injected: check your FXML file 'ComplaintInspectionTable.fxml'.";
+        assert customerid != null : "fx:id=\"customerid\" was not injected: check your FXML file 'ComplaintInspectionTable.fxml'.";
+        //assert btnCol != null : "fx:id=\"btnCol\" was not injected: check your FXML file 'ComplaintInspectionTable.fxml'.";
+        assert complaintsTableView != null : "fx:id=\"complaintsTableView\" was not injected: check your FXML file 'ComplaintInspectionTable.fxml'.";
 
-        dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
-        dateCol.setStyle("-fx-alignment: CENTER");
+        subDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        subDate.setStyle("-fx-alignment: CENTER");
 
-        statusCol.setCellValueFactory(cellData -> {
-            boolean status = cellData.getValue().getAppStatus();
-            return new ReadOnlyStringWrapper(status ? "Open" : "Closed");
-        });
-        statusCol.setStyle("-fx-alignment:e CENTER");
+        //desc.setCellValueFactory(new PropertyValueFactory<>("description"));
+        desc.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getCompText()));
+        desc.setStyle("-fx-alignment: CENTER");
+
+        //plotID.setCellValueFactory(new PropertyValueFactory<>("parkinglot id"));
+        plotID.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getParkinglot().getName()));
+        plotID.setStyle("-fx-alignment: CENTER");
+
+       // customerid.setCellValueFactory(new PropertyValueFactory<>("customer id"));
+
+        customerid.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getCustomer().getId()).asObject());
+        customerid.setStyle("-fx-alignment: CENTER");
+
+
+//        status.setCellValueFactory(cellData -> {
+//            String status = cellData.getValue();
+//            return new ReadOnlyStringWrapper(status ? "Open" : "Closed");
+//        });
+//        status.setStyle("-fx-alignment:e CENTER");
 
         addButtonToTable();
 
@@ -88,7 +110,7 @@ public class ComplaintInspectionTableController extends Controller {
      * Adding button to each instance in the table.
      */
     private void addButtonToTable() {
-        btnCol = new TableColumn("Inspect complaint");
+        TableColumn btnCol = new TableColumn("Inspect complaint");
 
         Callback<TableColumn<Complaint, Void>, TableCell<Complaint, Void>> cellFactory = new Callback<>() {
             @Override
@@ -96,13 +118,31 @@ public class ComplaintInspectionTableController extends Controller {
                 final TableCell<Complaint, Void> cell = new TableCell<>() {
 
                     private final Button btn = new Button("Action");
-
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             Complaint complaint = getTableView().getItems().get(getIndex());
-//                            goToComplaintInspection(complaint);
+                            //send message to the server with the complaint
+
+                            ComplaintMessage msg = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.GET_OPEN_COMPLAINT, complaint);
+                            try {
+                                SimpleClient.getClient().sendToServer(msg);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            if (SimpleClient.getCurrent_user() instanceof Employee)
+                                SimpleClient.getCurrent_user().setComplaint2Inspect(complaint);
+
+                            try {
+                                System.out.println("try to set root");
+                                SimpleChatClient.setRoot("ComplaintInspection");
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            complaintsTableView.getItems().remove(getTableRow().getItem()); //remove the order from table
                         });
-                        btn.setStyle("-fx-background-color:  #c6acef");
+                        btn.setStyle("-fx-background-color:  #1aaf71");
                         btn.setText("Inspect");
                     }
 
@@ -122,7 +162,7 @@ public class ComplaintInspectionTableController extends Controller {
 
         btnCol.setCellFactory(cellFactory);
         btnCol.setStyle("-fx-alignment: CENTER");
-        tableView.getColumns().add(btnCol);
+        complaintsTableView.getColumns().add(btnCol);
     }
 
     /**
@@ -140,10 +180,13 @@ public class ComplaintInspectionTableController extends Controller {
      */
     @Subscribe
     public void newResponse(ComplaintMessage new_message)  {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                tableView.setItems((ObservableList<Complaint>) new_message.complaints);
+        Platform.runLater(() -> {
+            if (new_message.response_type != ComplaintMessage.ResponseType.SET_DISPLAY_COMPLAINT) {
+                //complaintsTableView.setItems(FXCollections.observableArrayList(new_message.complaints));
+
+                //complaintsTableView.setItems((ObservableList<Complaint>) new_message.complaints);
+
+                complaintsTableView.setItems(FXCollections.observableArrayList(new_message.complaints));
                 int expired = 0;
                 for (Complaint complaint : new_message.complaints) {
                     if ((new Date().getTime()) - (complaint.getDate().getTime()) > 86400000) {
@@ -151,9 +194,15 @@ public class ComplaintInspectionTableController extends Controller {
                         expired++;
                     }
                 }
+
                 expireLabel.setText("You have " + new_message.complaints.size() + " complaints pending. Of which " + expired + " are expired!");
             }
         });
+    }
+
+    @FXML
+    void goBack(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("EmployeePage");
     }
 
 

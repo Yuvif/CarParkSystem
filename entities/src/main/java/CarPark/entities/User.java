@@ -15,6 +15,17 @@ public abstract class User implements Serializable {
     private String lastName;
     private boolean isLogged;
 
+    @ManyToOne
+    private Complaint complaint2Inspect;
+
+    public Complaint getComplaint2Inspect() {
+        return complaint2Inspect;
+    }
+
+    public void setComplaint2Inspect(Complaint complaint2Inspect) {
+        this.complaint2Inspect = complaint2Inspect;
+    }
+
     public User() {
 
     }

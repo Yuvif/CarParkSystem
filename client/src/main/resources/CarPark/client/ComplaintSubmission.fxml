@@ -110,18 +110,18 @@
                             <Font name="SansSerif Bold" size="27.0" />
                         </font>
                     </Label>
-               <TextField fx:id="complaintDesc" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="580.0" style="-fx-background-color: #CFEEE1;" translateX="110.0" translateY="50.0">
-                  <font>
-                     <Font name="System Bold Italic" size="12.0" />
-                  </font>
-               </TextField>
-               <TextField fx:id="customerIdT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" promptText="SET YOUR ID" style="-fx-background-color: #CFEEE1;" translateX="110.0" translateY="-220.0" />
-               <ComboBox fx:id="plPick" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0" promptText="Select Parkinglot" translateX="540.0" translateY="-245.0" />
-               <Button fx:id="sendComplaintBtn" mnemonicParsing="false" onAction="#sendComplaint" styleClass="mybutton" stylesheets="@../../assets/style.css" text="Send Complaint" translateX="355.0" translateY="30.0">
-                  <font>
-                     <Font name="SansSerif Bold" size="12.0" />
-                  </font>
-               </Button>
+                    <TextField fx:id="complaintDesc" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="580.0" style="-fx-background-color: #CFEEE1;" translateX="110.0" translateY="50.0">
+                        <font>
+                            <Font name="System Bold Italic" size="12.0" />
+                        </font>
+                    </TextField>
+                    <TextField fx:id="customerIdT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" promptText="SET YOUR ID" style="-fx-background-color: #CFEEE1;" translateX="110.0" translateY="-220.0" />
+                    <ComboBox fx:id="plPick" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0" promptText="Select Parkinglot" translateX="540.0" translateY="-245.0" />
+                    <Button fx:id="sendComplaintBtn" mnemonicParsing="false" onAction="#sendComplaint" styleClass="mybutton" stylesheets="@../../assets/style.css" text="Send Complaint" translateX="355.0" translateY="30.0">
+                        <font>
+                            <Font name="SansSerif Bold" size="12.0" />
+                        </font>
+                    </Button>
                 </children>
             </VBox>
         </center>
