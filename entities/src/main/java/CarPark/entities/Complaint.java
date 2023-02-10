@@ -39,23 +39,31 @@ public class Complaint implements Serializable {
         this.customer = customer;
     }
 
+
+
+    public Complaint(Date date, String text, Customer customer) {
+        this.date = date;
+        this.compText = text;
+        this.customer =customer;
+    }
+//    public Complaint(Date date, String text, long customerId, Customer customer) {
+//        this.date = date;
+//        this.compText = text;
+//        this.customerId = customerId;
+//        this.customer =customer;
+//    }
     public Complaint(Date date, String compText, Parkinglot parkinglot, long customerId) {
         this.date = date;
         this.compText = compText;
         this.customerId = customerId;
         setParkinglot(parkinglot);
+       // this.customer = customer;
     }
 
-    public Complaint(Date date, String text, long customerId) {
-        this.date = date;
-        this.compText = text;
-        this.customerId = customerId;
-    }
-
-    public Complaint(long customerId) {
-
-        this.customerId = customerId;
-    }
+//    public Complaint(long customerId) {
+//
+//        this.customerId = customerId;
+//    }
 
     public Complaint() {
 

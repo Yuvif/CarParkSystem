@@ -31,10 +31,10 @@ public class Employee extends User {
     public Employee() {
     }
 
-    @Override
-    public void setComplaintToInspect(Complaint complaint) {
-
-    }
+//    @Override
+//    public void setComplaintToInspect(Complaint complaint) {
+//
+//    }
 
 
     public String getWorkersRole() {

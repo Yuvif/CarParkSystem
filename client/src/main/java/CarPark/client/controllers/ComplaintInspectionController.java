@@ -8,9 +8,11 @@ import CarPark.entities.messages.ComplaintMessage;
 import CarPark.entities.messages.Message;
 import javafx.animation.PauseTransition;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.net.URL;
@@ -48,7 +50,7 @@ public class ComplaintInspectionController extends Controller {
     @FXML // fx:id="store"
     private Label parkinglot; // Value injected by FXMLLoader
 
-    private Complaint complaint;
+    public Complaint complaint;
 
     public void setComplaint(Complaint complaint) {
         this.complaint = complaint;
@@ -67,6 +69,20 @@ public class ComplaintInspectionController extends Controller {
             compensationField.setDisable(true);
             compensationField.setText("");
         }
+    }
+
+    @Subscribe
+    public void newResponse(ComplaintMessage new_message)  {
+        if (new_message.response_type == ComplaintMessage.ResponseType.SET_DISPLAY_COMPLAINT){
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("complaint controller response back");
+                    setComplaint(new_message.complaint2handle);
+                }
+            });
+        }
+
     }
 
     /**
@@ -89,7 +105,7 @@ public class ComplaintInspectionController extends Controller {
             }
             amount = Integer.parseInt(compensationField.getText());
         }
-        ComplaintMessage msg = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.COMPENSATE_COMPLAINT, complaint, amount);
+        ComplaintMessage msg = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.COMPENSATE_COMPLAINT, complaint, amount, complaint.getCustomer());
         SimpleClient.getClient().sendToServer(msg);
         complaint.setStatus(true);
         Platform.runLater(() -> {

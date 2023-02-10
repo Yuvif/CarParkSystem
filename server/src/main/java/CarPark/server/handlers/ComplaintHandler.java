@@ -1,4 +1,5 @@
 package CarPark.server.handlers;
+import CarPark.entities.messages.ComplaintMessage.ResponseType;
 
 import CarPark.entities.Complaint;
 import CarPark.entities.messages.ComplaintMessage;
@@ -24,23 +25,36 @@ public class ComplaintHandler extends MessageHandler {
     @Override
     public void handleMessage() throws Exception {
         switch (class_message.request_type) {
-            case CREATE_NEW_COMPLAINT:
+            case CREATE_NEW_COMPLAINT: 
                 createComplaint();
                 class_message.response_type = ComplaintMessage.ResponseType.COMPLAINT_SUBMITTED;
                 break;
+
             case GET_ALL_COMPLAINTS:
                 class_message.complaints = getComplaintList();
-                //class_message.complaints2Rep = (LinkedList<Complaint>) ();
                 class_message.response_type = ComplaintMessage.ResponseType.SET_ALL_COMPLAINTS;
                 break;
+
             case COMPENSATE_COMPLAINT:
-                //class_message.complaint2handle.user.setBalance(class_message.amount);
-               // class_message.complaint2handle.getCustomerId().setBalance(class_message.amount);
+                class_message.complaint2handle.getCustomer().setBalance(class_message.amount);
+                //class_message.current_customer.setBalance(class_message.amount);
                 break;
+
             case GET_MY_COMPLAINTS:
-               getMyComplaints();
-               break;
+                getMyComplaints();
+                class_message.response_type = ComplaintMessage.ResponseType.SET_MY_COMPLAINTS;
+                break;
+
+            case GET_OPEN_COMPLAINT:
+                //openComplaint();
+                class_message.response_type = ComplaintMessage.ResponseType.SET_DISPLAY_COMPLAINT;
+                break;
+
         }
+    }
+
+    private void openComplaint(){
+
     }
 
     private void createComplaint() {

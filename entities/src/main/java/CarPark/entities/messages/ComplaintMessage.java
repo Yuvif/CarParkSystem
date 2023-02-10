@@ -2,6 +2,8 @@ package CarPark.entities.messages;
 
 import CarPark.entities.Complaint;
 import CarPark.entities.Customer;
+import CarPark.entities.Employee;
+import CarPark.entities.Parkinglot;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -9,10 +11,12 @@ import java.util.List;
 
 public class ComplaintMessage extends Message {
     private String parkinglotId;
+    private Parkinglot parkinglot;
     public RequestType request_type;
     public ResponseType response_type;
     public Complaint complaint2handle;
     public Customer current_customer;
+    //public Employee current_employee;
     public int amount;
     public List<Complaint> complaints;
     public LinkedList<Complaint> complaints2Rep;
@@ -21,30 +25,35 @@ public class ComplaintMessage extends Message {
         super(message_type);
         this.request_type = request_type;
     }
+
     public ComplaintMessage(MessageType message_type, RequestType request_type, Complaint complaint) {
         super(message_type);
         this.request_type = request_type;
         assert this.complaints != null;
-        this.complaints.add(complaint);
+        //this.complaints.add(complaint);   only if its a case of creating a new complaint- not for open one to handle
         this.complaints2Rep.add(complaint);
         this.complaint2handle = complaint;
     }
 
-    public ComplaintMessage(MessageType message_type, ComplaintMessage.RequestType request_type, String parkinglot) {
+
+    public ComplaintMessage(MessageType messageType, RequestType request_type, Complaint complaint, int amount, Customer customer) {
+        super(messageType);
+        this.request_type = request_type;
+        this.complaint2handle = complaint;
+        this.amount = amount;
+        this.current_customer = customer;
+
+    }
+
+    public ComplaintMessage(MessageType message_type,RequestType request_type, String parkinglot) {
         super(message_type);
         this.request_type = request_type;
         this.parkinglotId = parkinglot;
 
     }
-    public ComplaintMessage(MessageType messageType, RequestType request_type, Complaint complaint, int amount) {
-        super(messageType);
-        this.request_type = request_type;
-        this.complaint2handle = complaint;
-        this.amount = amount;
 
-    }
 
-    public ComplaintMessage(MessageType message_type, ComplaintMessage.ResponseType response_type, LinkedList<Complaint> complaints) {
+    public ComplaintMessage(MessageType message_type, ResponseType response_type, LinkedList<Complaint> complaints,  Customer current_user) {
         super(message_type);
         this.response_type = response_type;
         this.complaints = complaints;
@@ -69,14 +78,16 @@ public class ComplaintMessage extends Message {
         GET_ALL_COMPLAINTS,
         CREATE_NEW_COMPLAINT,
         COMPENSATE_COMPLAINT,
-        GET_MY_COMPLAINTS
+        GET_MY_COMPLAINTS,
+        GET_OPEN_COMPLAINT
     }
 
     public enum ResponseType {
         SET_ALL_COMPLAINTS,
         COMPLAINT_SUBMITTED,
-        COMPLAINT_CLOSED,
-        SET_MY_COMPLAINTS
+//        COMPLAINT_CLOSED,
+        SET_MY_COMPLAINTS,
+        SET_DISPLAY_COMPLAINT
     }
 
 

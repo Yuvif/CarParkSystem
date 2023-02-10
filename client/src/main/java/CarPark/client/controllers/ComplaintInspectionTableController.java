@@ -119,10 +119,15 @@ public class ComplaintInspectionTableController extends Controller {
                     {
                         btn.setOnAction((ActionEvent event) -> {
                             Complaint complaint = getTableView().getItems().get(getIndex());
-                            if (SimpleClient.getCurrent_user() instanceof Employee)
-                            {
-                                ((Employee) SimpleClient.getCurrent_user()).setComplaintToInspect(complaint);
+                            //send message to the server with the complaint
+                            ComplaintMessage msg = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.GET_OPEN_COMPLAINT, complaint);
+                            try {
+                                SimpleClient.getClient().sendToServer(msg);
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
+//                            if (SimpleClient.getCurrent_user() instanceof Employee)
+//                                ((Employee) SimpleClient.getCurrent_user()).setComplaintToInspect(complaint);
 
                             try {
                                 System.out.println("try to set root");
