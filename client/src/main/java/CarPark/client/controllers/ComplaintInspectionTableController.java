@@ -185,14 +185,10 @@ public class ComplaintInspectionTableController extends Controller {
     @Subscribe
     public void newResponse(ComplaintMessage new_message)  {
         Platform.runLater(() -> {
-            if (new_message.response_type == ComplaintMessage.ResponseType.SET_ALL_COMPLAINTS) {
-                //complaintsTableView.setItems(FXCollections.observableArrayList(new_message.complaints));
-
-                //complaintsTableView.setItems((ObservableList<Complaint>) new_message.complaints);
-
+            if (new_message.response_type == ComplaintMessage.ResponseType.SET_ALL_COMPLAINTS)
+            {
                 List<Complaint> complaints = new_message.complaints;
                 complaints.removeIf(Complaint::getAppStatus);
-
 
                 complaintsTableView.setItems(FXCollections.observableArrayList(complaints));
                 int expired = 0;

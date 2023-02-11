@@ -77,14 +77,14 @@ public class ComplaintMessage extends Message {
         this.current_customer = current_user;
     }
 
-
     public enum RequestType {
         GET_ALL_COMPLAINTS,
         CREATE_NEW_COMPLAINT,
         COMPENSATE_COMPLAINT,
         GET_MY_COMPLAINTS,
         GET_OPEN_COMPLAINT,
-        GET_INSPECTED_COMPLAINT
+        GET_INSPECTED_COMPLAINT,
+        GET_COMPLAINTS_REP
     }
 
     public enum ResponseType {
@@ -92,8 +92,8 @@ public class ComplaintMessage extends Message {
         COMPLAINT_SUBMITTED,
         COMPLAINT_CLOSED,
         SET_MY_COMPLAINTS,
-        SET_DISPLAY_COMPLAINT,
-        SET_INSPECTED_COMPLAINT
+        SET_INSPECTED_COMPLAINT,
+        SET_DISPLAY_COMPLAINT
     }
 
 

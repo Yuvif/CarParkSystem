@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class CreateReportsController extends AbstractReports {
@@ -113,11 +114,16 @@ public class CreateReportsController extends AbstractReports {
 
             Date from = getPickedDate(fromDate);
             Date to = addDays(getPickedDate(toDate), 1);
-            OrderMessage ordersMsg = new OrderMessage(Message.MessageType.REQUEST, OrderMessage.RequestType.GET_SELECTED_ORDERS, parkingLotName,from, to );
+            OrderMessage ordersMsg = new OrderMessage(Message.MessageType.REQUEST,
+                    OrderMessage.RequestType.GET_SELECTED_ORDERS, parkingLotName,from, to );
             SimpleClient.getClient().sendToServer(ordersMsg);
-            PullParkingSlotsMessage pslotMsg = new PullParkingSlotsMessage(Message.MessageType.REQUEST, PullParkingSlotsMessage.RequestType.GET_PARKING_SLOTS_REP, parkingLotName, from, to );
+
+            PullParkingSlotsMessage pslotMsg = new PullParkingSlotsMessage(Message.MessageType.REQUEST,
+                    PullParkingSlotsMessage.RequestType.GET_PARKING_SLOTS_REP, parkingLotName, from, to );
             SimpleClient.getClient().sendToServer(pslotMsg);
-            ComplaintMessage comMsg = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.GET_ALL_COMPLAINTS, parkingLotName );
+
+            ComplaintMessage comMsg = new ComplaintMessage(Message.MessageType.REQUEST,
+                    ComplaintMessage.RequestType.GET_COMPLAINTS_REP, parkingLotName );
             SimpleClient.getClient().sendToServer(comMsg);
         }
     }
@@ -146,26 +152,23 @@ public class CreateReportsController extends AbstractReports {
         System.out.println("we got controller back from order reports message");
 
         switch (new_message.response_type) {
-            case SET_SELECTED_ORDERS -> Platform.runLater(() -> {
-                showOrders((LinkedList<Order>) new_message.ordersList);
-            });
+            case SET_SELECTED_ORDERS -> Platform.runLater(() -> showOrders((LinkedList<Order>) new_message.ordersList));
         }
     }
     @Subscribe
     public void newResponse(PullParkingSlotsMessage new_message) {
         System.out.println("we got controller back from pslots message");
         switch (new_message.response_type) {
-            case SET_PARKING_SLOTS_REP -> Platform.runLater(()-> {
-                showRestrictedPSlots(new_message.parkingSlots);
-
-            });
+            case SET_PARKING_SLOTS_REP -> Platform.runLater(()-> showRestrictedPSlots(new_message.parkingSlots));
         }
     }
     @Subscribe
     public void newResponse(ComplaintMessage new_message) {
         System.out.println("we got controller back from complaint message");
         switch (new_message.response_type) {
-            case SET_ALL_COMPLAINTS -> Platform.runLater(()-> {
+            case SET_ALL_COMPLAINTS -> Platform.runLater(()->{
+                System.out.println(new_message.complaints2Rep.get(0).getCompText() + " response");
+                //LinkedList<Complaint> res = new LinkedList<>(new_message.complaints2Rep);
                 showComplaints(new_message.complaints2Rep);
             });
         }
@@ -186,39 +189,26 @@ public class CreateReportsController extends AbstractReports {
 
     //need to sort the orders arrangement by customer type!!!!----------------------------------------------
     //need to add a date attribute to the order entity declaration!!!---------------------------------------
-    private void showOrders(LinkedList<Order> orders) {
-//        ordrsChart1.getData().clear();
-//        LinkedList<XYChart.Series<String, Number>> seriesLinkedList = new LinkedList<XYChart.Series<String, Number>>();
-//        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-//
-//        XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();
-//        //series.setName(Complaint.topicToString(topic));
-//        seriesLinkedList.add(series);
-//
-//        for (LocalDate date : getDatesBetween(fromDate.getValue(), toDate.getValue())) {
-//            int numOfOrd = 0;
-//            for (Order order : orders) {
-//                if (dateAreEqual(dateToLocalDate(order.getDate()), date))
-//                    numOfOrd += 1;
-//            }
-//
-//            series.getData().add(new XYChart.Data<>(formatter.format(localDateToDate(date)), numOfOrd));
-//        }
-//        ordrsChart1.getData().addAll(seriesLinkedList);
+    private void showOrders(LinkedList<Order> orders)
+    {
+        ordrsChart1.getData().clear();
+        LinkedList<XYChart.Series<String, Number>> seriesLinkedList = new LinkedList<XYChart.Series<String, Number>>();
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data("Apple", 50),
-                new PieChart.Data("Banana", 30),
-                new PieChart.Data("Mango", 20)
-        );
+        XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();
+        //series.setName(Complaint.topicToString(topic));
+        seriesLinkedList.add(series);
 
-        // Set the data for the pie chart
-        ordersPieChart.setData(pieChartData);
+        for (LocalDate date : getDatesBetween(fromDate.getValue(), toDate.getValue())) {
+            int numOfOrd = 0;
+            for (Order order : orders) {
+                if (dateAreEqual(dateToLocalDate(order.getDate()), date))
+                    numOfOrd += 1;
+            }
 
-        // Create a StackPane to hold the pie chart
-        StackPane root = new StackPane();
-        root.getChildren().add(ordersPieChart);
-
+            series.getData().add(new XYChart.Data<>(formatter.format(localDateToDate(date)), numOfOrd));
+        }
+        ordrsChart1.getData().addAll(seriesLinkedList);
     }
 
 
@@ -250,7 +240,7 @@ public class CreateReportsController extends AbstractReports {
     private void showComplaints(LinkedList<Complaint> complaints) {
         complaintChart.getData().clear();
         LinkedList<XYChart.Series<String, Number>> seriesLinkedList = new LinkedList<XYChart.Series<String, Number>>();
-        SimpleDateFormat formatter = new SimpleDateFormat("mm/dd/yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
 
         XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();
         //series.setName(Complaint.topicToString(topic));
@@ -258,10 +248,15 @@ public class CreateReportsController extends AbstractReports {
 
         for (LocalDate date : getDatesBetween(fromDate.getValue(), toDate.getValue())) {
             int numOfComp = 0;
+
+            System.out.println(complaints.get(0).getCompText() + " - controller");
+
+
             for (Complaint complaint : complaints) {
                 if (dateAreEqual(dateToLocalDate(complaint.getDate()), date))
                     numOfComp += 1;
             }
+
 
             series.getData().add(new XYChart.Data<>(formatter.format(localDateToDate(date)), numOfComp));
         }

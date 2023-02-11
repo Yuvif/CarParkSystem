@@ -43,18 +43,18 @@ public class ComplaintHandler extends MessageHandler {
                 class_message.complaint2handle.setStatus(true);
                 updateComplaintStatus();
                 compensateCustomer();
-                if(class_message.amount > 0) {
-                    SimpleServer.EmailSender.sendEmail(class_message.complaint2handle.getCustomer().getEmail(),
-                            "Hi there,\nYour complaint from " + class_message.complaint2handle.getDate() + " has been processed!\n" +
-                                    "You have been compensated in the amount of " + class_message.amount + "₪\n" +
-                                    "Have a good day!\nCar Park System",
-                            "Your Complaint Was Processed");
-                } else {
-                    SimpleServer.EmailSender.sendEmail(class_message.complaint2handle.getCustomer().getEmail(),
-                            "Hi there,\nYour complaint has been rejected and no refund has been issued!\n" +
-                                    "Our apologize,\nCar Park System",
-                            "Your Complaint Was Processed");
-                }
+//                if(class_message.amount > 0) {
+//                    SimpleServer.EmailSender.sendEmail(class_message.complaint2handle.getCustomer().getEmail(),
+//                            "Hi there,\nYour complaint from " + class_message.complaint2handle.getDate() + " has been processed!\n" +
+//                                    "You have been compensated in the amount of " + class_message.amount + "₪\n" +
+//                                    "Have a good day!\nCar Park System",
+//                            "Your Complaint Was Processed");
+//                } else {
+//                    SimpleServer.EmailSender.sendEmail(class_message.complaint2handle.getCustomer().getEmail(),
+//                            "Hi there,\nYour complaint has been rejected and no refund has been issued!\n" +
+//                                    "Our apologize,\nCar Park System",
+//                            "Your Complaint Was Processed");
+//                }
 
                 class_message.response_type = ComplaintMessage.ResponseType.COMPLAINT_CLOSED;
                 break;
@@ -69,6 +69,10 @@ public class ComplaintHandler extends MessageHandler {
                 class_message.response_type = ComplaintMessage.ResponseType.SET_DISPLAY_COMPLAINT;
                 break;
 
+            case GET_COMPLAINTS_REP:
+                class_message.complaints2Rep = getComplaintRep();
+                class_message.response_type = ComplaintMessage.ResponseType.SET_ALL_COMPLAINTS;
+                break;
         }
     }
 
@@ -94,13 +98,7 @@ public class ComplaintHandler extends MessageHandler {
 
 
             for (Complaint c : data) {
-                System.out.println(c.getAppStatus());
-                System.out.println(c.getCustomer().getBalance());
-
-                if (c.getAppStatus()) {
-                }
-                else
-                {
+                if (!c.getAppStatus()) {
                     assert res != null;
                     res.add(c);
                 }
@@ -136,5 +134,15 @@ public class ComplaintHandler extends MessageHandler {
         Customer current_customer = session.get(Customer.class, class_message.complaint2handle.getCustomer().getId());
         current_customer.addToBalance(-1 * class_message.amount);
         session.flush();
+    }
+
+    public LinkedList<Complaint> getComplaintRep() {
+        CriteriaQuery<Complaint> query = cb.createQuery(Complaint.class);
+        query.from(Complaint.class);
+        List<Complaint> data = session.createQuery(query).getResultList();
+        LinkedList<Complaint> res = new LinkedList<>(data);
+
+        System.out.println(data.get(0).getCompText() + " - handler");
+        return res;
     }
 }
