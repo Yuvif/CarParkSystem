@@ -1,14 +1,17 @@
 package CarPark.server.handlers;
 
 import CarPark.entities.Complaint;
+import CarPark.entities.Customer;
 import CarPark.entities.Parkinglot;
 import CarPark.entities.messages.ComplaintMessage;
 import CarPark.entities.messages.Message;
+import CarPark.server.SimpleServer;
 import CarPark.server.ocsf.ConnectionToClient;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import javax.persistence.criteria.CriteriaQuery;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -38,8 +41,22 @@ public class ComplaintHandler extends MessageHandler {
 
             case COMPENSATE_COMPLAINT:
                 class_message.complaint2handle.setStatus(true);
-                class_message.complaint2handle.getCustomer().addToBalance(-1 * class_message.amount);
-                //class_message.current_customer.setBalance(class_message.amount);
+                updateComplaintStatus();
+                compensateCustomer();
+                if(class_message.amount > 0) {
+                    SimpleServer.EmailSender.sendEmail(class_message.complaint2handle.getCustomer().getEmail(),
+                            "Hi there,\nYour complaint from " + class_message.complaint2handle.getDate() + " has been processed!\n" +
+                                    "You have been compensated in the amount of " + class_message.amount + "₪\n" +
+                                    "Have a good day!\nCar Park System",
+                            "Your Complaint Was Processed");
+                } else {
+                    SimpleServer.EmailSender.sendEmail(class_message.complaint2handle.getCustomer().getEmail(),
+                            "Hi there,\nYour complaint has been rejected and no refund has been issued!\n" +
+                                    "Our apologize,\nCar Park System",
+                            "Your Complaint Was Processed");
+                }
+
+                class_message.response_type = ComplaintMessage.ResponseType.COMPLAINT_CLOSED;
                 break;
 
             case GET_MY_COMPLAINTS:
@@ -48,28 +65,18 @@ public class ComplaintHandler extends MessageHandler {
                 break;
 
             case GET_OPEN_COMPLAINT:
-                //openComplaint();
                 this.inspectedComplaint = class_message.complaint2handle;
-                System.out.println(class_message.complaint2handle.getCompText() + " Complaint Handler");
                 class_message.response_type = ComplaintMessage.ResponseType.SET_DISPLAY_COMPLAINT;
                 break;
 
-//            case GET_INSPECTED_COMPLAINT:
-//                class_message.complaint2handle = inspectedComplaint;
-//                class_message.response_type = ComplaintMessage.ResponseType.SET_INSPECTED_COMPLAINT;
-//                break;
         }
-    }
-
-    private void openComplaint(){
-
     }
 
 
     private void createComplaint() {
         String hql = "FROM Parkinglot WHERE name = :pl_name";
         Query query = session.createQuery(hql);
-        query.setParameter("pl_name", class_message.complaint2handle.getParkinglot().getName());
+        query.setParameter("pl_name", class_message.complaint2handle.getPl_name());
         class_message.complaint2handle.setParkinglot((Parkinglot) query.getSingleResult());
 
         Complaint newComplaint = class_message.complaint2handle ;
@@ -83,13 +90,23 @@ public class ComplaintHandler extends MessageHandler {
         CriteriaQuery<Complaint> query = cb.createQuery(Complaint.class);
         query.from(Complaint.class);
         List<Complaint> data = session.createQuery(query).getResultList();
-        LinkedList<Complaint> res= new LinkedList<Complaint>();
-        for(Complaint c: data)
-        {
-            res.add(c);
-        }
-        //return res;
-        return data;
+        List<Complaint> res = new ArrayList<Complaint>();
+
+
+            for (Complaint c : data) {
+                System.out.println(c.getAppStatus());
+                System.out.println(c.getCustomer().getBalance());
+
+                if (c.getAppStatus()) {
+                }
+                else
+                {
+                    assert res != null;
+                    res.add(c);
+                }
+            }
+
+        return res;
     }
 
     public void getMyComplaints() throws Exception {
@@ -98,5 +115,26 @@ public class ComplaintHandler extends MessageHandler {
         query.setParameter("id", class_message.current_customer.getId());
         class_message.complaints = query.getResultList();
         class_message.response_type= ComplaintMessage.ResponseType.SET_MY_COMPLAINTS;
+    }
+
+    public void updateComplaintStatus()
+    {
+        String hql = "UPDATE Complaint SET appStatus = :status WHERE complaintId = :complaintID";
+        Query query = session.createQuery(hql);
+        query.setParameter("status", class_message.complaint2handle.getAppStatus());
+        query.setParameter("complaintID", class_message.complaint2handle.getComplaintId());
+
+        session.evict(class_message.complaint2handle);
+        query.executeUpdate();
+
+        session.merge(class_message.complaint2handle);
+        session.flush();
+    }
+
+    public void compensateCustomer()
+    {
+        Customer current_customer = session.get(Customer.class, class_message.complaint2handle.getCustomer().getId());
+        current_customer.addToBalance(-1 * class_message.amount);
+        session.flush();
     }
 }

@@ -90,7 +90,7 @@ public class ComplaintMessage extends Message {
     public enum ResponseType {
         SET_ALL_COMPLAINTS,
         COMPLAINT_SUBMITTED,
-        //        COMPLAINT_CLOSED,
+        COMPLAINT_CLOSED,
         SET_MY_COMPLAINTS,
         SET_DISPLAY_COMPLAINT,
         SET_INSPECTED_COMPLAINT

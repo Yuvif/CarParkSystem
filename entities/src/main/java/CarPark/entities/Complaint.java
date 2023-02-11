@@ -17,8 +17,9 @@ public class Complaint implements Serializable {
 
     @Column(name = "description")
     private String compText;
-    private Boolean appStatus = false;        // true= complaint filed successfully- yet to be inspected, false = complaint fulfilled
+    private Boolean appStatus = false;   //true - means that the complaint has been handled, false - otherwise
     private Boolean completedOnTime = false;
+    private String pl_name;
 
     @ManyToOne
     private Parkinglot parkinglot;
@@ -26,25 +27,21 @@ public class Complaint implements Serializable {
     @ManyToOne
     private Customer customer;
 
+    public Complaint(Date date, String text, Customer customer, String pl_name) {
+        this.date = date;
+        this.compText = text;
+        this.customer =customer;
+        this.pl_name = pl_name;
+    }
+
+    public Complaint() {}
 
     public Customer getCustomer() {
         return customer;
     }
 
-
     public void setCustomer(Customer customer) {
         this.customer = customer;
-    }
-
-    public Complaint(Date date, String text, Customer customer) {
-        this.date = date;
-        this.compText = text;
-        this.customer =customer;
-    }
-
-
-    public Complaint() {
-
     }
 
     public void setParkinglot(Parkinglot parkinglot) {
@@ -56,7 +53,6 @@ public class Complaint implements Serializable {
         return parkinglot;
     }
 
-
     public String getCompText() {
         return compText;
     }
@@ -64,7 +60,6 @@ public class Complaint implements Serializable {
     public void setCompText(String compText) {
         compText = compText;
     }
-
 
     public Date getDate() {
         return date;
@@ -93,4 +88,8 @@ public class Complaint implements Serializable {
     public int getComplaintId() {
         return complaintId;
     }
+
+    public String getPl_name() { return pl_name; }
+
+    public void setPl_name(String pl_name) { this.pl_name = pl_name; }
 }

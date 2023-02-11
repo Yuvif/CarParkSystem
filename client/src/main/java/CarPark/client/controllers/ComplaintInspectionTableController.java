@@ -15,6 +15,7 @@ import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableArray;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -63,14 +64,17 @@ public class ComplaintInspectionTableController extends Controller {
 
     @FXML
         // This method is called by the FXMLLoader when initialization is complete
-    void initialize() {
+    void initialize()
+    {
         EventBus.getDefault().register(this);
+
         assert subDate != null : "fx:id=\"subDate\" was not injected: check your FXML file 'ComplaintInspectionTable.fxml'.";
         assert desc != null : "fx:id=\"desc\" was not injected: check your FXML file 'ComplaintInspectionTable.fxml'.";
         assert plotID != null : "fx:id=\"plotID\" was not injected: check your FXML file 'ComplaintInspectionTable.fxml'.";
         assert customerid != null : "fx:id=\"customerid\" was not injected: check your FXML file 'ComplaintInspectionTable.fxml'.";
         //assert btnCol != null : "fx:id=\"btnCol\" was not injected: check your FXML file 'ComplaintInspectionTable.fxml'.";
         assert complaintsTableView != null : "fx:id=\"complaintsTableView\" was not injected: check your FXML file 'ComplaintInspectionTable.fxml'.";
+
 
         subDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         subDate.setStyle("-fx-alignment: CENTER");
@@ -95,15 +99,14 @@ public class ComplaintInspectionTableController extends Controller {
 //        });
 //        status.setStyle("-fx-alignment:e CENTER");
 
-        addButtonToTable();
-
         ComplaintMessage complaintMessage = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.GET_ALL_COMPLAINTS);
-
         try {
             SimpleChatClient.client.sendToServer(complaintMessage);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
+
+        addButtonToTable();
 
     }
     /**
@@ -123,24 +126,25 @@ public class ComplaintInspectionTableController extends Controller {
                             Complaint complaint = getTableView().getItems().get(getIndex());
                             //send message to the server with the complaint
 
-                            ComplaintMessage msg = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.GET_OPEN_COMPLAINT, complaint);
-                            try {
-                                SimpleClient.getClient().sendToServer(msg);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                            //ComplaintMessage msg = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.GET_OPEN_COMPLAINT, complaint);
+//                            try {
+//                                SimpleClient.getClient().sendToServer(msg);
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
                             if (SimpleClient.getCurrent_user() instanceof Employee)
                                 SimpleClient.getCurrent_user().setComplaint2Inspect(complaint);
 
                             try {
-                                System.out.println("try to set root");
                                 SimpleChatClient.setRoot("ComplaintInspection");
 
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
 
-                            complaintsTableView.getItems().remove(getTableRow().getItem()); //remove the order from table
+                           // complaintsTableView.getItems().remove(getTableRow().getItem()); //remove the order from table
+
+
                         });
                         btn.setStyle("-fx-background-color:  #1aaf71");
                         btn.setText("Inspect");
@@ -181,12 +185,16 @@ public class ComplaintInspectionTableController extends Controller {
     @Subscribe
     public void newResponse(ComplaintMessage new_message)  {
         Platform.runLater(() -> {
-            if (new_message.response_type != ComplaintMessage.ResponseType.SET_DISPLAY_COMPLAINT) {
+            if (new_message.response_type == ComplaintMessage.ResponseType.SET_ALL_COMPLAINTS) {
                 //complaintsTableView.setItems(FXCollections.observableArrayList(new_message.complaints));
 
                 //complaintsTableView.setItems((ObservableList<Complaint>) new_message.complaints);
 
-                complaintsTableView.setItems(FXCollections.observableArrayList(new_message.complaints));
+                List<Complaint> complaints = new_message.complaints;
+                complaints.removeIf(Complaint::getAppStatus);
+
+
+                complaintsTableView.setItems(FXCollections.observableArrayList(complaints));
                 int expired = 0;
                 for (Complaint complaint : new_message.complaints) {
                     if ((new Date().getTime()) - (complaint.getDate().getTime()) > 86400000) {

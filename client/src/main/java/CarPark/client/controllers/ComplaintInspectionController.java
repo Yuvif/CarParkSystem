@@ -76,7 +76,6 @@ public class ComplaintInspectionController extends Controller {
     public void newResponse(ComplaintMessage new_message)  {
         if (new_message.response_type == ComplaintMessage.ResponseType.SET_INSPECTED_COMPLAINT){
             Platform.runLater(() -> {
-                System.out.println("complaint controller response back");
                 setComplaint(new_message.complaint2handle);
                 complaintText.setText(complaint.getCompText());
             });
@@ -98,22 +97,29 @@ public class ComplaintInspectionController extends Controller {
         int amount = 0;
         if (compensationCheckbox.isSelected()) {
             if (compensationField.getText().isEmpty()) {
-                sendAlert("No amount entered", "No Refund Given", Alert.AlertType.WARNING);
+                sendAlert("No amount entered", "No Refund Is Given", Alert.AlertType.WARNING);
                 return;
             }
             amount = Integer.parseInt(compensationField.getText());
         }
         ComplaintMessage msg = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.COMPENSATE_COMPLAINT, complaint, amount, complaint.getCustomer());
         SimpleClient.getClient().sendToServer(msg);
-        complaint.setStatus(true);
+
+        msg.complaint2handle.setStatus(true);
+
+
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText("Complaint filed, Sending back to table");
             alert.show();
-            PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(2.5));
+            PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(5));
             pause.setOnFinished((e -> {
                 alert.close();
                 try {
+
+                    System.out.println(msg.complaint2handle.getAppStatus());
+                    System.out.println(msg.complaint2handle.getCustomer().getBalance());
+
                     SimpleChatClient.setRoot("ComplaintInspectionTable");
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -141,21 +147,12 @@ public class ComplaintInspectionController extends Controller {
             if (SimpleClient.getCurrent_user() instanceof Employee)
                 complaintText.setText(complaint.getCompText());
 
-            //complainerName.setText(complaint.getCustomer().getName());
+            complainerName.setText(complaint.getCustomer().getFirstName() + " " + complaint.getCustomer().getLastName());
             complaintText.setEditable(false);
             complainerName.setEditable(false);
             compensationField.setDisable(true);
             compensationField.setTextFormatter(formatter1);
             parkinglot.setText(complaint.getParkinglot().getName());
-
-
-
-//            ComplaintMessage msg = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.GET_INSPECTED_COMPLAINT);
-//            try {
-//                SimpleClient.getClient().sendToServer(msg);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
 
         });
     }
