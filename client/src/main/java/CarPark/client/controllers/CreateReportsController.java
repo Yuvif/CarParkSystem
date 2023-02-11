@@ -1,23 +1,16 @@
 package CarPark.client.controllers;
 import CarPark.client.SimpleClient;
-import CarPark.entities.Complaint;
-import CarPark.entities.Order;
-import CarPark.entities.ParkingSlot;
-import CarPark.entities.messages.ComplaintMessage;
-import CarPark.entities.messages.Message;
-import CarPark.entities.messages.OrderMessage;
-import CarPark.entities.messages.PullParkingSlotsMessage;
+import CarPark.entities.*;
+import CarPark.entities.messages.*;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.StackedBarChart;
-import javafx.scene.chart.XYChart;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
+import javafx.scene.Scene;
+import javafx.scene.chart.*;
+import javafx.scene.control.*;
+import javafx.scene.layout.StackPane;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -69,9 +62,21 @@ public class CreateReportsController extends AbstractReports {
     private DatePicker toDate;
 
     @FXML
-    void initialize() {
-        displayDates(fromDate, LocalDate.now(), true);
-        //temporary - simply choose a random parkinglot:
+    private ComboBox<String> plPicker;
+
+    @FXML
+    private PieChart ordersPieChart;
+
+
+    @FXML
+    void initialize() throws IOException {
+
+        assert plPicker != null : "fx:id=\"plPicker\" was not injected: check your FXML file 'Login.fxml'.";
+
+        EventBus.getDefault().register(this);
+        ParkingListMessage msg = new ParkingListMessage(Message.MessageType.REQUEST, ParkingListMessage.RequestType.GET_ALL_PARKING_LOTS);
+        SimpleClient.getClient().sendToServer(msg);
+        plPicker.getItems().add("Set Parkinglot");
     }
     /**
      * makeReport function activates if pressing the make report button, first it makes
@@ -81,7 +86,7 @@ public class CreateReportsController extends AbstractReports {
 
     @FXML
     void makeReport(ActionEvent event) throws InterruptedException, IOException {
-        EventBus.getDefault().register(this);
+        //EventBus.getDefault().register(this);
         coolButtonClick((Button) event.getTarget());
         salesNum.setText("");
         if (isInvalid())
@@ -92,14 +97,27 @@ public class CreateReportsController extends AbstractReports {
             //String parkinglot = SimpleChatClient.client.getParkinglot().getName();
             //temporary - simply choose a random parkinglot:
             //msg.add(((User) App.client.user).getStore());
-            String parkinglot = "CPS Eilat";
+
+
+            String parkingLotName;
+//            if (SimpleClient.getCurrent_user() instanceof ParkingLotWorker)
+//            {
+//                //parking lot worker of specific parking lot
+//                ParkingLotWorker parkingLotWorker = (ParkingLotWorker)SimpleClient.getCurrent_user();
+//                parkingLotName = parkingLotWorker.getParkinglot().getName();
+//            }
+//            else //customer service worker - general worker
+//            {
+                parkingLotName = plPicker.getValue();
+           // }
+
             Date from = getPickedDate(fromDate);
             Date to = addDays(getPickedDate(toDate), 1);
-            OrderMessage ordersMsg = new OrderMessage(Message.MessageType.REQUEST, OrderMessage.RequestType.GET_SELECTED_ORDERS, parkinglot,from, to );
+            OrderMessage ordersMsg = new OrderMessage(Message.MessageType.REQUEST, OrderMessage.RequestType.GET_SELECTED_ORDERS, parkingLotName,from, to );
             SimpleClient.getClient().sendToServer(ordersMsg);
-            PullParkingSlotsMessage pslotMsg = new PullParkingSlotsMessage(Message.MessageType.REQUEST, PullParkingSlotsMessage.RequestType.GET_PARKING_SLOTS_REP, parkinglot,from, to );
+            PullParkingSlotsMessage pslotMsg = new PullParkingSlotsMessage(Message.MessageType.REQUEST, PullParkingSlotsMessage.RequestType.GET_PARKING_SLOTS_REP, parkingLotName, from, to );
             SimpleClient.getClient().sendToServer(pslotMsg);
-            ComplaintMessage comMsg = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.GET_ALL_COMPLAINTS, parkinglot );
+            ComplaintMessage comMsg = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.GET_ALL_COMPLAINTS, parkingLotName );
             SimpleClient.getClient().sendToServer(comMsg);
         }
     }
@@ -152,6 +170,13 @@ public class CreateReportsController extends AbstractReports {
             });
         }
     }
+
+    @Subscribe
+    public void setParkingTable(ParkingListMessage new_message) {
+        for (Parkinglot s : new_message.parkingList)
+            plPicker.getItems().add(s.getId());
+    }
+
     /**
      * showOrders function gets all relevant orders, then it gets a map from getMap that maps from product name
      * to the amount the store sold, and from that data, displaying it with the PieChart.
@@ -162,25 +187,41 @@ public class CreateReportsController extends AbstractReports {
     //need to sort the orders arrangement by customer type!!!!----------------------------------------------
     //need to add a date attribute to the order entity declaration!!!---------------------------------------
     private void showOrders(LinkedList<Order> orders) {
-        ordrsChart1.getData().clear();
-        LinkedList<XYChart.Series<String, Number>> seriesLinkedList = new LinkedList<XYChart.Series<String, Number>>();
-        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+//        ordrsChart1.getData().clear();
+//        LinkedList<XYChart.Series<String, Number>> seriesLinkedList = new LinkedList<XYChart.Series<String, Number>>();
+//        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+//
+//        XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();
+//        //series.setName(Complaint.topicToString(topic));
+//        seriesLinkedList.add(series);
+//
+//        for (LocalDate date : getDatesBetween(fromDate.getValue(), toDate.getValue())) {
+//            int numOfOrd = 0;
+//            for (Order order : orders) {
+//                if (dateAreEqual(dateToLocalDate(order.getDate()), date))
+//                    numOfOrd += 1;
+//            }
+//
+//            series.getData().add(new XYChart.Data<>(formatter.format(localDateToDate(date)), numOfOrd));
+//        }
+//        ordrsChart1.getData().addAll(seriesLinkedList);
 
-        XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();
-        //series.setName(Complaint.topicToString(topic));
-        seriesLinkedList.add(series);
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                new PieChart.Data("Apple", 50),
+                new PieChart.Data("Banana", 30),
+                new PieChart.Data("Mango", 20)
+        );
 
-        for (LocalDate date : getDatesBetween(fromDate.getValue(), toDate.getValue())) {
-            int numOfOrd = 0;
-            for (Order order : orders) {
-                if (dateAreEqual(dateToLocalDate(order.getDate()), date))
-                    numOfOrd += 1;
-            }
+        // Set the data for the pie chart
+        ordersPieChart.setData(pieChartData);
 
-            series.getData().add(new XYChart.Data<>(formatter.format(localDateToDate(date)), numOfOrd));
-        }
-        ordrsChart1.getData().addAll(seriesLinkedList);
+        // Create a StackPane to hold the pie chart
+        StackPane root = new StackPane();
+        root.getChildren().add(ordersPieChart);
+
     }
+
+
 
     private void showRestrictedPSlots(LinkedList<ParkingSlot> parkingSlots) {
         restrictedPSlotsChart.getData().clear();
@@ -209,7 +250,7 @@ public class CreateReportsController extends AbstractReports {
     private void showComplaints(LinkedList<Complaint> complaints) {
         complaintChart.getData().clear();
         LinkedList<XYChart.Series<String, Number>> seriesLinkedList = new LinkedList<XYChart.Series<String, Number>>();
-        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat formatter = new SimpleDateFormat("mm/dd/yyyy");
 
         XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();
         //series.setName(Complaint.topicToString(topic));

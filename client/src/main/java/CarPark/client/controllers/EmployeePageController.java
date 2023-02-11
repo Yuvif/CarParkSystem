@@ -22,11 +22,18 @@ public class EmployeePageController{
         welcomeUser.setText("Welcome " + SimpleClient.getCurrent_user().getFirstName());
     }
 
-//    @FXML
-//    void complaintsInspection(ActionEvent event) throws IOException {
-//        SimpleChatClient.setRoot("ComplaintInspectionTable");
-//
-//    }
+    @FXML
+    private void createReports(javafx.event.ActionEvent event) throws IOException {
+        Platform.runLater(()->
+        {
+            try {
+                SimpleChatClient.setRoot("CreateReports");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
 
     @Subscribe
     public void getStarterData(NewSubscriberEvent event) {
