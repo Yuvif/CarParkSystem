@@ -39,11 +39,19 @@ public class SimpleChatClient extends Application {
         EventBus.getDefault().register(this);
         client = SimpleClient.getClient();
         client.openConnection();
+//        send a message to the server to check if the connection is established
+
         ConnectionMessage message = new ConnectionMessage(Message.MessageType.REQUEST);
+
+        client.sendToServer(message);
+        System.out.println("Client started");
+//        scene = new Scene(loadFXML("StatisticsView"), 640, 480);
+        scene = new Scene(loadFXML("Login"));
+
         SimpleClient.getClient().sendToServer(message);
 
-        scene = new Scene(loadFXML("CEOReports"));
-       // scene = new Scene(loadFXML("ComplaintInspectionTable"));
+       
+
       //  scene = new Scene(loadFXML("ComplaintInspectionTable"), 640, 520);
         // = new Scene(loadFXML("MenuEmployee"), 640, 520);
 
@@ -55,11 +63,15 @@ public class SimpleChatClient extends Application {
     public void stop() throws Exception {
         // TODO Auto-generated method stub
         if (SimpleClient.getCurrent_user()!=null) {
-            LoginMessage logout = new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGOUT, SimpleClient.getCurrent_user().getId());
+            LoginMessage logout = new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGOUT_BY_TERMINATION, String.valueOf(SimpleClient.getCurrent_user().getId()));
             SimpleClient.getClient().sendToServer(logout);
         }
+        try {
+            client.closeConnection();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
         EventBus.getDefault().unregister(this);
-        super.stop();
     }
 
     @Subscribe

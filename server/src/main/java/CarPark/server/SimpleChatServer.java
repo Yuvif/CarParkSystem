@@ -1,8 +1,11 @@
 package CarPark.server;
 
 
+import java.io.IOException;
+
 public class SimpleChatServer {
     protected static SimpleServer server;
+
 
 
     public static void main(String[] args) throws Exception {

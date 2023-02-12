@@ -12,8 +12,9 @@ public class Employee extends User {
 
 
 
-    public Employee(long employeeId, String firstName, String lastName, String email, String workersRole, String password) {
-        super(employeeId,password,email,firstName,lastName);
+
+    public Employee(long employeeId, String firstName, String lastName, String email, String workersRole,String password, byte[] salt) throws Exception {
+        super(employeeId,password, salt, email,firstName,lastName);
         this.workersRole = workersRole;
     }
 

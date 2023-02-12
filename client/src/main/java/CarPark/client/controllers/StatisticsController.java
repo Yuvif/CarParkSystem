@@ -1,12 +1,14 @@
 package CarPark.client.controllers;
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
+import CarPark.entities.Statistics;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.StatisticsMessage;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -24,13 +26,25 @@ public class StatisticsController {
     private Button GoBack;
 
     @FXML
-    private TableView<Integer> StatisticsTable;
-
-    @FXML
     private ComboBox<String> parkingLotOpt;
 
     @FXML
     private DatePicker statisticsDate;
+
+    @FXML
+    private TableColumn<Statistics, Integer> delayedEntries;
+
+    @FXML
+    private TableColumn<Statistics, Integer> totalRevenue;
+
+    @FXML
+    private TableColumn<Statistics, Integer> orders;
+
+    @FXML
+    private TableColumn<Statistics, Integer> ordersCancelled;
+
+    @FXML
+    private TableView<Statistics> table;
 
     @FXML
     void initialize() throws IOException {
@@ -50,19 +64,22 @@ public class StatisticsController {
                 setDisable(empty || date.compareTo(today) > 0);
             }
         });
+        orders.setCellValueFactory(new PropertyValueFactory<>("numberOfOrders"));
+        delayedEntries.setCellValueFactory(new PropertyValueFactory<>("numberOfOrdersLate"));
+        ordersCancelled.setCellValueFactory(new PropertyValueFactory<>("numberOfOrdersCancelled"));
+        totalRevenue.setCellValueFactory(new PropertyValueFactory<>("totalRevenue"));
     }
 
     @Subscribe
     public void newResponse(StatisticsMessage msg) throws IOException {
         switch (msg.response_type) {
             case NO_STATISTICS_AVAILABLE -> {
+                System.out.println("StatisticsController: NO_STATISTICS_AVAILABLE");
                 sendAlert("No data for this date and parking lot", "No info available", Alert.AlertType.WARNING);
             }
             case STATISTICS -> {
-                 StatisticsTable.getItems().add(msg.getStatistics().getNumberOfOrders());
-                 StatisticsTable.getItems().add(msg.getStatistics().getNumberOfOrdersCancelled());
-                 StatisticsTable.getItems().add(msg.getStatistics().getNumberOfOrdersLate());
-                 StatisticsTable.getItems().add(msg.getStatistics().getTotalRevenue());
+                System.out.println("StatisticsController: STATISTICS");
+                table.setItems(FXCollections.observableArrayList(msg.getStatistics()));
             }
         }
     }
