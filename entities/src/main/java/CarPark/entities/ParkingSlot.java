@@ -24,7 +24,7 @@ public class ParkingSlot implements Serializable {
     private Parkinglot parkinglot;
 
     @OneToOne
-    @JoinColumn(name = "checkedInId")
+    @JoinColumn(name = "checkedInId", nullable = true)
     private CheckedIn checkedIn;
 
     public CheckedIn getCheckedIn() {
@@ -48,6 +48,7 @@ public class ParkingSlot implements Serializable {
     public String getId() {
         return generatedValue;
     }
+    public Long getSerialId() { return id; }
 
     public Status getSpotStatus() {
         return SpotStatus;
@@ -69,8 +70,17 @@ public class ParkingSlot implements Serializable {
         this.parkinglot = parkinglot;
     }
 
+    public String getGeneratedValue() {
+        return generatedValue;
+    }
+
+    public void setGeneratedValue(String generatedValue) {
+        this.generatedValue = generatedValue;
+    }
+
     public Boolean getStatus() {
         return SpotStatus == Status.EMPTY;
     }
-    public enum Status {EMPTY, USED, RESTRICTED, RESERVED}
+    public void setStatus(Status spotStatus) { this.SpotStatus = spotStatus; }
+    public enum Status {EMPTY, USED, RESERVED, RESTRICTED}
 }

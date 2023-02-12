@@ -7,16 +7,16 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="517.0" prefWidth="741.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.ParkingLotMapController">
+<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.ParkingLotMapController">
    <children>
       <GridPane fx:id="parkingLotMap" alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <ComboBox fx:id="parkingLotChoice" layoutX="149.0" layoutY="80.0" prefHeight="25.0" prefWidth="186.0" />
-      <Button fx:id="backBtn" layoutX="298.0" layoutY="451.0" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="133.0" text="Back">
+      <ComboBox fx:id="parkingLotChoice" layoutX="149.0" layoutY="80.0" onAction="#getParkingLotRowNum" prefHeight="25.0" prefWidth="186.0" />
+      <Button fx:id="backBtn" layoutX="227.0" layoutY="451.0" mnemonicParsing="false" onAction="#goBack" prefHeight="25.0" prefWidth="133.0" text="Back">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <ComboBox fx:id="floorChoice" layoutX="380.0" layoutY="80.0" prefHeight="25.0" prefWidth="186.0" />
+      <ComboBox fx:id="floorChoice" layoutX="380.0" layoutY="80.0" onAction="#chooseFloor" prefHeight="25.0" prefWidth="186.0" />
       <Label layoutX="149.0" layoutY="63.0" prefHeight="19.0" prefWidth="78.0" text="Parking Lot">
          <font>
             <Font size="15.0" />
@@ -27,5 +27,10 @@
             <Font size="15.0" />
          </font>
       </Label>
+      <Button fx:id="submitBtn" layoutX="450.0" layoutY="451.0" mnemonicParsing="false" onAction="#submitChanges" prefHeight="25.0" prefWidth="133.0" text="Submit">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

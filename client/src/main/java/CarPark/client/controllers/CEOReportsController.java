@@ -138,14 +138,17 @@ public class CEOReportsController extends AbstractReports {
         if (isInvalid())
             sendAlert("Must pick time interval to make a report!", "Date Missing", Alert.AlertType.ERROR);
 
-        else {   // send request to server to pull data for report, with store and date interval
+        else {
+            // send request to server to pull data for report, with store and date interval
             //--will be an auto choosing of the specific parkinglot of the P-l manager (after login):
             //String parkinglot = SimpleChatClient.client.getParkinglot().getName();
             //temporary - simply choose a random parkinglot:
-            String parkinglot = "CPS Eilat";
+
+            String parkingLotName = plPicker.getValue();
+
             Date from = getPickedDate(fromDate);
             Date to = addDays(getPickedDate(toDate), 1);
-            ComplaintMessage comMsg = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.GET_ALL_COMPLAINTS, parkinglot );
+            ComplaintMessage comMsg = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.GET_COMPLAINTS_REP, parkingLotName );
             SimpleClient.getClient().sendToServer(comMsg);
         }
     }

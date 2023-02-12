@@ -42,10 +42,16 @@ public class SimpleChatClient extends Application {
 //        send a message to the server to check if the connection is established
 
         ConnectionMessage message = new ConnectionMessage(Message.MessageType.REQUEST);
+
         client.sendToServer(message);
         System.out.println("Client started");
 //        scene = new Scene(loadFXML("StatisticsView"), 640, 480);
-        scene = new Scene(loadFXML("Login"), 640, 480);
+        scene = new Scene(loadFXML("Login"));
+
+        SimpleClient.getClient().sendToServer(message);
+
+       
+
       //  scene = new Scene(loadFXML("ComplaintInspectionTable"), 640, 520);
         // = new Scene(loadFXML("MenuEmployee"), 640, 520);
 

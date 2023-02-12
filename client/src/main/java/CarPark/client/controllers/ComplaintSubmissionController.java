@@ -37,13 +37,14 @@ public class ComplaintSubmissionController extends Controller {
 
 
 
-
     @FXML
     void sendComplaint(ActionEvent event) {
+        Customer customer = ((Customer) SimpleClient.getCurrent_user());
         if (checkEmpty()) {
 //            create a complaint with the description
-            Complaint complaint = new Complaint(new Date(), complaintDesc.getText(), Long.parseLong(customerIdT.getText()));
-//            create a list with the complaint
+
+            String pl_name = plPick.getValue();
+            Complaint complaint = new Complaint(new Date(), complaintDesc.getText(), customer, pl_name);
 //            send the complaint to the server
             ComplaintMessage complaintMessage = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.CREATE_NEW_COMPLAINT, complaint,
                     (Customer) SimpleClient.getCurrent_user());

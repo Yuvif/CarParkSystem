@@ -1,5 +1,4 @@
 package CarPark.entities;
-
 import javax.persistence.*;
 
 @Entity
@@ -13,6 +12,7 @@ public class Employee extends User {
 
 
 
+
     public Employee(long employeeId, String firstName, String lastName, String email, String workersRole,String password, byte[] salt) throws Exception {
         super(employeeId,password, salt, email,firstName,lastName);
         this.workersRole = workersRole;
@@ -20,7 +20,6 @@ public class Employee extends User {
 
     public Employee() {
     }
-
 
 
     public String getWorkersRole() {

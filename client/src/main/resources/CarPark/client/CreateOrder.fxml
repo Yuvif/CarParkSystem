@@ -82,5 +82,6 @@
         <ComboBox fx:id="estLeavingMin" layoutX="417.0" layoutY="302.0" prefHeight="26.0" prefWidth="63.0" />
         <ComboBox fx:id="parkingLotsOpt" layoutX="77.0" layoutY="243.0" prefHeight="26.0" prefWidth="136.0" />
       <Separator layoutX="9.0" layoutY="79.0" prefHeight="18.0" prefWidth="596.0" />
+      <Button layoutX="259.0" layoutY="439.0" mnemonicParsing="false" onAction="#goBack" prefHeight="26.0" prefWidth="63.0" text="Back" />
     </children>
 </AnchorPane>

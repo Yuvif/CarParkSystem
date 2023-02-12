@@ -1,5 +1,6 @@
 package CarPark.server.handlers;
 
+import CarPark.entities.Customer;
 import CarPark.entities.Price;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.PricesMessage;
@@ -43,6 +44,7 @@ public class PricesTableHandler extends MessageHandler {
     }
 
     private List<Price> getPriceList() throws Exception {
+        //generateCustomers();
         generatePricesTable();
         CriteriaQuery<Price> query = cb.createQuery(Price.class);
         query.from(Price.class);
@@ -67,5 +69,15 @@ public class PricesTableHandler extends MessageHandler {
         Price pr5 = new Price("Premium monthly subscriber", "Permanent price", 108, 1, 72);
         session.save(pr5);
         session.flush();
+    }
+
+    private void generateCustomers() throws Exception {
+        Customer customer1 = new Customer(207944414,"Noy","Blitz","noy.b@gmail.com",0,"1111111");
+        session.save(customer1);
+        session.flush();
+        Customer customer2 = new Customer(987654321,"Noya","Blitz","noy.b1@gmail.com",0,"0000000");
+        session.save(customer2);
+        session.flush();
+
     }
 }

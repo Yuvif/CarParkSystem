@@ -124,11 +124,9 @@ public class RegisterUserController {
     @Subscribe
     public void new_response(RegisterUserMessage new_message) {
         switch (new_message.response_type) {
-            case REGISTRATION_FAILED:
-                Platform.runLater(() -> wrongReg.setText("USER ID OR EMAIL ALREADY TAKEN!"));
-            case REGISTRATION_SUCCEEDED:
-                sendAlert("Registration succeed, welcome:" + new_message.newCustomer.getFirstName(),
-                        "New User", Alert.AlertType.INFORMATION);
+            case REGISTRATION_FAILED -> Platform.runLater(() -> wrongReg.setText("USER ID OR EMAIL ALREADY TAKEN!"));
+            case REGISTRATION_SUCCEEDED -> sendAlert("Registration succeed, welcome:" + new_message.newCustomer.getFirstName(),
+                    "New User", Alert.AlertType.INFORMATION);
         }
     }
 

@@ -164,7 +164,7 @@ public class RegisterAsMemberController {//Daniel need to change name to new mem
         switch (new_message.response_type) {
             case REGISTRATION_SUCCEEDED:
                 sendAlert("Your Membership Number Is: \n" + new_message.newMembership.getMembershipId() +
-                                "\nA charge of " + new_message.newMembership.getMembershipsPrice() + "₪ was made",
+                                "\nA charge of " + String.format("%.2f", new_message.newMembership.getMembershipsPrice()) + "₪ was made",
                         "Membership Id Number", Alert.AlertType.INFORMATION);
                 break;
 

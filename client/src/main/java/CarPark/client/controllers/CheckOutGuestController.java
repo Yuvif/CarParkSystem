@@ -36,7 +36,7 @@ public class CheckOutGuestController {
         if (checkValidity())
         {
             CheckOutMessage checkOutMessage = new CheckOutMessage(Message.MessageType.REQUEST, CheckOutMessage.RequestType.CHECK_ME_OUT_GUEST,
-                    (Customer) SimpleClient.getCurrent_user());
+                    Long.parseLong(userId.getText()), Integer.parseInt(carNumber.getText()), false);
             try {
                 SimpleClient.getClient().sendToServer(checkOutMessage);
             } catch (IOException e) {
@@ -55,8 +55,8 @@ public class CheckOutGuestController {
         switch (new_message.response_type) {
             case CHECKED_OUT_GUEST -> {
                 //if the checked out user is a guest
-                sendAlert("You were checked out successfully! \nA charge of *** ₪ was made. " +
-                                "\n Thank You! Goodbye!" ,
+                sendAlert("You were checked out successfully! \nA charge of "+ String.format("%.2f", new_message.payment)
+                                +" ₪ was made.\nThank You! Goodbye!" ,
                         "Check Out", Alert.AlertType.INFORMATION);
             }
         }
