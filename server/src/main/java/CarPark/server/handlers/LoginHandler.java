@@ -31,7 +31,7 @@ public class LoginHandler extends MessageHandler {
         Customer customer;
         String hql = "FROM Customer WHERE userId = :user_id";
         Query query = session.createQuery(hql);
-        query.setParameter("user_id", Long.parseLong(class_message.getUserId()));
+        query.setParameter("user_id", class_message.getUserId());
         customer = (Customer) query.uniqueResult();
         String userPass = null;
         if(customer != null){
@@ -43,7 +43,7 @@ public class LoginHandler extends MessageHandler {
         Employee employee;
         hql = "FROM Employee WHERE userId = :user_id";
         query = session.createQuery(hql);
-        query.setParameter("user_id", Long.parseLong(class_message.getUserId()));
+        query.setParameter("user_id", class_message.getUserId());
         employee = (Employee) query.uniqueResult();
         if(employee != null){
             userPass = HashPipeline.toHexString(HashPipeline.getSHA(class_message.getPassword(),employee.getSalt()));
@@ -78,12 +78,12 @@ public class LoginHandler extends MessageHandler {
         Customer customer;
         String hql = "FROM Customer WHERE userId = :user_id";
         Query query = session.createQuery(hql);
-        query.setParameter("user_id", Long.parseLong(class_message.getUserId()));
+        query.setParameter("user_id", class_message.getUserId());
         customer = (Customer) query.uniqueResult();
         Employee employee;
         hql = "FROM Employee WHERE userId = :user_id";
         query = session.createQuery(hql);
-        query.setParameter("user_id", Long.parseLong(class_message.getUserId()));
+        query.setParameter("user_id", class_message.getUserId());
         employee = (Employee) query.uniqueResult();
         if (employee!=null)
             employee.setLogged(false);

@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -226,7 +227,7 @@ public class CreateOrderController {
     private Order createOrder() {
         Order order = new Order();
         order.setCarId(Integer.parseInt(carIdTextBox.getText()));
-        order.setCustomerId(Integer.parseInt(idTextBox.getText()));
+        order.setCustomerId(idTextBox.getText());
         order.setParkingLotId(parkingLotsOpt.getValue());
         order.setEmail(emailAddress.getText());
 

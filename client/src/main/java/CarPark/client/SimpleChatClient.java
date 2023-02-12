@@ -50,8 +50,7 @@ public class SimpleChatClient extends Application {
 
         SimpleClient.getClient().sendToServer(message);
 
-       
-
+       // scene = new Scene(loadFXML("ComplaintInspectionTable"));
       //  scene = new Scene(loadFXML("ComplaintInspectionTable"), 640, 520);
         // = new Scene(loadFXML("MenuEmployee"), 640, 520);
 

@@ -43,7 +43,7 @@ public class ComplaintInspectionTableController extends Controller {
     private TableView<Complaint> complaintsTableView; // Value injected by FXMLLoader
 
     @FXML // fx:id="customerid"
-    private TableColumn<Complaint, Long> customerid; // Value injected by FXMLLoader
+    private TableColumn<Complaint, String> customerid; // Value injected by FXMLLoader
 
     @FXML // fx:id="desc"
     private TableColumn<Complaint, String> desc; // Value injected by FXMLLoader
@@ -89,7 +89,7 @@ public class ComplaintInspectionTableController extends Controller {
 
        // customerid.setCellValueFactory(new PropertyValueFactory<>("customer id"));
 
-        customerid.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getCustomer().getId()).asObject());
+        customerid.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getCustomer().getId()));
         customerid.setStyle("-fx-alignment: CENTER");
 
 

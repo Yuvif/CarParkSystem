@@ -12,7 +12,7 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private long customerId;
+    private String customerId;
     private int carId;
     private String parkingLot;
     private String email;
@@ -38,7 +38,7 @@ public class Order implements Serializable {
 
     public enum Status {APPROVED, CANCELLED, NOTIFIED};
 
-    public Order(long customerId, int carId, String parkingLot, String email,
+    public Order(String customerId, int carId, String parkingLot, String email,
                  LocalDateTime arrivalTime, LocalDateTime estimatedLeavingTime, double ordersPrice, Date date)
     {
         super();
@@ -54,7 +54,7 @@ public class Order implements Serializable {
 
     public Order() {}
 
-    public long getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
     public int getCarId() {
@@ -72,7 +72,7 @@ public class Order implements Serializable {
     }
     public double getOrdersPrice() { return ordersPrice; }
 
-    public void setCustomerId(long customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
     public void setCarId(int carId) {
@@ -100,7 +100,7 @@ public class Order implements Serializable {
         orderStatus = spotStatus;
     }
 
-    public  Date getDate(){
+    public Date getDate(){
         return date;
     }
     public void setDate(Date date) {

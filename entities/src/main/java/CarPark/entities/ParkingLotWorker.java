@@ -11,9 +11,8 @@ public class ParkingLotWorker extends Employee {
     private Parkinglot parkinglot;
 
 
-    public ParkingLotWorker(int employeeId, String firstName, String lastName, String email, String workersRole, String
-                            password) {
-        super(employeeId, firstName, lastName, email, workersRole,password);
+    public ParkingLotWorker(String employeeId, String firstName, String lastName, String email, String workersRole, String password, byte[] salt) throws Exception {
+        super(employeeId, firstName, lastName, email, workersRole, password, salt);
     }
 
     public ParkingLotWorker() {}

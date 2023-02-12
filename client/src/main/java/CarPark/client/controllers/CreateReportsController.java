@@ -7,18 +7,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
-import javafx.scene.layout.StackPane;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 public class CreateReportsController extends AbstractReports {
@@ -189,8 +188,8 @@ public class CreateReportsController extends AbstractReports {
 
     //need to sort the orders arrangement by customer type!!!!----------------------------------------------
     //need to add a date attribute to the order entity declaration!!!---------------------------------------
-    private void showOrders(LinkedList<Order> orders)
-    {
+    private void showOrders(LinkedList<Order> orders) {
+
         ordrsChart1.getData().clear();
         LinkedList<XYChart.Series<String, Number>> seriesLinkedList = new LinkedList<XYChart.Series<String, Number>>();
         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
@@ -199,18 +198,34 @@ public class CreateReportsController extends AbstractReports {
         //series.setName(Complaint.topicToString(topic));
         seriesLinkedList.add(series);
 
+
+
         for (LocalDate date : getDatesBetween(fromDate.getValue(), toDate.getValue())) {
             int numOfOrd = 0;
+            int numofMem = 0;
             for (Order order : orders) {
-                if (dateAreEqual(dateToLocalDate(order.getDate()), date))
+
+                Instant instant = order.getArrivalTime().atZone(ZoneId.systemDefault()).toInstant();
+                Date date1 = Date.from(instant);
+                if (dateAreEqual(dateToLocalDate(date1), date))
+                {
+                    switch (order.getCustomer().getMemberships().size()){
+                        case 0:
+                            break;
+                        default: {
+                            numofMem += 1;
+                            break;
+                        }
+                    }
                     numOfOrd += 1;
+                }
             }
 
-            series.getData().add(new XYChart.Data<>(formatter.format(localDateToDate(date)), numOfOrd));
+            series.getData().add(new XYChart.Data<>(formatter.format(localDateToDate(date)), numOfOrd - numofMem));
+            series.getData().add(new XYChart.Data<>(formatter.format(localDateToDate(date)), numofMem));
         }
         ordrsChart1.getData().addAll(seriesLinkedList);
     }
-
 
 
     private void showRestrictedPSlots(LinkedList<ParkingSlot> parkingSlots) {

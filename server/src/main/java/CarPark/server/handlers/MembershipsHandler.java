@@ -59,14 +59,14 @@ public class MembershipsHandler extends MessageHandler{
     }
 
     //find the number of cars of the user that is making a new full membership
-    private int getNumberOfCars(long customerId) throws Exception
+    private int getNumberOfCars(String customerId) throws Exception
     {
         List<Membership> membershipList = getMembershipList();
         int carsCnt = 0;
 
         for(Membership membership : membershipList)
         {
-            if(membership.getCustomerId() == customerId)
+            if(Objects.equals(membership.getCustomerId(), customerId))
             {
                 carsCnt++;
             }

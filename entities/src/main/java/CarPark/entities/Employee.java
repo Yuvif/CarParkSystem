@@ -10,17 +10,12 @@ import javax.persistence.*;
 public class Employee extends User {
     private String workersRole;
 
-
-
-
-    public Employee(long employeeId, String firstName, String lastName, String email, String workersRole,String password, byte[] salt) throws Exception {
+    public Employee(String employeeId, String firstName, String lastName, String email, String workersRole,String password, byte[] salt) throws Exception {
         super(employeeId,password, salt, email,firstName,lastName);
         this.workersRole = workersRole;
     }
 
-    public Employee() {
-    }
-
+    public Employee() {}
 
     public String getWorkersRole() {
         return workersRole;

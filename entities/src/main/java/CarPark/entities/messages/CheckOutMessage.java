@@ -5,7 +5,7 @@ import CarPark.entities.Customer;
 
 public class CheckOutMessage extends Message{
     public Customer current_customer;
-    public long userId;
+    public String userId;
     public double payment;
     public int carNumber;
     public boolean hasAnOrder;
@@ -22,7 +22,7 @@ public class CheckOutMessage extends Message{
         this.hasAnOrder = hasAnOrder;
     }
 
-    public CheckOutMessage(MessageType message_type, RequestType request_type, long userId, int carNumber, boolean hasAnOrder) {
+    public CheckOutMessage(MessageType message_type, RequestType request_type, String userId, int carNumber, boolean hasAnOrder) {
         super(message_type);
         this.request_type = request_type;
         this.userId = userId;

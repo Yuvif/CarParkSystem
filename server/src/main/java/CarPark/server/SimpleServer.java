@@ -17,6 +17,8 @@ import javax.mail.MessagingException;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -56,6 +58,9 @@ public class SimpleServer extends AbstractServer {
         configuration.addAnnotatedClass(ParkingSlot.class);
         configuration.addAnnotatedClass(CheckedIn.class);
         configuration.addAnnotatedClass(Statistics.class);
+        configuration.addAnnotatedClass(Manager.class);
+        configuration.addAnnotatedClass(ParkingLotWorker.class);
+        configuration.addAnnotatedClass(CEO.class);
        // configuration.addAnnotatedClass(ParkingLotWorker.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();        //pull session factory config from hibernate properties
@@ -73,8 +78,13 @@ public class SimpleServer extends AbstractServer {
                 SubscribersList.add(connection);
                 session = getSessionFactory().openSession();// Create new session for connection
 //                session.beginTransaction();
-//                generateParkingLots();
+//                generateParkingLots(session);
 //                session.getTransaction().commit();
+
+//                session.beginTransaction();
+//                generateWorkers(session);
+//                session.getTransaction().commit();
+
             } else { //Get client requests
                 session.beginTransaction();
                 if (LoginMessage.class.equals(msgClass)) {
@@ -349,5 +359,78 @@ public class SimpleServer extends AbstractServer {
         }
     }
 
+    private void generateWorkers(Session session) throws Exception {
+        CriteriaBuilder cb;
+        cb = session.getCriteriaBuilder();
+        CriteriaQuery<Parkinglot> query = cb.createQuery(Parkinglot.class);
+        query.from(Parkinglot.class);
+        List<Parkinglot> data = session.createQuery(query).getResultList();
+        byte[] salt = HashPipeline.getSalt();
+
+        Manager daniel = new Manager("318172848","Daniel","Glazman","glazman.daniel@gmal.com","Manager",
+                HashPipeline.toHexString(HashPipeline.getSHA("1111111", salt)), salt);
+        daniel.setParkinglot(data.get(0));
+        session.save(daniel);
+        session.flush();
+
+        Manager avi = new Manager("209042589","Avi","Lifshitz","vilifishitz@gmal.com","Manager",
+                HashPipeline.toHexString(HashPipeline.getSHA("1111111", salt)), salt);
+        avi.setParkinglot(data.get(1));
+        session.save(avi);
+        session.flush();
+
+        Manager noy = new Manager("207944414","Noy","Blitsblau","oybl101@gmal.com","Manager",
+                HashPipeline.toHexString(HashPipeline.getSHA("1111111", salt)), salt);
+        noy.setParkinglot(data.get(2));
+        session.save(noy);
+        session.flush();
+
+        Manager shahar = new Manager("314983040","Shahar","Weiss","shaharweiss0@gmal.com","Manager",
+                HashPipeline.toHexString(HashPipeline.getSHA("1111111", salt)), salt);
+        shahar.setParkinglot(data.get(3));
+        session.save(shahar);
+        session.flush();
+
+        Manager eliron = new Manager("313313131","Eliron","Lubaton","lubaton@gmal.com","Manager",
+                HashPipeline.toHexString(HashPipeline.getSHA("1111111", salt)), salt);
+        eliron.setParkinglot(data.get(4));
+        session.save(eliron);
+        session.flush();
+
+        CEO yuval = new CEO("313598484","Yuval","Fisher","fisheryuval96@gmal.com","CEO",
+                HashPipeline.toHexString(HashPipeline.getSHA("1111111", salt)), salt);
+        session.save(yuval);
+        session.flush();
+
+        ParkingLotWorker parkingLotWorker1 = new ParkingLotWorker("098765432", "Regina", "Phalange", "regina@gmail.com", "Parking Lot Worker",
+                HashPipeline.toHexString(HashPipeline.getSHA("1234567", salt)), salt);
+        parkingLotWorker1.setParkinglot(data.get(0));
+        session.save(parkingLotWorker1);
+        session.flush();
+
+        ParkingLotWorker parkingLotWorker2 = new ParkingLotWorker("213243546", "Chandler", "Bing", "chandler@gmail.com", "Parking Lot Worker",
+                HashPipeline.toHexString(HashPipeline.getSHA("1234567", salt)), salt);
+        parkingLotWorker2.setParkinglot(data.get(1));
+        session.save(parkingLotWorker2);
+        session.flush();
+
+        ParkingLotWorker parkingLotWorker3 = new ParkingLotWorker("222111343", "Phoebe", "Boffay", "Phoebe@gmail.com", "Parking Lot Worker",
+                HashPipeline.toHexString(HashPipeline.getSHA("1234567", salt)), salt);
+        parkingLotWorker3.setParkinglot(data.get(2));
+        session.save(parkingLotWorker3);
+        session.flush();
+
+        ParkingLotWorker parkingLotWorker4 = new ParkingLotWorker("333222111", "Monica", "Geller", "Monica@gmail.com", "Parking Lot Worker",
+                HashPipeline.toHexString(HashPipeline.getSHA("1234567", salt)), salt);
+        parkingLotWorker4.setParkinglot(data.get(3));
+        session.save(parkingLotWorker4);
+        session.flush();
+
+        ParkingLotWorker parkingLotWorker5 = new ParkingLotWorker("123123123", "Ross", "Geller", "Ross@gmail.com", "Parking Lot Worker",
+                HashPipeline.toHexString(HashPipeline.getSHA("1234567", salt)), salt);
+        parkingLotWorker5.setParkinglot(data.get(4));
+        session.save(parkingLotWorker5);
+        session.flush();
+    }
 
 }

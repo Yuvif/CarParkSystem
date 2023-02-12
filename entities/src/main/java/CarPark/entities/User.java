@@ -8,7 +8,7 @@ import java.util.List;
 public abstract class User implements Serializable {
     @Id
     @Column(name = "userId", nullable = false)
-    private Long userId;
+    private String userId;
     @Column(name = "password")
     private String password;
     private byte[] salt;
@@ -23,23 +23,8 @@ public abstract class User implements Serializable {
     @OneToMany
     private List<Complaint> complaints;
 
-    public Complaint getComplaint2Inspect() {
-        return complaint2Inspect;
-    }
 
-    public void setComplaint2Inspect(Complaint complaint2Inspect) {
-        this.complaint2Inspect = complaint2Inspect;
-    }
-
-    public User() {
-
-    }
-
-    public Long getId() {
-        return userId;
-    }
-
-    public User(long userId, String password, byte[] salt, String email, String firstName, String lastName) {
+    public User(String userId, String password, byte[] salt, String email, String firstName, String lastName) {
         this.userId = userId;
         this.password = password;
         this.salt = salt;
@@ -47,6 +32,20 @@ public abstract class User implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.isLogged = false;
+    }
+
+    public User() {}
+
+    public String getId() {
+        return userId;
+    }
+
+    public Complaint getComplaint2Inspect() {
+        return complaint2Inspect;
+    }
+
+    public void setComplaint2Inspect(Complaint complaint2Inspect) {
+        this.complaint2Inspect = complaint2Inspect;
     }
 
     public String getPassword() {
