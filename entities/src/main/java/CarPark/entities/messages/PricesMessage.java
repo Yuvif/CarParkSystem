@@ -9,6 +9,7 @@ public class PricesMessage extends Message {
     public ResponseType response_type;
     public List<Price> priceList;
     public Price new_price;
+    public String parkingLot;
 
     public PricesMessage(MessageType message_type, RequestType requestType) {
         super(message_type);
@@ -34,6 +35,7 @@ public class PricesMessage extends Message {
 
     public enum ResponseType {
         SET_PRICES_TABLE,
-        PRICE_EDITED
+        PRICE_EDITED,
+        WAITING_FOR_APPROVAL
     }
 }

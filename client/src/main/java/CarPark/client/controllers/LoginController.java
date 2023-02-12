@@ -86,7 +86,7 @@ public class LoginController{
                 SimpleClient.setCurrent_user(new_message.getUser());
                 Employee current_employee = (Employee) SimpleClient.getCurrent_user();
                 if(current_employee.getWorkersRole().equals("Manager"))
-                    SimpleChatClient.setRoot("ParkingLotManager");
+                    SimpleChatClient.setRoot("ParkingLotManagerPage");
                 else if (current_employee.getWorkersRole().equals("CEO"))
                     SimpleChatClient.setRoot("CEOPage");
                 else if(current_employee.getWorkersRole().equals("Parking Lot Worker"))
