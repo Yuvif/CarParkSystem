@@ -1,6 +1,6 @@
 package CarPark.entities.messages;
 
-import org.hibernate.stat.Statistics;
+import CarPark.entities.*;
 
 import java.time.LocalDate;
 

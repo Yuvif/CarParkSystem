@@ -12,6 +12,7 @@ public class PricesMessage extends Message {
     public Price new_price;
     public Customer customer;
     public double price;
+    public String parkingLot;
 
 
     public PricesMessage(MessageType message_type,RequestType requestType,Customer current_customer){
@@ -43,12 +44,14 @@ public class PricesMessage extends Message {
     public enum RequestType {
         GET_CURRENT_BALANCE,
         GET_PRICES_TABLE,
-        EDIT_PRICE
+        EDIT_PRICE,
+        APPROVE_PRICE
     }
 
     public enum ResponseType {
         SET_CURRENT_BALANCE,
         SET_PRICES_TABLE,
+        WAITING_FOR_APPROVEMENT,
         PRICE_EDITED
     }
 }

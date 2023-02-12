@@ -24,17 +24,24 @@ public class Price implements Serializable {
     @Column(name = "hours_of_parking")
     private Integer hoursOfParking;
 
+    @Column(name = "new_price")
+    private Double newPrice;
 
-    public Price(String parking_type, String payment_method, int price, int number_of_cars, int hours_of_parking) {
+    @ManyToOne
+    @JoinColumn(name = "parkingLotId")
+    private Parkinglot parkinglot;
+
+    public Price() {
+
+    }
+
+    public Price(Parkinglot parkinglot,String parking_type, String payment_method, int price, int number_of_cars, int hours_of_parking) {
+        this.parkinglot = parkinglot;
         this.parkingType = parking_type;
         this.paymentMethod = payment_method;
         this.price = price;
         this.numberOfCars = number_of_cars;
         this.hoursOfParking = hours_of_parking;
-    }
-
-    public Price() {
-
     }
 
 
@@ -81,4 +88,16 @@ public class Price implements Serializable {
     public int getId() {
         return id;
     }
+
+    public Parkinglot getParkinglot(){return parkinglot;}
+
+    public void setNewPrice(Double newPrice)
+    {
+        this.newPrice = newPrice;
+    }
+
+    public Double getNewPrice() {
+        return newPrice;
+    }
+
 }

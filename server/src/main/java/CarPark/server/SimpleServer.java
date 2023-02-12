@@ -18,14 +18,15 @@ import javax.mail.MessagingException;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Properties;
+import java.util.*;
 
 
 public class SimpleServer extends AbstractServer {
@@ -59,7 +60,9 @@ public class SimpleServer extends AbstractServer {
         configuration.addAnnotatedClass(ParkingSlot.class);
         configuration.addAnnotatedClass(CheckedIn.class);
         configuration.addAnnotatedClass(Statistics.class);
-       // configuration.addAnnotatedClass(ParkingLotWorker.class);
+        configuration.addAnnotatedClass(ParkingLotWorker.class);
+        configuration.addAnnotatedClass(Manager.class);
+        configuration.addAnnotatedClass(CEO.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();        //pull session factory config from hibernate properties
         return configuration.buildSessionFactory(serviceRegistry);
@@ -76,6 +79,7 @@ public class SimpleServer extends AbstractServer {
                 session = getSessionFactory().openSession();// Create new session for connection
             } else { //Get client requests
                 session.beginTransaction();
+                generateManagers(session);
                 if (LoginMessage.class.equals(msgClass)) {
                     handler = new LoginHandler((LoginMessage) msg, session, client);
                 } else if (ParkingListMessage.class.equals(msgClass)) {
@@ -331,5 +335,42 @@ public class SimpleServer extends AbstractServer {
         }
     }
 
+    private void generateManagers(Session session) throws Exception {
+        CriteriaBuilder cb;
+        cb = session.getCriteriaBuilder();
+        CriteriaQuery<Parkinglot> query = cb.createQuery(Parkinglot.class);
+        query.from(Parkinglot.class);
+        List<Parkinglot> data = session.createQuery(query).getResultList();
+        byte[] salt = HashPipeline.getSalt();
+        Manager daniel = new Manager("318172848","Daniel","Glazman","glazman.daniel@gmal.com","Manager",
+                HashPipeline.toHexString(HashPipeline.getSHA("1111111", salt)), salt);
+        daniel.setParkinglot(data.get(0));
+        session.save(daniel);
+        session.flush();
+        Manager avi = new Manager("209042589","Avi","Lifshitz","vilifishitz@gmal.com","Manager",
+                HashPipeline.toHexString(HashPipeline.getSHA("1111111", salt)), salt);
+        avi.setParkinglot(data.get(1));
+        session.save(avi);
+        session.flush();
+        Manager noy = new Manager("207944414","Noy","Blitsblau","oybl101@gmal.com","Manager",
+                HashPipeline.toHexString(HashPipeline.getSHA("1111111", salt)), salt);
+        noy.setParkinglot(data.get(2));
+        session.save(noy);
+        session.flush();
+        Manager shahar = new Manager("314983040","Shahar","Weiss","shaharweiss0@gmal.com","Manager",
+                HashPipeline.toHexString(HashPipeline.getSHA("1111111", salt)), salt);
+        shahar.setParkinglot(data.get(3));
+        session.save(shahar);
+        session.flush();
+        Manager eliron = new Manager("313313131","Eliron","Lubaton","lubaton@gmal.com","Manager",
+                HashPipeline.toHexString(HashPipeline.getSHA("1111111", salt)), salt);
+        eliron.setParkinglot(data.get(4));
+        session.save(eliron);
+        session.flush();
+        CEO yuval = new CEO("313598484","Yuval","Fisher","fisheryuval96@gmal.com","CEO",
+                HashPipeline.toHexString(HashPipeline.getSHA("1111111", salt)), salt);
+        session.save(yuval);
+        session.flush();
+    }
 
 }
