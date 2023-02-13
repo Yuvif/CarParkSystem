@@ -27,7 +27,6 @@ public class PullParkingSlotsHandler extends MessageHandler {
 
         switch (class_pslots_message.request_type) {
             case GET_PARKING_SLOTS_REP:
-                System.out.println("we got handler- slots");
                 class_pslots_message.parkingSlots = getParkingSlots();
                 class_pslots_message.response_type = PullParkingSlotsMessage.ResponseType.SET_PARKING_SLOTS_REP;
                 class_pslots_message.parkingSlots.removeIf(parkingSlot -> !parkingSlot.getParkinglot().equals(class_pslots_message.parkinglotId)

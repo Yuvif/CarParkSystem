@@ -77,7 +77,6 @@ public class SimpleServer extends AbstractServer {
         try {
             MessageHandler handler = null;
             Class<?> msgClass = msg.getClass();
-            System.out.println("Message received: " + msg + " from " + client);
             if (ConnectionMessage.class.equals(msgClass)) { //New client connection
                 SubscribedClient connection = new SubscribedClient(client);
                 SubscribersList.add(connection);

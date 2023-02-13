@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="615.0" prefWidth="1075.0" style="-fx-background-color: ffffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.Employee.CEO.CEOReportsController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="512.0" prefWidth="900.0" style="-fx-background-color: ffffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.Employee.CEO.CEOReportsController">
     <children>
         <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.0" prefWidth="1050.0" style="-fx-background-color: ffffff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <content>
@@ -22,7 +22,7 @@
                     <children>
                         <VBox layoutX="11.0" prefHeight="615.0" prefWidth="1032.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
-                                <HBox prefHeight="60.0" prefWidth="1043.0" spacing="10.0">
+                                <HBox prefHeight="60.0" prefWidth="508.0" spacing="10.0">
                                     <children>
                                         <Label alignment="CENTER" prefHeight="39.0" prefWidth="41.0" text="From:">
                                             <font>
@@ -45,6 +45,11 @@
                                             </HBox.margin>
                                         </DatePicker>
                                         <ComboBox fx:id="plPicker" prefHeight="36.0" prefWidth="217.0" promptText="Pick A Parking Lot" style="-fx-background-color: #58d788;" />
+                              <Button mnemonicParsing="false" onAction="#back" prefHeight="34.0" prefWidth="100.0" style="-fx-background-radius: 20;" styleClass="mybutton" stylesheets="@../../assets/style.css" text="Back" translateX="120.0">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Button>
                                     </children>
                                     <VBox.margin>
                                         <Insets left="20.0" top="30.0" />
@@ -61,13 +66,13 @@
                                                                 <Font name="Script MT Bold" size="23.0" />
                                                             </font>
                                                         </Label>
-                                                        <Button fx:id="makeOrdersBtn1" mnemonicParsing="false" onAction="#makeOrdersReport" prefHeight="35.0" prefWidth="297.0" style="-fx-background-color: #58d788;" text="Make Orders Report">
+                                                        <Button fx:id="makeOrdersBtn1" mnemonicParsing="false" onAction="#makeOrdersReport" prefHeight="35.0" prefWidth="450.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="Make Orders Report">
                                                             <font>
                                                                 <Font size="14.0" />
                                                             </font>
                                                         </Button>
                                                     </children></HBox>
-                                                <StackedBarChart fx:id="ordersChart1" animated="false" prefHeight="221.0" prefWidth="468.0">
+                                                <StackedBarChart fx:id="ordersChart1" animated="false" prefHeight="221.0" prefWidth="337.0">
                                                     <xAxis>
                                                         <CategoryAxis fx:id="daysAxis3" label="Days" side="BOTTOM" />
                                                     </xAxis>
@@ -86,12 +91,12 @@
                                             <children>
                                                 <AnchorPane>
                                                     <children>
-                                                        <Button fx:id="makeCompBtn" alignment="CENTER_RIGHT" layoutX="392.0" layoutY="-5.0" mnemonicParsing="false" onAction="#makeCompReport" prefHeight="36.0" prefWidth="179.0" style="-fx-background-color: #58d788;" text="Make Complaints Report" textAlignment="JUSTIFY">
+                                                        <Button fx:id="makeCompBtn" alignment="CENTER_RIGHT" layoutX="392.0" layoutY="-5.0" mnemonicParsing="false" onAction="#makeCompReport" prefHeight="36.0" prefWidth="179.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="Make Complaints Report" textAlignment="JUSTIFY">
                                                             <font>
                                                                 <Font size="14.0" />
                                                             </font>
                                                         </Button>
-                                                        <Label layoutX="14.0" layoutY="6.0" prefHeight="28.0" prefWidth="333.0" text="Complaint Char:">
+                                                        <Label layoutX="14.0" layoutY="6.0" prefHeight="28.0" prefWidth="333.0" text="Complaint Chart:">
                                                             <font>
                                                                 <Font name="Script MT Bold" size="22.0" />
                                                             </font>
@@ -113,7 +118,7 @@
                                                                 <Font name="Script MT Bold" size="23.0" />
                                                             </font>
                                                         </Label>
-                                                        <Button fx:id="makePslotsButton" layoutX="342.0" layoutY="-5.0" mnemonicParsing="false" onAction="#makePslotsReport" prefHeight="34.0" prefWidth="229.0" style="-fx-background-color: #58d788;" text="Make Restricted P-slots Report">
+                                                        <Button fx:id="makePslotsButton" layoutX="342.0" layoutY="-5.0" mnemonicParsing="false" onAction="#makePslotsReport" prefHeight="34.0" prefWidth="229.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="Make Restricted P-slots Report">
                                                             <font>
                                                                 <Font size="14.0" />
                                                             </font>
@@ -125,7 +130,7 @@
                                                         <CategoryAxis fx:id="daysAxis1" label="Days" side="BOTTOM" />
                                                     </xAxis>
                                                     <yAxis>
-                                                        <NumberAxis fx:id="restricPslotAxis1" label="Number Of Restricted P-slots" side="LEFT" upperBound="20.0" />
+                                                        <NumberAxis fx:id="restricPslotAxis1" label="Number Of Restricted P-slots" prefWidth="43.0" side="LEFT" upperBound="20.0" />
                                                     </yAxis>
                                                 </StackedBarChart>
                                             </children>

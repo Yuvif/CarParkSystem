@@ -48,7 +48,7 @@ public class ParkingLotManagerController {
         Platform.runLater(()->
         {
             try {
-                SimpleChatClient.setRoot("Login");
+                SimpleChatClient.setRoot("CreateReports");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -74,5 +74,17 @@ public class ParkingLotManagerController {
                     }
                 });
         }
+    }
+
+    public void showParkingLotMap(ActionEvent event) throws IOException {
+
+        Platform.runLater(()->
+        {
+            try {
+                SimpleChatClient.setRoot("ParkingLotMap");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

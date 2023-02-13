@@ -7,7 +7,7 @@ public class ParkingLotWorker extends Employee {
 
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "parkinglot_parking_lot_id")
+    @JoinColumn(name = "parkinglotId")
     private Parkinglot parkinglot;
 
 

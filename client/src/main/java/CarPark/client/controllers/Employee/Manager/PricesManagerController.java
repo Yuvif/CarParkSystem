@@ -40,7 +40,7 @@ public class PricesManagerController {
 
     @FXML
     private void loginPage() throws IOException {
-        SimpleChatClient.setRoot("ParkingLotManager");
+        SimpleChatClient.setRoot("ParkingLotManagerPage");
     }
 
 

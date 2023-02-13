@@ -44,6 +44,11 @@ public class CEOPageController {
         SimpleClient.getClient().sendToServer(msg);
     }
 
+    @FXML
+    void reports(ActionEvent event) throws IOException{
+        SimpleChatClient.setRoot("CEOReports");
+    }
+
     @Subscribe
     public void newResponse(LoginMessage new_message) throws IOException {
         switch (new_message.response_type) {

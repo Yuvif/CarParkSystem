@@ -19,7 +19,6 @@ public class StatisticsHandler extends MessageHandler{
     public void handleMessage() throws Exception {
         switch (class_message.request_type) {
             case GET_STATISTICS:
-                System.out.println("StatisticsHandler: GET_STATISTICS");
                 int parkinglot_id = class_message.getParkinglot_id();
                 LocalDate date = class_message.getDate();
                 getStatisticsOfDayAndParkinglot(parkinglot_id, date);

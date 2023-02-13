@@ -36,7 +36,7 @@
         <children>
             <Line endX="-100.0" endY="-55.0" layoutX="188.0" layoutY="55.0" startX="-100.0" startY="5.0" />
             <Line endX="-100.0" endY="-60.0" layoutX="269.0" layoutY="54.0" startX="-100.0" startY="5.0" />
-            <Button layoutX="8.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="79.0" styleClass="mybutton" stylesheets="@../../assets/style.css" />
+            <Button layoutX="8.0" mnemonicParsing="false" onAction="#reports" prefHeight="60.0" prefWidth="79.0" styleClass="mybutton" stylesheets="@../../assets/style.css" />
             <Button layoutX="89.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#prices" prefHeight="60.0" prefWidth="79.0" styleClass="mybutton" stylesheets="@../../assets/style.css">
             </Button>
             <Label layoutX="107.0" layoutY="2.0" text="Prices">

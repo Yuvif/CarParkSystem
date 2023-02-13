@@ -79,19 +79,17 @@ public class LoginController{
 
     @Subscribe
     public void newResponse(LoginMessage new_message) throws IOException {
+        SimpleClient.setCurrent_user(new_message.getUser());
         switch (new_message.response_type) {
             case LOGIN_SUCCEED_CUSTOMER -> {
-                SimpleClient.setCurrent_user(new_message.getUser());
                 SimpleChatClient.setRoot("CustomerPage");}
             case LOGIN_SUCCEED_EMPLOYEE -> {
-                SimpleClient.setCurrent_user(new_message.getUser());
                 Employee current_employee = (Employee) SimpleClient.getCurrent_user();
-                if(current_employee.getWorkersRole().equals("Manager"))
-                    SimpleChatClient.setRoot("ParkingLotManagerPage");
-                else if (current_employee.getWorkersRole().equals("CEO"))
-                    SimpleChatClient.setRoot("CEOPage");
-                else if(current_employee.getWorkersRole().equals("Parking Lot Worker"))
-                    SimpleChatClient.setRoot("ParkingLotWorkerPage");
+                switch (current_employee.getWorkersRole()) {
+                    case "Manager" -> SimpleChatClient.setRoot("ParkingLotManagerPage");
+                    case "CEO" -> SimpleChatClient.setRoot("CEOPage");
+                    case "Parking Lot Worker" -> SimpleChatClient.setRoot("ParkingLotWorkerPage");
+                }
             }
             case LOGIN_FAILED -> Platform.runLater(() -> {
                 try {

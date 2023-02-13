@@ -1,4 +1,5 @@
 package CarPark.client.controllers.Employee.CEO;
+import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.client.controllers.AbstractReports;
 import CarPark.entities.Complaint;
@@ -181,8 +182,6 @@ public class CEOReportsController extends AbstractReports {
 
     @Subscribe
     public void newResponse(OrderMessage new_message) {
-        System.out.println("we got controller back from order reports message");
-
         switch (new_message.response_type) {
             case SET_SELECTED_ORDERS -> Platform.runLater(() -> {
                 showOrders((LinkedList<Order>) new_message.ordersList);
@@ -191,7 +190,6 @@ public class CEOReportsController extends AbstractReports {
     }
     @Subscribe
     public void newResponse(PullParkingSlotsMessage new_message) {
-        System.out.println("we got controller back from pslots message");
         switch (new_message.response_type) {
             case SET_PARKING_SLOTS_REP -> Platform.runLater(()-> {
                 showRestrictedPSlots(new_message.parkingSlots);
@@ -201,7 +199,6 @@ public class CEOReportsController extends AbstractReports {
     }
     @Subscribe
     public void newResponse(ComplaintMessage new_message) {
-        System.out.println("we got controller back from complaints message");
         switch (new_message.response_type) {
             case SET_ALL_COMPLAINTS -> Platform.runLater(()-> {
                 //case ALL_COMPLAINTS:
@@ -295,5 +292,10 @@ public class CEOReportsController extends AbstractReports {
 
     public boolean isInvalid() {
         return toDate.isDisabled() || toDate.getValue() == null;
+    }
+
+    @FXML
+    private void back(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("CEOPage");
     }
 }
