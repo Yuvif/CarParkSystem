@@ -86,7 +86,7 @@ public class PricesManagerController {
 
     //initialize prices table from server
     @Subscribe
-    public void newResponse(PricesMessage new_message) {
+    public void newResponse(PricesMessage new_message) throws IOException {
         switch (new_message.response_type) {
             case SET_PRICES_TABLE:
                 pricesTable.setItems(FXCollections.observableArrayList(new_message.priceList));
@@ -101,6 +101,8 @@ public class PricesManagerController {
                             "Request Approved", Alert.AlertType.INFORMATION);
                     PricesMessage msg = new PricesMessage(Message.MessageType.REQUEST, PricesMessage.RequestType.GET_PRICES_TABLE);
                     Manager current_manager = (Manager) SimpleClient.getCurrent_user();
+                    msg.parkingLot =  current_manager.getParkinglot().getName();
+                    SimpleClient.getClient().sendToServer(msg);
                 }
                 break;
 
