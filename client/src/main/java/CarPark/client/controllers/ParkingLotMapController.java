@@ -2,7 +2,6 @@ package CarPark.client.controllers;
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.entities.Employee;
-import CarPark.entities.ParkingLotWorker;
 import CarPark.entities.ParkingSlot;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.ParkingLotMapMessage;
@@ -30,10 +29,6 @@ import java.util.Objects;
 
 public class ParkingLotMapController {
 
-    int rows;
-    List<ParkingSlot> parkingSlotsList;
-    ParkingSlot changedStatus;
-
     @FXML
     private AnchorPane window;
 
@@ -49,6 +44,11 @@ public class ParkingLotMapController {
     @FXML
     private ComboBox<String> floorChoice;
 
+
+    int rows;
+    List<ParkingSlot> parkingSlotsList;
+    ParkingSlot changedStatus;
+
     @FXML
     void goBack(ActionEvent event) throws IOException {
         Employee current_employee = (Employee) SimpleClient.getCurrent_user();
@@ -61,8 +61,8 @@ public class ParkingLotMapController {
 
     //get the size of the parking lot in order to render its map using suitable messages
     @FXML
-    void getParkingLotRowNum(ActionEvent event) {
-
+    void getParkingLotRowNum(ActionEvent event)
+    {
         ParkingLotMapMessage message = new ParkingLotMapMessage(Message.MessageType.REQUEST, ParkingLotMapMessage.RequestType.GET_ROW,
                 parkingLotChoice.getValue());
         try {
@@ -70,7 +70,6 @@ public class ParkingLotMapController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         ParkingLotMapMessage message2 = new ParkingLotMapMessage(Message.MessageType.REQUEST, ParkingLotMapMessage.RequestType.GET_PARKING_SLOTS,
                 parkingLotChoice.getValue());
@@ -80,7 +79,8 @@ public class ParkingLotMapController {
             e.printStackTrace();
         }
 
-        if (floorChoice.getValue() == null) {
+        if(floorChoice.getValue() == null)
+        {
             createParkingLotMap("A");
             setOccupiedSlots("A");
         }
@@ -120,29 +120,36 @@ public class ParkingLotMapController {
     //check the status of the slot
     public int isOccupied(String slotId, String parkingLotId)
     {
-        if(parkingSlotsList != null) {
-            for (ParkingSlot parkingSlot : parkingSlotsList) {
-                if (!String.valueOf(parkingSlot.getGeneratedValue().charAt(0)).equals(findParkingLotsIndex(parkingLotChoice.getValue()))) {
-                    continue;
-                }
+        for(ParkingSlot parkingSlot : parkingSlotsList)
+        {
+            if(!String.valueOf(parkingSlot.getGeneratedValue().charAt(0)).equals(findParkingLotsIndex(parkingLotChoice.getValue())))
+            {
+                continue;
+            }
 
-                if (Objects.equals(Integer.parseInt(parkingLotId), parkingSlot.getParkinglot().getParkingLotId()) &&
-                        parkingSlot.getGeneratedValue().substring(2).equals(slotId) &&
-                        Objects.equals(String.valueOf(parkingSlot.getSpotStatus()), "EMPTY")) {
-                    return 0;
-                } else if (Objects.equals(Integer.parseInt(parkingLotId), parkingSlot.getParkinglot().getParkingLotId()) &&
-                        parkingSlot.getGeneratedValue().substring(2).equals(slotId) &&
-                        Objects.equals(String.valueOf(parkingSlot.getSpotStatus()), "USED")) {
-                    return 1;
-                } else if (Objects.equals(Integer.parseInt(parkingLotId), parkingSlot.getParkinglot().getParkingLotId()) &&
-                        parkingSlot.getGeneratedValue().substring(2).equals(slotId) &&
-                        Objects.equals(String.valueOf(parkingSlot.getSpotStatus()), "RESTRICTED")) {
-                    return 2;
-                } else if (Objects.equals(Integer.parseInt(parkingLotId), parkingSlot.getParkinglot().getParkingLotId()) &&
-                        parkingSlot.getGeneratedValue().substring(2).equals(slotId) &&
-                        Objects.equals(String.valueOf(parkingSlot.getSpotStatus()), "RESERVED")) {
-                    return 3;
-                }
+            if(Objects.equals(Integer.parseInt(parkingLotId), parkingSlot.getParkinglot().getParkingLotId()) &&
+                    parkingSlot.getGeneratedValue().substring(2).equals(slotId) &&
+                    Objects.equals(String.valueOf(parkingSlot.getSpotStatus()), "EMPTY"))
+            {
+                return 0;
+            }
+            else if(Objects.equals(Integer.parseInt(parkingLotId), parkingSlot.getParkinglot().getParkingLotId()) &&
+                    parkingSlot.getGeneratedValue().substring(2).equals(slotId) &&
+                    Objects.equals(String.valueOf(parkingSlot.getSpotStatus()), "USED"))
+            {
+                return 1;
+            }
+            else if(Objects.equals(Integer.parseInt(parkingLotId), parkingSlot.getParkinglot().getParkingLotId()) &&
+                    parkingSlot.getGeneratedValue().substring(2).equals(slotId) &&
+                    Objects.equals(String.valueOf(parkingSlot.getSpotStatus()), "RESTRICTED"))
+            {
+                return 2;
+            }
+            else if(Objects.equals(Integer.parseInt(parkingLotId), parkingSlot.getParkinglot().getParkingLotId()) &&
+                    parkingSlot.getGeneratedValue().substring(2).equals(slotId) &&
+                    Objects.equals(String.valueOf(parkingSlot.getSpotStatus()), "RESERVED"))
+            {
+                return 3;
             }
         }
         return -1;
@@ -232,23 +239,19 @@ public class ParkingLotMapController {
                 }
 
                 //By clicking on an empty slot
-                ParkingLotWorker current_worker = (ParkingLotWorker) SimpleClient.getCurrent_user();
-                if(current_worker.getWorkersRole().equals("Parking Lot Worker")) {
-
-
-                    Paint currentColor = rect.getFill();
-                    if (currentColor != Color.GREEN) {
-                        rect.setOnMouseClicked(event -> {
-                            Paint currentColor2 = rect.getFill();
-                            if (currentColor2 == Color.BLUE) {
-                                rect.setFill(Color.RED);
-                            } else if (currentColor2 == Color.RED) {
-                                rect.setFill(Color.LIGHTGRAY);
-                            } else {
-                                rect.setFill(Color.BLUE);
-                            }
-                        });
-                    }
+                Paint currentColor = rect.getFill();
+                if(currentColor != Color.GREEN)
+                {
+                    rect.setOnMouseClicked(event -> {
+                        Paint currentColor2 = rect.getFill();
+                        if (currentColor2 == Color.BLUE) {
+                            rect.setFill(Color.RED);
+                        } else if (currentColor2 == Color.RED) {
+                            rect.setFill(Color.LIGHTGRAY);
+                        } else {
+                            rect.setFill(Color.BLUE);
+                        }
+                    });
                 }
             }
         }
@@ -327,7 +330,7 @@ public class ParkingLotMapController {
         }
     }
 
-  //initialize the GUI
+    //initialize the GUI
     @FXML
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
@@ -341,37 +344,6 @@ public class ParkingLotMapController {
         floorChoice.getItems().add("B");
         floorChoice.getItems().add("C");
         floorChoice.setPromptText("Choose Floor");
-
-        ParkingLotWorker current_worker = (ParkingLotWorker) SimpleClient.getCurrent_user();
-        if(current_worker.getWorkersRole().equals("Parking Lot Worker") || current_worker.getWorkersRole().equals("Manager"))
-        {
-            parkingLotChoice.setPromptText(current_worker.getParkinglot().getName());
-            parkingLotChoice.setDisable(true);
-
-            System.out.println(parkingLotChoice.getPromptText());
-
-            ParkingLotMapMessage message = new ParkingLotMapMessage(Message.MessageType.REQUEST, ParkingLotMapMessage.RequestType.GET_ROW,
-                    parkingLotChoice.getPromptText());
-            try {
-                SimpleClient.getClient().sendToServer(message);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            ParkingLotMapMessage message2 = new ParkingLotMapMessage(Message.MessageType.REQUEST, ParkingLotMapMessage.RequestType.GET_PARKING_SLOTS,
-                    parkingLotChoice.getValue());
-            try {
-                SimpleClient.getClient().sendToServer(message2);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            if (floorChoice.getValue() == null) {
-                createParkingLotMap("A");
-                setOccupiedSlots("A");
-            }
-        }
-
     }
 
     @Subscribe
@@ -390,5 +362,5 @@ public class ParkingLotMapController {
                 break;
         }
     }
-}
 
+}

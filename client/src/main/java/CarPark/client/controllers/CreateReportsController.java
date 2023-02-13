@@ -260,7 +260,6 @@ public class CreateReportsController extends AbstractReports {
 //        series2.setName("Customers");
 //        seriesLinkedList.add(series2);
 
-        int days = getDatesBetween(fromDate.getValue(), toDate.getValue()).size();
         for (LocalDate date : getDatesBetween(fromDate.getValue(), toDate.getValue())) {
             int numOfCustomers = 0;
             int numOfMem = 0;

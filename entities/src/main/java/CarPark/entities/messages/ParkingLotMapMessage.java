@@ -24,10 +24,10 @@ public class ParkingLotMapMessage extends Message{
         SEND_PARKING_LOT_MAP
     }
 
-    public ParkingLotMapMessage(MessageType message_type, RequestType request_type, String pl_name) {
+    public ParkingLotMapMessage(MessageType message_type, RequestType request_type, String plName) {
         super(message_type);
         this.request_type = request_type;
-        this.pl_name = pl_name;
+        this.pl_name = plName;
     }
 
     public ParkingLotMapMessage(MessageType message_type, RequestType request_type, List<ParkingSlot> parkingSlots) {
