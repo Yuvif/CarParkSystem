@@ -189,7 +189,7 @@ public class RegisterAsMemberController {//Daniel need to change name to new mem
         }
         else
         {
-            membership.setRoutineParkingLot("NULL");
+            membership.setRoutineParkingLot("Haifa");
             membership.setRoutineLeavingHour(LocalTime.MIN);
         }
 
