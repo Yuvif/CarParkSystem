@@ -1,4 +1,4 @@
-package CarPark.client.controllers;
+package CarPark.client.controllers.Employee.Manager;
 
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
@@ -40,7 +40,7 @@ public class PricesManagerController {
 
     @FXML
     private void loginPage() throws IOException {
-        SimpleChatClient.setRoot("ParkingLotManagerPage");
+        SimpleChatClient.setRoot("ParkingLotManager");
     }
 
 
@@ -54,8 +54,8 @@ public class PricesManagerController {
             public void handle(TableColumn.CellEditEvent<Price, Integer> priceIntegerCellEditEvent) {//send request to server to set new price on DB
                 Price new_price = priceIntegerCellEditEvent.getRowValue();
                 new_price.setPrice(priceIntegerCellEditEvent.getNewValue());
-                PricesMessage message = new PricesMessage(Message.MessageType.REQUEST, PricesMessage.RequestType.EDIT_PRICE, new_price);
-
+                PricesMessage message = new
+                        PricesMessage(Message.MessageType.REQUEST, PricesMessage.RequestType.EDIT_PRICE, new_price);
                 ParkingLotWorker current_manager = (ParkingLotWorker) SimpleClient.getCurrent_user();
                 message.parkingLot = current_manager.getParkinglot().getName();
                 try {
@@ -76,7 +76,6 @@ public class PricesManagerController {
         pricesCol.setCellValueFactory(new PropertyValueFactory<>("price"));
         noCol.setCellValueFactory(new PropertyValueFactory<>("numberOfCars"));
         hopCol.setCellValueFactory(new PropertyValueFactory<>("hoursOfParking"));
-
         PricesMessage msg = new PricesMessage(Message.MessageType.REQUEST, PricesMessage.RequestType.GET_PRICES_TABLE);
         Manager current_manager = (Manager) SimpleClient.getCurrent_user();
         parking_lot.setText(current_manager.getParkinglot().getName());
@@ -101,3 +100,4 @@ public class PricesManagerController {
 
 
 }
+

@@ -58,7 +58,7 @@ public class PricesTableHandler extends MessageHandler {
     {
         Price old_price = session.get(Price.class, class_message.new_price.getId());
         old_price.setNewPrice(class_message.new_price.getPrice());
-        class_message.response_type = PricesMessage.ResponseType.WAITING_FOR_APPROVEMENT;
+        class_message.response_type = PricesMessage.ResponseType.WAITING_FOR_APPROVAL;
     }
 
     private List<Price> newPrices() throws Exception{

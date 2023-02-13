@@ -52,7 +52,7 @@ public class PricesMessage extends Message {
     public enum ResponseType {
         SET_CURRENT_BALANCE,
         SET_PRICES_TABLE,
-        WAITING_FOR_APPROVEMENT,
+        WAITING_FOR_APPROVAL,
         PRICE_EDITED,
         SET_REQUESTS_TABLE
     }

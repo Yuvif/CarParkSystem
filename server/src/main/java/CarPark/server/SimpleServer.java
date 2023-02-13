@@ -36,15 +36,12 @@ public class SimpleServer extends AbstractServer {
 
     public SimpleServer(int port) {
         super(port);
-<<<<<<<<< Temporary merge branch 1
 //        OrderReminderThread orderReminderThread = new OrderReminderThread();
 //        orderReminderThread.start();
         //MembershipReminderThread membershipReminderThread = new MembershipReminderThread();
         //membershipReminderThread.start();
-=========
         RemindersThread remindersThread = new RemindersThread();
         remindersThread.start();
->>>>>>>>> Temporary merge branch 2
         StatisticsThread statisticsThread = new StatisticsThread();
         statisticsThread.start();
 

@@ -1,23 +1,23 @@
-package CarPark.client.controllers;
+package CarPark.client.controllers.Employee.Manager;
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
+import CarPark.client.controllers.AbstractReports;
 import CarPark.entities.*;
 import CarPark.entities.messages.*;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.chart.*;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.StackedBarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.LinkedList;
 

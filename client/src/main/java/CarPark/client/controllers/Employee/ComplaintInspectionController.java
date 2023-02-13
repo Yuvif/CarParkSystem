@@ -1,7 +1,8 @@
-package CarPark.client.controllers;
+package CarPark.client.controllers.Employee;
 
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
+import CarPark.client.controllers.Controller;
 import CarPark.entities.Complaint;
 import CarPark.entities.Employee;
 import CarPark.entities.messages.ComplaintMessage;

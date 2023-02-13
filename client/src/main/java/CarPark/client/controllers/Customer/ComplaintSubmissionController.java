@@ -1,7 +1,8 @@
-package CarPark.client.controllers;
+package CarPark.client.controllers.Customer;
 
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
+import CarPark.client.controllers.Controller;
 import CarPark.entities.Complaint;
 import CarPark.entities.Customer;
 import CarPark.entities.messages.ComplaintMessage;
@@ -10,10 +11,7 @@ import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.util.Duration;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -35,6 +33,8 @@ public class ComplaintSubmissionController extends Controller {
     @FXML
     private ComboBox <String> plPick;
 
+    @FXML
+    private Label userName;
 
 
     @FXML
@@ -61,6 +61,7 @@ public class ComplaintSubmissionController extends Controller {
     void initialize() throws IOException
     {
         EventBus.getDefault().register(this);
+        userName.setText(SimpleClient.getCurrent_user().getFirstName());
         customerIdT.setText(SimpleClient.getCurrent_user().getId().toString());
         plPick.getItems().add("Haifa");
         plPick.getItems().add("Tel Aviv");
@@ -127,7 +128,7 @@ public class ComplaintSubmissionController extends Controller {
         Platform.runLater(()->
         {
             try {
-                SimpleChatClient.setRoot("OrdersTable");
+                SimpleChatClient.setRoot("MyOrders");
             } catch (IOException e) {
                 e.printStackTrace();
             }

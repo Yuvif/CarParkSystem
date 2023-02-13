@@ -1,4 +1,4 @@
-package CarPark.client.controllers;
+package CarPark.client.controllers.User;
 
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;

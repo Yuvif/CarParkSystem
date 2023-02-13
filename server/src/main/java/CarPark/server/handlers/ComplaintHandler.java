@@ -5,7 +5,6 @@ import CarPark.entities.Customer;
 import CarPark.entities.Parkinglot;
 import CarPark.entities.messages.ComplaintMessage;
 import CarPark.entities.messages.Message;
-import CarPark.server.SimpleServer;
 import CarPark.server.ocsf.ConnectionToClient;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -110,7 +109,7 @@ public class ComplaintHandler extends MessageHandler {
     public void getMyComplaints() throws Exception {
         String hql = "FROM Complaint WHERE customer = :id";
         Query query = session.createQuery(hql);
-        query.setParameter("id", class_message.current_customer.getId());
+        query.setParameter("id", class_message.current_customer);
         class_message.complaints = query.getResultList();
         class_message.response_type= ComplaintMessage.ResponseType.SET_MY_COMPLAINTS;
     }

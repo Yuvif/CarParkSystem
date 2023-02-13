@@ -1,4 +1,4 @@
-package CarPark.client.controllers.Employee;
+package CarPark.client.controllers.Employee.CEO;
 
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;

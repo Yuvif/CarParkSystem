@@ -2,21 +2,18 @@
  * Sample Skeleton for 'ComplaintInspectionTable.fxml' Controller Class
  */
 
-package CarPark.client.controllers;
+package CarPark.client.controllers.Employee;
 
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
+import CarPark.client.controllers.Controller;
 import CarPark.entities.Complaint;
 import CarPark.entities.Employee;
 import CarPark.entities.messages.ComplaintMessage;
 import CarPark.entities.messages.Message;
-import antlr.ASTNULLType;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.property.SimpleLongProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -27,7 +24,9 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
 
 
 public class ComplaintInspectionTableController extends Controller {
