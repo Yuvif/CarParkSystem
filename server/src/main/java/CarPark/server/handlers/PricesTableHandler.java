@@ -51,6 +51,7 @@ public class PricesTableHandler extends MessageHandler {
     {
         Price old_price = session.get(Price.class, class_message.new_price.getId());
         old_price.setPrice(class_message.new_price.getNewPrice());
+        class_message.parkingLot = old_price.getParkinglot().getName();
         class_message.response_type = PricesMessage.ResponseType.PRICE_EDITED;
     }
 
