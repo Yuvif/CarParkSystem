@@ -2,6 +2,7 @@ package CarPark.client.controllers;
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.entities.Employee;
+import CarPark.entities.ParkingLotWorker;
 import CarPark.entities.ParkingSlot;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.ParkingLotMapMessage;
@@ -239,19 +240,22 @@ public class ParkingLotMapController {
                 }
 
                 //By clicking on an empty slot
-                Paint currentColor = rect.getFill();
-                if(currentColor != Color.GREEN)
-                {
-                    rect.setOnMouseClicked(event -> {
-                        Paint currentColor2 = rect.getFill();
-                        if (currentColor2 == Color.BLUE) {
-                            rect.setFill(Color.RED);
-                        } else if (currentColor2 == Color.RED) {
-                            rect.setFill(Color.LIGHTGRAY);
-                        } else {
-                            rect.setFill(Color.BLUE);
-                        }
-                    });
+                ParkingLotWorker current_worker = (ParkingLotWorker) SimpleClient.getCurrent_user();
+                if(current_worker.getWorkersRole().equals("Parking Lot Worker")) {
+
+                    Paint currentColor = rect.getFill();
+                    if (currentColor != Color.GREEN) {
+                        rect.setOnMouseClicked(event -> {
+                            Paint currentColor2 = rect.getFill();
+                            if (currentColor2 == Color.BLUE) {
+                                rect.setFill(Color.RED);
+                            } else if (currentColor2 == Color.RED) {
+                                rect.setFill(Color.LIGHTGRAY);
+                            } else {
+                                rect.setFill(Color.BLUE);
+                            }
+                        });
+                    }
                 }
             }
         }

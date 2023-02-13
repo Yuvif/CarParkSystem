@@ -45,9 +45,8 @@ public class LoginController{
         if (checkIdValidity(userID.getText()) && checkPassValidity(password.getText())) //check if password and username are valid
         {
             //if valid send request to login with secured password
-            long userId = Long.parseLong(userID.getText());
             LoginMessage msg =
-                    new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGIN,userID.getText(), password.getText());
+                    new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGIN, userID.getText(), password.getText());
             SimpleClient.getClient().sendToServer(msg);
         }
         else
