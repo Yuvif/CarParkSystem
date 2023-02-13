@@ -3,6 +3,7 @@ package CarPark.client.controllers.Customer;
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.entities.Customer;
+import CarPark.entities.messages.LoginMessage;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.PricesMessage;
 import javafx.application.Platform;
@@ -122,6 +123,50 @@ public class CustomerPageController{
             e.printStackTrace();
         }
     });
+    }
+
+    @FXML
+    void checkOut(ActionEvent event)throws IOException{
+        Platform.runLater(() -> {
+            try {
+                SimpleChatClient.setRoot("CheckOutCustomer");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    void checkIn(ActionEvent event)throws IOException{
+        Platform.runLater(() -> {
+            try {
+                SimpleChatClient.setRoot("CheckInCustomer");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    void logout(ActionEvent event) throws IOException {
+        LoginMessage msg = new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGOUT,SimpleClient.getCurrent_user().getId());
+        SimpleClient.getClient().sendToServer(msg);
+    }
+
+    @Subscribe
+    public void newResponse(LoginMessage new_message) throws IOException {
+        switch (new_message.response_type) {
+            case LOGOUT_SUCCEED:
+                Platform.runLater(()->
+                {
+                    try {
+                        SimpleChatClient.setRoot("Login");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+        }
+
     }
 }
 

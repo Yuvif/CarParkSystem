@@ -41,6 +41,7 @@ public class CheckedIn implements Serializable {
 
     }
 
+
     public Parkinglot getParkinglot(){return parkinglot;}
 
     public void setParkinglot(Parkinglot parkinglot){this.parkinglot = parkinglot;}

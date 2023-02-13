@@ -105,7 +105,7 @@
                             <Image url="@../../assets/profile-user.png" />
                         </image>
                     </ImageView>
-                    <Label fx:id="userName" prefHeight="42.0" prefWidth="268.0" style="-fx-text-fill: black;" textFill="WHITE" translateX="55.0" translateY="-35.0">
+                    <Label fx:id="userName" prefHeight="42.0" prefWidth="268.0" style="-fx-text-fill: black;" textFill="WHITE" translateX="65.0" translateY="-35.0">
                         <font>
                             <Font name="SansSerif Bold" size="27.0" />
                         </font>

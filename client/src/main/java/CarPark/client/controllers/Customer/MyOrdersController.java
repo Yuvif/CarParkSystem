@@ -74,6 +74,7 @@ public class MyOrdersController {
     }
 
 
+
     //add cancel button to every order
     private void addButtonToTable() {
         cancelCol = new TableColumn("");

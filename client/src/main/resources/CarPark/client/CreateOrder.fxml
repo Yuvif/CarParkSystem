@@ -109,24 +109,24 @@
                         <Image url="@../../assets/profile-user.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="userName" prefHeight="42.0" prefWidth="268.0" style="-fx-text-fill: black;" textFill="WHITE" translateX="55.0" translateY="-35.0">
+                  <Label fx:id="userName" prefHeight="42.0" prefWidth="268.0" style="-fx-text-fill: black;" textFill="WHITE" translateX="65.0" translateY="-35.0">
                      <font>
                         <Font name="SansSerif Bold" size="27.0" />
                      </font>
                   </Label>
                   <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="268.0" prefWidth="541.0" style="-fx-background-color: #CFEEE1; -fx-background-radius: 20;" translateX="120.0" translateY="-20.0">
                      <children>
-                        <TextField fx:id="idTextBox" layoutX="24.0" layoutY="43.0" prefHeight="30.0" prefWidth="229.0" promptText="ID" style="-fx-border-width: 2; -fx-border-color: black; -fx-border-radius: 5; -fx-background-color: white;">
+                        <TextField fx:id="idTextBox" layoutX="25.0" layoutY="71.0" prefHeight="30.0" prefWidth="229.0" promptText="ID" style="-fx-border-width: 2; -fx-border-color: black; -fx-border-radius: 5; -fx-background-color: white;">
                            <font>
                               <Font name="SansSerif Regular" size="14.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="carIdTextBox" layoutX="25.0" layoutY="85.0" prefHeight="30.0" prefWidth="228.0" promptText="Car number" style="-fx-border-width: 2; -fx-border-color: black; -fx-border-radius: 5; -fx-background-color: white;">
+                        <TextField fx:id="carIdTextBox" layoutX="26.0" layoutY="108.0" prefHeight="30.0" prefWidth="228.0" promptText="Car number" style="-fx-border-width: 2; -fx-border-color: black; -fx-border-radius: 5; -fx-background-color: white;">
                            <font>
                               <Font name="SansSerif Regular" size="14.0" />
                            </font>
                         </TextField>
-                        <TextField fx:id="emailAddress" layoutX="24.0" layoutY="124.0" prefHeight="30.0" prefWidth="230.0" promptText="Email" style="-fx-border-width: 2; -fx-border-color: black; -fx-border-radius: 5; -fx-background-color: white;">
+                        <TextField fx:id="emailAddress" layoutX="25.0" layoutY="146.0" prefHeight="30.0" prefWidth="230.0" promptText="Email" style="-fx-border-width: 2; -fx-border-color: black; -fx-border-radius: 5; -fx-background-color: white;">
                            <font>
                               <Font name="SansSerif Regular" size="14.0" />
                            </font>
@@ -134,12 +134,7 @@
                               <Cursor fx:constant="TEXT" />
                            </cursor>
                         </TextField>
-                        <Button fx:id="submitBtn" layoutX="245.0" layoutY="304.0" mnemonicParsing="false" onAction="#submitDetails" prefHeight="30.0" prefWidth="84.0" style="-fx-background-radius: 50;" styleClass="mybutton" stylesheets="@../../assets/style.css" text="Submit">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Button>
-                        <ComboBox fx:id="parkingLotsOpt" layoutX="22.0" layoutY="205.0" prefHeight="25.0" prefWidth="139.0" style="-fx-background-color: #70caa6; -fx-background-radius: 20;" />
+                        <ComboBox fx:id="parkingLotsOpt" layoutX="22.0" layoutY="231.0" prefHeight="25.0" prefWidth="139.0" style="-fx-background-color: #70caa6; -fx-background-radius: 20;" />
                         <Label layoutX="328.0" layoutY="210.0" text="Estimated Leaving Time">
                            <font>
                               <Font name="SansSerif Bold Italic" size="14.0" />
@@ -147,7 +142,7 @@
                         </Label>
                         <ComboBox fx:id="estLeavingHour" layoutX="328.0" layoutY="230.0" prefHeight="26.0" prefWidth="63.0" style="-fx-background-color: #70caa6; -fx-background-radius: 20;" />
                         <ComboBox fx:id="estLeavingMin" layoutX="400.0" layoutY="230.0" prefHeight="26.0" prefWidth="63.0" style="-fx-background-color: #70caa6; -fx-background-radius: 20;" />
-                        <Label layoutX="25.0" layoutY="177.0" text="Desired Parking Lot">
+                        <Label layoutX="25.0" layoutY="210.0" text="Desired Parking Lot">
                            <font>
                               <Font name="SansSerif Bold Italic" size="14.0" />
                            </font>
@@ -171,8 +166,18 @@
                         </Label>
                         <ComboBox fx:id="arrivalMin" layoutX="400.0" layoutY="126.0" prefHeight="26.0" prefWidth="63.0" style="-fx-background-color: #70caa6; -fx-background-radius: 20;" />
                         <ComboBox fx:id="arrivalHour" layoutX="331.0" layoutY="126.0" prefHeight="26.0" prefWidth="63.0" style="-fx-background-color: #70caa6; -fx-background-radius: 20;" />
+                        <Label layoutX="25.0" layoutY="23.0" text="Create New Order">
+                           <font>
+                              <Font name="SansSerif Bold" size="23.0" />
+                           </font>
+                        </Label>
                      </children>
                   </AnchorPane>
+                  <Button fx:id="submitBtn" mnemonicParsing="false" onAction="#submitDetails" prefHeight="30.0" prefWidth="84.0" style="-fx-background-radius: 50;" styleClass="mybutton" stylesheets="@../../assets/style.css" text="Submit" translateX="350.0" translateY="20.0">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
                </children>
             </VBox>
          </center>

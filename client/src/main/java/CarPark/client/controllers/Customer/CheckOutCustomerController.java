@@ -4,10 +4,13 @@ import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.entities.Customer;
 import CarPark.entities.messages.CheckOutMessage;
+import CarPark.entities.messages.LoginMessage;
 import CarPark.entities.messages.Message;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -27,9 +30,7 @@ public class CheckOutCustomerController {
     private TextField userId;
 
     @FXML
-    void goBack(ActionEvent event) throws IOException {
-        SimpleChatClient.setRoot("CustomerPage");
-    }
+    private Label userName;
 
     @FXML
     void submit(ActionEvent event)
@@ -80,6 +81,8 @@ public class CheckOutCustomerController {
     @FXML
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
+        userName.setText(SimpleClient.getCurrent_user().getFirstName());
+        userId.setText(SimpleClient.getCurrent_user().getId());
     }
 
     private boolean checkCarIdValidity(String carId) {
@@ -97,6 +100,100 @@ public class CheckOutCustomerController {
         }
 
         return true;
+    }
+
+    @FXML
+    private void myMemberships(ActionEvent event) throws IOException {
+        Platform.runLater(()->
+        {
+            try {
+                SimpleChatClient.setRoot("MembershipsView");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    private void newMembership(ActionEvent event)
+    {
+        Platform.runLater(()->
+        {
+            try {
+                SimpleChatClient.setRoot("RegisterAsMember");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    void myOrders(ActionEvent event)
+    {
+        Platform.runLater(()->
+        {
+            try {
+                SimpleChatClient.setRoot("MyOrders");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+
+    @FXML
+    void createNewOrder(ActionEvent event) throws IOException {
+        Platform.runLater(() -> {
+            try {
+                SimpleChatClient.setRoot("CreateOrder");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    void newComplaint(ActionEvent event) throws IOException {
+        Platform.runLater(() -> {
+            try {
+                SimpleChatClient.setRoot("ComplaintSubmission");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    void myComplaints(ActionEvent event) throws IOException{
+        Platform.runLater(() -> {
+            try {
+                SimpleChatClient.setRoot("MyComplaints");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    void logout(ActionEvent event) throws IOException {
+        LoginMessage msg = new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGOUT,SimpleClient.getCurrent_user().getId());
+        SimpleClient.getClient().sendToServer(msg);
+    }
+
+    @Subscribe
+    public void newResponse(LoginMessage new_message) throws IOException {
+        switch (new_message.response_type) {
+            case LOGOUT_SUCCEED:
+                Platform.runLater(()->
+                {
+                    try {
+                        SimpleChatClient.setRoot("Login");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+        }
+
     }
 
 }

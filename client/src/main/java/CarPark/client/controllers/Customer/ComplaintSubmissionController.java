@@ -61,6 +61,7 @@ public class ComplaintSubmissionController extends Controller {
     void initialize() throws IOException
     {
         EventBus.getDefault().register(this);
+        userName.setText(SimpleClient.getCurrent_user().getFirstName());
         customerIdT.setText(SimpleClient.getCurrent_user().getId().toString());
         plPick.getItems().add("Haifa");
         plPick.getItems().add("Tel Aviv");
@@ -127,7 +128,7 @@ public class ComplaintSubmissionController extends Controller {
         Platform.runLater(()->
         {
             try {
-                SimpleChatClient.setRoot("OrdersTable");
+                SimpleChatClient.setRoot("MyOrders");
             } catch (IOException e) {
                 e.printStackTrace();
             }

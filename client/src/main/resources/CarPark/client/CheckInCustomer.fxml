@@ -3,7 +3,10 @@
 <?import javafx.geometry.Point3D?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -12,10 +15,10 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.Customer.CustomerPageController">
+<AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.Customer.CheckInCustomerController">
    <BorderPane prefHeight="509.0" prefWidth="1017.0">
       <left>
-         <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="210.0" style="-fx-background-color: #CFEEE1;" BorderPane.alignment="CENTER">
+         <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="210.0" style="-fx-background-color: #CFEEE1;" BorderPane.alignment="CENTER">
             <children>
                <Button graphicTextGap="0.0" mnemonicParsing="false" onAction="#myOrders" prefHeight="69.0" prefWidth="221.0" styleClass="mybutton" stylesheets="@../../assets/style.css" text="   MY ORDERS" translateY="3.0">
                   <graphic>
@@ -105,22 +108,7 @@
                      <Font name="SansSerif Bold" size="27.0" />
                   </font>
                </Label>
-               <Label prefHeight="27.0" prefWidth="185.0" text="Your current charge is:" translateX="10.0">
-                  <font>
-                     <Font name="SansSerif Bold" size="16.0" />
-                  </font>
-               </Label>
-               <Label fx:id="balance" style="-fx-background-color: #CFEEE1;" translateX="200.0" translateY="-22.0">
-                  <font>
-                     <Font name="System Bold" size="14.0" />
-                  </font>
-               </Label>
-               <Label text="Check-in" translateX="205.0" translateY="130.0">
-                  <font>
-                     <Font name="SansSerif Bold" size="14.0" />
-                  </font>
-               </Label>
-               <Button mnemonicParsing="false" onAction="#logout" prefHeight="60.0" prefWidth="120.0" style="-fx-border-color: #77D0AA;" styleClass="mybutton" stylesheets="@../../assets/style.css" translateX="687.0" translateY="238.0">
+               <Button mnemonicParsing="false" onAction="#logout" prefHeight="60.0" prefWidth="120.0" style="-fx-border-color: #77D0AA;" styleClass="mybutton" stylesheets="@../../assets/style.css" translateX="687.0" translateY="358.0">
                   <graphic>
                      <Label text="Logout">
                         <font>
@@ -139,35 +127,54 @@
                      </Label>
                   </graphic>
                </Button>
-               <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#checkOut" prefHeight="70.0" prefWidth="70.0" style="-fx-border-color: #77D0AA; -fx-border-radius: 70; -fx-background-radius: 70;" styleClass="mybutton" stylesheets="@../../assets/style.css" translateX="350.0" translateY="-30.0">
-                  <graphic>
-                     <ImageView accessibleRole="BUTTON" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true">
-                        <image>
-                           <Image url="@../../assets/out.png" />
-                        </image>
+               <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="350.0" prefWidth="378.0" style="-fx-background-color: #77D0AA; -fx-background-radius: 20;" translateX="200.0" translateY="-50.0">
+                  <children>
+                     <TextField fx:id="idTf" layoutX="39.0" layoutY="79.0" prefHeight="30.0" prefWidth="300.0" promptText="ID" style="-fx-border-width: 2; -fx-border-color: black; -fx-border-radius: 5; -fx-background-color: white;">
+                        <font>
+                           <Font name="SansSerif Regular" size="14.0" />
+                        </font>
+                     </TextField>
+                     <TextField fx:id="car_nTf" layoutX="39.0" layoutY="116.0" prefHeight="30.0" prefWidth="300.0" promptText="Car number" style="-fx-border-width: 2; -fx-border-color: black; -fx-border-radius: 5; -fx-background-color: white;">
+                        <font>
+                           <Font name="SansSerif Regular" size="14.0" />
+                        </font>
+                     </TextField>
+                     <Button fx:id="checkInB" layoutX="255.0" layoutY="345.0" mnemonicParsing="false" onAction="#checkIn" prefHeight="30.0" prefWidth="84.0" style="-fx-background-radius: 50;" styleClass="mybutton" stylesheets="@../../assets/style.css" text="Check-in" translateY="-40.0">
                         <cursor>
                            <Cursor fx:constant="HAND" />
                         </cursor>
-                     </ImageView>
-                  </graphic>
-               </Button>
-               <Button minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#checkIn" prefHeight="70.0" prefWidth="70.0" style="-fx-border-color: #77D0AA; -fx-background-radius: 70; -fx-border-radius: 70;" styleClass="mybutton" stylesheets="@../../assets/style.css" translateX="200.0" translateY="-100.0">
-                  <graphic>
-                     <ImageView accessibleRole="BUTTON" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true">
+                     </Button>
+                     <Label accessibleRole="BUTTON" layoutX="126.0" layoutY="22.0" prefHeight="42.0" prefWidth="147.0" style="-fx-text-fill: black;" text="Check-in">
+                        <font>
+                           <Font name="SansSerif Regular" size="30.0" />
+                        </font>
+                     </Label>
+                     <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="89.0" layoutY="26.0">
                         <image>
-                           <Image url="@../../assets/point.png" />
+                           <Image url="@../../assets/check-in.png" />
                         </image>
-                        <cursor>
-                           <Cursor fx:constant="HAND" />
-                        </cursor>
                      </ImageView>
-                  </graphic>
-               </Button>
-               <Label text="Check-out" translateX="355.0" translateY="-85.0">
-                  <font>
-                     <Font name="SansSerif Bold" size="14.0" />
-                  </font>
-               </Label>
+                     <ComboBox fx:id="plPick" layoutX="217.0" layoutY="237.0" prefHeight="25.0" prefWidth="139.0" style="-fx-background-color: #CFEEE1; -fx-background-radius: 20;" translateY="-30.0" />
+                     <Label layoutX="26.0" layoutY="203.0" text="Estimated Leaving Time" translateY="-30.0">
+                        <font>
+                           <Font name="SansSerif Bold Italic" size="14.0" />
+                        </font>
+                     </Label>
+                     <ComboBox fx:id="estLeavingHour" layoutX="39.0" layoutY="236.0" prefHeight="26.0" prefWidth="63.0" style="-fx-background-color: #CFEEE1; -fx-background-radius: 20;" translateY="-30.0" />
+                     <ComboBox fx:id="estLeavingMin" layoutX="117.0" layoutY="236.0" prefHeight="26.0" prefWidth="63.0" style="-fx-background-color: #CFEEE1; -fx-background-radius: 20;" translateY="-30.0" />
+                     <Label layoutX="225.0" layoutY="203.0" text="Select Parking Lot" translateY="-30.0">
+                        <font>
+                           <Font name="SansSerif Bold Italic" size="14.0" />
+                        </font>
+                     </Label>
+                     <Label layoutX="37.0" layoutY="297.0" text="Estimated Leaving Date" translateY="-40.0">
+                        <font>
+                           <Font name="SansSerif Bold Italic" size="14.0" />
+                        </font>
+                     </Label>
+                     <DatePicker fx:id="estLeavingDate" layoutX="37.0" layoutY="320.0" style="-fx-background-color: #CFEEE1; -fx-background-radius: 20;" translateY="-40.0" />
+                  </children>
+               </AnchorPane>
             </children>
          </VBox>
       </center>
