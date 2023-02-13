@@ -1,8 +1,7 @@
-package CarPark.client.controllers.Customer;
+package CarPark.client.controllers;
 
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
-import CarPark.client.controllers.Controller;
 import CarPark.entities.Complaint;
 import CarPark.entities.Customer;
 import CarPark.entities.messages.ComplaintMessage;
@@ -11,7 +10,10 @@ import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
 import javafx.util.Duration;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -20,9 +22,6 @@ import java.io.IOException;
 import java.util.Date;
 
 public class ComplaintSubmissionController extends Controller {
-
-    @FXML
-    private Label userName;
 
     @FXML // fx:id="complaintDesc"
     private TextField complaintDesc; // Value injected by FXMLLoader
@@ -38,13 +37,14 @@ public class ComplaintSubmissionController extends Controller {
 
 
 
-
     @FXML
     void sendComplaint(ActionEvent event) {
+        Customer customer = ((Customer) SimpleClient.getCurrent_user());
         if (checkEmpty()) {
 //            create a complaint with the description
-            Complaint complaint = new Complaint(new Date(), complaintDesc.getText(), customerIdT.getText());
-//            create a list with the complaint
+
+            String pl_name = plPick.getValue();
+            Complaint complaint = new Complaint(new Date(), complaintDesc.getText(), customer, pl_name);
 //            send the complaint to the server
             ComplaintMessage complaintMessage = new ComplaintMessage(Message.MessageType.REQUEST, ComplaintMessage.RequestType.CREATE_NEW_COMPLAINT, complaint,
                     (Customer) SimpleClient.getCurrent_user());
@@ -61,7 +61,6 @@ public class ComplaintSubmissionController extends Controller {
     void initialize() throws IOException
     {
         EventBus.getDefault().register(this);
-        userName.setText(SimpleClient.getCurrent_user().getFirstName());
         customerIdT.setText(SimpleClient.getCurrent_user().getId().toString());
         plPick.getItems().add("Haifa");
         plPick.getItems().add("Tel Aviv");
@@ -128,7 +127,7 @@ public class ComplaintSubmissionController extends Controller {
         Platform.runLater(()->
         {
             try {
-                SimpleChatClient.setRoot("MyOrders");
+                SimpleChatClient.setRoot("OrdersTable");
             } catch (IOException e) {
                 e.printStackTrace();
             }

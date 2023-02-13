@@ -21,7 +21,7 @@ public class LoginHandler extends MessageHandler {
     public void handleMessage() throws Exception{
         switch (class_message.request_type) {
             case LOGIN -> login();
-            case LOGOUT -> logout();
+            case LOGOUT_NORMALLY, LOGOUT_BY_TERMINATION -> logout();
         }
 
     }

@@ -5,13 +5,14 @@ import javax.persistence.*;
 @Table(name = "ParkingLotWorkers")
 public class ParkingLotWorker extends Employee {
 
-    @OneToOne(orphanRemoval = true)
-    @JoinColumn(name = "parkinglotId")
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "parkinglot_parking_lot_id")
     private Parkinglot parkinglot;
 
-    public ParkingLotWorker(String employeeId, String firstName, String lastName, String email, String workersRole, String
-                            password,byte[] salt) throws Exception {
-        super(employeeId, firstName, lastName, email, workersRole,password,salt);
+
+    public ParkingLotWorker(String employeeId, String firstName, String lastName, String email, String workersRole, String password, byte[] salt) throws Exception {
+        super(employeeId, firstName, lastName, email, workersRole, password, salt);
     }
 
     public ParkingLotWorker() {}
@@ -23,4 +24,11 @@ public class ParkingLotWorker extends Employee {
     public void setParkinglot(Parkinglot parkinglot) {
         this.parkinglot = parkinglot;
     }
+    public Parkinglot getParkingLot() {
+        return parkinglot;
+    }
+    public void setParkingLot(Parkinglot parkingLot) {
+        this.parkinglot = parkingLot;
+    }
+
 }

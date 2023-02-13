@@ -100,7 +100,7 @@ public class Order implements Serializable {
         orderStatus = spotStatus;
     }
 
-    public  Date getDate(){
+    public Date getDate(){
         return date;
     }
     public void setDate(Date date) {

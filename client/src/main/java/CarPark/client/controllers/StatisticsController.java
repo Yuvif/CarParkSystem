@@ -86,7 +86,7 @@ public class StatisticsController {
     @FXML
     void GetData(ActionEvent event) throws IOException {
 //        initialize a StatisticsMessage with the date and parking lot chosen by the user
-//        with regexextract the number of parking lot from the string
+//        with regex extract the number of parking lot from the string
         String parkingLot = parkingLotOpt.getValue();
         String parkingLotId = parkingLot.replaceAll("[^0-9]", "");
         StatisticsMessage msg = new StatisticsMessage(Message.MessageType.REQUEST, StatisticsMessage.RequestType.GET_STATISTICS,

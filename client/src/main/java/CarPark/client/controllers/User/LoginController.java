@@ -1,4 +1,4 @@
-package CarPark.client.controllers.User;
+package CarPark.client.controllers;
 
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
@@ -45,6 +45,7 @@ public class LoginController{
         if (checkIdValidity(userID.getText()) && checkPassValidity(password.getText())) //check if password and username are valid
         {
             //if valid send request to login with secured password
+            long userId = Long.parseLong(userID.getText());
             LoginMessage msg =
                     new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGIN,userID.getText(), password.getText());
             SimpleClient.getClient().sendToServer(msg);
@@ -86,9 +87,11 @@ public class LoginController{
                 SimpleClient.setCurrent_user(new_message.getUser());
                 Employee current_employee = (Employee) SimpleClient.getCurrent_user();
                 if(current_employee.getWorkersRole().equals("Manager"))
-                    SimpleChatClient.setRoot("ParkingLotManager");
+                    SimpleChatClient.setRoot("ParkingLotManagerPage");
                 else if (current_employee.getWorkersRole().equals("CEO"))
                     SimpleChatClient.setRoot("CEOPage");
+                else if(current_employee.getWorkersRole().equals("Parking Lot Worker"))
+                    SimpleChatClient.setRoot("ParkingLotWorkerPage");
             }
             case LOGIN_FAILED -> Platform.runLater(() -> {
                 try {

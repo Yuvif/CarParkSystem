@@ -67,7 +67,7 @@ public class MyOrdersController {
             case ORDER_CANCELED -> {
                 deleteRow();
                 sendAlert("Your Order Is Canceled!"+
-                                "\nA Compensation of " + new_message.credit + "₪ was made",
+                                "\nA Compensation of " + String.format("%.2f", new_message.credit) + "₪ was made",
                         "Cancellation Confirmed", Alert.AlertType.INFORMATION);
             }
         }

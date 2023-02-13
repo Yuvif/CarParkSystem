@@ -24,7 +24,7 @@ public class Customer extends User {
     @LazyCollection(LazyCollectionOption.FALSE)
     List<Order> orderList = new LinkedList<>();
 
-    @OneToMany(mappedBy = "customerId", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.PERSIST)
     @LazyCollection(LazyCollectionOption.FALSE)
     List<Complaint> complaintList = new LinkedList<>();
 

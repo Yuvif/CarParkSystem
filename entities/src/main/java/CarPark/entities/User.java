@@ -2,6 +2,7 @@ package CarPark.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @MappedSuperclass
 public abstract class User implements Serializable {
@@ -16,13 +17,12 @@ public abstract class User implements Serializable {
     private String lastName;
     private boolean isLogged;
 
-    public User() {
+    @ManyToOne
+    private Complaint complaint2Inspect;
 
-    }
+    @OneToMany
+    private List<Complaint> complaints;
 
-    public String getId() {
-        return userId;
-    }
 
     public User(String userId, String password, byte[] salt, String email, String firstName, String lastName) {
         this.userId = userId;
@@ -34,6 +34,20 @@ public abstract class User implements Serializable {
         this.isLogged = false;
     }
 
+    public User() {}
+
+    public String getId() {
+        return userId;
+    }
+
+    public Complaint getComplaint2Inspect() {
+        return complaint2Inspect;
+    }
+
+    public void setComplaint2Inspect(Complaint complaint2Inspect) {
+        this.complaint2Inspect = complaint2Inspect;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -41,6 +55,7 @@ public abstract class User implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
     public byte[] getSalt() {
         return salt;
     }
@@ -77,4 +92,11 @@ public abstract class User implements Serializable {
         isLogged = logged;
     }
 
+    public List<Complaint> getComplaints() {
+        return complaints;
+    }
+
+    public void setComplaints(List<Complaint> complaints) {
+        this.complaints = complaints;
+    }
 }
