@@ -141,8 +141,6 @@ public class ComplaintHandler extends MessageHandler {
         query.from(Complaint.class);
         List<Complaint> data = session.createQuery(query).getResultList();
         LinkedList<Complaint> res = new LinkedList<>(data);
-
-        System.out.println(data.get(0).getCompText() + " - handler");
         return res;
     }
 }

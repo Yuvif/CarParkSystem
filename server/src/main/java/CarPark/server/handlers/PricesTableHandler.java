@@ -1,6 +1,7 @@
 package CarPark.server.handlers;
 
 import CarPark.entities.Customer;
+import CarPark.entities.Parkinglot;
 import CarPark.entities.Price;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.PricesMessage;
@@ -53,24 +54,28 @@ public class PricesTableHandler extends MessageHandler {
     }
 
     private void generatePricesTable() throws Exception {
-
-        Price pr1 = new Price("Casual ordered parking", "Per hour", 7, 1, 1);
-        session.save(pr1);
-        session.flush();
-        Price pr2 = new Price("Casual parking", "Per hour", 8, 1, 1);
-        session.save(pr2);
-        session.flush();
-        Price pr3 = new Price("Monthly subscriber few cars", "Permanent price", 100, 1, 60);
-        session.save(pr3);
-        session.flush();
-        Price pr4 = new Price("Monthly subscriber one car", "Permanent price", 120, 1, 54);
-        session.save(pr4);
-        session.flush();
-        Price pr5 = new Price("Premium monthly subscriber", "Permanent price", 108, 1, 72);
-        session.save(pr5);
-        session.flush();
+        CriteriaQuery<Parkinglot> query = cb.createQuery(Parkinglot.class);
+        query.from(Parkinglot.class);
+        List<Parkinglot> p_l = session.createQuery(query).getResultList();
+        int i;
+        for (i = 0;i < 5;i++) {
+            Price pr1 = new Price(p_l.get(i),"Casual ordered parking", "Per hour", 7, 1, 1);
+            session.save(pr1);
+            session.flush();
+            Price pr2 = new Price(p_l.get(i),"Casual parking", "Per hour", 8, 1, 1);
+            session.save(pr2);
+            session.flush();
+            Price pr3 = new Price(p_l.get(i),"Monthly subscriber few cars", "Permanent price", 100, 1, 60);
+            session.save(pr3);
+            session.flush();
+            Price pr4 = new Price(p_l.get(i),"Monthly subscriber one car", "Permanent price", 120, 1, 54);
+            session.save(pr4);
+            session.flush();
+            Price pr5 = new Price(p_l.get(i),"Premium monthly subscriber", "Permanent price", 108, 1, 72);
+            session.save(pr5);
+            session.flush();
+        }
     }
-
 //    private void generateCustomers() throws Exception {
 //        Customer customer1 = new Customer(207944414,"Noy","Blitz","noy.b@gmail.com",0,"1111111");
 //        session.save(customer1);

@@ -1,7 +1,7 @@
 package CarPark.server.handlers;
 
 import CarPark.entities.*;
-import CarPark.entities.messages.CheckOutMessage;
+import CarPark.entities.messages.*;
 import CarPark.entities.messages.Message;
 import CarPark.server.ocsf.ConnectionToClient;
 import org.hibernate.Session;
@@ -62,21 +62,23 @@ public class CheckOutHandler extends MessageHandler {
     //calculation of charges for guests
     public double calcGuestCredit()
     {
-        String hql = "FROM Price WHERE parkingType = :type";
+        CheckedIn checkedInGuest = findCheckedInGuest();
+        String hql = "FROM Price WHERE parkingType = :type and parkinglot = : lot";
         Query query = session.createQuery(hql);
         query.setParameter("type", "Casual parking");
+        query.setParameter("lot", checkedInGuest.getParkinglot());
         Price price = (Price) query.uniqueResult();
         double pricePH = price.getPrice();
-
-        CheckedIn checkedInGuest = findCheckedInGuest();
         return calculateCharges(checkedInGuest.getEntryDate(), checkedInGuest.getExitEstimatedDate(), LocalDateTime.now(), pricePH);
     }
 
     public double calcOrdersCredit()
     {
-        String hql = "FROM Price WHERE parkingType = :type";
+        CheckedIn checkedInGuest = findCheckedInGuest();
+        String hql = "FROM Price WHERE parkingType = :type and parkinglot = : lot";
         Query query = session.createQuery(hql);
         query.setParameter("type", "Casual ordered parking");
+        query.setParameter("lot", checkedInGuest.getParkinglot());
         Price price = (Price) query.uniqueResult();
         return price.getPrice();
     }

@@ -1,4 +1,5 @@
 package CarPark.client.controllers;
+import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.entities.*;
 import CarPark.entities.messages.*;
@@ -65,7 +66,14 @@ public class CreateReportsController extends AbstractReports {
     private ComboBox<String> plPicker;
 
     @FXML
-    private PieChart ordersPieChart;
+    private Label membershipsLabel;
+
+    @FXML
+    private Label ordersLabel;
+
+    @FXML
+    private Label customersLabel;
+
 
 
     @FXML
@@ -76,7 +84,11 @@ public class CreateReportsController extends AbstractReports {
         EventBus.getDefault().register(this);
         ParkingListMessage msg = new ParkingListMessage(Message.MessageType.REQUEST, ParkingListMessage.RequestType.GET_ALL_PARKING_LOTS);
         SimpleClient.getClient().sendToServer(msg);
-        plPicker.getItems().add("Set Parkinglot");
+
+        Manager current_manager = (Manager) SimpleClient.getCurrent_user();
+        String parkingLotName = current_manager.getParkinglot().getName();
+        plPicker.setPromptText(parkingLotName);
+        plPicker.setDisable(true);
     }
     /**
      * makeReport function activates if pressing the make report button, first it makes
@@ -85,10 +97,14 @@ public class CreateReportsController extends AbstractReports {
      */
 
     @FXML
+    void goBack(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("ParkingLotManagerPage");
+    }
+
+    @FXML
     void makeReport(ActionEvent event) throws InterruptedException, IOException {
         //EventBus.getDefault().register(this);
         coolButtonClick((Button) event.getTarget());
-        salesNum.setText("");
         if (isInvalid())
             sendAlert("Must pick time interval to make a report!", "Date Missing", Alert.AlertType.ERROR);
 
@@ -108,8 +124,13 @@ public class CreateReportsController extends AbstractReports {
 //            }
 //            else //customer service worker - general worker
 //            {
-                parkingLotName = plPicker.getValue();
+
            // }
+
+            Manager current_manager = (Manager) SimpleClient.getCurrent_user();
+            parkingLotName = current_manager.getParkinglot().getName();
+            plPicker.setPromptText(parkingLotName);
+            plPicker.setDisable(true);
 
             Date from = getPickedDate(fromDate);
             Date to = addDays(getPickedDate(toDate), 1);
@@ -166,7 +187,6 @@ public class CreateReportsController extends AbstractReports {
         System.out.println("we got controller back from complaint message");
         switch (new_message.response_type) {
             case SET_ALL_COMPLAINTS -> Platform.runLater(()->{
-                System.out.println(new_message.complaints2Rep.get(0).getCompText() + " response");
                 //LinkedList<Complaint> res = new LinkedList<>(new_message.complaints2Rep);
                 showComplaints(new_message.complaints2Rep);
             });
@@ -188,44 +208,93 @@ public class CreateReportsController extends AbstractReports {
 
     //need to sort the orders arrangement by customer type!!!!----------------------------------------------
     //need to add a date attribute to the order entity declaration!!!---------------------------------------
+//    private void showOrders(LinkedList<Order> orders) {
+//
+//        ordrsChart1.getData().clear();
+//        LinkedList<XYChart.Series<String, Number>> seriesLinkedList = new LinkedList<XYChart.Series<String, Number>>();
+//        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+//
+//        XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();
+//        //series.setName(Complaint.topicToString(topic));
+//        seriesLinkedList.add(series);
+//
+//
+//        for (LocalDate date : getDatesBetween(fromDate.getValue(), toDate.getValue())) {
+//
+//
+//
+//                Instant instant = order.getArrivalTime().atZone(ZoneId.systemDefault()).toInstant();
+//                Date date1 = Date.from(instant);
+//                if (dateAreEqual(dateToLocalDate(date1), date))
+//                {
+//                    switch (order.getCustomer().getMemberships().size()){
+//                        case 0:
+//                            break;
+//                        default: {
+//                            numofMem += 1;
+//                            break;
+//                        }
+//                    }
+//                    numOfOrd += 1;
+//                }
+//            }
+//
+//            series.getData().add(new XYChart.Data<>(formatter.format(localDateToDate(date)), numOfOrd - numofMem));
+//            series.getData().add(new XYChart.Data<>(formatter.format(localDateToDate(date)), numofMem));
+//        }
+//        ordrsChart1.getData().addAll(seriesLinkedList);
+//    }
+//
+//}
+
     private void showOrders(LinkedList<Order> orders) {
+//        complaintChart.getData().clear();
+//        LinkedList<XYChart.Series<String, Number>> seriesLinkedList = new LinkedList<XYChart.Series<String, Number>>();
+//        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+//
+//        XYChart.Series<String, Number> series1 = new XYChart.Series<String, Number>();
+//        series1.setName("Memberships");
+//        seriesLinkedList.add(series1);
+//
+//        XYChart.Series<String, Number> series2 = new XYChart.Series<String, Number>();
+//        series2.setName("Customers");
+//        seriesLinkedList.add(series2);
 
-        ordrsChart1.getData().clear();
-        LinkedList<XYChart.Series<String, Number>> seriesLinkedList = new LinkedList<XYChart.Series<String, Number>>();
-        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-
-        XYChart.Series<String, Number> series = new XYChart.Series<String, Number>();
-        //series.setName(Complaint.topicToString(topic));
-        seriesLinkedList.add(series);
-
-
-
+        int days = getDatesBetween(fromDate.getValue(), toDate.getValue()).size();
         for (LocalDate date : getDatesBetween(fromDate.getValue(), toDate.getValue())) {
-            int numOfOrd = 0;
-            int numofMem = 0;
-            for (Order order : orders) {
+            int numOfCustomers = 0;
+            int numOfMem = 0;
 
-                Instant instant = order.getArrivalTime().atZone(ZoneId.systemDefault()).toInstant();
-                Date date1 = Date.from(instant);
-                if (dateAreEqual(dateToLocalDate(date1), date))
-                {
-                    switch (order.getCustomer().getMemberships().size()){
-                        case 0:
-                            break;
-                        default: {
-                            numofMem += 1;
-                            break;
-                        }
+            for (Order order : orders) {
+                if (dateAreEqual(dateToLocalDate(order.getDate()), date)) {
+                    if (order.getCustomer().getMemberships().size() > 0) {
+                        numOfMem += 1;
+                    } else {
+                        numOfCustomers += 1;
                     }
-                    numOfOrd += 1;
                 }
             }
 
-            series.getData().add(new XYChart.Data<>(formatter.format(localDateToDate(date)), numOfOrd - numofMem));
-            series.getData().add(new XYChart.Data<>(formatter.format(localDateToDate(date)), numofMem));
+            ordersLabel.setText(String.valueOf(numOfCustomers + numOfMem));
+            customersLabel.setText(String.valueOf(numOfCustomers));
+            membershipsLabel.setText(String.valueOf(numOfMem));
+
+//            for (int j = 0; j < days; j++) {
+//                series1.getData().add(new XYChart.Data<>(String.valueOf(j), numOfMem[j]));
+//                series2.getData().add(new XYChart.Data<>(String.valueOf(j), numOfOrd[j]));
+//            }
+//
+//           //series1.getData().add(new XYChart.Data<String, Integer[]>(formatter.format(localDateToDate(date)), numOfOrd));
+//            //series2.getData().add(new XYChart.Data<String, Integer[]>(formatter.format(localDateToDate(date)), numOfMem));
+//        }
+//        ordrsChart1.getData().addAll(seriesLinkedList);
+//
+//        LineChart<String, Number> chart = new LineChart<>(new CategoryAxis(), new NumberAxis());
+//        chart.getData().add(series1);
+//        chart.getData().add(series2);
         }
-        ordrsChart1.getData().addAll(seriesLinkedList);
     }
+
 
 
     private void showRestrictedPSlots(LinkedList<ParkingSlot> parkingSlots) {
@@ -246,7 +315,6 @@ public class CreateReportsController extends AbstractReports {
             }
 
             series.getData().add(new XYChart.Data<>(formatter.format(localDateToDate(date)), numOfRestPSl));
-            salesNum.setText(String.valueOf(numOfRestPSl));
         }
 
         restrictedPSlotsChart.getData().addAll(seriesLinkedList);
@@ -263,9 +331,6 @@ public class CreateReportsController extends AbstractReports {
 
         for (LocalDate date : getDatesBetween(fromDate.getValue(), toDate.getValue())) {
             int numOfComp = 0;
-
-            System.out.println(complaints.get(0).getCompText() + " - controller");
-
 
             for (Complaint complaint : complaints) {
                 if (dateAreEqual(dateToLocalDate(complaint.getDate()), date))

@@ -77,10 +77,11 @@ public class SimpleServer extends AbstractServer {
                 SubscribedClient connection = new SubscribedClient(client);
                 SubscribersList.add(connection);
                 session = getSessionFactory().openSession();// Create new session for connection
+
 //                session.beginTransaction();
 //                generateParkingLots(session);
 //                session.getTransaction().commit();
-
+//
 //                session.beginTransaction();
 //                generateWorkers(session);
 //                session.getTransaction().commit();
