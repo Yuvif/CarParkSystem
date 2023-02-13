@@ -45,6 +45,8 @@ public class PricesTableController {
     private void refreshTable() throws IOException {
         PricesMessage msg = new PricesMessage(Message.MessageType.REQUEST, PricesMessage.RequestType.GET_PRICES_TABLE);
         msg.parkingLot = plPick.getValue();
+        if (msg.parkingLot.equals(""))
+            msg.parkingLot = "Haifa";
         SimpleClient.getClient().sendToServer(msg);
     }
 
@@ -90,12 +92,13 @@ public class PricesTableController {
 
     //initialize prices table from server
     @Subscribe
-    public void newResponse(PricesMessage new_message) {
+    public void newResponse(PricesMessage new_message) throws IOException {
         switch (new_message.response_type) {
             case SET_PRICES_TABLE:
                 pricesTable.setItems(FXCollections.observableArrayList(new_message.priceList));
                 break;
-            case PRICE_EDITED:
+            case PRICE_EDITED: ;
+                refreshTable();
                 break;
         }
     }

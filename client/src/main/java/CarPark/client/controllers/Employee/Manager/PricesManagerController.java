@@ -95,6 +95,15 @@ public class PricesManagerController {
                 sendAlert("Price change request have been sent."+ "\n" +"Waiting For CEO To Approve.",
                         "Request Sent", Alert.AlertType.INFORMATION);
                 break;
+            case PRICE_EDITED:
+                if (new_message.parkingLot.equals(((Manager) SimpleClient.getCurrent_user()).getParkinglot().getName())) {
+                    sendAlert("Price change request has been approved!",
+                            "Request Approved", Alert.AlertType.INFORMATION);
+                    PricesMessage msg = new PricesMessage(Message.MessageType.REQUEST, PricesMessage.RequestType.GET_PRICES_TABLE);
+                    Manager current_manager = (Manager) SimpleClient.getCurrent_user();
+                }
+                break;
+
         }
     }
 
