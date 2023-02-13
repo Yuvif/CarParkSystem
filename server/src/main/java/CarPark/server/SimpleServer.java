@@ -79,7 +79,6 @@ public class SimpleServer extends AbstractServer {
                 session = getSessionFactory().openSession();// Create new session for connection
             } else { //Get client requests
                 session.beginTransaction();
-                generateManagers(session);
                 if (LoginMessage.class.equals(msgClass)) {
                     handler = new LoginHandler((LoginMessage) msg, session, client);
                 } else if (ParkingListMessage.class.equals(msgClass)) {

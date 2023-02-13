@@ -36,7 +36,7 @@
         <children>
             <Line endX="-100.0" endY="-55.0" layoutX="188.0" layoutY="55.0" startX="-100.0" startY="5.0" />
             <Line endX="-100.0" endY="-60.0" layoutX="269.0" layoutY="54.0" startX="-100.0" startY="5.0" />
-            <Button layoutX="8.0" mnemonicParsing="false"  prefHeight="60.0" prefWidth="79.0" styleClass="mybutton" stylesheets="@../../assets/style.css" />
+            <Button layoutX="8.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="79.0" styleClass="mybutton" stylesheets="@../../assets/style.css" />
             <Button layoutX="89.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#prices" prefHeight="60.0" prefWidth="79.0" styleClass="mybutton" stylesheets="@../../assets/style.css">
             </Button>
             <Label layoutX="107.0" layoutY="2.0" text="Prices">
@@ -64,6 +64,26 @@
                <Image url="@../../assets/report.png" />
             </image>
          </ImageView>
+         <Button layoutX="396.0" mnemonicParsing="false" onAction="#logout" prefHeight="60.0" prefWidth="120.0" style="-fx-background-radius: 0;" styleClass="mybutton" stylesheets="@../../assets/style.css">
+            <graphic>
+               <Label text="Logout">
+                  <font>
+                     <Font name="SansSerif Bold" size="14.0" />
+                  </font>
+                  <graphic>
+                     <ImageView accessibleRole="BUTTON" fitHeight="42.0" fitWidth="43.0" pickOnBounds="true">
+                        <image>
+                           <Image url="@../../assets/logout.png" />
+                        </image>
+                        <cursor>
+                           <Cursor fx:constant="HAND" />
+                        </cursor>
+                     </ImageView>
+                  </graphic>
+               </Label>
+            </graphic>
+         </Button>
+         <Line endX="-100.0" endY="-60.0" layoutX="496.0" layoutY="54.0" startX="-100.0" startY="5.0" />
         </children>
     </AnchorPane>
     <ImageView accessibleRole="BUTTON" fitHeight="30.0" fitWidth="30.0" layoutX="979.0" layoutY="13.0" pickOnBounds="true">

@@ -45,6 +45,7 @@ public class PricesMessage extends Message {
         GET_CURRENT_BALANCE,
         GET_PRICES_TABLE,
         EDIT_PRICE,
+        GET_REQUESTS_TABLE,
         APPROVE_PRICE
     }
 
@@ -52,6 +53,7 @@ public class PricesMessage extends Message {
         SET_CURRENT_BALANCE,
         SET_PRICES_TABLE,
         WAITING_FOR_APPROVEMENT,
-        PRICE_EDITED
+        PRICE_EDITED,
+        SET_REQUESTS_TABLE
     }
 }

@@ -2,7 +2,6 @@ package CarPark.client.controllers.Employee;
 
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
-import CarPark.entities.CEO;
 import CarPark.entities.Price;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.PricesMessage;
@@ -10,20 +9,23 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
+
+import static CarPark.client.controllers.Controller.sendAlert;
 
 public class CEOPricesController {
     @FXML
     private TableColumn<Price, String> typeCol;
     @FXML
     private TableColumn<Price, Integer> pricesCol;
+    @FXML
+    private TableColumn<Price, Integer> new_pricesCol;
     @FXML
     private TableColumn<Price,String> plCol;
 
@@ -34,12 +36,14 @@ public class CEOPricesController {
 
     @FXML
     void initialize () throws IOException{
+        EventBus.getDefault().register(this);
         typeCol.setCellValueFactory(new PropertyValueFactory<>("parkingType"));
         pricesCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+        new_pricesCol.setCellValueFactory(new PropertyValueFactory<>("newPrice"));
         plCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getParkinglot().getName()));
-        CEO ceo = (CEO)SimpleClient.getCurrent_user();
-        pricesTable.setItems(FXCollections.observableArrayList(ceo.getChangeRequests()));
         addButtonToTable();
+        PricesMessage msg = new PricesMessage(Message.MessageType.REQUEST, PricesMessage.RequestType.GET_REQUESTS_TABLE);
+        SimpleClient.getClient().sendToServer(msg);
     }
 
     //add cancel button to every order
@@ -74,7 +78,7 @@ public class CEOPricesController {
                             setGraphic(null);
                         } else {
                             setGraphic(btn);
-                            btn.getStyleClass().add("assets/style.css/myButton");
+                            btn.getStyleClass().add("style.css/mybutton");
                         }
                     }
                 };
@@ -89,5 +93,22 @@ public class CEOPricesController {
     @FXML
     private void back(ActionEvent event) throws IOException {
         SimpleChatClient.setRoot("CEOPage");
+    }
+
+    @Subscribe
+    public void newResponse(PricesMessage new_message) throws IOException {
+        switch (new_message.response_type)
+        {
+            case SET_REQUESTS_TABLE:
+                pricesTable.setItems(FXCollections.observableArrayList(new_message.priceList));
+                break;
+            case WAITING_FOR_APPROVEMENT:
+            {
+                sendAlert("New change request received."+ "\n" +"From:" + new_message.parkingLot,
+                        "New Request", Alert.AlertType.INFORMATION);
+                PricesMessage msg = new PricesMessage(Message.MessageType.REQUEST, PricesMessage.RequestType.GET_REQUESTS_TABLE);
+                SimpleClient.getClient().sendToServer(msg);
+            }
+        }
     }
 }

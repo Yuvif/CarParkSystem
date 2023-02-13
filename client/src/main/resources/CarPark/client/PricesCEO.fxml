@@ -48,9 +48,9 @@
    <TableView fx:id="pricesTable" layoutX="7.0" layoutY="110.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="496.0" stylesheets="@../../assets/style.css">
       <columns>
          <TableColumn id="typeCol" fx:id="typeCol" prefWidth="188.0" text="Parking type" />
-         <TableColumn id="priceCol" fx:id="pricesCol" minWidth="0.0" prefWidth="87.0" text="New Price" />
-         <TableColumn id="typeCol" fx:id="plCol" prefWidth="126.666748046875" text="Parking Lot" />
-         <TableColumn id="priceCol" fx:id="approveCol" minWidth="0.0" prefWidth="101.33335876464844" text="Approve" />
+         <TableColumn id="priceCol" fx:id="pricesCol" minWidth="0.0" prefWidth="60.0" text="Old Price" />
+         <TableColumn id="priceCol" fx:id="new_pricesCol" minWidth="0.0" prefWidth="64.0" text="New Price" />
+         <TableColumn id="typeCol" fx:id="plCol" prefWidth="111.0" text="Parking Lot" />
       </columns>
    </TableView>
     <!-- The End of Signup form -->

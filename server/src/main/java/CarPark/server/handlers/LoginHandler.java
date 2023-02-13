@@ -89,6 +89,7 @@ public class LoginHandler extends MessageHandler {
             employee.setLogged(false);
         else
             customer.setLogged(false);
+        class_message.response_type = LoginMessage.ResponseType.LOGOUT_SUCCEED;
     }
 
 //        private void generateEmployees() throws Exception {

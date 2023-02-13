@@ -15,7 +15,7 @@ public class CEO extends Employee {
     @JoinColumn(name = "parkinglot_id")
     private Parkinglot parkinglot;
 
-    private List<Price> changeRequests = new ArrayList<>();
+
 
 
 
@@ -37,13 +37,4 @@ public class CEO extends Employee {
     public CEO() {
     }
 
-    public void addRequest(Price price)
-    {
-        changeRequests.add(price);
-    }
-
-    public List<Price> getChangeRequests()
-    {
-        return changeRequests;
-    }
 }

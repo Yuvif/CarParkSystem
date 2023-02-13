@@ -25,7 +25,7 @@ public class Price implements Serializable {
     private Integer hoursOfParking;
 
     @Column(name = "new_price")
-    private Double newPrice;
+    private Integer newPrice;
 
     @ManyToOne
     @JoinColumn(name = "parkingLotId")
@@ -91,12 +91,12 @@ public class Price implements Serializable {
 
     public Parkinglot getParkinglot(){return parkinglot;}
 
-    public void setNewPrice(Double newPrice)
+    public void setNewPrice(Integer newPrice)
     {
         this.newPrice = newPrice;
     }
 
-    public Double getNewPrice() {
+    public Integer getNewPrice() {
         return newPrice;
     }
 

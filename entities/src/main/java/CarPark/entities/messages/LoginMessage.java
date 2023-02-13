@@ -42,6 +42,7 @@ public class LoginMessage extends Message {
         LOGIN_SUCCEED_EMPLOYEE,
         LOGIN_SUCCEED_CUSTOMER,
         LOGIN_FAILED,
+        LOGOUT_SUCCEED,
         ALREADY_LOGGED
     }
 
