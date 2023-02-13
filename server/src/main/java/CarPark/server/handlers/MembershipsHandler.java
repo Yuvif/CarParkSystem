@@ -40,7 +40,7 @@ public class MembershipsHandler extends MessageHandler{
 
         for (Membership membership : existingMemberships)
         {
-            if (membership.getCarId() == newMembership.getCarId() && membership.getCustomerId() == newMembership.getCustomerId())
+            if (membership.getCarId() == newMembership.getCarId())
             {
                 class_message.response_type = MembershipMessage.ResponseType.REGISTRATION_FAILED;
                 break;
@@ -201,6 +201,13 @@ public class MembershipsHandler extends MessageHandler{
         Query query = session.createQuery(hql);
         query.setParameter("id", class_message.current_customer.getId());
         class_message.memberships = query.getResultList();
+        for (Membership membership: class_message.memberships)
+        {
+            if (membership.getMembershipType().equals("Full Membership"))
+            {
+                membership.setRoutineParkingLot("");
+            }
+        }
         class_message.response_type= MembershipMessage.ResponseType.SEND_TABLE;
     }
 

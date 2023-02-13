@@ -185,7 +185,8 @@ public class RegisterAsMemberController {//Daniel need to change name to new mem
 
         membership.setCarId(Integer.parseInt(carIdNumber.getText()));
         membership.setCustomerId(customerIdText.getText());
-        if(parkingLots.getValue() != null && arrivalHour.getValue() != null && arrivalMin.getValue() != null)
+        if(parkingLots.getValue() != null && arrivalHour.getValue() != null && arrivalMin.getValue() != null
+            && !parkingLots.isDisable() && !arrivalHour.isDisable() && !arrivalMin.isDisable())
         {
             membership.setRoutineParkingLot(parkingLots.getValue());
             arrivalTime = LocalTime.of(Integer.parseInt(arrivalHour.getValue().toString()), Integer.parseInt(arrivalMin.getValue().toString()));
