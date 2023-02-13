@@ -113,6 +113,7 @@ public class CEOPricesController {
                         "New Request", Alert.AlertType.INFORMATION);
                 PricesMessage msg = new PricesMessage(Message.MessageType.REQUEST, PricesMessage.RequestType.GET_REQUESTS_TABLE);
                 SimpleClient.getClient().sendToServer(msg);
+                break;
             }
         }
     }

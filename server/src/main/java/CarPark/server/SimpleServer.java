@@ -112,7 +112,13 @@ public class SimpleServer extends AbstractServer {
                     handler.handleMessage();
                     session.getTransaction().commit();
                     handler.message.message_type = Message.MessageType.RESPONSE;
-                    client.sendToClient(handler.message);
+                    if (handler.getClass().equals(PricesTableHandler.class) &&  ( ((PricesMessage) handler.message).response_type.equals(PricesMessage.ResponseType.WAITING_FOR_APPROVAL)
+                    || ((PricesMessage) handler.message).response_type.equals(PricesMessage.ResponseType.PRICE_EDITED)))
+                    {
+                        sendToAllClients(handler.message);
+                    }
+                    else
+                        client.sendToClient(handler.message);
                 }
             }
         } catch (Exception exception) {
@@ -417,6 +423,16 @@ public class SimpleServer extends AbstractServer {
         parkingLotWorker5.setParkinglot(data.get(4));
         session.save(parkingLotWorker5);
         session.flush();
+    }
+
+    public void sendToAllClients(Message message) {
+        try {
+            for (SubscribedClient SubscribedClient : SubscribersList) {
+                SubscribedClient.getClient().sendToClient(message);
+            }
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
     }
 
 }
