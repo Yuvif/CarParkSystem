@@ -110,7 +110,11 @@ public class CreateReportsController extends AbstractReports {
 
     @FXML
     void goBack(ActionEvent event) throws IOException {
-        SimpleChatClient.setRoot("ParkingLotManagerPage");
+        Employee current_employee = (Employee) SimpleClient.getCurrent_user();
+        switch (current_employee.getWorkersRole()) {
+            case "Manager" -> SimpleChatClient.setRoot("ParkingLotManagerPage");
+            case "Customer Service Worker" -> SimpleChatClient.setRoot("CustomerServicePage");
+        }
     }
 
     @FXML

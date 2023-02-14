@@ -81,7 +81,7 @@ public class ParkingLotManagerController {
         Platform.runLater(()->
         {
             try {
-                SimpleChatClient.setRoot("ParkingLotMap");
+                SimpleChatClient.setRoot("ManagerParkingLotMap");
             } catch (IOException e) {
                 e.printStackTrace();
             }

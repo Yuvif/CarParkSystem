@@ -10,18 +10,21 @@ public class ParkingLotMapMessage extends Message{
     public ResponseType response_type;
     public String pl_name;
     public List<ParkingSlot> parkingSlots;
+    public List<Parkinglot> parkingLots;
     public int rows;
 
     public enum RequestType {
         GET_ROW,
         GET_PARKING_SLOTS,
-        SHOW_PARKING_LOT_MAP
+        SHOW_PARKING_LOT_MAP,
+        GET_PARKING_LOTS
     }
 
     public enum ResponseType {
         SET_ROW,
         SEND_PARKING_SLOTS,
-        SEND_PARKING_LOT_MAP
+        SEND_PARKING_LOT_MAP,
+        SET_PARKING_LOTS
     }
 
     public ParkingLotMapMessage(MessageType message_type, RequestType request_type, String plName) {

@@ -23,7 +23,7 @@ public class ParkingLotWorkerPageController {
 
     @FXML
     void showMap(ActionEvent event) throws IOException {
-        SimpleChatClient.setRoot("ParkingLotMap");
+        SimpleChatClient.setRoot("ManagerParkingLotMap");
     }
 
     @FXML

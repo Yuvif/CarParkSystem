@@ -50,6 +50,14 @@ public class ParkingLotMapHandler extends MessageHandler {
         }
     }
 
+    public List<Parkinglot> getParkingLots()
+    {
+        CriteriaQuery<Parkinglot> query = cb.createQuery(Parkinglot.class);
+        query.from(Parkinglot.class);
+        List<Parkinglot> data = session.createQuery(query).getResultList();
+        return data;
+    }
+
     @Override
     public void handleMessage() throws Exception {
         switch (class_message.request_type) {
@@ -67,6 +75,10 @@ public class ParkingLotMapHandler extends MessageHandler {
             case SHOW_PARKING_LOT_MAP:
                 updateParkingSlotsTable(class_message.parkingSlots);
                 class_message.response_type = ParkingLotMapMessage.ResponseType.SEND_PARKING_LOT_MAP;
+                break;
+            case GET_PARKING_LOTS:
+                class_message.parkingLots = getParkingLots();
+                class_message.response_type = ParkingLotMapMessage.ResponseType.SET_PARKING_LOTS;
                 break;
         }
     }

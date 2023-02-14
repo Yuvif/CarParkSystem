@@ -45,8 +45,13 @@ public class CEOPageController {
     }
 
     @FXML
-    void reports(ActionEvent event) throws IOException{
+    void makeReports(ActionEvent event) throws IOException{
         SimpleChatClient.setRoot("CEOReports");
+    }
+
+    @FXML
+    void parkingLotMap(ActionEvent event) throws IOException{
+        SimpleChatClient.setRoot("CEOParkingLotMap");
     }
 
     @Subscribe

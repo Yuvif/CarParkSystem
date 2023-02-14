@@ -1,15 +1,14 @@
-package CarPark.client.controllers;
+package CarPark.client.controllers.Employee.Manager;
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
-import CarPark.entities.Employee;
-import CarPark.entities.ParkingLotWorker;
-import CarPark.entities.ParkingSlot;
+import CarPark.entities.*;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.ParkingLotMapMessage;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Paint;
@@ -28,7 +27,7 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class ParkingLotMapController {
+public class ManagerParkingLotMapController {
 
     @FXML
     private AnchorPane window;
@@ -40,14 +39,15 @@ public class ParkingLotMapController {
     private Button backBtn;
 
     @FXML
-    private ComboBox<String> parkingLotChoice;
+    private ComboBox<String> floorChoice;
 
     @FXML
-    private ComboBox<String> floorChoice;
+    private Label parkingLot;
 
 
     int rows;
     List<ParkingSlot> parkingSlotsList;
+    List<Parkinglot> parkingLotList;
     ParkingSlot changedStatus;
 
     @FXML
@@ -55,17 +55,16 @@ public class ParkingLotMapController {
         Employee current_employee = (Employee) SimpleClient.getCurrent_user();
         switch (current_employee.getWorkersRole()) {
             case "Manager" -> SimpleChatClient.setRoot("ParkingLotManagerPage");
-            case "CEO" -> SimpleChatClient.setRoot("CEOPage");
             case "Parking Lot Worker" -> SimpleChatClient.setRoot("ParkingLotWorkerPage");
         }
     }
 
     //get the size of the parking lot in order to render its map using suitable messages
-    @FXML
-    void getParkingLotRowNum(ActionEvent event)
+
+    void getParkingLotRowNum()
     {
         ParkingLotMapMessage message = new ParkingLotMapMessage(Message.MessageType.REQUEST, ParkingLotMapMessage.RequestType.GET_ROW,
-                parkingLotChoice.getValue());
+                parkingLot.getText());
         try {
             SimpleClient.getClient().sendToServer(message);
         } catch (IOException e) {
@@ -73,9 +72,17 @@ public class ParkingLotMapController {
         }
 
         ParkingLotMapMessage message2 = new ParkingLotMapMessage(Message.MessageType.REQUEST, ParkingLotMapMessage.RequestType.GET_PARKING_SLOTS,
-                parkingLotChoice.getValue());
+                parkingLot.getText());
         try {
             SimpleClient.getClient().sendToServer(message2);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        ParkingLotMapMessage message3 = new ParkingLotMapMessage(Message.MessageType.REQUEST, ParkingLotMapMessage.RequestType.GET_PARKING_LOTS,
+                parkingLot.getText());
+        try {
+            SimpleClient.getClient().sendToServer(message3);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -91,8 +98,9 @@ public class ParkingLotMapController {
     @FXML
     void chooseFloor(ActionEvent event)
     {
+        getParkingLotRowNum();
         ParkingLotMapMessage message = new ParkingLotMapMessage(Message.MessageType.REQUEST,
-                ParkingLotMapMessage.RequestType.GET_PARKING_SLOTS, parkingLotChoice.getValue());
+                ParkingLotMapMessage.RequestType.GET_PARKING_SLOTS, parkingLot.getText());
         try {
             SimpleClient.getClient().sendToServer(message);
         } catch (IOException e) {
@@ -123,7 +131,7 @@ public class ParkingLotMapController {
     {
         for(ParkingSlot parkingSlot : parkingSlotsList)
         {
-            if(!String.valueOf(parkingSlot.getGeneratedValue().charAt(0)).equals(findParkingLotsIndex(parkingLotChoice.getValue())))
+            if(!String.valueOf(parkingSlot.getGeneratedValue().charAt(0)).equals(findParkingLotsIndex(parkingLot.getText())))
             {
                 continue;
             }
@@ -185,11 +193,10 @@ public class ParkingLotMapController {
      */
     public String findParkingLotsIndex(String name)
     {
-        List<String> parkingLotList = parkingLotChoice.getItems();
         int index = 1;
-        for(String pl_name : parkingLotList)
+        for(Parkinglot parkingLot : parkingLotList)
         {
-            if(Objects.equals(pl_name, name))
+            if(Objects.equals(parkingLot.getName(), name))
             {
                 break;
             }
@@ -218,22 +225,22 @@ public class ParkingLotMapController {
                 Text labelText = new Text(floor + (1 + row * rows + col));
                 Rectangle rect = (Rectangle)getNodeByRowColumnIndex(row, col, parkingLotMap);
 
-                if (isOccupied(label, findParkingLotsIndex(parkingLotChoice.getValue())) == 0)
+                if (isOccupied(label, findParkingLotsIndex(parkingLot.getText())) == 0)
                 {
                     rect.setFill(Color.LIGHTGRAY); //dye the rectangle represents the slot in light gray if it's vacant
                     parkingLotMap.add(labelText, col, row);
                 }
-                else if (isOccupied(label, findParkingLotsIndex(parkingLotChoice.getValue())) == 1)
+                else if (isOccupied(label, findParkingLotsIndex(parkingLot.getText())) == 1)
                 {
                     rect.setFill(Color.GREEN); //dye the rectangle represents the parking slot in green if it's occupied
                     parkingLotMap.add(labelText, col, row);
                 }
-                else if (isOccupied(label, findParkingLotsIndex(parkingLotChoice.getValue())) == 2)
+                else if (isOccupied(label, findParkingLotsIndex(parkingLot.getText())) == 2)
                 {
                     rect.setFill(Color.RED); //dye the rectangle represents the parking slot in green if it's faulty
                     parkingLotMap.add(labelText, col, row);
                 }
-                else if (isOccupied(label, findParkingLotsIndex(parkingLotChoice.getValue())) == 3)
+                else if (isOccupied(label, findParkingLotsIndex(parkingLot.getText())) == 3)
                 {
                     rect.setFill(Color.BLUE); //dye the rectangle represents the parking slot in blue if it's reserved
                     parkingLotMap.add(labelText, col, row);
@@ -241,7 +248,7 @@ public class ParkingLotMapController {
 
                 //By clicking on an empty slot
                 ParkingLotWorker current_worker = (ParkingLotWorker) SimpleClient.getCurrent_user();
-                if(current_worker.getWorkersRole().equals("Parking Lot Worker")) {
+                if(current_worker.getWorkersRole().equals("Parking Lot Worker") || current_worker.getWorkersRole().equals("Manager")) {
 
                     Paint currentColor = rect.getFill();
                     if (currentColor != Color.GREEN) {
@@ -290,7 +297,7 @@ public class ParkingLotMapController {
     {
         for (ParkingSlot parkingSlot : parkingSlotsList)
         {
-            if(!String.valueOf(parkingSlot.getGeneratedValue().charAt(0)).equals(findParkingLotsIndex(parkingLotChoice.getValue())))
+            if(!String.valueOf(parkingSlot.getGeneratedValue().charAt(0)).equals(findParkingLotsIndex(parkingLot.getText())))
             {
                 continue;
             }
@@ -338,16 +345,16 @@ public class ParkingLotMapController {
     @FXML
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
-        parkingLotChoice.getItems().add("Haifa");
-        parkingLotChoice.getItems().add("Tel Aviv");
-        parkingLotChoice.getItems().add("Jerusalem");
-        parkingLotChoice.getItems().add("Be'er Sheva");
-        parkingLotChoice.getItems().add("Eilat");
+
+        ParkingLotWorker current_employee = (ParkingLotWorker) SimpleClient.getCurrent_user();
+        parkingLot.setText(current_employee.getParkingLot().getName());
 
         floorChoice.getItems().add("A");
         floorChoice.getItems().add("B");
         floorChoice.getItems().add("C");
         floorChoice.setPromptText("Choose Floor");
+
+
     }
 
     @Subscribe
@@ -363,6 +370,9 @@ public class ParkingLotMapController {
                 this.parkingSlotsList = new_message.parkingSlots;
                 break;
             case SEND_PARKING_LOT_MAP:
+                break;
+            case SET_PARKING_LOTS:
+                this.parkingLotList = new_message.parkingLots;
                 break;
         }
     }

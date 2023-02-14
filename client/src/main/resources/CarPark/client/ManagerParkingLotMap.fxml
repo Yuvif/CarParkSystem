@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.ParkingLotMapController">
+<AnchorPane fx:id="window" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="512.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.Employee.Manager.ManagerParkingLotMapController">
    <children>
       <GridPane fx:id="parkingLotMap" alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <columnConstraints>
@@ -19,18 +19,17 @@
          <rowConstraints>
             <RowConstraints />
          </rowConstraints></GridPane>
-      <Label layoutX="253.0" layoutY="66.0" prefHeight="19.0" prefWidth="78.0" text="Parking Lot">
+      <Label layoutX="260.0" layoutY="95.0" prefHeight="19.0" prefWidth="78.0" text="Parking Lot">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label layoutX="484.0" layoutY="66.0" prefHeight="17.0" prefWidth="40.0" text="Floor">
+      <Label layoutX="491.0" layoutY="95.0" prefHeight="17.0" prefWidth="40.0" text="Floor">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <ComboBox fx:id="parkingLotChoice" layoutX="253.0" layoutY="83.0" onAction="#getParkingLotRowNum" prefHeight="25.0" prefWidth="157.0" style="-fx-background-color: #70caa6; -fx-background-radius: 20;" />
-      <ComboBox fx:id="floorChoice" layoutX="476.0" layoutY="83.0" onAction="#chooseFloor" prefHeight="25.0" prefWidth="157.0" style="-fx-background-color: #70caa6; -fx-background-radius: 20;" />
+      <ComboBox fx:id="floorChoice" layoutX="483.0" layoutY="112.0" onAction="#chooseFloor" prefHeight="25.0" prefWidth="157.0" style="-fx-background-color: #70caa6; -fx-background-radius: 20;" />
       <Button fx:id="submitBtn" layoutX="472.0" layoutY="440.0" mnemonicParsing="false" onAction="#submitChanges" prefHeight="30.0" prefWidth="109.0" style="-fx-background-radius: 50;" styleClass="mybutton" stylesheets="@../../assets/style.css" text="Submit">
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -47,5 +46,15 @@
             <Font size="15.0" />
          </font>
       </Button>
+      <Label fx:id="parkingLot" layoutX="260.0" layoutY="112.0" prefHeight="25.0" prefWidth="157.0" style="-fx-background-color: #70caa6; -fx-background-radius: 20;" textAlignment="CENTER">
+         <font>
+            <Font name="Arial Unicode MS" size="13.0" />
+         </font>
+      </Label>
+      <Label layoutX="312.0" layoutY="30.0" text="Set Parking Slots" textFill="#51bc91">
+         <font>
+            <Font name="SansSerif Bold" size="35.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

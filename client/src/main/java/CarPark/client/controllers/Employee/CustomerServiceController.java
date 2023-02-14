@@ -3,6 +3,8 @@ package CarPark.client.controllers.Employee;
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.client.events.NewSubscriberEvent;
+import CarPark.entities.messages.LoginMessage;
+import CarPark.entities.messages.Message;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -49,6 +51,23 @@ public class CustomerServiceController {
         });
     }
 
+    @FXML
+    void showParkingLotMap(ActionEvent event) {
+        Platform.runLater(()->
+        {
+            try {
+                SimpleChatClient.setRoot("CEOParkingLotMap");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
+    void logout(ActionEvent event) throws IOException {
+        LoginMessage msg = new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGOUT, SimpleClient.getCurrent_user().getId());
+        SimpleClient.getClient().sendToServer(msg);
+    }
 
     @Subscribe
     public void getStarterData(NewSubscriberEvent event) {
