@@ -83,9 +83,9 @@ public class StatisticsController {
     void GetData(ActionEvent event) throws IOException {
         Platform.runLater(() -> {
             Manager current_manager = (Manager) SimpleClient.getCurrent_user();
-            String parkingLotName = current_manager.getParkinglot().getName();
+            String parkingLotId = current_manager.getParkinglot().getId();
             StatisticsMessage msg = new StatisticsMessage(Message.MessageType.REQUEST, StatisticsMessage.RequestType.GET_STATISTICS,
-                    parkingLotName, statisticsDate.getValue());
+                    parkingLotId, statisticsDate.getValue());
             try {
                 SimpleClient.getClient().sendToServer(msg);
             } catch (IOException e) {
