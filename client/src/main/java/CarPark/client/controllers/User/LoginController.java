@@ -80,6 +80,7 @@ public class LoginController{
     @Subscribe
     public void newResponse(LoginMessage new_message) throws IOException {
         SimpleClient.setCurrent_user(new_message.getUser());
+        EventBus.getDefault().unregister(this);
         switch (new_message.response_type) {
             case LOGIN_SUCCEED_CUSTOMER -> {
                 SimpleChatClient.setRoot("CustomerPage");}
@@ -113,19 +114,23 @@ public class LoginController{
 
 
     public void signUp(ActionEvent event) throws IOException {
+        EventBus.getDefault().unregister(this);
         SimpleChatClient.setRoot("RegisterUser");
     }
 
     public void checkInAsGuest(ActionEvent event) throws IOException {
         SimpleChatClient.setRoot("CheckInGuest");
+        EventBus.getDefault().unregister(this);
     }
 
     public void checkOutAsGuest(ActionEvent event) throws IOException {
         SimpleChatClient.setRoot("CheckOutGuest");
+        EventBus.getDefault().unregister(this);
     }
 
     public void prices(ActionEvent event) throws IOException {
         SimpleChatClient.setRoot("Prices");
+        EventBus.getDefault().unregister(this);
     }
 }
 

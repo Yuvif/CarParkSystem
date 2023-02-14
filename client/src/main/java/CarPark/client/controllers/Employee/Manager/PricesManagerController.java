@@ -41,6 +41,7 @@ public class PricesManagerController {
     @FXML
     private void loginPage() throws IOException {
         SimpleChatClient.setRoot("ParkingLotManagerPage");
+        EventBus.getDefault().unregister(this);
     }
 
 

@@ -28,6 +28,7 @@ public class CheckOutGuestController {
     @FXML
     void goBack(ActionEvent event) throws IOException {
         SimpleChatClient.setRoot("Login");
+        EventBus.getDefault().unregister(this);
     }
 
     @FXML

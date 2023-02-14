@@ -297,5 +297,6 @@ public class CEOReportsController extends AbstractReports {
     @FXML
     private void back(ActionEvent event) throws IOException {
         SimpleChatClient.setRoot("CEOPage");
+        EventBus.getDefault().unregister(this);
     }
 }

@@ -76,7 +76,6 @@ public class StatisticsController {
             }
             case STATISTICS -> {
                 table.setItems(FXCollections.observableArrayList(msg.getStatistics()));
-                System.out.println(msg.getStatistics());
             }
         }
     }
@@ -98,5 +97,6 @@ public class StatisticsController {
     @FXML
     void GoBack(ActionEvent event) throws IOException {
         SimpleChatClient.setRoot("ParkingLotManagerPage");
+        EventBus.getDefault().unregister(this);
     }
 }

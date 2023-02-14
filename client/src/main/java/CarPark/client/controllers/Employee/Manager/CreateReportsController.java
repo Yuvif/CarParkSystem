@@ -99,6 +99,7 @@ public class CreateReportsController extends AbstractReports {
     @FXML
     void goBack(ActionEvent event) throws IOException {
         SimpleChatClient.setRoot("ParkingLotManagerPage");
+        EventBus.getDefault().unregister(this);
     }
 
     @FXML

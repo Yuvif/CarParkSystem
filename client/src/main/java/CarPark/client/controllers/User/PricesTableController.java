@@ -39,6 +39,7 @@ public class PricesTableController {
     @FXML
     private void loginPage() throws IOException {
         SimpleChatClient.setRoot("Login");
+        EventBus.getDefault().unregister(this);
     }
 
     @FXML

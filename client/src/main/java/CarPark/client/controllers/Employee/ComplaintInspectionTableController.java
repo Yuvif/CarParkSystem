@@ -136,6 +136,7 @@ public class ComplaintInspectionTableController extends Controller {
 
                             try {
                                 SimpleChatClient.setRoot("ComplaintInspection");
+                                EventBus.getDefault().unregister(this);
 
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -206,6 +207,7 @@ public class ComplaintInspectionTableController extends Controller {
     @FXML
     void goBack(ActionEvent event) throws IOException {
         SimpleChatClient.setRoot("EmployeePage");
+        EventBus.getDefault().unregister(this);
     }
 
 

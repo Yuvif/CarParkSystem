@@ -37,6 +37,7 @@ public class ParkingLotManagerController {
         {
             try {
                 SimpleChatClient.setRoot("StatisticsView");
+                EventBus.getDefault().unregister(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -50,6 +51,7 @@ public class ParkingLotManagerController {
         {
             try {
                 SimpleChatClient.setRoot("PricesManager");
+                EventBus.getDefault().unregister(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -63,6 +65,7 @@ public class ParkingLotManagerController {
         {
             try {
                 SimpleChatClient.setRoot("CreateReports");
+                EventBus.getDefault().unregister(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -83,6 +86,7 @@ public class ParkingLotManagerController {
                 {
                     try {
                         SimpleChatClient.setRoot("Login");
+                        EventBus.getDefault().unregister(this);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -96,6 +100,7 @@ public class ParkingLotManagerController {
         {
             try {
                 SimpleChatClient.setRoot("ParkingLotMap");
+                EventBus.getDefault().unregister(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }

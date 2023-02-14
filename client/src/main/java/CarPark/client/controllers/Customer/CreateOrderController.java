@@ -131,20 +131,21 @@ public class CreateOrderController {
     }
 
     @Subscribe
-    public void newResponse(OrderMessage new_message) {
+    public void newResponse(OrderMessage new_message){
         if (new_message.response_type == OrderMessage.ResponseType.ORDER_SUBMITTED) {
-            Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText("Order Submitted! \n " +
-                        "A charge of " + String.format("%.2f", new_message.Order.getOrdersPrice()) + "₪ was made");
-                alert.show();
-                PauseTransition pause = new PauseTransition(Duration.seconds(5));
-                pause.setOnFinished((e -> {
-                    alert.close();
-                }));
-                pause.play();
-                resetFields();
-            });
+//            Platform.runLater(() -> {
+//                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//                alert.setHeaderText("Order Submitted! \n " +
+//                        "A charge of " + String.format("%.2f", new_message.Order.getOrdersPrice()) + "₪ was made");
+//                alert.show();
+//                PauseTransition pause = new PauseTransition(Duration.seconds(5));
+//                pause.setOnFinished((e -> {
+//                    alert.close();
+//                }));
+//                pause.play();
+//                resetFields();
+//            });
+            sendAlert("Order Submitted! \n A charge of " + String.format("%.2f", new_message.Order.getOrdersPrice()) + "₪ was made", "Order Submitted!", Alert.AlertType.INFORMATION);
         }
     }
 
@@ -266,6 +267,7 @@ public class CreateOrderController {
         Platform.runLater(()->
         {
             try {
+                EventBus.getDefault().unregister(this);
                 SimpleChatClient.setRoot("RegisterAsMember");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -279,6 +281,7 @@ public class CreateOrderController {
         Platform.runLater(()->
         {
             try {
+                EventBus.getDefault().unregister(this);
                 SimpleChatClient.setRoot("MyOrders");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -291,6 +294,7 @@ public class CreateOrderController {
     void createNewOrder(ActionEvent event) throws IOException {
         Platform.runLater(() -> {
             try {
+                EventBus.getDefault().unregister(this);
                 SimpleChatClient.setRoot("CreateOrder");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -302,6 +306,7 @@ public class CreateOrderController {
     void newComplaint(ActionEvent event) throws IOException {
         Platform.runLater(() -> {
             try {
+                EventBus.getDefault().unregister(this);
                 SimpleChatClient.setRoot("ComplaintSubmission");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -313,6 +318,7 @@ public class CreateOrderController {
     void myComplaints(ActionEvent event) throws IOException{
         Platform.runLater(() -> {
             try {
+                EventBus.getDefault().unregister(this);
                 SimpleChatClient.setRoot("MyComplaints");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -325,6 +331,7 @@ public class CreateOrderController {
         Platform.runLater(()->
         {
             try {
+                EventBus.getDefault().unregister(this);
                 SimpleChatClient.setRoot("MembershipsView");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -344,6 +351,7 @@ public class CreateOrderController {
                 Platform.runLater(()->
                 {
                     try {
+                        EventBus.getDefault().unregister(this);
                         SimpleChatClient.setRoot("Login");
                     } catch (IOException e) {
                         e.printStackTrace();

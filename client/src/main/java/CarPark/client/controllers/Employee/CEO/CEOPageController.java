@@ -31,6 +31,7 @@ public class CEOPageController {
         Platform.runLater(()->
         {
             try {
+                EventBus.getDefault().unregister(this);
                 SimpleChatClient.setRoot("PricesCEO");
             } catch (IOException e) {
                 e.printStackTrace();
@@ -40,6 +41,7 @@ public class CEOPageController {
 
     @FXML
     void reports(ActionEvent event) throws IOException{
+        EventBus.getDefault().unregister(this);
         SimpleChatClient.setRoot("CEOReports");
     }
 
@@ -56,6 +58,7 @@ public class CEOPageController {
                 {
                     try {
                         SimpleChatClient.setRoot("Login");
+                        EventBus.getDefault().unregister(this);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

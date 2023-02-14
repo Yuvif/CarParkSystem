@@ -1,4 +1,4 @@
-package CarPark.client.controllers;
+package CarPark.client.controllers.Employee;
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.entities.Employee;
@@ -52,6 +52,7 @@ public class ParkingLotMapController {
     @FXML
     void goBack(ActionEvent event) throws IOException {
         Employee current_employee = (Employee) SimpleClient.getCurrent_user();
+        EventBus.getDefault().unregister(this);
         switch (current_employee.getWorkersRole()) {
             case "Manager" -> SimpleChatClient.setRoot("ParkingLotManagerPage");
             case "CEO" -> SimpleChatClient.setRoot("CEOPage");

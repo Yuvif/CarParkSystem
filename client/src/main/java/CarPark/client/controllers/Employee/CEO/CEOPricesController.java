@@ -98,6 +98,7 @@ public class CEOPricesController {
     @FXML
     private void back(ActionEvent event) throws IOException {
         SimpleChatClient.setRoot("CEOPage");
+        EventBus.getDefault().unregister(this);
     }
 
     @Subscribe

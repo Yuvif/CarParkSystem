@@ -130,6 +130,7 @@ public class CheckInGuestController{
     @FXML
     private void loginPage(ActionEvent event) throws IOException {
         SimpleChatClient.setRoot("Login");
+        EventBus.getDefault().unregister(this);
     }
 
 

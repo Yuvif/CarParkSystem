@@ -26,6 +26,7 @@ public class PricesTableHandler extends MessageHandler {
 
     @Override
     public void handleMessage() throws Exception {
+//        generatePricesTable();
         switch (class_message.request_type) {
             case GET_PRICES_TABLE:
                 class_message.priceList = getPriceList();

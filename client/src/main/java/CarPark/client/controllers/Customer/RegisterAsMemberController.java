@@ -48,6 +48,7 @@ public class RegisterAsMemberController {//Daniel need to change name to new mem
     void goBack(ActionEvent event) throws IOException
     {
         SimpleChatClient.setRoot("CustomerPage");
+        EventBus.getDefault().unregister(this);
     }
 
     @FXML
@@ -216,6 +217,7 @@ public class RegisterAsMemberController {//Daniel need to change name to new mem
         {
             try {
                 SimpleChatClient.setRoot("MyOrders");
+                EventBus.getDefault().unregister(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -228,6 +230,7 @@ public class RegisterAsMemberController {//Daniel need to change name to new mem
         Platform.runLater(() -> {
             try {
                 SimpleChatClient.setRoot("CreateOrder");
+                EventBus.getDefault().unregister(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -239,6 +242,7 @@ public class RegisterAsMemberController {//Daniel need to change name to new mem
         Platform.runLater(() -> {
             try {
                 SimpleChatClient.setRoot("ComplaintSubmission");
+                EventBus.getDefault().unregister(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -250,6 +254,7 @@ public class RegisterAsMemberController {//Daniel need to change name to new mem
         Platform.runLater(() -> {
             try {
                 SimpleChatClient.setRoot("MyComplaints");
+                EventBus.getDefault().unregister(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -262,6 +267,7 @@ public class RegisterAsMemberController {//Daniel need to change name to new mem
         {
             try {
                 SimpleChatClient.setRoot("MembershipsView");
+                EventBus.getDefault().unregister(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -281,6 +287,7 @@ public class RegisterAsMemberController {//Daniel need to change name to new mem
                 {
                     try {
                         SimpleChatClient.setRoot("Login");
+                        EventBus.getDefault().unregister(this);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

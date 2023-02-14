@@ -75,18 +75,20 @@ public class ComplaintSubmissionController extends Controller {
     @Subscribe
     public void newResponse(ComplaintMessage new_message) {
         if (new_message.response_type == ComplaintMessage.ResponseType.COMPLAINT_SUBMITTED) {
-            Platform.runLater(() -> {
-                Platform.runLater(() -> {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setHeaderText("Complaint submitted");
-                    alert.show();
-                    PauseTransition pause = new PauseTransition(Duration.seconds(5));
-                    pause.setOnFinished((e -> {
-                        alert.close();
-                    }));
-                    pause.play();
-                });
-            });
+//            Platform.runLater(() -> {
+//                Platform.runLater(() -> {
+//                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//                    alert.setHeaderText("Complaint submitted");
+//                    alert.show();
+//                    PauseTransition pause = new PauseTransition(Duration.seconds(5));
+//                    pause.setOnFinished((e -> {
+//                        alert.close();
+//                    }));
+//                    pause.play();
+//                });
+//            });
+            sendAlert("Our staff will contact you soon",
+                    "Complaint Submitted", Alert.AlertType.INFORMATION);
         }
     }
 
@@ -104,6 +106,7 @@ public class ComplaintSubmissionController extends Controller {
         {
             try {
                 SimpleChatClient.setRoot("MembershipsView");
+                EventBus.getDefault().unregister(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -117,6 +120,7 @@ public class ComplaintSubmissionController extends Controller {
         {
             try {
                 SimpleChatClient.setRoot("RegisterAsMember");
+                EventBus.getDefault().unregister(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -130,6 +134,7 @@ public class ComplaintSubmissionController extends Controller {
         {
             try {
                 SimpleChatClient.setRoot("MyOrders");
+                EventBus.getDefault().unregister(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -142,6 +147,7 @@ public class ComplaintSubmissionController extends Controller {
         Platform.runLater(() -> {
             try {
                 SimpleChatClient.setRoot("CreateOrder");
+                EventBus.getDefault().unregister(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -154,6 +160,7 @@ public class ComplaintSubmissionController extends Controller {
         Platform.runLater(() -> {
             try {
                 SimpleChatClient.setRoot("MyComplaints");
+                EventBus.getDefault().unregister(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -174,6 +181,7 @@ public class ComplaintSubmissionController extends Controller {
                 {
                     try {
                         SimpleChatClient.setRoot("Login");
+                        EventBus.getDefault().unregister(this);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

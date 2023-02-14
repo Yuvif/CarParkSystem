@@ -59,6 +59,7 @@ public class CustomerPageController{
         {
             try {
                 SimpleChatClient.setRoot("MembershipsView");
+                EventBus.getDefault().unregister(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -72,6 +73,7 @@ public class CustomerPageController{
         {
             try {
                 SimpleChatClient.setRoot("RegisterAsMember");
+                EventBus.getDefault().unregister(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -85,6 +87,7 @@ public class CustomerPageController{
         {
             try {
                 SimpleChatClient.setRoot("MyOrders");
+                EventBus.getDefault().unregister(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -97,6 +100,7 @@ public class CustomerPageController{
         Platform.runLater(() -> {
             try {
                 SimpleChatClient.setRoot("CreateOrder");
+                EventBus.getDefault().unregister(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -108,6 +112,7 @@ public class CustomerPageController{
         Platform.runLater(() -> {
             try {
                 SimpleChatClient.setRoot("ComplaintSubmission");
+                EventBus.getDefault().unregister(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -119,6 +124,7 @@ public class CustomerPageController{
     Platform.runLater(() -> {
         try {
             SimpleChatClient.setRoot("MyComplaints");
+            EventBus.getDefault().unregister(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -130,6 +136,7 @@ public class CustomerPageController{
         Platform.runLater(() -> {
             try {
                 SimpleChatClient.setRoot("CheckOutCustomer");
+                EventBus.getDefault().unregister(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -141,6 +148,7 @@ public class CustomerPageController{
         Platform.runLater(() -> {
             try {
                 SimpleChatClient.setRoot("CheckInCustomer");
+                EventBus.getDefault().unregister(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -161,6 +169,7 @@ public class CustomerPageController{
                 {
                     try {
                         SimpleChatClient.setRoot("Login");
+                        EventBus.getDefault().unregister(this);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

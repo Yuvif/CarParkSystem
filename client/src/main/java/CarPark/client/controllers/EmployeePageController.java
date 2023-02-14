@@ -28,6 +28,7 @@ public class EmployeePageController{
         {
             try {
                 SimpleChatClient.setRoot("CreateReports");
+                EventBus.getDefault().unregister(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -45,6 +46,7 @@ public class EmployeePageController{
         {
             try {
                 SimpleChatClient.setRoot("ComplaintInspectionTable");
+                EventBus.getDefault().unregister(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
