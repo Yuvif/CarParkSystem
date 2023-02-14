@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -114,7 +115,15 @@ public class CheckInGuestController{
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setHeaderText("Welcome \n " +
                             "to CPS " + new_message.selectedParkingLot +"\n Your Parking Slot is: " + new_message.checkedIn.getParkingSlot().getId());
-                    alert.show();
+
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.OK){
+                        try {
+                            SimpleChatClient.setRoot("Login");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 });
             }
             case PARKING_LOT_IS_FULL -> Platform.runLater(() -> {

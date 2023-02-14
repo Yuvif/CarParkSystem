@@ -2,6 +2,7 @@ package CarPark.client.controllers.Employee.CEO;
 
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
+import CarPark.entities.CEO;
 import CarPark.entities.Employee;
 import CarPark.entities.ParkingLotWorker;
 import CarPark.entities.ParkingSlot;
@@ -43,6 +44,9 @@ public class CEOParkingLotMapController {
 
     @FXML
     private ComboBox<String> floorChoice;
+
+    @FXML
+    private Button submitBtn;
 
 
     int rows;
@@ -306,17 +310,14 @@ public class CEOParkingLotMapController {
 
                     if (currentColor == Color.RED && parkingSlot.getGeneratedValue().substring(2).equals(label))
                     {
-                        System.out.println("1 " + label);
                         parkingSlot.setStatus(ParkingSlot.Status.valueOf("RESTRICTED"));
                     }
                     else if (currentColor == Color.BLUE && parkingSlot.getGeneratedValue().substring(2).equals(label))
                     {
-                        System.out.println("2 " + label);
                         parkingSlot.setStatus(ParkingSlot.Status.valueOf("RESERVED"));
                     }
                     else if (currentColor == Color.LIGHTGRAY && parkingSlot.getGeneratedValue().substring(2).equals(label))
                     {
-                        System.out.println("3 " + label);
                         parkingSlot.setStatus(ParkingSlot.Status.valueOf("EMPTY"));
                     }
                 }
@@ -336,6 +337,12 @@ public class CEOParkingLotMapController {
     @FXML
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
+
+        Employee employee =  (Employee) SimpleClient.getCurrent_user();
+        if (Objects.equals(employee.getWorkersRole(), "CEO")) {
+
+            submitBtn.setDisable(true);
+        }
         parkingLotChoice.getItems().add("Haifa");
         parkingLotChoice.getItems().add("Tel Aviv");
         parkingLotChoice.getItems().add("Jerusalem");

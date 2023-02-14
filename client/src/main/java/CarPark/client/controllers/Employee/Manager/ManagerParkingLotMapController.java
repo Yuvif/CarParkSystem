@@ -48,7 +48,6 @@ public class ManagerParkingLotMapController {
     private Label parkingLot;
 
 
-    static Manager manager = (Manager) SimpleClient.getCurrent_user();
     int rows;
     List<ParkingSlot> parkingSlotsList;
     List<Parkinglot> parkingLotList;
@@ -318,17 +317,14 @@ public class ManagerParkingLotMapController {
 
                     if (currentColor == Color.RED && parkingSlot.getGeneratedValue().substring(2).equals(label))
                     {
-                        System.out.println("1 " + label);
                         parkingSlot.setStatus(ParkingSlot.Status.valueOf("RESTRICTED"));
                     }
                     else if (currentColor == Color.BLUE && parkingSlot.getGeneratedValue().substring(2).equals(label))
                     {
-                        System.out.println("2 " + label);
                         parkingSlot.setStatus(ParkingSlot.Status.valueOf("RESERVED"));
                     }
                     else if (currentColor == Color.LIGHTGRAY && parkingSlot.getGeneratedValue().substring(2).equals(label))
                     {
-                        System.out.println("3 " + label);
                         parkingSlot.setStatus(ParkingSlot.Status.valueOf("EMPTY"));
                     }
                 }
@@ -385,10 +381,25 @@ public class ManagerParkingLotMapController {
     public void newResponse(CheckInMessage new_message) {
         switch (new_message.response_type) {
             case CHECK_IN_UPDATED:
-                if (new_message.selectedParkingLot.equals(manager.getParkingLot().getName())) {
-                    sendAlert("New Check In Submitted",
-                            "Check In", Alert.AlertType.INFORMATION);
-                    getParkingLotRowNum();
+                Employee current_employee = (Employee) SimpleClient.getCurrent_user();
+
+                if(Objects.equals(current_employee.getWorkersRole(), "Manager"))
+                {
+                    Manager manager = (Manager) current_employee;
+                    if (new_message.selectedParkingLot.equals(manager.getParkingLot().getName())) {
+                        sendAlert("New Check In Submitted",
+                                "Check In", Alert.AlertType.INFORMATION);
+                        getParkingLotRowNum();
+                    }
+                }
+                else if(Objects.equals(current_employee.getWorkersRole(), "Parking Lot Worker"))
+                {
+                    ParkingLotWorker parkingLotWorker = (ParkingLotWorker) current_employee;
+                    if (new_message.selectedParkingLot.equals(parkingLotWorker.getParkingLot().getName())) {
+                        sendAlert("New Check In Submitted",
+                                "Check In", Alert.AlertType.INFORMATION);
+                        getParkingLotRowNum();
+                    }
                 }
         }
     }

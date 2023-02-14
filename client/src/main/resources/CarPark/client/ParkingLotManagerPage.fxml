@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.Employee.Manager.ParkingLotManagerController">
+<AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19" fx:controller="CarPark.client.controllers.Employee.Manager.ParkingLotManagerController">
     <ImageView fitHeight="516.0" fitWidth="508.0" layoutX="509.0" layoutY="1.0">
         <image>
             <Image url="@../../assets/background.png" />
@@ -123,20 +123,23 @@
     </ImageView>
    <AnchorPane layoutX="112.0" layoutY="202.0" prefHeight="169.0" prefWidth="298.0" style="-fx-background-color: #77D0AA; -fx-background-radius: 20;">
       <children>
-         <Label layoutX="14.0" layoutY="58.0" prefHeight="54.0" prefWidth="168.0" text="Position:  Manager">
+         <Label layoutX="14.0" layoutY="58.0" prefHeight="54.0" prefWidth="85.0" text="Position:" underline="true">
             <font>
                <Font name="SansSerif Bold" size="18.0" />
             </font>
          </Label>
-         <Label layoutX="14.0" layoutY="101.0" prefHeight="54.0" prefWidth="114.0" text="Parking Lot:">
+         <Label layoutX="14.0" layoutY="101.0" prefHeight="54.0" prefWidth="114.0" text="Parking Lot:" underline="true">
             <font>
                <Font name="SansSerif Bold" size="18.0" />
             </font>
          </Label>
-         <Label fx:id="userName" layoutX="56.0" layoutY="15.0" prefHeight="54.0" prefWidth="85.0">
+         <Label fx:id="userName" layoutX="56.0" layoutY="15.0" prefHeight="54.0" prefWidth="85.0" textFill="WHITE">
             <font>
                <Font name="SansSerif Bold" size="18.0" />
             </font>
+            <effect>
+               <DropShadow />
+            </effect>
          </Label>
          <Label fx:id="area" layoutX="129.0" layoutY="101.0" prefHeight="54.0" prefWidth="107.0">
             <font>
@@ -148,6 +151,11 @@
                <Image url="@../../assets/profile-user.png" />
             </image>
          </ImageView>
+         <Label layoutX="104.0" layoutY="75.0" text="Manager">
+            <font>
+               <Font name="SansSerif Bold" size="18.0" />
+            </font>
+         </Label>
       </children>
    </AnchorPane>
    <Button layoutX="942.0" layoutY="450.0" mnemonicParsing="false" onAction="#logout" prefHeight="67.0" prefWidth="71.0" style="-fx-background-radius: 50;" styleClass="mybutton" stylesheets="@../../assets/style.css" translateX="-5.0" translateY="-10.0" />
