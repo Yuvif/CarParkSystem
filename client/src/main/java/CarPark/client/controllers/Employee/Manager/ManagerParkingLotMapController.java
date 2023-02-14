@@ -98,7 +98,6 @@ public class ManagerParkingLotMapController {
     @FXML
     void chooseFloor(ActionEvent event)
     {
-        getParkingLotRowNum();
         ParkingLotMapMessage message = new ParkingLotMapMessage(Message.MessageType.REQUEST,
                 ParkingLotMapMessage.RequestType.GET_PARKING_SLOTS, parkingLot.getText());
         try {
@@ -354,6 +353,7 @@ public class ManagerParkingLotMapController {
         floorChoice.getItems().add("C");
         floorChoice.setPromptText("Choose Floor");
 
+        getParkingLotRowNum();
 
     }
 
