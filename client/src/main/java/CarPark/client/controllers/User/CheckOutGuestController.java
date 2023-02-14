@@ -1,8 +1,8 @@
 package CarPark.client.controllers.User;
 
 import CarPark.client.SimpleChatClient;
-import CarPark.client.*;
-import CarPark.entities.messages.*;
+import CarPark.client.SimpleClient;
+import CarPark.entities.messages.CheckOutMessage;
 import CarPark.entities.messages.Message;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,6 +14,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import static CarPark.client.controllers.Controller.sendAlert;
 
 public class CheckOutGuestController {
@@ -54,10 +55,15 @@ public class CheckOutGuestController {
         switch (new_message.response_type) {
             case CHECKED_OUT_GUEST -> {
                 //if the checked out user is a guest
-                sendAlert("You were checked out successfully! \nA charge of "+ String.format("%.2f", new_message.payment)
-                                +" ₪ was made.\nThank You! Goodbye!" ,
+                sendAlert("You were checked out successfully! \nA charge of " + String.format("%.2f", new_message.payment)
+                                + " ₪ was made.\nThank You! Goodbye!",
                         "Check Out", Alert.AlertType.INFORMATION);
             }
+                case NO_CHECK_IN -> {
+                    //if the checked out user is a guest
+                    sendAlert("This Car Did not Check In!",
+                            "Check Out Failed", Alert.AlertType.WARNING);
+                }
         }
     }
 

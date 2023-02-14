@@ -34,9 +34,8 @@ public class CheckInHandler extends MessageHandler {
         for (ParkingSlot parkingSlot : totalParkingSlots) {
 //        find a parking slot in the chosen parking lot which is also empty
             Parkinglot parkinglot = parkingSlot.getParkinglot();
-            System.out.println(parkinglot.getName());
-            System.out.println(parkingSlot.getStatus());
             if (parkinglot.getName().equals(selectedParkingLot) && parkingSlot.getStatus()) {
+                class_message.checkedIn.setParkinglot(parkinglot);
                 class_message.checkedIn.setParkingSlot(parkingSlot);
                 break;
             }

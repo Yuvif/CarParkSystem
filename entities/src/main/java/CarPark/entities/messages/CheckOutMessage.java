@@ -36,6 +36,7 @@ public class CheckOutMessage extends Message{
 
     public enum ResponseType {
         CHECKED_OUT,
+        NO_CHECK_IN,
         CHECKED_OUT_GUEST
     }
 }
