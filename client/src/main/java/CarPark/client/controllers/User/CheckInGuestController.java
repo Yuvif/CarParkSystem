@@ -87,7 +87,7 @@ public class CheckInGuestController{
 
     @FXML
     void checkIn(ActionEvent event) throws IOException {
-        if (checkValidity()) {
+        if (checkValidity() && checkLeavingTimeValidity()) {
             CheckedIn checkedIn = createCheckedIn();
             CheckInMessage message = new CheckInMessage(Message.MessageType.REQUEST, CheckInMessage.RequestType.CHECK_ME_IN_GUEST, checkedIn);
             message.selectedParkingLot = plPick.getValue();
@@ -141,6 +141,20 @@ public class CheckInGuestController{
         SimpleChatClient.setRoot("Login");
     }
 
+    public boolean checkLeavingTimeValidity()
+    {
+        LocalDate leaving = estLeavingDate.getValue();
+        LocalTime leavingTime = LocalTime.of(Integer.parseInt(estLeavingHour.getValue().toString()), Integer.parseInt(estLeavingMin.getValue().toString()));
+        LocalDateTime leavingDateTime = LocalDateTime.of(leaving, leavingTime);
+
+        LocalDateTime nowTime = LocalDateTime.now();
+        if(leavingDateTime.isBefore(nowTime))
+        {
+            sendAlert("Leaving Time is not valid!", " Invalid Leaving Time", Alert.AlertType.WARNING);
+            return false;
+        }
+        return true;
+    }
 
     private boolean checkValidity() {
         if (!checkIdValidity(idTf.getText())) {

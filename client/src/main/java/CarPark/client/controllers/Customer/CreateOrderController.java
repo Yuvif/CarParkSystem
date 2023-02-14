@@ -77,7 +77,7 @@ public class CreateOrderController {
         parkingLotsOpt.getItems().add("Eilat");
         emailAddress.setText(SimpleClient.getCurrent_user().getEmail());
         emailAddress.setDisable(true);
-        idTextBox.setText(SimpleClient.getCurrent_user().getId().toString());
+        idTextBox.setText(SimpleClient.getCurrent_user().getId());
         idTextBox.setDisable(true);
         // Initialize the ComboBox with the hours
         for (int i = 0; i < 24; i++) {
@@ -124,7 +124,7 @@ public class CreateOrderController {
 
     @FXML
     void submitDetails(ActionEvent event) throws IOException {
-        if (checkValidity()) // create an entity Order and send it to the server
+        if (checkValidity() && checkArrivalTimeValidity()) // create an entity Order and send it to the server
         {
             Order order = createOrder();
             OrderMessage msg = new OrderMessage(Message.MessageType.REQUEST, OrderMessage.RequestType.CREATE_NEW_ORDER, order, (Customer)SimpleClient.getCurrent_user());
@@ -226,6 +226,21 @@ public class CreateOrderController {
         LocalDateTime leavingDateTime = LocalDateTime.of(leaving, leavingTime);
 
         return (ChronoUnit.MINUTES.between(arrivalDateTime, leavingDateTime) >= 30);
+    }
+
+    public boolean checkArrivalTimeValidity()
+    {
+        LocalDate arrival = arrivalDate.getValue();
+        LocalTime arrivalTime = LocalTime.of(Integer.parseInt(arrivalHour.getValue().toString()), Integer.parseInt(arrivalMin.getValue().toString()));
+        LocalDateTime arrivalDateTime = LocalDateTime.of(arrival, arrivalTime);
+
+        LocalDateTime nowTime = LocalDateTime.now();
+        if(arrivalDateTime.isBefore(nowTime))
+        {
+            sendAlert("Arrival Time is not valid!", " Invalid Arrival Time", Alert.AlertType.WARNING);
+            return false;
+        }
+        return true;
     }
 
     private Order createOrder() {

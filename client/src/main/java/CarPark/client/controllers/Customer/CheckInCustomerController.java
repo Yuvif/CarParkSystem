@@ -18,6 +18,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import static CarPark.client.controllers.Controller.sendAlert;
+
 public class CheckInCustomerController {
 
     @FXML
@@ -88,6 +90,22 @@ public class CheckInCustomerController {
         CheckedIn checkedIn = new CheckedIn(LocalDateTime.now(), idTf.getText(), car_nTf.getText(),"EMAIL@EMAIL.COM", leavingDateTime,"CUSTOMER");
         return checkedIn;
     }
+
+    public boolean checkLeavingTimeValidity()
+    {
+        LocalDate leaving = estLeavingDate.getValue();
+        LocalTime leavingTime = LocalTime.of(Integer.parseInt(estLeavingHour.getValue().toString()), Integer.parseInt(estLeavingMin.getValue().toString()));
+        LocalDateTime leavingDateTime = LocalDateTime.of(leaving, leavingTime);
+
+        LocalDateTime nowTime = LocalDateTime.now();
+        if(leavingDateTime.isBefore(nowTime))
+        {
+            sendAlert("Leaving Time is not valid!", " Invalid Leaving Time", Alert.AlertType.WARNING);
+            return false;
+        }
+        return true;
+    }
+
     private boolean checkEmpty() {
         if (idTf.getText().isEmpty() || car_nTf.getText().isEmpty() || plPick.getValue() == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -95,13 +113,12 @@ public class CheckInCustomerController {
             alert.show();
             return false;
         }
-
         return true;
     }
 
     @FXML
     void checkIn(ActionEvent event) throws IOException {
-        if (checkEmpty()) {
+        if (checkEmpty() && checkLeavingTimeValidity()) {
             CheckedIn checkedIn = createCheckedIn();
             CheckInMessage message = new CheckInMessage(Message.MessageType.REQUEST, CheckInMessage.RequestType.CHECK_ME_IN_GUEST, checkedIn);
             message.selectedParkingLot = plPick.getValue();
