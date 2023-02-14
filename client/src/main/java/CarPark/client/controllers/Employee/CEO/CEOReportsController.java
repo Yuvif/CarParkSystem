@@ -107,7 +107,7 @@ public class CEOReportsController extends AbstractReports {
             String parkinglot = "CPS Eilat";
             Date from = getPickedDate(fromDate);
             Date to = addDays(getPickedDate(toDate), 1);
-            OrderMessage ordersMsg = new OrderMessage(Message.MessageType.REQUEST, OrderMessage.RequestType.GET_SELECTED_ORDERS, parkinglot,from, to );
+            OrderMessage ordersMsg = new OrderMessage(Message.MessageType.REQUEST, OrderMessage.RequestType.GET_SELECTED_ORDERS, parkinglot, from, to );
             SimpleClient.getClient().sendToServer(ordersMsg);
         }
     }

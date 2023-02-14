@@ -3,6 +3,7 @@ package CarPark.entities.messages;
 import CarPark.entities.Customer;
 import CarPark.entities.Order;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 

@@ -20,7 +20,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -242,6 +244,11 @@ public class CreateOrderController {
         LocalTime leavingTime = LocalTime.of(Integer.parseInt(estLeavingHour.getValue().toString()), Integer.parseInt(estLeavingMin.getValue().toString()));
         LocalDateTime leavingDateTime = LocalDateTime.of(leaving, leavingTime);
         order.setEstimatedLeavingTime(leavingDateTime);
+
+        LocalDate localDate = LocalDate.now();
+        ZoneId zoneId = ZoneId.systemDefault();
+        Date now = Date.from(localDate.atStartOfDay(zoneId).toInstant());
+        order.setDate(now);
 
         return order;
     }

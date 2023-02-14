@@ -40,9 +40,9 @@ public class OrderHandler extends MessageHandler {
             case GET_SELECTED_ORDERS:
                 class_message.ordersList = getSelectedOrders();
                 class_message.response_type = OrderMessage.ResponseType.SET_SELECTED_ORDERS;
-                class_message.ordersList.removeIf(order -> order.getParkingLotId().equals(class_message.parking_lot_id)
-                        || order.getDate().compareTo(class_message.from) < 0 || order.getDate().compareTo(class_message.to) > 0
-                        || order.getStatus() == Order.Status.APPROVED);
+//                class_message.ordersList.removeIf(order -> order.getParkingLotId().equals(class_message.parking_lot_id)
+//                        || order.getDate().compareTo(class_message.from) < 0 || order.getDate().compareTo(class_message.to) > 0
+//                        || order.getStatus() == Order.Status.APPROVED);
         }
     }
 
