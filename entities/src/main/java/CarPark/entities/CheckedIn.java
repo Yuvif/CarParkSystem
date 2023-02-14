@@ -14,7 +14,7 @@ public class CheckedIn implements Serializable {
     @Column(name = "entry_date")
     private LocalDateTime entryDate;
 
-    private Integer carNumber;
+    private String carNumber;
     private String personId;
     private String email;
     private LocalDateTime exitEstimatedDate;
@@ -28,7 +28,7 @@ public class CheckedIn implements Serializable {
     @JoinColumn(name = "parkingSlotId")
     private ParkingSlot parkingSlot;
 
-    public CheckedIn(LocalDateTime entryDate, String personId, Integer carNumber, String email, LocalDateTime exitEstimatedDate, String type) {
+    public CheckedIn(LocalDateTime entryDate, String personId, String carNumber, String email, LocalDateTime exitEstimatedDate, String type) {
         this.entryDate = entryDate;
         this.personId = personId;
         this.carNumber = carNumber;

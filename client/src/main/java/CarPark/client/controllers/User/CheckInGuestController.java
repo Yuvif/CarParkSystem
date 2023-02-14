@@ -102,7 +102,7 @@ public class CheckInGuestController{
         LocalDate leaving = estLeavingDate.getValue();
         LocalTime leavingTime = LocalTime.of(Integer.parseInt(estLeavingHour.getValue().toString()), Integer.parseInt(estLeavingMin.getValue().toString()));
         LocalDateTime leavingDateTime = LocalDateTime.of(leaving, leavingTime);
-        CheckedIn checkedIn = new CheckedIn(LocalDateTime.now(), idTf.getText(), Integer.parseInt(car_nTf.getText()), mailTf.getText(), leavingDateTime,"GUEST");
+        CheckedIn checkedIn = new CheckedIn(LocalDateTime.now(), idTf.getText(), car_nTf.getText(), mailTf.getText(), leavingDateTime,"GUEST");
         return checkedIn;
     }
 

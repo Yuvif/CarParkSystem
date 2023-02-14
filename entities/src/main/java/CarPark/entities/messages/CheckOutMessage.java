@@ -6,12 +6,12 @@ public class CheckOutMessage extends Message{
     public Customer current_customer;
     public String userId;
     public double payment;
-    public int carNumber;
+    public String carNumber;
     public boolean hasAnOrder;
     public RequestType request_type;
     public ResponseType response_type;
 
-    public CheckOutMessage(MessageType message_type, RequestType request_type, Customer current_customer, int carNumber,
+    public CheckOutMessage(MessageType message_type, RequestType request_type, Customer current_customer, String carNumber,
                            double payment, boolean hasAnOrder) {
         super(message_type);
         this.request_type = request_type;
@@ -21,7 +21,7 @@ public class CheckOutMessage extends Message{
         this.hasAnOrder = hasAnOrder;
     }
 
-    public CheckOutMessage(MessageType message_type, RequestType request_type, String userId, int carNumber, boolean hasAnOrder) {
+    public CheckOutMessage(MessageType message_type, RequestType request_type, String userId, String carNumber, boolean hasAnOrder) {
         super(message_type);
         this.request_type = request_type;
         this.userId = userId;

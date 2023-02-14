@@ -82,13 +82,13 @@ public class SimpleServer extends AbstractServer {
                 SubscribersList.add(connection);
                 session = getSessionFactory().openSession();// Create new session for connection
 
-//                session.beginTransaction();
-//                generateParkingLots(session);
-//                session.getTransaction().commit();
-//
-//                session.beginTransaction();
-//                generateWorkers(session);
-//                session.getTransaction().commit();
+                session.beginTransaction();
+                generateParkingLots(session);
+                session.getTransaction().commit();
+
+                session.beginTransaction();
+                generateWorkers(session);
+                session.getTransaction().commit();
 
             } else { //Get client requests
                 session.beginTransaction();

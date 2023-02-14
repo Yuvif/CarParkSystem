@@ -36,7 +36,7 @@ public class CheckOutGuestController {
         if (checkValidity())
         {
             CheckOutMessage checkOutMessage = new CheckOutMessage(Message.MessageType.REQUEST, CheckOutMessage.RequestType.CHECK_ME_OUT_GUEST,
-                    userId.getText(), Integer.parseInt(carNumber.getText()), false);
+                    userId.getText(), carNumber.getText(), false);
             try {
                 SimpleClient.getClient().sendToServer(checkOutMessage);
             } catch (IOException e) {

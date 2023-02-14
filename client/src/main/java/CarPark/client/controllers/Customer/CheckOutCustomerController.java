@@ -38,7 +38,7 @@ public class CheckOutCustomerController {
         if (checkValidity())
         {
             CheckOutMessage checkOutMessage = new CheckOutMessage(Message.MessageType.REQUEST, CheckOutMessage.RequestType.CHECK_ME_OUT,
-                    (Customer) SimpleClient.getCurrent_user(), Integer.parseInt(carNumber.getText()), 0.0 , false);
+                    (Customer) SimpleClient.getCurrent_user(), carNumber.getText(), 0.0 , false);
             checkOutMessage.userId = checkOutMessage.current_customer.getId();
 
             try {

@@ -85,7 +85,7 @@ public class CheckInCustomerController {
         LocalDate leaving = estLeavingDate.getValue();
         LocalTime leavingTime = LocalTime.of(Integer.parseInt(estLeavingHour.getValue().toString()), Integer.parseInt(estLeavingMin.getValue().toString()));
         LocalDateTime leavingDateTime = LocalDateTime.of(leaving, leavingTime);
-        CheckedIn checkedIn = new CheckedIn(LocalDateTime.now(), idTf.getText(), Integer.parseInt(car_nTf.getText()),"EMAIL@EMAIL.COM", leavingDateTime,"CUSTOMER");
+        CheckedIn checkedIn = new CheckedIn(LocalDateTime.now(), idTf.getText(), car_nTf.getText(),"EMAIL@EMAIL.COM", leavingDateTime,"CUSTOMER");
         return checkedIn;
     }
     private boolean checkEmpty() {
