@@ -138,6 +138,11 @@ public class CheckInCustomerController {
     }
 
     @FXML
+    void mainMenu(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("CustomerPage");
+    }
+
+    @FXML
     void myOrders(ActionEvent event)
     {
         Platform.runLater(()->

@@ -13,9 +13,10 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="512.0" prefWidth="900.0"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.Customer.CheckInCustomerController">
+<AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19" fx:controller="CarPark.client.controllers.Customer.CheckInCustomerController">
    <BorderPane prefHeight="509.0" prefWidth="1017.0">
       <left>
          <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="210.0" style="-fx-background-color: #CFEEE1;" BorderPane.alignment="CENTER">
@@ -93,22 +94,17 @@
                      <Font name="SansSerif Bold" size="30.0" />
                   </font>
                </Label>
-            </children></HBox>
-      </top>
-      <center>
-         <VBox prefHeight="453.0" prefWidth="801.0" BorderPane.alignment="CENTER">
-            <children>
-               <ImageView fitHeight="49.0" fitWidth="49.0" translateX="10.0" translateY="10.0">
-                  <image>
-                     <Image url="@../../assets/profile-user.png" />
-                  </image>
-               </ImageView>
-               <Label fx:id="userName" prefHeight="42.0" prefWidth="268.0" style="-fx-text-fill: black;" textFill="WHITE" translateX="65.0" translateY="-30.0">
-                  <font>
-                     <Font name="SansSerif Bold" size="27.0" />
-                  </font>
-               </Label>
-               <Button mnemonicParsing="false" onAction="#logout" prefHeight="60.0" prefWidth="120.0" style="-fx-border-color: #77D0AA;" styleClass="mybutton" stylesheets="@../../assets/style.css" translateX="687.0" translateY="358.0">
+               <Button fx:id="backToMainMenu" mnemonicParsing="false" onAction="#mainMenu" prefHeight="64.0" prefWidth="120.0" style="-fx-border-color: #77D0AA;" styleClass="mybutton" stylesheets="@../../assets/style.css" translateX="505.0">
+                  <graphic>
+                     <Label text="Main Manu">
+                        <font>
+                           <Font name="SansSerif Bold" size="14.0" />
+                        </font>
+                     </Label>
+                  </graphic>
+               </Button>
+               <Line endX="-87.41421508789062" endY="46.064971923828125" startX="-87.41421508789062" startY="-13.435026168823242" translateX="505.0" />
+               <Button mnemonicParsing="false" onAction="#logout" prefHeight="64.0" prefWidth="120.0" style="-fx-border-color: #77D0AA;" styleClass="mybutton" stylesheets="@../../assets/style.css" translateX="505.0">
                   <graphic>
                      <Label text="Logout">
                         <font>
@@ -127,7 +123,22 @@
                      </Label>
                   </graphic>
                </Button>
-               <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="350.0" prefWidth="378.0" style="-fx-background-color: #77D0AA; -fx-background-radius: 20;" translateX="200.0" translateY="-50.0">
+            </children></HBox>
+      </top>
+      <center>
+         <VBox prefHeight="453.0" prefWidth="801.0" BorderPane.alignment="CENTER">
+            <children>
+               <ImageView fitHeight="49.0" fitWidth="49.0" translateX="10.0" translateY="10.0">
+                  <image>
+                     <Image url="@../../assets/profile-user.png" />
+                  </image>
+               </ImageView>
+               <Label fx:id="userName" prefHeight="42.0" prefWidth="268.0" style="-fx-text-fill: black;" textFill="WHITE" translateX="65.0" translateY="-30.0">
+                  <font>
+                     <Font name="SansSerif Bold" size="27.0" />
+                  </font>
+               </Label>
+               <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="350.0" prefWidth="378.0" style="-fx-background-color: #77D0AA; -fx-background-radius: 20;" translateX="160.0" translateY="-50.0">
                   <children>
                      <TextField fx:id="idTf" layoutX="39.0" layoutY="79.0" prefHeight="30.0" prefWidth="300.0" promptText="ID" style="-fx-border-width: 2; -fx-border-color: black; -fx-border-radius: 5; -fx-background-color: white;">
                         <font>

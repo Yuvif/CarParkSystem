@@ -11,9 +11,10 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.Customer.CheckOutCustomerController">
+<AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19" fx:controller="CarPark.client.controllers.Customer.CheckOutCustomerController">
    <BorderPane prefHeight="509.0" prefWidth="1017.0">
       <left>
          <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="210.0" style="-fx-background-color: #CFEEE1;" BorderPane.alignment="CENTER">
@@ -91,22 +92,7 @@
                      <Font name="SansSerif Bold" size="30.0" />
                   </font>
                </Label>
-            </children></HBox>
-      </top>
-      <center>
-         <VBox prefHeight="453.0" prefWidth="801.0" BorderPane.alignment="CENTER">
-            <children>
-               <ImageView fitHeight="49.0" fitWidth="49.0" translateX="10.0" translateY="10.0">
-                  <image>
-                     <Image url="@../../assets/profile-user.png" />
-                  </image>
-               </ImageView>
-               <Label fx:id="userName" prefHeight="42.0" prefWidth="268.0" style="-fx-text-fill: black;" textFill="WHITE" translateX="65.0" translateY="-30.0">
-                  <font>
-                     <Font name="SansSerif Bold" size="27.0" />
-                  </font>
-               </Label>
-               <Button mnemonicParsing="false" onAction="#logout" prefHeight="60.0" prefWidth="120.0" style="-fx-border-color: #77D0AA;" styleClass="mybutton" stylesheets="@../../assets/style.css" translateX="687.0" translateY="300.0">
+               <Button mnemonicParsing="false" onAction="#logout" prefHeight="60.0" prefWidth="120.0" style="-fx-border-color: #77D0AA;" styleClass="mybutton" stylesheets="@../../assets/style.css" translateX="623.0">
                   <graphic>
                      <Label text="Logout">
                         <font>
@@ -125,6 +111,31 @@
                      </Label>
                   </graphic>
                </Button>
+               <Button fx:id="backToMainMenu" mnemonicParsing="false" onAction="#mainMenu" prefHeight="64.0" prefWidth="120.0" style="-fx-border-color: #77D0AA;" styleClass="mybutton" stylesheets="@../../assets/style.css" translateX="390.0">
+                  <graphic>
+                     <Label text="Main Manu">
+                        <font>
+                           <Font name="SansSerif Bold" size="14.0" />
+                        </font>
+                     </Label>
+                  </graphic>
+               </Button>
+               <Line endX="-100.0" endY="-76.0" startX="-100.0" startY="-16.5" translateX="389.0" />
+            </children></HBox>
+      </top>
+      <center>
+         <VBox prefHeight="453.0" prefWidth="801.0" BorderPane.alignment="CENTER">
+            <children>
+               <ImageView fitHeight="49.0" fitWidth="49.0" translateX="10.0" translateY="10.0">
+                  <image>
+                     <Image url="@../../assets/profile-user.png" />
+                  </image>
+               </ImageView>
+               <Label fx:id="userName" prefHeight="42.0" prefWidth="268.0" style="-fx-text-fill: black;" textFill="WHITE" translateX="65.0" translateY="-30.0">
+                  <font>
+                     <Font name="SansSerif Bold" size="27.0" />
+                  </font>
+               </Label>
                <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="251.0" prefWidth="400.0" style="-fx-background-color: #77D0AA; -fx-background-radius: 20;" translateX="200.0" translateY="-50.0">
                   <children>
                      <TextField fx:id="userId" layoutX="39.0" layoutY="95.0" prefHeight="30.0" prefWidth="300.0" promptText="ID" style="-fx-border-width: 2; -fx-border-color: black; -fx-border-radius: 5; -fx-background-color: white;">

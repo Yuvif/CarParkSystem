@@ -12,9 +12,10 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.Customer.ComplaintSubmissionController">
+<AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/19" fx:controller="CarPark.client.controllers.Customer.ComplaintSubmissionController">
     <BorderPane prefHeight="509.0" prefWidth="1017.0">
         <left>
             <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="452.0" prefWidth="210.0" style="-fx-background-color: #CFEEE1;" BorderPane.alignment="CENTER">
@@ -111,6 +112,16 @@
                      </Label>
                   </graphic>
                </Button>
+               <Button fx:id="backToMainMenu" mnemonicParsing="false" onAction="#mainMenu" prefHeight="64.0" prefWidth="120.0" style="-fx-border-color: #77D0AA;" styleClass="mybutton" stylesheets="@../../assets/style.css" translateX="389.0">
+                  <graphic>
+                     <Label text="Main Manu">
+                        <font>
+                           <Font name="SansSerif Bold" size="14.0" />
+                        </font>
+                     </Label>
+                  </graphic>
+               </Button>
+               <Line endX="-100.0" endY="-76.0" startX="-100.0" startY="-16.5" translateX="389.0" />
                 </children></HBox>
         </top>
         <center>

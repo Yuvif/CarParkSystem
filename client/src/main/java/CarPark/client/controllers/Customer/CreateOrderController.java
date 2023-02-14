@@ -359,6 +359,12 @@ public class CreateOrderController {
         LoginMessage msg = new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGOUT,SimpleClient.getCurrent_user().getId());
         SimpleClient.getClient().sendToServer(msg);
     }
+
+    @FXML
+    void mainMenu(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("CustomerPage");
+    }
+
     @Subscribe
     public void newResponse(LoginMessage new_message) throws IOException {
         switch (new_message.response_type) {

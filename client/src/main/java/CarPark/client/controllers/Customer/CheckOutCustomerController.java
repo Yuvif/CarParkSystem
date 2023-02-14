@@ -180,6 +180,11 @@ public class CheckOutCustomerController {
         SimpleClient.getClient().sendToServer(msg);
     }
 
+    @FXML
+    void mainMenu(ActionEvent event) throws IOException {
+        SimpleChatClient.setRoot("CustomerPage");
+    }
+
     @Subscribe
     public void newResponse(LoginMessage new_message) throws IOException {
         switch (new_message.response_type) {

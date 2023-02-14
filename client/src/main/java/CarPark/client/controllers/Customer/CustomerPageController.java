@@ -30,9 +30,6 @@ public class CustomerPageController{
     }
 
     @FXML
-    public void addComplaint(){}
-
-    @FXML
     public void myOrders(){}
 
     @FXML
@@ -49,7 +46,7 @@ public class CustomerPageController{
     public void newResponse(PricesMessage new_message){
         switch (new_message.response_type) {
             case SET_CURRENT_BALANCE:
-                Platform.runLater(()->balance.setText(String.valueOf(new_message.price)));
+                Platform.runLater(()->balance.setText(String.valueOf(new_message.price) + " ₪"));
         }
     }
 
