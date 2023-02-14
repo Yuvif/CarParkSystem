@@ -88,6 +88,7 @@ public class LoginController{
                     case "Manager" -> SimpleChatClient.setRoot("ParkingLotManagerPage");
                     case "CEO" -> SimpleChatClient.setRoot("CEOPage");
                     case "Parking Lot Worker" -> SimpleChatClient.setRoot("ParkingLotWorkerPage");
+                    case "Customer Service Worker" -> SimpleChatClient.setRoot("CustomerServicePage");
                 }
             }
             case LOGIN_FAILED -> Platform.runLater(() -> {

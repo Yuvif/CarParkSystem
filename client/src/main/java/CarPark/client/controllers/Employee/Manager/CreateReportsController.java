@@ -85,10 +85,22 @@ public class CreateReportsController extends AbstractReports {
         ParkingListMessage msg = new ParkingListMessage(Message.MessageType.REQUEST, ParkingListMessage.RequestType.GET_ALL_PARKING_LOTS);
         SimpleClient.getClient().sendToServer(msg);
 
-        Manager current_manager = (Manager) SimpleClient.getCurrent_user();
-        String parkingLotName = current_manager.getParkinglot().getName();
-        plPicker.setPromptText(parkingLotName);
-        plPicker.setDisable(true);
+        Employee current_employee = (Employee) SimpleClient.getCurrent_user();
+        switch (current_employee.getWorkersRole()) {
+            case "Manager":
+                Manager current_manager = (Manager) current_employee;
+                String parkingLotName = current_manager.getParkinglot().getName();
+                plPicker.setPromptText(parkingLotName);
+                plPicker.setDisable(true);
+                break;
+
+            case "Customer Service Worker":
+                break;
+        }
+
+
+
+
     }
     /**
      * makeReport function activates if pressing the make report button, first it makes

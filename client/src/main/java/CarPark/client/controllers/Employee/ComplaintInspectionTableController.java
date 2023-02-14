@@ -205,7 +205,7 @@ public class ComplaintInspectionTableController extends Controller {
 
     @FXML
     void goBack(ActionEvent event) throws IOException {
-        SimpleChatClient.setRoot("EmployeePage");
+        SimpleChatClient.setRoot("CustomerServicePage");
     }
 
 

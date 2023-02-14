@@ -82,13 +82,13 @@ public class SimpleServer extends AbstractServer {
                 SubscribersList.add(connection);
                 session = getSessionFactory().openSession();// Create new session for connection
 
-//                session.beginTransaction();
-//                generateParkingLots(session);
-//                session.getTransaction().commit();
-//
-//                session.beginTransaction();
-//                generateWorkers(session);
-//                session.getTransaction().commit();
+                session.beginTransaction();
+                generateParkingLots(session);
+                session.getTransaction().commit();
+
+                session.beginTransaction();
+                generateWorkers(session);
+                session.getTransaction().commit();
 
             } else { //Get client requests
                 session.beginTransaction();
@@ -432,6 +432,12 @@ public class SimpleServer extends AbstractServer {
         parkingLotWorker5.setParkinglot(data.get(4));
         session.save(parkingLotWorker5);
         session.flush();
+
+        Employee customerService1 = new Employee("099888999", "Joey", "Tribbiani", "Joey@gmail.com", "Customer Service Worker",
+                HashPipeline.toHexString(HashPipeline.getSHA("123456789", salt)), salt);
+        session.save(customerService1);
+        session.flush();
+
     }
 
     public void sendToAllClients(Message message) {

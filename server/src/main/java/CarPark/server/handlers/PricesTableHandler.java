@@ -26,7 +26,7 @@ public class PricesTableHandler extends MessageHandler {
 
     @Override
     public void handleMessage() throws Exception {
-        //eneratePricesTable();
+        generatePricesTable();
         switch (class_message.request_type) {
             case GET_PRICES_TABLE:
                 class_message.priceList = getPriceList();
@@ -52,6 +52,7 @@ public class PricesTableHandler extends MessageHandler {
     {
         Price old_price = session.get(Price.class, class_message.new_price.getId());
         old_price.setPrice(class_message.new_price.getNewPrice());
+        class_message.parkingLot = old_price.getParkinglot().getName();
         class_message.response_type = PricesMessage.ResponseType.PRICE_EDITED;
     }
 

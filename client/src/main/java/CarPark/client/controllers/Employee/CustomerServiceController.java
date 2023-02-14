@@ -1,29 +1,44 @@
-package CarPark.client.controllers;
+package CarPark.client.controllers.Employee;
 
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.client.events.NewSubscriberEvent;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 
-public class EmployeePageController{
+public class CustomerServiceController {
     @FXML
-    private Label welcomeUser;
+    private Label userName;
+
 
     @FXML
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
-        welcomeUser.setText("Welcome " + SimpleClient.getCurrent_user().getFirstName());
+        userName.setText(SimpleClient.getCurrent_user().getFirstName());
     }
 
+
     @FXML
-    private void createReports(javafx.event.ActionEvent event) throws IOException {
+    public void inspectComplaints(javafx.event.ActionEvent actionEvent) {
+        Platform.runLater(()->
+        {
+            try {
+                SimpleChatClient.setRoot("ComplaintInspectionTable");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+
+    @FXML
+    public void makeReport(ActionEvent actionEvent) {
         Platform.runLater(()->
         {
             try {
@@ -37,18 +52,6 @@ public class EmployeePageController{
 
     @Subscribe
     public void getStarterData(NewSubscriberEvent event) {
-    }
-
-    @FXML
-    private void complaintsInspection(javafx.event.ActionEvent event) throws IOException {
-        Platform.runLater(()->
-        {
-            try {
-                SimpleChatClient.setRoot("ComplaintInspectionTable");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
     }
 
 }
