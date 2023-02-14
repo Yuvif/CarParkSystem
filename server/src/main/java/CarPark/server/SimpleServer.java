@@ -115,6 +115,7 @@ public class SimpleServer extends AbstractServer {
                 }else if (ComplaintMessage.class.equals(msgClass)) {
                     handler = new ComplaintHandler((ComplaintMessage) msg, session, client);
                 }else if (PullParkingSlotsMessage.class.equals(msgClass)) {
+                    System.out.println("got here");
                     handler = new PullParkingSlotsHandler((PullParkingSlotsMessage) msg, session, client);
                 }
                 if (handler != null) {

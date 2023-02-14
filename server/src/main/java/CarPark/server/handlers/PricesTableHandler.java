@@ -101,18 +101,23 @@ public class PricesTableHandler extends MessageHandler {
         int i;
         for (i = 0;i < 5;i++) {
             Price pr1 = new Price(p_l.get(i),"Casual ordered parking", "Per hour", 7, 1, 1);
+            pr1.setNewPrice(7);
             session.save(pr1);
             session.flush();
             Price pr2 = new Price(p_l.get(i),"Casual parking", "Per hour", 8, 1, 1);
+            pr2.setNewPrice(8);
             session.save(pr2);
             session.flush();
             Price pr3 = new Price(p_l.get(i),"Monthly subscriber few cars", "Permanent price", 100, 1, 60);
+            pr3.setNewPrice(100);
             session.save(pr3);
             session.flush();
             Price pr4 = new Price(p_l.get(i),"Monthly subscriber one car", "Permanent price", 120, 1, 54);
+            pr4.setNewPrice(120);
             session.save(pr4);
             session.flush();
             Price pr5 = new Price(p_l.get(i),"Premium monthly subscriber", "Permanent price", 108, 1, 72);
+            pr5.setNewPrice(108);
             session.save(pr5);
             session.flush();
         }

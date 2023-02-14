@@ -3,7 +3,6 @@ package CarPark.entities.messages;
 import CarPark.entities.Customer;
 import CarPark.entities.Order;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +19,7 @@ public class OrderMessage extends Message {
     public String parking_lot_id;
     public Date from;
     public Date to;
+    public List<Customer> customerList;
 
     public OrderMessage(MessageType request, RequestType createNewOrder, Order order, Customer current_customer) {
         super(request);

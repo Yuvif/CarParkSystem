@@ -132,7 +132,7 @@
                                                 </Label>
                                                 <StackedBarChart fx:id="restrictedPSlotsChart" animated="false" layoutX="10.0" layoutY="45.0" prefHeight="458.0" prefWidth="562.0">
                                                     <xAxis>
-                                                        <CategoryAxis fx:id="daysAxis1" label="Days" side="BOTTOM" />
+                                                        <CategoryAxis fx:id="daysAxis1" label="Capacity" side="BOTTOM" />
                                                     </xAxis>
                                                     <yAxis>
                                                         <NumberAxis fx:id="restricPslotAxis1" label="Number Of Restricted P-slots" side="LEFT" upperBound="20.0" />

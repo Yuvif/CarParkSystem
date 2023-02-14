@@ -23,16 +23,9 @@ public class Order implements Serializable {
     private Date date;
     private Status orderStatus = Status.APPROVED;
 
-    @ManyToOne
-    private Customer customer;
 
-    public Customer getCustomer() {
-        return customer;
-    }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
+    
 
     public void setOrderStatus(Status notified) {
     }

@@ -7,11 +7,9 @@ import CarPark.server.ocsf.ConnectionToClient;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,7 +36,7 @@ public class OrderHandler extends MessageHandler {
                 cancelOrder();
                 break;
             case GET_SELECTED_ORDERS:
-                class_message.ordersList = getSelectedOrders();
+                class_message.customerList = getAllCustomers();
                 class_message.response_type = OrderMessage.ResponseType.SET_SELECTED_ORDERS;
 //                class_message.ordersList.removeIf(order -> order.getParkingLotId().equals(class_message.parking_lot_id)
 //                        || order.getDate().compareTo(class_message.from) < 0 || order.getDate().compareTo(class_message.to) > 0
@@ -158,17 +156,10 @@ public class OrderHandler extends MessageHandler {
         }
     }
 
-    private LinkedList<Order> getSelectedOrders() throws Exception {
+    private List<Customer> getAllCustomers() throws Exception {
         //generateOrders();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Order> orderQuery = builder.createQuery(Order.class);
-        orderQuery.from(Order.class);
-        List<Order> data = session.createQuery(orderQuery).getResultList();
-        LinkedList<Order> res= new LinkedList<Order>();
-        for(Order c: data)
-        {
-            res.add(c);
-        }
-        return res;
+        CriteriaQuery<Customer> query = cb.createQuery(Customer.class);
+        query.from(Customer.class);
+        return session.createQuery(query).getResultList();
     }
 }

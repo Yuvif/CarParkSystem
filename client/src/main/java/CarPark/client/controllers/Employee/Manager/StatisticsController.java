@@ -76,7 +76,6 @@ public class StatisticsController {
             }
             case STATISTICS -> {
                 table.setItems(FXCollections.observableArrayList(msg.getStatistics()));
-                System.out.println(msg.getStatistics());
             }
         }
     }
