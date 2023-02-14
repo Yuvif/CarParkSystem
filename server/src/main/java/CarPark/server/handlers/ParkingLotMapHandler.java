@@ -23,7 +23,6 @@ public class ParkingLotMapHandler extends MessageHandler {
 
     public int getParkingLotRows()
     {
-        System.out.println(class_message.pl_name + " Function");
 
         String hql = "FROM Parkinglot WHERE name = :pl_name";
         Query query = session.createQuery(hql);
@@ -62,7 +61,6 @@ public class ParkingLotMapHandler extends MessageHandler {
     public void handleMessage() throws Exception {
         switch (class_message.request_type) {
             case GET_ROW:
-                System.out.println(class_message.pl_name);
                 class_message.parkingSlots = getParkingSlots();
                 class_message.rows = getParkingLotRows();
                 class_message.response_type = ParkingLotMapMessage.ResponseType.SET_ROW;

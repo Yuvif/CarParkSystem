@@ -2,29 +2,32 @@ package CarPark.client.controllers.Employee.Manager;
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.entities.*;
+import CarPark.entities.messages.CheckInMessage;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.ParkingLotMapMessage;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import org.greenrobot.eventbus.EventBus;
-import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import org.greenrobot.eventbus.Subscribe;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+
+import static CarPark.client.controllers.Controller.sendAlert;
 
 
 public class ManagerParkingLotMapController {
@@ -45,6 +48,7 @@ public class ManagerParkingLotMapController {
     private Label parkingLot;
 
 
+    static Manager manager = (Manager) SimpleClient.getCurrent_user();
     int rows;
     List<ParkingSlot> parkingSlotsList;
     List<Parkinglot> parkingLotList;
@@ -87,7 +91,7 @@ public class ManagerParkingLotMapController {
             e.printStackTrace();
         }
 
-        if(floorChoice.getValue() == null)
+        if(floorChoice.getPromptText().equals("Choose Floor") || floorChoice.getValue() == null)
         {
             createParkingLotMap("A");
             setOccupiedSlots("A");
@@ -374,6 +378,18 @@ public class ManagerParkingLotMapController {
             case SET_PARKING_LOTS:
                 this.parkingLotList = new_message.parkingLots;
                 break;
+        }
+    }
+
+    @Subscribe
+    public void newResponse(CheckInMessage new_message) {
+        switch (new_message.response_type) {
+            case CHECK_IN_UPDATED:
+                if (new_message.selectedParkingLot.equals(manager.getParkingLot().getName())) {
+                    sendAlert("New Check In Submitted",
+                            "Check In", Alert.AlertType.INFORMATION);
+                    getParkingLotRowNum();
+                }
         }
     }
 

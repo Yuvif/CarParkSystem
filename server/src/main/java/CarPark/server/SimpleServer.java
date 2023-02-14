@@ -83,11 +83,11 @@ public class SimpleServer extends AbstractServer {
                 session = getSessionFactory().openSession();// Create new session for connection
 
                 session.beginTransaction();
-                generateParkingLots(session);
+                //generateParkingLots(session);
                 session.getTransaction().commit();
 
                 session.beginTransaction();
-                generateWorkers(session);
+                //generateWorkers(session);
                 session.getTransaction().commit();
 
             } else { //Get client requests
@@ -126,12 +126,18 @@ public class SimpleServer extends AbstractServer {
                     {
                         sendToAllClients(handler.message);
                     }
+                    if (handler.getClass().equals(CheckInHandler.class))
+                    {
+                        client.sendToClient(handler.message);
+                        CheckInMessage update_message = (CheckInMessage)handler.message;
+                        update_message.response_type = update_message.response_type.CHECK_IN_UPDATED;
+                        sendToAllClients(update_message);
+                    }
                     else
                         client.sendToClient(handler.message);
                 }
             }
         } catch (Exception exception) {
-            System.out.println("Error: " + exception.getMessage());
             if (session != null)
                 session.getTransaction().rollback();
             exception.printStackTrace();
