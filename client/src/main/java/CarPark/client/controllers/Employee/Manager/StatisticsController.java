@@ -76,6 +76,7 @@ public class StatisticsController {
             }
             case STATISTICS -> {
                 table.setItems(FXCollections.observableArrayList(msg.getStatistics()));
+                System.out.println(msg.getStatistics());
             }
         }
     }
@@ -83,7 +84,7 @@ public class StatisticsController {
     void GetData(ActionEvent event) throws IOException {
         Platform.runLater(() -> {
             Manager current_manager = (Manager) SimpleClient.getCurrent_user();
-            String parkingLotId = current_manager.getParkinglot().getId();
+            String parkingLotId = String.valueOf(current_manager.getParkinglot().getParkingLotId());
             StatisticsMessage msg = new StatisticsMessage(Message.MessageType.REQUEST, StatisticsMessage.RequestType.GET_STATISTICS,
                     parkingLotId, statisticsDate.getValue());
             try {
