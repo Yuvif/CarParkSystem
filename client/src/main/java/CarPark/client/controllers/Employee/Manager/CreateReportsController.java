@@ -18,6 +18,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -98,9 +99,6 @@ public class CreateReportsController extends AbstractReports {
                 break;
         }
 
-
-
-
     }
     /**
      * makeReport function activates if pressing the make report button, first it makes
@@ -151,7 +149,7 @@ public class CreateReportsController extends AbstractReports {
             Date from = getPickedDate(fromDate);
             Date to = addDays(getPickedDate(toDate), 1);
             OrderMessage ordersMsg = new OrderMessage(Message.MessageType.REQUEST,
-                    OrderMessage.RequestType.GET_SELECTED_ORDERS, parkingLotName,from, to );
+                    OrderMessage.RequestType.GET_SELECTED_ORDERS, parkingLotName, from, to );
             SimpleClient.getClient().sendToServer(ordersMsg);
 
             PullParkingSlotsMessage pslotMsg = new PullParkingSlotsMessage(Message.MessageType.REQUEST,
@@ -278,21 +276,24 @@ public class CreateReportsController extends AbstractReports {
 
         for (LocalDate date : getDatesBetween(fromDate.getValue(), toDate.getValue())) {
             int numOfCustomers = 0;
-            int numOfMem = 0;
+            int numOfMemberships = 0;
 
             for (Order order : orders) {
+
                 if (dateAreEqual(dateToLocalDate(order.getDate()), date)) {
+
                     if (order.getCustomer().getMemberships().size() > 0) {
-                        numOfMem += 1;
+                        numOfMemberships += 1;
                     } else {
                         numOfCustomers += 1;
                     }
                 }
             }
 
-            ordersLabel.setText(String.valueOf(numOfCustomers + numOfMem));
+
+            ordersLabel.setText(String.valueOf(numOfCustomers + numOfMemberships));
             customersLabel.setText(String.valueOf(numOfCustomers));
-            membershipsLabel.setText(String.valueOf(numOfMem));
+            membershipsLabel.setText(String.valueOf(numOfMemberships));
 
 //            for (int j = 0; j < days; j++) {
 //                series1.getData().add(new XYChart.Data<>(String.valueOf(j), numOfMem[j]));
