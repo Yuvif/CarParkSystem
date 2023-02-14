@@ -27,14 +27,6 @@ public class CheckOutHandler extends MessageHandler {
         return (CheckedIn)query.uniqueResult();
     }
 
-    public CheckedIn findCheckedInCustomer()
-    {
-        String hql = "FROM CheckedIn WHERE personId = :id AND carNumber = :carId";
-        Query query = session.createQuery(hql);
-        query.setParameter("id", class_message.current_customer.getId());
-        query.setParameter("carId", class_message.carNumber);
-        return (CheckedIn)query.uniqueResult();
-    }
 
     public boolean checkLate(LocalDateTime leavingTime, LocalDateTime estimatedLeavingTime)
     {
@@ -53,7 +45,7 @@ public class CheckOutHandler extends MessageHandler {
         {
             double differenceInMinutes = ChronoUnit.MINUTES.between(arrivalTime, estimatedLeavingTime);
             double differenceInHours = differenceInMinutes / 60;
-            double differenceInMinutes_TimeDeviation = ChronoUnit.MINUTES.between(estimatedLeavingTime, leavingTime);
+            double differenceInMinutes_TimeDeviation = ChronoUnit.MINUTES.between(estimatedLeavingTime, LocalDateTime.now());
             double differenceInHours_TimeDeviation = differenceInMinutes_TimeDeviation / 60;
             return  pricePH * differenceInHours + 1.1 * pricePH * differenceInHours_TimeDeviation;
         }

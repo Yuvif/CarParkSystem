@@ -4,14 +4,17 @@ import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.entities.messages.CheckOutMessage;
 import CarPark.entities.messages.Message;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,9 +58,21 @@ public class CheckOutGuestController {
         switch (new_message.response_type) {
             case CHECKED_OUT_GUEST -> {
                 //if the checked out user is a guest
-                sendAlert("You were checked out successfully! \nA charge of " + String.format("%.2f", new_message.payment)
-                                + " ₪ was made.\nThank You! Goodbye!",
-                        "Check Out", Alert.AlertType.INFORMATION);
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setHeaderText("Successful Check Out");
+                    alert.setContentText("You were checked out successfully! \nA charge of " + String.format("%.2f", new_message.payment)
+                            + " ₪ was made.\nThank You! Goodbye!");
+
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                        try {
+                            SimpleChatClient.setRoot("Login");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             }
                 case NO_CHECK_IN -> {
                     //if the checked out user is a guest
@@ -79,7 +94,7 @@ public class CheckOutGuestController {
         }
 
         if (carNumber.getText().isEmpty() || userId.getText().isEmpty()) {
-            sendAlert("Please fill all the fields", "warning", Alert.AlertType.WARNING);
+            sendAlert("Please fill all the fields", "Warning", Alert.AlertType.WARNING);
             return false;
         }
 

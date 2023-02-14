@@ -34,11 +34,6 @@
    </Label>
    <AnchorPane layoutX="102.0" layoutY="192.0" prefHeight="169.0" prefWidth="298.0" style="-fx-background-color: #77D0AA; -fx-background-radius: 20;">
       <children>
-         <Label layoutX="39.0" layoutY="24.0" prefHeight="54.0" prefWidth="59.0" text="Hello, ">
-            <font>
-               <Font name="SansSerif Bold" size="18.0" />
-            </font>
-         </Label>
          <Label layoutX="39.0" layoutY="61.0" prefHeight="54.0" prefWidth="98.0" text="Position:" underline="true">
             <font>
                <Font name="SansSerif Bold" size="18.0" />
@@ -65,6 +60,11 @@
                <Font name="SansSerif Bold" size="18.0" />
             </font>
          </Label>
+         <ImageView fitHeight="35.0" fitWidth="35.0" layoutX="39.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../../assets/profile-user.png" />
+            </image>
+         </ImageView>
       </children>
    </AnchorPane>
    <ImageView accessibleRole="BUTTON" fitHeight="30.0" fitWidth="30.0" layoutX="979.0" layoutY="13.0" pickOnBounds="true">
