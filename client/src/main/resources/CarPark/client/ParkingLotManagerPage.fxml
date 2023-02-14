@@ -10,8 +10,8 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.Employee.Manager.ParkingLotManagerController">
-    <ImageView fitHeight="516.0" fitWidth="508.0" layoutX="509.0">
+<AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.Employee.Manager.ParkingLotManagerController">
+    <ImageView fitHeight="516.0" fitWidth="508.0" layoutX="509.0" layoutY="1.0">
         <image>
             <Image url="@../../assets/background.png" />
         </image>
@@ -64,16 +64,16 @@
                <Image url="@../../assets/report.png" />
             </image>
          </ImageView>
-         <Button layoutX="396.0" mnemonicParsing="false" onAction="#logout" prefHeight="60.0" prefWidth="129.0" style="-fx-background-radius: 0;" styleClass="mybutton" stylesheets="@../../assets/style.css" translateX="-10.0">
+         <Button layoutX="396.0" mnemonicParsing="false" onAction="#statistics" prefHeight="60.0" prefWidth="129.0" style="-fx-background-radius: 0;" styleClass="mybutton" stylesheets="@../../assets/style.css" translateX="-10.0">
             <graphic>
-               <Label text="Logout">
+               <Label text="Statistics">
                   <font>
                      <Font name="SansSerif Bold" size="14.0" />
                   </font>
                   <graphic>
                      <ImageView accessibleRole="BUTTON" fitHeight="42.0" fitWidth="43.0" pickOnBounds="true">
                         <image>
-                           <Image url="@../../assets/logout.png" />
+                           <Image url="@../../assets/trend.png" />
                         </image>
                         <cursor>
                            <Cursor fx:constant="HAND" />
@@ -150,6 +150,20 @@
          </ImageView>
       </children>
    </AnchorPane>
+   <Button layoutX="942.0" layoutY="450.0" mnemonicParsing="false" onAction="#logout" prefHeight="67.0" prefWidth="71.0" style="-fx-background-radius: 50;" styleClass="mybutton" stylesheets="@../../assets/style.css" translateX="-5.0" translateY="-10.0" />
+   <ImageView accessibleRole="BUTTON" fitHeight="42.0" fitWidth="43.0" layoutX="951.0" layoutY="440.0" pickOnBounds="true">
+      <image>
+         <Image url="@../../assets/logout.png" />
+      </image>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
+   </ImageView>
+   <Label layoutX="948.0" layoutY="482.0" text="Logout">
+      <font>
+         <Font name="SansSerif Bold" size="14.0" />
+      </font>
+   </Label>
     <cursor>
         <Cursor fx:constant="DEFAULT" />
     </cursor>

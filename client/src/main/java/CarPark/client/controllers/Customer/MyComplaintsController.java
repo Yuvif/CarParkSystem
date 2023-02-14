@@ -5,6 +5,7 @@ import CarPark.client.SimpleClient;
 import CarPark.entities.Complaint;
 import CarPark.entities.Customer;
 import CarPark.entities.messages.ComplaintMessage;
+import CarPark.entities.messages.LoginMessage;
 import CarPark.entities.messages.Message;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -129,5 +130,26 @@ public class MyComplaintsController {
                 e.printStackTrace();
             }
         });
+    }
+
+    @FXML
+    void logout(ActionEvent event) throws IOException {
+        LoginMessage msg = new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGOUT,SimpleClient.getCurrent_user().getId());
+        SimpleClient.getClient().sendToServer(msg);
+    }
+    @Subscribe
+    public void newResponse(LoginMessage new_message) throws IOException {
+        switch (new_message.response_type) {
+            case LOGOUT_SUCCEED:
+                Platform.runLater(()->
+                {
+                    try {
+                        SimpleChatClient.setRoot("Login");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+        }
+
     }
 }

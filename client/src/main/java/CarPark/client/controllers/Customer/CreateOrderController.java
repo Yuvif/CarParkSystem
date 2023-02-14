@@ -4,6 +4,7 @@ import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
 import CarPark.entities.Customer;
 import CarPark.entities.Order;
+import CarPark.entities.messages.LoginMessage;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.OrderMessage;
 import javafx.animation.PauseTransition;
@@ -20,7 +21,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -330,5 +330,26 @@ public class CreateOrderController {
                 e.printStackTrace();
             }
         });
+    }
+
+    @FXML
+    void logout(ActionEvent event) throws IOException {
+        LoginMessage msg = new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGOUT,SimpleClient.getCurrent_user().getId());
+        SimpleClient.getClient().sendToServer(msg);
+    }
+    @Subscribe
+    public void newResponse(LoginMessage new_message) throws IOException {
+        switch (new_message.response_type) {
+            case LOGOUT_SUCCEED:
+                Platform.runLater(()->
+                {
+                    try {
+                        SimpleChatClient.setRoot("Login");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+        }
+
     }
 }

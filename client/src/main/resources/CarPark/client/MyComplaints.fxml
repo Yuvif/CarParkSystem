@@ -95,6 +95,25 @@
                      <Cursor fx:constant="DEFAULT" />
                   </cursor>
                     </Label>
+               <Button mnemonicParsing="false" onAction="#logout" prefHeight="60.0" prefWidth="120.0" style="-fx-border-color: #77D0AA;" styleClass="mybutton" stylesheets="@../../assets/style.css" translateX="623.0">
+                  <graphic>
+                     <Label text="Logout">
+                        <font>
+                           <Font name="SansSerif Bold" size="14.0" />
+                        </font>
+                        <graphic>
+                           <ImageView accessibleRole="BUTTON" fitHeight="42.0" fitWidth="43.0" pickOnBounds="true">
+                              <image>
+                                 <Image url="@../../assets/logout.png" />
+                              </image>
+                              <cursor>
+                                 <Cursor fx:constant="HAND" />
+                              </cursor>
+                           </ImageView>
+                        </graphic>
+                     </Label>
+                  </graphic>
+               </Button>
                 </children></HBox>
         </top>
         <center>

@@ -29,6 +29,20 @@ public class ParkingLotManagerController {
         area.setText(current_manager.getParkinglot().getName());
     }
 
+
+    @FXML
+    void statistics(ActionEvent event)
+    {
+        Platform.runLater(()->
+        {
+            try {
+                SimpleChatClient.setRoot("StatisticsView");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
     @FXML
     void prices(ActionEvent event)
     {

@@ -39,16 +39,15 @@ public class CEOPageController {
     }
 
     @FXML
-    void logout(ActionEvent event) throws IOException {
-        LoginMessage msg = new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGOUT,SimpleClient.getCurrent_user().getId());
-        SimpleClient.getClient().sendToServer(msg);
-    }
-
-    @FXML
     void reports(ActionEvent event) throws IOException{
         SimpleChatClient.setRoot("CEOReports");
     }
 
+    @FXML
+    void logout(ActionEvent event) throws IOException {
+        LoginMessage msg = new LoginMessage(Message.MessageType.REQUEST, LoginMessage.RequestType.LOGOUT,SimpleClient.getCurrent_user().getId());
+        SimpleClient.getClient().sendToServer(msg);
+    }
     @Subscribe
     public void newResponse(LoginMessage new_message) throws IOException {
         switch (new_message.response_type) {

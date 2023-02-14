@@ -1,9 +1,11 @@
-package CarPark.client.controllers;
+package CarPark.client.controllers.Employee.Manager;
 import CarPark.client.SimpleChatClient;
 import CarPark.client.SimpleClient;
+import CarPark.entities.Manager;
 import CarPark.entities.Statistics;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.StatisticsMessage;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,8 +24,6 @@ public class StatisticsController {
     @FXML
     private Button GetData;
 
-    @FXML
-    private Button GoBack;
 
     @FXML
     private ComboBox<String> parkingLotOpt;
@@ -49,12 +49,10 @@ public class StatisticsController {
     @FXML
     void initialize() throws IOException {
         EventBus.getDefault().register(this);
-        parkingLotOpt.getItems().add("Haifa (1)");
-        parkingLotOpt.getItems().add("Tel Aviv (2)");
-        parkingLotOpt.getItems().add("Jerusalem (3)");
-        parkingLotOpt.getItems().add("Be'er Sheva (4)");
-        parkingLotOpt.getItems().add("Eilat (5)");
-
+        Manager current_manager = (Manager) SimpleClient.getCurrent_user();
+        String parkingLotName = current_manager.getParkinglot().getName();
+        parkingLotOpt.setPromptText(parkingLotName);
+        parkingLotOpt.setDisable(true);
         statisticsDate.setDayCellFactory(picker -> new DateCell() {
             public void updateItem(LocalDate date, boolean empty) {
                 super.updateItem(date, empty);
@@ -74,29 +72,30 @@ public class StatisticsController {
     public void newResponse(StatisticsMessage msg) throws IOException {
         switch (msg.response_type) {
             case NO_STATISTICS_AVAILABLE -> {
-                System.out.println("StatisticsController: NO_STATISTICS_AVAILABLE");
                 sendAlert("No data for this date and parking lot", "No info available", Alert.AlertType.WARNING);
             }
             case STATISTICS -> {
-                System.out.println("StatisticsController: STATISTICS");
                 table.setItems(FXCollections.observableArrayList(msg.getStatistics()));
             }
         }
     }
     @FXML
     void GetData(ActionEvent event) throws IOException {
-//        initialize a StatisticsMessage with the date and parking lot chosen by the user
-//        with regex extract the number of parking lot from the string
-        String parkingLot = parkingLotOpt.getValue();
-        String parkingLotId = parkingLot.replaceAll("[^0-9]", "");
-        StatisticsMessage msg = new StatisticsMessage(Message.MessageType.REQUEST, StatisticsMessage.RequestType.GET_STATISTICS,
-                parkingLotId, statisticsDate.getValue());
-        SimpleClient.getClient().sendToServer(msg);
-        System.out.println("Sent message to server");
+        Platform.runLater(() -> {
+            Manager current_manager = (Manager) SimpleClient.getCurrent_user();
+            String parkingLotName = current_manager.getParkinglot().getName();
+            StatisticsMessage msg = new StatisticsMessage(Message.MessageType.REQUEST, StatisticsMessage.RequestType.GET_STATISTICS,
+                    parkingLotName, statisticsDate.getValue());
+            try {
+                SimpleClient.getClient().sendToServer(msg);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @FXML
     void GoBack(ActionEvent event) throws IOException {
-        SimpleChatClient.setRoot("MainScreen");
+        SimpleChatClient.setRoot("ParkingLotManagerPage");
     }
 }

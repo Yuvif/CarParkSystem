@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.Employee.EmployeePageController">
+<AnchorPane prefHeight="512.0" prefWidth="900.0"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.Employee.EmployeePageController">
    <ImageView fitHeight="516.0" fitWidth="508.0" layoutX="509.0">
       <image>
          <Image url="@../../assets/background.png" />

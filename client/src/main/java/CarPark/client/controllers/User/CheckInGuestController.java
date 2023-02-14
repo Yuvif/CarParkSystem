@@ -16,6 +16,10 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static CarPark.client.controllers.Controller.sendAlert;
 
 public class CheckInGuestController{
 
@@ -82,7 +86,7 @@ public class CheckInGuestController{
 
     @FXML
     void checkIn(ActionEvent event) throws IOException {
-        if (checkEmpty()) {
+        if (checkValidity()) {
             CheckedIn checkedIn = createCheckedIn();
             CheckInMessage message = new CheckInMessage(Message.MessageType.REQUEST, CheckInMessage.RequestType.CHECK_ME_IN_GUEST, checkedIn);
             message.selectedParkingLot = plPick.getValue();
@@ -100,16 +104,6 @@ public class CheckInGuestController{
         LocalDateTime leavingDateTime = LocalDateTime.of(leaving, leavingTime);
         CheckedIn checkedIn = new CheckedIn(LocalDateTime.now(), idTf.getText(), Integer.parseInt(car_nTf.getText()), mailTf.getText(), leavingDateTime,"GUEST");
         return checkedIn;
-    }
-    private boolean checkEmpty() {
-        if (idTf.getText().isEmpty() || car_nTf.getText().isEmpty() || mailTf.getText().isEmpty() || plPick.getValue() == null) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setHeaderText("Please fill all the fields!");
-            alert.show();
-            return false;
-        }
-
-        return true;
     }
 
     @Subscribe
@@ -136,5 +130,41 @@ public class CheckInGuestController{
     @FXML
     private void loginPage(ActionEvent event) throws IOException {
         SimpleChatClient.setRoot("Login");
+    }
+
+
+    private boolean checkValidity() {
+        if (!checkIdValidity(idTf.getText())) {
+            sendAlert("ID is not valid", " Invalid ID", Alert.AlertType.WARNING);
+            return false;
+        }
+
+        if (!checkCarIdValidity(car_nTf.getText())) {
+            sendAlert("Car ID is not valid", " Invalid Car ID", Alert.AlertType.WARNING);
+            return false;
+        }
+
+        if (car_nTf.getText().isEmpty() || idTf.getText().isEmpty()) {
+            sendAlert("Please fill all the fields", "warning", Alert.AlertType.WARNING);
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean checkIdValidity(String id) {
+        String regex = "^[0-9]{9}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(id);
+        if (matcher.matches())
+            return true;
+        return false;
+    }
+
+    private boolean checkCarIdValidity(String carId) {
+        String regex = "^[0-9]{7}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(carId);
+        return matcher.matches();
     }
 }

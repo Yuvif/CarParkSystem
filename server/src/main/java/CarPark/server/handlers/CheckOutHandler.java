@@ -153,6 +153,15 @@ public class CheckOutHandler extends MessageHandler {
         deleteFromCheckedIn();
         //class_message.current_customer.addToBalance(calcGuestCredit()); //update guests credit
     }
+    private boolean noCheckIn()
+    {
+        String hql = "FROM CheckedIn WHERE personId = :id AND carNumber = :carId";
+        Query query = session.createQuery(hql);
+        query.setParameter("id", class_message.userId);
+        query.setParameter("carId", class_message.carNumber);
+        CheckedIn checkedOut = (CheckedIn)query.uniqueResult();
+        return checkedOut == null;
+    }
 
     public void customerCheckOut()
     {
@@ -164,10 +173,18 @@ public class CheckOutHandler extends MessageHandler {
     public void handleMessage() throws Exception {
         switch (class_message.request_type) {
             case CHECK_ME_OUT_GUEST -> {
+                if (noCheckIn()){
+                    class_message.response_type = CheckOutMessage.ResponseType.NO_CHECK_IN;
+                    break;
+                }
                 guestCheckOut();
                 class_message.response_type = CheckOutMessage.ResponseType.CHECKED_OUT_GUEST;
             }
             case CHECK_ME_OUT -> {
+                if (noCheckIn()){
+                    class_message.response_type = CheckOutMessage.ResponseType.NO_CHECK_IN;
+                    break;
+                }
                 customerCheckOut();
                 class_message.response_type = CheckOutMessage.ResponseType.CHECKED_OUT;
             }
