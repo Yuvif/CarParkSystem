@@ -1,5 +1,6 @@
 package CarPark.entities.messages;
 
+import CarPark.entities.Customer;
 import CarPark.entities.Price;
 
 import java.util.List;
@@ -9,6 +10,16 @@ public class PricesMessage extends Message {
     public ResponseType response_type;
     public List<Price> priceList;
     public Price new_price;
+    public Customer customer;
+    public double price;
+    public String parkingLot;
+
+
+    public PricesMessage(MessageType message_type,RequestType requestType,Customer current_customer){
+        super(message_type);
+        this.request_type = requestType;
+        this.customer = current_customer;
+    }
 
     public PricesMessage(MessageType message_type, RequestType requestType) {
         super(message_type);
@@ -27,13 +38,22 @@ public class PricesMessage extends Message {
         this.response_type = response_type;
     }
 
+
+
+
     public enum RequestType {
+        GET_CURRENT_BALANCE,
         GET_PRICES_TABLE,
-        EDIT_PRICE
+        EDIT_PRICE,
+        GET_REQUESTS_TABLE,
+        APPROVE_PRICE
     }
 
     public enum ResponseType {
+        SET_CURRENT_BALANCE,
         SET_PRICES_TABLE,
-        PRICE_EDITED
+        WAITING_FOR_APPROVAL,
+        PRICE_EDITED,
+        SET_REQUESTS_TABLE
     }
 }

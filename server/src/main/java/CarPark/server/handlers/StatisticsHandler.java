@@ -1,5 +1,6 @@
 package CarPark.server.handlers;
 
+import CarPark.entities.Statistics;
 import CarPark.entities.messages.StatisticsMessage;
 import CarPark.server.ocsf.ConnectionToClient;
 import org.hibernate.Session;
@@ -19,7 +20,6 @@ public class StatisticsHandler extends MessageHandler{
     public void handleMessage() throws Exception {
         switch (class_message.request_type) {
             case GET_STATISTICS:
-                System.out.println("StatisticsHandler: GET_STATISTICS");
                 int parkinglot_id = class_message.getParkinglot_id();
                 LocalDate date = class_message.getDate();
                 getStatisticsOfDayAndParkinglot(parkinglot_id, date);
@@ -35,7 +35,8 @@ public class StatisticsHandler extends MessageHandler{
         if (yesterdayStatistics.size() == 0) {
             class_message.response_type = StatisticsMessage.ResponseType.NO_STATISTICS_AVAILABLE;
         } else {
-            class_message.setStatistics((CarPark.entities.Statistics) yesterdayStatistics.get(0));
+            Statistics statistics = (Statistics) yesterdayStatistics.get(0);
+            class_message.setStatistics(statistics);
             class_message.response_type = StatisticsMessage.ResponseType.STATISTICS;
         }
     }

@@ -19,6 +19,7 @@ public class OrderMessage extends Message {
     public String parking_lot_id;
     public Date from;
     public Date to;
+    public List<Customer> customerList;
 
     public OrderMessage(MessageType request, RequestType createNewOrder, Order order, Customer current_customer) {
         super(request);

@@ -12,14 +12,14 @@ public class Complaint implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int complaintId;
-    private long customerId;    //only for customers
     @Column(name = "dateOfSubmit")
     private Date date;
 
     @Column(name = "description")
     private String compText;
-    private Boolean appStatus = false;        // true= complaint filed successfully- yet to be inspected, false = complaint fulfilled
+    private Boolean appStatus = false;   //true - means that the complaint has been handled, false - otherwise
     private Boolean completedOnTime = false;
+    private String pl_name;
 
     @ManyToOne
     private Parkinglot parkinglot;
@@ -27,6 +27,14 @@ public class Complaint implements Serializable {
     @ManyToOne
     private Customer customer;
 
+    public Complaint(Date date, String text, Customer customer, String pl_name) {
+        this.date = date;
+        this.compText = text;
+        this.customer =customer;
+        this.pl_name = pl_name;
+    }
+
+    public Complaint() {}
 
     public Customer getCustomer() {
         return customer;
@@ -34,28 +42,6 @@ public class Complaint implements Serializable {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
-    }
-
-    public Complaint(Date date, String compText, Parkinglot parkinglot, long customerId) {
-        this.date = date;
-        this.compText = compText;
-        this.customerId = customerId;
-        setParkinglot(parkinglot);
-    }
-
-    public Complaint(Date date, String text, long customerId) {
-        this.date = date;
-        this.compText = text;
-        this.customerId = customerId;
-    }
-
-    public Complaint(long customerId) {
-
-        this.customerId = customerId;
-    }
-
-    public Complaint() {
-
     }
 
     public void setParkinglot(Parkinglot parkinglot) {
@@ -67,7 +53,6 @@ public class Complaint implements Serializable {
         return parkinglot;
     }
 
-
     public String getCompText() {
         return compText;
     }
@@ -75,7 +60,6 @@ public class Complaint implements Serializable {
     public void setCompText(String compText) {
         compText = compText;
     }
-
 
     public Date getDate() {
         return date;
@@ -104,4 +88,8 @@ public class Complaint implements Serializable {
     public int getComplaintId() {
         return complaintId;
     }
+
+    public String getPl_name() { return pl_name; }
+
+    public void setPl_name(String pl_name) { this.pl_name = pl_name; }
 }

@@ -39,11 +39,12 @@ public class SimpleChatClient extends Application {
         EventBus.getDefault().register(this);
         client = SimpleClient.getClient();
         client.openConnection();
+//        send a message to the server to check if the connection is established
+
         ConnectionMessage message = new ConnectionMessage(Message.MessageType.REQUEST);
-        SimpleClient.getClient().sendToServer(message);
+        client.sendToServer(message);
         scene = new Scene(loadFXML("Login"));
-      //  scene = new Scene(loadFXML("ComplaintInspectionTable"), 640, 520);
-        // = new Scene(loadFXML("MenuEmployee"), 640, 520);
+
 
         stage.setScene(scene);
         stage.show();

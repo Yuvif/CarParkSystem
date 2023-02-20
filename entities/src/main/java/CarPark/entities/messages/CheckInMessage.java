@@ -14,6 +14,7 @@ public class CheckInMessage extends Message {
     }
 
     public enum ResponseType {
+        CHECK_IN_UPDATED,
         CHECKED_IN_GUEST,
         PARKING_LOT_IS_FULL;
     }

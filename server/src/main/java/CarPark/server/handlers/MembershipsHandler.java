@@ -2,6 +2,7 @@ package CarPark.server.handlers;
 
 import CarPark.entities.Customer;
 import CarPark.entities.Membership;
+import CarPark.entities.Parkinglot;
 import CarPark.entities.Price;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.MembershipMessage;
@@ -39,7 +40,7 @@ public class MembershipsHandler extends MessageHandler{
 
         for (Membership membership : existingMemberships)
         {
-            if (membership.getCarId() == newMembership.getCarId() && membership.getCustomerId() == newMembership.getCustomerId())
+            if (membership.getCarId() == newMembership.getCarId())
             {
                 class_message.response_type = MembershipMessage.ResponseType.REGISTRATION_FAILED;
                 break;
@@ -59,14 +60,14 @@ public class MembershipsHandler extends MessageHandler{
     }
 
     //find the number of cars of the user that is making a new full membership
-    private int getNumberOfCars(long customerId) throws Exception
+    private int getNumberOfCars(String customerId) throws Exception
     {
         List<Membership> membershipList = getMembershipList();
         int carsCnt = 0;
 
         for(Membership membership : membershipList)
         {
-            if(membership.getCustomerId() == customerId)
+            if(membership.getCustomerId().equals(customerId))
             {
                 carsCnt++;
             }
@@ -86,19 +87,33 @@ public class MembershipsHandler extends MessageHandler{
 
     private double makeQueryOrderedParkingPrice()
     {
-        String hql = "FROM Price WHERE parkingType = :type";
-        Query query = session.createQuery(hql);
-        query.setParameter("type", "Casual ordered parking");
-        Price price = (Price) query.uniqueResult();
+        String routinePL = class_message.newMembership.getRoutineParkingLot();
+        String hql1 = "FROM Parkinglot WHERE name = : plName";
+        Query query1 = session.createQuery(hql1);
+        query1.setParameter("plName", routinePL);
+
+        Parkinglot parkinlot = (Parkinglot) query1.uniqueResult();
+        String hql2 = "FROM Price WHERE parkingType = :type and parkinglot = : PL";
+        Query query2 = session.createQuery(hql2);
+        query2.setParameter("type", "Casual ordered parking");
+        query2.setParameter("PL", parkinlot);
+        Price price = (Price) query2.uniqueResult();
         return price.getPrice();
     }
 
     //the query for routine membership with one car
     private double makeQueryRoutineMembershipPrice()
     {
-        String hql = "FROM Price WHERE parkingType = :type";
+        String routinePL = class_message.newMembership.getRoutineParkingLot();
+        String hql1 = "FROM Parkinglot WHERE name = : plName";
+        Query query1 = session.createQuery(hql1);
+        query1.setParameter("plName", routinePL);
+        Parkinglot parkinglot = (Parkinglot) query1.uniqueResult();
+
+        String hql = "FROM Price WHERE parkingType = :type and parkinglot = : PL";
         Query query = session.createQuery(hql);
         query.setParameter("type", "Monthly subscriber one car");
+        query.setParameter("PL", parkinglot);
         Price price = (Price) query.uniqueResult();
         double hours = price.getHoursOfParking();
         return hours * makeQueryOrderedParkingPrice();
@@ -107,9 +122,16 @@ public class MembershipsHandler extends MessageHandler{
     //the query for routine membership with few cars
     private double makeQueryRoutineMembershipMultipleCarsPrice()
     {
-        String hql = "FROM Price WHERE parkingType = :type";
+        String routinePL = class_message.newMembership.getRoutineParkingLot();
+        String hql1 = "FROM Parkinglot WHERE name = : plName";
+        Query query1 = session.createQuery(hql1);
+        query1.setParameter("plName", routinePL);
+        Parkinglot parkinglot = (Parkinglot) query1.uniqueResult();
+
+        String hql = "FROM Price WHERE parkingType = :type and parkinglot = : PL";
         Query query = session.createQuery(hql);
         query.setParameter("type", "Monthly subscriber few cars");
+        query.setParameter("PL", parkinglot);
         Price price = (Price) query.uniqueResult();
         double hours = price.getHoursOfParking();
 
@@ -119,9 +141,16 @@ public class MembershipsHandler extends MessageHandler{
     //the query for full membership price
     private double makeQueryFullMembershipPrice()
     {
-        String hql = "FROM Price WHERE parkingType = :type";
+        String routinePL = class_message.newMembership.getRoutineParkingLot();
+        String hql1 = "FROM Parkinglot WHERE name = : plName";
+        Query query1 = session.createQuery(hql1);
+        query1.setParameter("plName", routinePL);
+        Parkinglot parkinglot = (Parkinglot) query1.uniqueResult();
+
+        String hql = "FROM Price WHERE parkingType = :type and parkinglot = : PL";
         Query query = session.createQuery(hql);
         query.setParameter("type", "Premium monthly subscriber");
+        query.setParameter("PL", parkinglot);
         Price price = (Price) query.uniqueResult();
         double hours = price.getHoursOfParking();
 
@@ -134,22 +163,22 @@ public class MembershipsHandler extends MessageHandler{
         Membership membership = class_message.newMembership;
         int numOfCars = getNumberOfCars(membership.getCustomerId());
 
-       if(Objects.equals(membership.getMembershipType(), "Routine Membership") && numOfCars == 0)
-       {
-           membership.setMembershipsPrice(makeQueryRoutineMembershipPrice());
-       }
-       else if(Objects.equals(membership.getMembershipType(), "Routine Membership") && numOfCars >= 1)
-       {
-           membership.setMembershipsPrice(makeQueryRoutineMembershipMultipleCarsPrice());
-           if(numOfCars == 1)
-           {
-               updateThePriceForMultipleCarsMembership(membership, numOfCars);
-           }
-       }
-       else //price for full membership
-       {
-           membership.setMembershipsPrice(makeQueryFullMembershipPrice());
-       }
+        if(Objects.equals(membership.getMembershipType(), "Routine Membership") && numOfCars == 0)
+        {
+            membership.setMembershipsPrice(makeQueryRoutineMembershipPrice());
+        }
+        else if(Objects.equals(membership.getMembershipType(), "Routine Membership") && numOfCars >= 1)
+        {
+            membership.setMembershipsPrice(makeQueryRoutineMembershipMultipleCarsPrice());
+            if(numOfCars == 1)
+            {
+                updateThePriceForMultipleCarsMembership(membership, numOfCars);
+            }
+        }
+        else //price for full membership
+        {
+            membership.setMembershipsPrice(makeQueryFullMembershipPrice());
+        }
         Customer current_customer = session.get(Customer.class,class_message.current_customer.getId());
         current_customer.addToBalance(membership.getMembershipsPrice());
     }
@@ -172,6 +201,13 @@ public class MembershipsHandler extends MessageHandler{
         Query query = session.createQuery(hql);
         query.setParameter("id", class_message.current_customer.getId());
         class_message.memberships = query.getResultList();
+        for (Membership membership: class_message.memberships)
+        {
+            if (membership.getMembershipType().equals("Full Membership"))
+            {
+                membership.setRoutineParkingLot("");
+            }
+        }
         class_message.response_type= MembershipMessage.ResponseType.SEND_TABLE;
     }
 

@@ -31,7 +31,7 @@ public abstract class AbstractReports extends Controller {
         return ((int) TimeUnit.MILLISECONDS.toDays(difference_In_Time) % 365) + 1;
     }
 
-    static int numOfDays(LocalDate d1, LocalDate d2) {
+    protected static int numOfDays(LocalDate d1, LocalDate d2) {
         return numOfDays(localDateToDate(d1), localDateToDate(d2));
     }
 

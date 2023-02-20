@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="512.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.LoginController">
+<AnchorPane prefHeight="512.0" prefWidth="900.0"  xmlns:fx="http://javafx.com/fxml/1" fx:controller="CarPark.client.controllers.User.LoginController">
     <ImageView fitHeight="516.0" fitWidth="508.0" layoutX="509.0">
         <image>
             <Image url="@../../assets/background.png" />
@@ -79,7 +79,7 @@
          <Line endX="-100.0" endY="-60.0" layoutX="350.0" layoutY="53.0" startX="-100.0" startY="6.0" />
          <Button layoutX="8.0" mnemonicParsing="false" onAction="#signUp" prefHeight="60.0" prefWidth="79.0" styleClass="mybutton" stylesheets="@../../assets/style.css">
             <graphic>
-               <ImageView accessibleRole="BUTTON" fitHeight="50.0" fitWidth="50.0" onMouseClicked="#signUp" pickOnBounds="true">
+               <ImageView accessibleRole="BUTTON" fitHeight="50.0" fitWidth="50.0"  pickOnBounds="true">
                   <image>
                      <Image url="@../../assets/signup.png" />
                   </image>
@@ -91,7 +91,7 @@
          </Button>
          <Button layoutX="89.0" mnemonicParsing="false" onAction="#checkInAsGuest" prefHeight="60.0" prefWidth="79.0" styleClass="mybutton" stylesheets="@../../assets/style.css">
             <graphic>
-               <ImageView accessibleRole="BUTTON" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#signUp" pickOnBounds="true" translateY="7.0">
+               <ImageView accessibleRole="BUTTON" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" translateY="7.0">
                   <image>
                      <Image url="@../../assets/point.png" />
                   </image>
@@ -108,7 +108,7 @@
          </Label>
          <Button layoutX="170.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#checkOutAsGuest" prefHeight="60.0" prefWidth="79.0" styleClass="mybutton" stylesheets="@../../assets/style.css">
             <graphic>
-               <ImageView accessibleRole="BUTTON" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#signUp" pickOnBounds="true" translateY="7.0">
+               <ImageView accessibleRole="BUTTON" fitHeight="35.0" fitWidth="35.0"  pickOnBounds="true" translateY="7.0">
                   <image>
                      <Image url="@../../assets/out.png" />
                   </image>
@@ -125,7 +125,7 @@
          </Label>
          <Button layoutX="251.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#prices" prefHeight="60.0" prefWidth="79.0" styleClass="mybutton" stylesheets="@../../assets/style.css">
             <graphic>
-               <ImageView accessibleRole="BUTTON" fitHeight="35.0" fitWidth="35.0" onMouseClicked="#signUp" pickOnBounds="true" translateY="7.0">
+               <ImageView accessibleRole="BUTTON" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" translateY="7.0">
                   <image>
                      <Image url="@../../assets/price-tag.png" />
                   </image>

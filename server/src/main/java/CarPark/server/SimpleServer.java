@@ -17,7 +17,10 @@ import javax.mail.MessagingException;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,8 +33,6 @@ import java.util.Properties;
 public class SimpleServer extends AbstractServer {
     private static ArrayList<SubscribedClient> SubscribersList = new ArrayList<>();
     public static Session session;// encapsulation make public function so this can be private
-    private OrderReminderThread orderReminderThread;
-    private MembershipReminderThread membershipReminderThread;
 
     public SimpleServer(int port) {
         super(port);
@@ -39,8 +40,11 @@ public class SimpleServer extends AbstractServer {
 //        orderReminderThread.start();
         //MembershipReminderThread membershipReminderThread = new MembershipReminderThread();
         //membershipReminderThread.start();
+        RemindersThread remindersThread = new RemindersThread();
+        remindersThread.start();
         StatisticsThread statisticsThread = new StatisticsThread();
         statisticsThread.start();
+
     }
 
 
@@ -59,6 +63,9 @@ public class SimpleServer extends AbstractServer {
         configuration.addAnnotatedClass(ParkingSlot.class);
         configuration.addAnnotatedClass(CheckedIn.class);
         configuration.addAnnotatedClass(Statistics.class);
+        configuration.addAnnotatedClass(Manager.class);
+        configuration.addAnnotatedClass(ParkingLotWorker.class);
+        configuration.addAnnotatedClass(CEO.class);
        // configuration.addAnnotatedClass(ParkingLotWorker.class);
 
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();        //pull session factory config from hibernate properties
@@ -70,11 +77,19 @@ public class SimpleServer extends AbstractServer {
         try {
             MessageHandler handler = null;
             Class<?> msgClass = msg.getClass();
-            System.out.println("Message received: " + msg + " from " + client);
             if (ConnectionMessage.class.equals(msgClass)) { //New client connection
                 SubscribedClient connection = new SubscribedClient(client);
                 SubscribersList.add(connection);
                 session = getSessionFactory().openSession();// Create new session for connection
+
+                session.beginTransaction();
+                //generateParkingLots(session);
+                session.getTransaction().commit();
+
+                session.beginTransaction();
+                //generateWorkers(session);
+                session.getTransaction().commit();
+
             } else { //Get client requests
                 session.beginTransaction();
                 if (LoginMessage.class.equals(msgClass)) {
@@ -97,12 +112,30 @@ public class SimpleServer extends AbstractServer {
                     handler = new StatisticsHandler((StatisticsMessage) msg, session, client);
                 } else if (CheckInMessage.class.equals(msgClass)) {
                     handler = new CheckInHandler((CheckInMessage) msg, session, client);
+                }else if (ComplaintMessage.class.equals(msgClass)) {
+                    handler = new ComplaintHandler((ComplaintMessage) msg, session, client);
+                }else if (PullParkingSlotsMessage.class.equals(msgClass)) {
+                    System.out.println("got here");
+                    handler = new PullParkingSlotsHandler((PullParkingSlotsMessage) msg, session, client);
                 }
                 if (handler != null) {
                     handler.handleMessage();
                     session.getTransaction().commit();
                     handler.message.message_type = Message.MessageType.RESPONSE;
-                    client.sendToClient(handler.message);
+                    if (handler.getClass().equals(PricesTableHandler.class) &&  ( ((PricesMessage) handler.message).response_type.equals(PricesMessage.ResponseType.WAITING_FOR_APPROVAL)
+                    || ((PricesMessage) handler.message).response_type.equals(PricesMessage.ResponseType.PRICE_EDITED)))
+                    {
+                        sendToAllClients(handler.message);
+                    }
+                    if (handler.getClass().equals(CheckInHandler.class))
+                    {
+                        client.sendToClient(handler.message);
+                        CheckInMessage update_message = (CheckInMessage)handler.message;
+                        update_message.response_type = update_message.response_type.CHECK_IN_UPDATED;
+                        sendToAllClients(update_message);
+                    }
+                    else
+                        client.sendToClient(handler.message);
                 }
             }
         } catch (Exception exception) {
@@ -112,7 +145,7 @@ public class SimpleServer extends AbstractServer {
         }
     }
 
-    private void generateParkingLots() {
+    private static void generateParkingLots(Session session) {
         String current_id;
         List<Parkinglot> parkingLotList = new LinkedList<>();
         Parkinglot haifa = new Parkinglot("Haifa", 4, 36);
@@ -160,11 +193,12 @@ public class SimpleServer extends AbstractServer {
         }
     }
 
-    public static class OrderReminderThread extends Thread {
+    public static class RemindersThread extends Thread {
         @Override
         public void run() {
-            var session = getSessionFactory().openSession();
+            var yesterday = LocalDate.now().minusDays(1);
             while (true) {
+                var session = getSessionFactory().openSession();
 //              get all orders which their arrival time was between now and 5 minutes ago and orderStatus is APPROVED
                 var orders = session.createQuery("from Order where orderStatus = 'APPROVED' and arrivalTime between :five_minutes_ago and :now")
                         .setParameter("now", LocalDateTime.now())
@@ -190,11 +224,40 @@ public class SimpleServer extends AbstractServer {
                     session.update(order);
                 }
                 session.getTransaction().commit();
+
+//              ---- now for membership reminders ----
+
+                var today = LocalDate.now();
+                if(today != yesterday) {
+                    yesterday = today;
+                    LocalDateTime start = LocalDateTime.of(today, LocalTime.MIN);
+                    var memberships = session.createQuery("from Membership where endDate between :now and :seven_days_from_now")
+                            .setParameter("now", LocalDateTime.of(today, LocalTime.MIN).plusDays(6))
+                            .setParameter("seven_days_from_now", LocalDateTime.of(today, LocalTime.MIN).plusDays(7))
+                            .getResultList();
+                    //              for each membership get the customerId attribute and get the list of Customer objects having that id
+                    for (Object membership : memberships) {
+                        //              get the customer object that has the same customerId as the membership
+                        var customer = session.createQuery("from Customer where userId = :id")
+                                .setParameter("id", ((Membership) membership).getCustomerId())
+                                .list();
+                        //                  get the email from the customer object
+                        String email = ((Customer) customer.get(0)).getEmail();
+                        String subject = "Your membership is about to expire";
+                        //                    send a text with the expiration date
+                        String text = "Hi there, \nWe'd like to inform you that your membership is about to expire on " + ((Membership) membership).getEndDate().toLocalDate() + " at "
+                                + ((Membership) membership).getEndDate().toLocalTime() + ".\nYou can login to your" +
+                                " account in order to renew it :)" + "\n\nBest regards,\nCarParkSystem";
+                        EmailSender.sendEmail(email, subject, text);
+                    }
+                }
+
                 try {
-                    Thread.sleep(120000);
+                    Thread.sleep(180000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                session.close();
             }
         }
     }
@@ -202,18 +265,18 @@ public class SimpleServer extends AbstractServer {
     public static class StatisticsThread extends Thread {
         @Override
         public void run() {
-            var session = getSessionFactory().openSession();
             while (true) {
+                    var session = getSessionFactory().openSession();
                     var parkingLots = session.createQuery("from Parkinglot").list();
                     for (Object parkingLot : parkingLots) {
 //                        check if there is an entry for yesterday
+                        String parkingLotId = String.valueOf(((Parkinglot) parkingLot).getParkingLotId());
                         var yesterday = LocalDate.now().minusDays(1);
                         var yesterdayStatistics = session.createQuery("from Statistics where parkingLotId = :parkingLotId and date = :date")
-                                .setParameter("parkingLotId", ((Parkinglot) parkingLot).getId())
+                                .setParameter("parkingLotId", parkingLotId)
                                 .setParameter("date", yesterday)
                                 .getResultList();
                         if (yesterdayStatistics.size() == 0) {
-                            String parkingLotId = String.valueOf(((Parkinglot) parkingLot).getParkingLotId());
                             //                        select all orders from the begiining of yesterday to the end of yesterday
 //                            wrap yesterday in a LocalDateTime object
                             LocalDateTime yesterdayStart = LocalDateTime.of(yesterday, LocalTime.MIN);
@@ -223,6 +286,7 @@ public class SimpleServer extends AbstractServer {
                                     .setParameter("yesterday_start", yesterdayStart)
                                     .setParameter("yesterday_end", yesterdayEnd)
                                     .getResultList();
+
                             int totalOrders = orders.size();
                             int numberOfOrdersCancelled = 0;
                             int numberOfOrdersLate = 0;
@@ -247,49 +311,33 @@ public class SimpleServer extends AbstractServer {
                             session.getTransaction().commit();
                         }
                     }
+//                    delete all expired memberships from the database
+                    var expiredMemberships = session.createQuery("from Membership where endDate < :now")
+                            .setParameter("now", LocalDateTime.now())
+                            .getResultList();
+                    session.beginTransaction();
+                    for (Object membership : expiredMemberships) {
+                        session.delete(membership);
+                    }
+//                    Have to add 'CHECKED_OUT' as a status for orders
+//                    var expiredOrders = session.createQuery("from Order where orderStatus = 'CHECKED_OUT'")
+//                            .getResultList();
+//                    for (Object order : expiredOrders) {
+//                        session.delete(order);
+//                    }
+                    session.getTransaction().commit();
                 try {
                     Thread.sleep(86400000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                session.close();
             }
         }
     }
 
 
-    public static class MembershipReminderThread extends Thread {
-        @Override
-        public void run() {
-            while (true) {
-                var session = getSessionFactory().openSession();
-                var memberships = session.createQuery("from Membership where endDate between :now and :seven_days_from_now")
-                        .setParameter("now", LocalDateTime.now())
-                        .setParameter("seven_days_from_now", LocalDateTime.now().plusDays(7))
-                        .getResultList();
-//              for each membership get the customerId attribute and get the list of Customer objects having that id
-                for (Object membership : memberships) {
-//              get the customer object that has the same customerId as the membership
-                    var customer = session.createQuery("from Customer where userId = :id")
-                            .setParameter("id", ((Membership) membership).getCustomerId())
-                            .list();
-//                  get the email from the customer object
-                    String email = ((Customer) customer.get(0)).getEmail();
-                    String subject = "Your membership is about to expire";
-//                    send a text with the expiration date
-                    String text = "Hi there, \nWe'd like to inform you that your membership is about to expire on " + ((Membership) membership).getEndDate().toLocalDate() +" at "
-                     + ((Membership) membership).getEndDate().toLocalTime() + ".\nYou can login to your" +
-                            " account in order to renew it :)"+"\n\nBest regards,\nCarParkSystem";
-                    EmailSender.sendEmail(email, subject, text);
-                }
-                // now wait for 7 days
-                try {
-                    Thread.sleep(604000000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
+
 
     public static class EmailSender {
         public static void sendEmail(String to, String subject, String text) {
@@ -319,5 +367,94 @@ public class SimpleServer extends AbstractServer {
         }
     }
 
+    private void generateWorkers(Session session) throws Exception {
+        CriteriaBuilder cb;
+        cb = session.getCriteriaBuilder();
+        CriteriaQuery<Parkinglot> query = cb.createQuery(Parkinglot.class);
+        query.from(Parkinglot.class);
+        List<Parkinglot> data = session.createQuery(query).getResultList();
+        byte[] salt = HashPipeline.getSalt();
+
+        Manager daniel = new Manager("318172848","Daniel","Glazman","glazman.daniel@gmal.com","Manager",
+                HashPipeline.toHexString(HashPipeline.getSHA("1111111", salt)), salt);
+        daniel.setParkinglot(data.get(0));
+        session.save(daniel);
+        session.flush();
+
+        Manager avi = new Manager("209042589","Avi","Lifshitz","vilifishitz@gmal.com","Manager",
+                HashPipeline.toHexString(HashPipeline.getSHA("1111111", salt)), salt);
+        avi.setParkinglot(data.get(1));
+        session.save(avi);
+        session.flush();
+
+        Manager noy = new Manager("207944414","Noy","Blitsblau","oybl101@gmal.com","Manager",
+                HashPipeline.toHexString(HashPipeline.getSHA("1111111", salt)), salt);
+        noy.setParkinglot(data.get(2));
+        session.save(noy);
+        session.flush();
+
+        Manager shahar = new Manager("314983040","Shahar","Weiss","shaharweiss0@gmal.com","Manager",
+                HashPipeline.toHexString(HashPipeline.getSHA("1111111", salt)), salt);
+        shahar.setParkinglot(data.get(3));
+        session.save(shahar);
+        session.flush();
+
+        Manager eliron = new Manager("313313131","Eliron","Lubaton","lubaton@gmal.com","Manager",
+                HashPipeline.toHexString(HashPipeline.getSHA("1111111", salt)), salt);
+        eliron.setParkinglot(data.get(4));
+        session.save(eliron);
+        session.flush();
+
+        CEO yuval = new CEO("313598484","Yuval","Fisher","fisheryuval96@gmal.com","CEO",
+                HashPipeline.toHexString(HashPipeline.getSHA("1111111", salt)), salt);
+        session.save(yuval);
+        session.flush();
+
+        ParkingLotWorker parkingLotWorker1 = new ParkingLotWorker("098765432", "Regina", "Phalange", "regina@gmail.com", "Parking Lot Worker",
+                HashPipeline.toHexString(HashPipeline.getSHA("1234567", salt)), salt);
+        parkingLotWorker1.setParkinglot(data.get(0));
+        session.save(parkingLotWorker1);
+        session.flush();
+
+        ParkingLotWorker parkingLotWorker2 = new ParkingLotWorker("213243546", "Chandler", "Bing", "chandler@gmail.com", "Parking Lot Worker",
+                HashPipeline.toHexString(HashPipeline.getSHA("1234567", salt)), salt);
+        parkingLotWorker2.setParkinglot(data.get(1));
+        session.save(parkingLotWorker2);
+        session.flush();
+
+        ParkingLotWorker parkingLotWorker3 = new ParkingLotWorker("222111343", "Phoebe", "Boffay", "Phoebe@gmail.com", "Parking Lot Worker",
+                HashPipeline.toHexString(HashPipeline.getSHA("1234567", salt)), salt);
+        parkingLotWorker3.setParkinglot(data.get(2));
+        session.save(parkingLotWorker3);
+        session.flush();
+
+        ParkingLotWorker parkingLotWorker4 = new ParkingLotWorker("333222111", "Monica", "Geller", "Monica@gmail.com", "Parking Lot Worker",
+                HashPipeline.toHexString(HashPipeline.getSHA("1234567", salt)), salt);
+        parkingLotWorker4.setParkinglot(data.get(3));
+        session.save(parkingLotWorker4);
+        session.flush();
+
+        ParkingLotWorker parkingLotWorker5 = new ParkingLotWorker("123123123", "Ross", "Geller", "Ross@gmail.com", "Parking Lot Worker",
+                HashPipeline.toHexString(HashPipeline.getSHA("1234567", salt)), salt);
+        parkingLotWorker5.setParkinglot(data.get(4));
+        session.save(parkingLotWorker5);
+        session.flush();
+
+        Employee customerService1 = new Employee("099888999", "Joey", "Tribbiani", "Joey@gmail.com", "Customer Service Worker",
+                HashPipeline.toHexString(HashPipeline.getSHA("123456789", salt)), salt);
+        session.save(customerService1);
+        session.flush();
+
+    }
+
+    public void sendToAllClients(Message message) {
+        try {
+            for (SubscribedClient SubscribedClient : SubscribersList) {
+                SubscribedClient.getClient().sendToClient(message);
+            }
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+    }
 
 }

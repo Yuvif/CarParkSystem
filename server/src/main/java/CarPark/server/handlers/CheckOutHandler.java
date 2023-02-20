@@ -1,7 +1,7 @@
 package CarPark.server.handlers;
 
 import CarPark.entities.*;
-import CarPark.entities.messages.CheckOutMessage;
+import CarPark.entities.messages.*;
 import CarPark.entities.messages.Message;
 import CarPark.server.ocsf.ConnectionToClient;
 import org.hibernate.Session;
@@ -27,14 +27,6 @@ public class CheckOutHandler extends MessageHandler {
         return (CheckedIn)query.uniqueResult();
     }
 
-    public CheckedIn findCheckedInCustomer()
-    {
-        String hql = "FROM CheckedIn WHERE personId = :id AND carNumber = :carId";
-        Query query = session.createQuery(hql);
-        query.setParameter("id", class_message.current_customer.getId());
-        query.setParameter("carId", class_message.carNumber);
-        return (CheckedIn)query.uniqueResult();
-    }
 
     public boolean checkLate(LocalDateTime leavingTime, LocalDateTime estimatedLeavingTime)
     {
@@ -53,7 +45,7 @@ public class CheckOutHandler extends MessageHandler {
         {
             double differenceInMinutes = ChronoUnit.MINUTES.between(arrivalTime, estimatedLeavingTime);
             double differenceInHours = differenceInMinutes / 60;
-            double differenceInMinutes_TimeDeviation = ChronoUnit.MINUTES.between(estimatedLeavingTime, leavingTime);
+            double differenceInMinutes_TimeDeviation = ChronoUnit.MINUTES.between(estimatedLeavingTime, LocalDateTime.now());
             double differenceInHours_TimeDeviation = differenceInMinutes_TimeDeviation / 60;
             return  pricePH * differenceInHours + 1.1 * pricePH * differenceInHours_TimeDeviation;
         }
@@ -62,21 +54,23 @@ public class CheckOutHandler extends MessageHandler {
     //calculation of charges for guests
     public double calcGuestCredit()
     {
-        String hql = "FROM Price WHERE parkingType = :type";
+        CheckedIn checkedInGuest = findCheckedInGuest();
+        String hql = "FROM Price WHERE parkingType = :type and parkinglot = : lot";
         Query query = session.createQuery(hql);
         query.setParameter("type", "Casual parking");
+        query.setParameter("lot", checkedInGuest.getParkinglot());
         Price price = (Price) query.uniqueResult();
         double pricePH = price.getPrice();
-
-        CheckedIn checkedInGuest = findCheckedInGuest();
         return calculateCharges(checkedInGuest.getEntryDate(), checkedInGuest.getExitEstimatedDate(), LocalDateTime.now(), pricePH);
     }
 
     public double calcOrdersCredit()
     {
-        String hql = "FROM Price WHERE parkingType = :type";
+        CheckedIn checkedInGuest = findCheckedInGuest();
+        String hql = "FROM Price WHERE parkingType = :type and parkinglot = : lot";
         Query query = session.createQuery(hql);
         query.setParameter("type", "Casual ordered parking");
+        query.setParameter("lot", checkedInGuest.getParkinglot());
         Price price = (Price) query.uniqueResult();
         return price.getPrice();
     }
@@ -151,6 +145,15 @@ public class CheckOutHandler extends MessageHandler {
         deleteFromCheckedIn();
         //class_message.current_customer.addToBalance(calcGuestCredit()); //update guests credit
     }
+    private boolean noCheckIn()
+    {
+        String hql = "FROM CheckedIn WHERE personId = :id AND carNumber = :carId";
+        Query query = session.createQuery(hql);
+        query.setParameter("id", class_message.userId);
+        query.setParameter("carId", class_message.carNumber);
+        CheckedIn checkedOut = (CheckedIn)query.uniqueResult();
+        return checkedOut == null;
+    }
 
     public void customerCheckOut()
     {
@@ -162,10 +165,18 @@ public class CheckOutHandler extends MessageHandler {
     public void handleMessage() throws Exception {
         switch (class_message.request_type) {
             case CHECK_ME_OUT_GUEST -> {
+                if (noCheckIn()){
+                    class_message.response_type = CheckOutMessage.ResponseType.NO_CHECK_IN;
+                    break;
+                }
                 guestCheckOut();
                 class_message.response_type = CheckOutMessage.ResponseType.CHECKED_OUT_GUEST;
             }
             case CHECK_ME_OUT -> {
+                if (noCheckIn()){
+                    class_message.response_type = CheckOutMessage.ResponseType.NO_CHECK_IN;
+                    break;
+                }
                 customerCheckOut();
                 class_message.response_type = CheckOutMessage.ResponseType.CHECKED_OUT;
             }

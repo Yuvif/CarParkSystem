@@ -1,6 +1,7 @@
 package CarPark.entities;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -12,7 +13,7 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private long customerId;
+    private String customerId;
     private int carId;
     private String parkingLot;
     private String email;
@@ -22,23 +23,16 @@ public class Order implements Serializable {
     private Date date;
     private Status orderStatus = Status.APPROVED;
 
-    @ManyToOne
-    private Customer customer;
 
-    public Customer getCustomer() {
-        return customer;
-    }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
+    
 
     public void setOrderStatus(Status notified) {
     }
 
     public enum Status {APPROVED, CANCELLED, NOTIFIED};
 
-    public Order(long customerId, int carId, String parkingLot, String email,
+    public Order(String customerId, int carId, String parkingLot, String email,
                  LocalDateTime arrivalTime, LocalDateTime estimatedLeavingTime, double ordersPrice, Date date)
     {
         super();
@@ -54,7 +48,7 @@ public class Order implements Serializable {
 
     public Order() {}
 
-    public long getCustomerId() {
+    public String getCustomerId() {
         return customerId;
     }
     public int getCarId() {
@@ -72,7 +66,7 @@ public class Order implements Serializable {
     }
     public double getOrdersPrice() { return ordersPrice; }
 
-    public void setCustomerId(long customerId) {
+    public void setCustomerId(String customerId) {
         this.customerId = customerId;
     }
     public void setCarId(int carId) {
@@ -100,7 +94,7 @@ public class Order implements Serializable {
         orderStatus = spotStatus;
     }
 
-    public  Date getDate(){
+    public Date getDate(){
         return date;
     }
     public void setDate(Date date) {

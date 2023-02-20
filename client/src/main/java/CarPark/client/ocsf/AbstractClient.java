@@ -168,6 +168,10 @@ public abstract class AbstractClient implements Runnable {
         if (clientSocket == null || output == null) {
             throw new SocketException("socket does not exist");
         }
+        if (!clientSocket.isConnected()) {
+            // Reconnect to the server if the client is not already connected
+            openConnection();
+        }
         output.reset();
         output.writeObject(msg);
     }

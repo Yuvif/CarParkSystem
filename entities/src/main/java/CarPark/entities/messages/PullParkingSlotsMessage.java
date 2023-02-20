@@ -1,8 +1,8 @@
 package CarPark.entities.messages;
 import CarPark.entities.ParkingSlot;
+
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
 
 public class PullParkingSlotsMessage extends Message {
 
@@ -12,7 +12,7 @@ public class PullParkingSlotsMessage extends Message {
     public String parkinglotId;
     public Date from;
     public Date to;
-//    public LinkedList<Complaint> complaints;
+    //    public LinkedList<Complaint> complaints;
     public LinkedList<ParkingSlot> parkingSlots;
 
     public PullParkingSlotsMessage(MessageType message_type, PullParkingSlotsMessage.RequestType requestType) {
@@ -34,14 +34,13 @@ public class PullParkingSlotsMessage extends Message {
     }
 
     public enum RequestType {
-//        GET_SELECTED_COMPLAINTS,
+        //        GET_SELECTED_COMPLAINTS,
         GET_PARKING_SLOTS_REP
     }
 
     public enum ResponseType {
-//        SET_SELECTED_COMPLAINTS,
+        //        SET_SELECTED_COMPLAINTS,
         SET_PARKING_SLOTS_REP
     }
 
 }
-

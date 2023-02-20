@@ -1,6 +1,6 @@
 package CarPark.entities.messages;
 
-import CarPark.entities.Statistics;
+import CarPark.entities.*;
 
 import java.time.LocalDate;
 

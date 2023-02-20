@@ -1,20 +1,15 @@
 package CarPark.server.handlers;
 
-import CarPark.entities.Customer;
-import CarPark.entities.Membership;
-import CarPark.entities.Order;
-import CarPark.entities.Price;
+import CarPark.entities.*;
 import CarPark.entities.messages.Message;
 import CarPark.entities.messages.OrderMessage;
 import CarPark.server.ocsf.ConnectionToClient;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,11 +36,11 @@ public class OrderHandler extends MessageHandler {
                 cancelOrder();
                 break;
             case GET_SELECTED_ORDERS:
-                class_message.ordersList = getSelectedOrders();
+                class_message.customerList = getAllCustomers();
                 class_message.response_type = OrderMessage.ResponseType.SET_SELECTED_ORDERS;
-                class_message.ordersList.removeIf(order -> order.getParkingLotId().equals(class_message.parking_lot_id)
-                        || order.getDate().compareTo(class_message.from) < 0 || order.getDate().compareTo(class_message.to) > 0
-                        || order.getStatus() == Order.Status.APPROVED);
+//                class_message.ordersList.removeIf(order -> order.getParkingLotId().equals(class_message.parking_lot_id)
+//                        || order.getDate().compareTo(class_message.from) < 0 || order.getDate().compareTo(class_message.to) > 0
+//                        || order.getStatus() == Order.Status.APPROVED);
         }
     }
 
@@ -65,17 +60,24 @@ public class OrderHandler extends MessageHandler {
         Order newOrder = class_message.Order;
         String membershipType = findAndGetMembershipType(newOrder);
 
-       if(!Objects.equals(membershipType, "Full Membership") && !Objects.equals(membershipType, "Routine Membership"))
+        if(!Objects.equals(membershipType, "Full Membership") && !Objects.equals(membershipType, "Routine Membership"))
         {
-            String hql = "FROM Price WHERE parkingType = :type";
-            Query query = session.createQuery(hql);
+            String routinePL = class_message.Order.getParkingLotId();
+            String hql1 = "FROM Parkinglot WHERE name = : plName";
+            Query query1 = session.createQuery(hql1);
+            query1.setParameter("plName", routinePL);
+            Parkinglot parkinglot = (Parkinglot) query1.uniqueResult();
+
+            String hql2 = "FROM Price WHERE parkingType = :type and parkinglot = : PL";
+            Query query = session.createQuery(hql2);
             query.setParameter("type", "Casual ordered parking");
+            query.setParameter("PL", parkinglot);
             Price price = (Price) query.uniqueResult();
             double pricePH = price.getPrice();
             double time = calculateNumOfParkingHours(newOrder.getArrivalTime(), newOrder.getEstimatedLeavingTime());
             return time * pricePH;
         }
-       return 0.0;
+        return 0.0;
     }
 
     private String findAndGetMembershipType(Order newOrder) throws Exception
@@ -84,7 +86,7 @@ public class OrderHandler extends MessageHandler {
 
         for(Membership membership : memberships)
         {
-            if(membership.getCustomerId() == newOrder.getCustomerId() &&
+            if(membership.getCustomerId().equals(newOrder.getCustomerId()) &&
                     membership.getCarId() == newOrder.getCarId())
             {
                 return membership.getMembershipType();
@@ -154,17 +156,10 @@ public class OrderHandler extends MessageHandler {
         }
     }
 
-    private LinkedList<Order> getSelectedOrders() throws Exception {
+    private List<Customer> getAllCustomers() throws Exception {
         //generateOrders();
-        CriteriaBuilder builder = session.getCriteriaBuilder();
-        CriteriaQuery<Order> orderQuery = builder.createQuery(Order.class);
-        orderQuery.from(Order.class);
-        List<Order> data = session.createQuery(orderQuery).getResultList();
-        LinkedList<Order> res= new LinkedList<Order>();
-        for(Order c: data)
-        {
-            res.add(c);
-        }
-        return res;
+        CriteriaQuery<Customer> query = cb.createQuery(Customer.class);
+        query.from(Customer.class);
+        return session.createQuery(query).getResultList();
     }
 }
